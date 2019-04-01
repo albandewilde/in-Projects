@@ -256,3 +256,6 @@ paket-files/
 .cr/
 
 appsettings.json
+
+# don't commit the result of the target folder, the result of the ts transpilation
+inProjects/inprojects.SPA/target/
