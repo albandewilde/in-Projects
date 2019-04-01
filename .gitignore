@@ -259,7 +259,6 @@ appsettings.json
 
 # don't commit the result of the target folder, the result of the ts transpilation
 inProjects/inprojects.SPA/target/
-*.js
 
 # things in the .gitignore of the SPA which was auto generated
 .DS_Store
