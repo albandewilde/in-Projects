@@ -10,14 +10,18 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import{Test} from '../api/apiTest'
+import{Test, testPost} from '../api/apiTest'
 
 @Component 
 export default class Counter extends Vue {
   count = 0
   increment() { 
     this.count++;
-    Test(this.count)
+    var person = { 
+       requestId: this.count, 
+    }; 
+    Test(this.count);
+    testPost(person);
    }
 }
 </script>

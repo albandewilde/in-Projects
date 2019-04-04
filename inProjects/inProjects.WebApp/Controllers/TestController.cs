@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using inProjects.WebApp.Models;
+using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace inProjects.WebApp.Controllers
@@ -10,6 +11,12 @@ namespace inProjects.WebApp.Controllers
         public void Test(int q)
         {
             Console.WriteLine(q);
+        }
+        
+        [HttpPost("postTest")]
+        public void PostTest([FromBody] ErrorViewModel model)
+        {
+            Console.WriteLine(model.RequestId);
         }
     }
 }
