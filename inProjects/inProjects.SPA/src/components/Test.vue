@@ -9,19 +9,19 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Vue } from 'vue-property-decorator';
-import{Test, testPost} from '../api/apiTest'
+import {Component, Vue} from "vue-property-decorator"
+import {Test, testPost} from "../api/apiTest"
 
-@Component 
+@Component
 export default class Counter extends Vue {
   count = 0
-  increment() { 
-    this.count++;
-    var person = { 
-       requestId: this.count, 
-    }; 
-    Test(this.count);
-    testPost(person);
+  increment() {
+    this.count += 1
+    const person = {
+       requestId: this.count,
+    }
+    Test(this.count)
+    testPost(person)
    }
 }
 </script>
