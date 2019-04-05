@@ -62,14 +62,11 @@ namespace WebApp
 
             app.UseAuthentication();
 
-            app.UseCors(c =>
-            {
-                c.SetIsOriginAllowed( host => true );
-                c.AllowAnyHeader();
-                c.AllowAnyMethod();
-                c.AllowCredentials();
-                c.WithOrigins(Configuration["Spa:Host"]);
-            });
+            app.UseCors( c =>
+                    c.SetIsOriginAllowed( host => true )
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials() );
 
             app.UseMvc(routes =>
             {
