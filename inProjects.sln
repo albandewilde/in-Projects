@@ -5,11 +5,21 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.WebApp", "inProjects.WebApp\inProjects.WebApp.csproj", "{B53E5603-26A6-4E98-B715-FDAA925EF7F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProjects.Tests", "inProjects.Tests\inProjects.Tests.csproj", "{3152117E-3048-40EA-A819-3F5D36A9A535}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.Tests", "inProjects.Tests\inProjects.Tests.csproj", "{3152117E-3048-40EA-A819-3F5D36A9A535}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{51170987-06C1-447C-A402-D260CDFAD98D}"
+	ProjectSection(SolutionItems) = preProject
+		TestHelper.config = TestHelper.config
+	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProjects.Data", "inProjects.Data\inProjects.Data.csproj", "{3D3CE85D-4278-4803-96B0-F26D5B597B4A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.Data", "inProjects.Data\inProjects.Data.csproj", "{3D3CE85D-4278-4803-96B0-F26D5B597B4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8D3FAE0E-45A5-4B40-976F-14DEDA354F7E}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		nuget.config = nuget.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
