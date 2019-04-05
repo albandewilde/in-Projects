@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.WebApp", "inProjects.WebApp\inProjects.WebApp.csproj", "{B53E5603-26A6-4E98-B715-FDAA925EF7F2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.Tests", "inProjects.Tests\inProjects.Tests.csproj", "{3152117E-3048-40EA-A819-3F5D36A9A535}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests\inProjects.Tests", "Tests\inProjects.Tests\inProjects.Tests.csproj", "{3152117E-3048-40EA-A819-3F5D36A9A535}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{51170987-06C1-447C-A402-D260CDFAD98D}"
 	ProjectSection(SolutionItems) = preProject
