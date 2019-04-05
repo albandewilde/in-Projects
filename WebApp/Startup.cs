@@ -1,6 +1,6 @@
 using CK.AspNet.Auth;
 using CK.Text;
-using inProjects.WebApp.Controllers;
+using WebApp.Controllers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 
-namespace inProjects.WebApp
+namespace WebApp
 {
     public class Startup
     {
