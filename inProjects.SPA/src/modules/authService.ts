@@ -3,7 +3,7 @@ import {appSettings} from "@/modules/config/appSettings";
 import axios from 'axios';
 
 let instance: AuthService;
-export async function initialize(): Promise<AuthService> {
+export async function initializeAuthService(): Promise<AuthService> {
     instance = await AuthService.createAsync( { identityEndPoint: appSettings.AuthService }, axios );
     return instance;
 }

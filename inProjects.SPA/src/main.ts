@@ -7,11 +7,9 @@ import {initializeAuthService, getAuthService} from './modules/authService';
 Vue.config.productionTip = false;
 
 initializeAuthService().then( () => {
-  console.log(getAuthService());
+  new Vue({
+    router,
+    store,
+    render: (h) => h(App),
+  }).$mount('#app');
 });
-getAuthService().basicLogin( 'toto', 'password' );
-new Vue({
-  router,
-  store,
-  render: (h) => h(App),
-}).$mount('#app');
