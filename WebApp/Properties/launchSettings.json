@@ -1,9 +1,10 @@
-aaa{
-    "inProjects.WebApp": {
+{
+  "profiles": {
+    "WebApp": {
       "commandName": "Project",
-      "applicationUrl": "https://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    }
   }
 }
