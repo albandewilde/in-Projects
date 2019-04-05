@@ -331,3 +331,8 @@ Logs/
 
 # don't commit the package-lock.json
 package-lock.json
+
+# OutDir ts to js
+inProjects\.SPA/target/
+
+inProjects\.WebApp/appsettings\.json
