@@ -336,3 +336,5 @@ package-lock.json
 inProjects\.SPA/target/
 
 inProjects\.WebApp/appsettings\.json
+
+WebApp\WebAppLogs\*
