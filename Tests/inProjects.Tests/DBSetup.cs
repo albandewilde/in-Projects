@@ -1,5 +1,6 @@
 using CK.Core;
 using CK.DB.Auth;
+using CK.DB.HZone;
 using CK.DB.User.UserPassword;
 using CK.SqlServer;
 using NUnit.Framework;
@@ -19,7 +20,23 @@ namespace inProjects.Tests
             using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
             {
                 var result = u.CreateOrUpdatePasswordUser( ctx, 1, 1, "a" );
+               
                 Assert.That( result.OperationResult == UCResult.Created || result.OperationResult == UCResult.Updated );
+            }
+        }
+
+        [Test]
+        [Explicit]
+
+        public void Add_Zone()
+        {
+            var u = TestHelper.StObjMap.StObjs.Obtain<ZoneTable>();
+            using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
+            {
+                var result = u.CreateZone( ctx, 1, 1 );
+
+                Assert.That( result.Equals(1));
+
             }
         }
     }
