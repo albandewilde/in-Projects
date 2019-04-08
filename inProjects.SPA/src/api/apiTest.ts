@@ -2,14 +2,14 @@ import {
     getAsync,
     postAsync
  
-} from "../helpers/apiHelper";
+} from "../helpers/apiHelper"
 
-const endpoint = process.env.VUE_APP_BACKEND + "/api/test";
+const endpoint = process.env.VUE_APP_BACKEND + "/api/test"
 
 export async function Test(count : Number) {
-    return await getAsync(`${endpoint}/Chat?q=${count}`);
+    return await getAsync(`${endpoint}/Chat?q=${count}`)
 }
 
 export async function testPost(data : any) {
-    return await postAsync(`${endpoint}/postTest`,data);
+    return await postAsync(`${endpoint}/postTest`,data)
 }

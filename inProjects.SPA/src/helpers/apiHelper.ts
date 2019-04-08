@@ -1,5 +1,5 @@
 // import AuthService from '../services/AuthService'
-import axios from 'axios';
+import axios from 'axios'
 
 export function postAsync(url: string, data: any) {
     axios.post(url, data)
@@ -8,7 +8,7 @@ export function postAsync(url: string, data: any) {
       })
       .catch((error) => {
         return error;
-      });
+      })
 }
 
 export function putAsync(url: string, data: any) {
@@ -18,7 +18,7 @@ export function putAsync(url: string, data: any) {
       })
       .catch((error) => {
         return error;
-      });
+      })
 }
 
 export function getAsync(url: string) {
@@ -28,7 +28,7 @@ export function getAsync(url: string) {
       })
       .catch((error) => {
         return error;
-      });
+      })
 }
 
 export function deleteAsync(url: string) {
@@ -38,5 +38,5 @@ export function deleteAsync(url: string) {
       })
       .catch((error) => {
         return error;
-      });
+      })
 }
