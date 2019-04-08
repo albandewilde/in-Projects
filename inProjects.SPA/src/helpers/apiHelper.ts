@@ -1,8 +1,10 @@
 // import AuthService from '../services/AuthService'
-import axios from 'axios';
+//import axios from 'axios';
+import {getAxios} from '../modules/authService';
+
 
 export function postAsync(url: string, data: any) {
-    axios.post(url, data)
+  getAxios().post(url, data)
       .then((response) => {
         return response;
       })
@@ -12,7 +14,7 @@ export function postAsync(url: string, data: any) {
 }
 
 export function putAsync(url: string, data: any) {
-    axios.put(url, data)
+  getAxios().put(url, data)
       .then((response) => {
         return response;
       })
@@ -22,7 +24,7 @@ export function putAsync(url: string, data: any) {
 }
 
 export function getAsync(url: string) {
-    axios.get(url)
+  getAxios().get(url)
       .then((response) => {
         return response;
       })
@@ -32,7 +34,7 @@ export function getAsync(url: string) {
 }
 
 export function deleteAsync(url: string) {
-    axios.delete(url)
+  getAxios().delete(url)
       .then((response) => {
         return response;
       })

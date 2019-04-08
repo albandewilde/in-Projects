@@ -1,11 +1,15 @@
 import {AuthService} from "@signature/webfrontauth";
 import {appSettings} from "@/modules/config/appSettings";
-import axios from 'axios';
+import { AxiosInstance } from 'axios';
 
 let instance: AuthService;
-export async function initialize(): Promise<AuthService> {
-    instance = await AuthService.createAsync( { identityEndPoint: appSettings.AuthService }, axios );
+let instanceAxios : AxiosInstance;
+
+export async function initializeAuthService(axiosFromInitialize: AxiosInstance): Promise<AuthService> {
+    instanceAxios = axiosFromInitialize;
+    instance = await AuthService.createAsync( { identityEndPoint: appSettings.AuthService }, axiosFromInitialize );
     return instance;
 }
 export const getAuthService:() =>AuthService = () => instance;
+export const getAxios:() =>AxiosInstance = () => instanceAxios;
 export * from "@signature/webfrontauth";
