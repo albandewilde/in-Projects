@@ -21,11 +21,11 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue"
 export default Vue.extend({
     data() {
         return {
-            labelPosition: 'top',
+            labelPosition: "top",
             login: {
                 id: "".toString(),
                 pw: "".toString()
@@ -35,7 +35,7 @@ export default Vue.extend({
 
     methods: {
         async Login() {
-
+            throw new Error()
         },
 
         async Reset() {
