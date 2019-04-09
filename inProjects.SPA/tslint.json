@@ -35,6 +35,7 @@
     "no-use-before-declare": true,
     "no-unused-variable": true,
     "no-empty": true,
-    "no-console": false
+    "no-console": false,
+    "no-var-requires": false
   }
 }
