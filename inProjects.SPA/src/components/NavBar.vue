@@ -1,5 +1,5 @@
 <template>
-    <el-aside width="220px" style="background-color: rgb(238, 241, 246);">
+    <el-aside>
         <el-menu 
             default-active="1" 
             class="el-menu-vertical-demo" 
@@ -8,8 +8,14 @@
             active-text-color="#ffd04b"
             @open="handleOpen"
             @close="handleClose"
+            :collapse="isCollapse"
             :unique-opened="true"
             style="height: 100%;">
+
+            <font-awesome-icon icon="bars" 
+                size="lg" 
+                style="color: white; cursor: pointer;" 
+                @click="changeCollapse()"/>
 
             <h4 style="color: white;">Mon Pseudo</h4>
 
@@ -60,6 +66,8 @@ import { Component, Vue } from "vue-property-decorator"
 
 @Component
 export default class NavBar extends Vue {
+    
+    isCollapse: boolean = true
 
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
@@ -68,8 +76,16 @@ export default class NavBar extends Vue {
     handleClose(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
+
+    changeCollapse() {
+        this.isCollapse = !this.isCollapse
+    }
 }
 </script>
 
 <style>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
 </style>
