@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.17",
+    "@fortawesome/free-solid-svg-icons": "^5.8.1",
     "@fortawesome/vue-fontawesome": "^0.1.6",
     "@signature/webfrontauth": "^0.12.0-alpha.2.0",
     "@types/lodash": "^4.14.120",
