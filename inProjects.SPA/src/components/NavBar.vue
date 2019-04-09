@@ -25,7 +25,7 @@
             </el-menu-item>
             <el-submenu index="2">
                 <template slot="title">
-                    <font-awesome-icon icon="user-graduate" size="lg" />
+                    <font-awesome-icon icon="user-graduate" size="lg" spin />
                     <span> Étudiants</span>
                 </template>
                 <el-menu-item-group>
@@ -62,18 +62,18 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
+import { Component, Vue } from "vue-property-decorator"
 
 @Component
 export default class NavBar extends Vue {
     
     isCollapse: boolean = true
 
-    handleOpen(key, keyPath) {
+    handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
 
-    handleClose(key, keyPath) {
+    handleClose(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
 

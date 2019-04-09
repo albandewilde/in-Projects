@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import { Component, Vue } from 'vue-property-decorator'
-import NavBar from '@/components/NavBar.vue'
+import { Component, Vue } from "vue-property-decorator"
+import NavBar from "@/components/NavBar.vue"
 
 @Component({
   components: {
@@ -27,7 +27,7 @@ export default class App extends Vue {}
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
