@@ -6,7 +6,7 @@ import router from "./router"
 import store from "./store"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import { library } from "@fortawesome/fontawesome-svg-core"
-import { faCoffee, faHome, faUserGraduate, faUserTie, faFileAlt, faClipboard, faBars } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faUserGraduate, faUserTie, faFileAlt, faClipboard, faBars } from '@fortawesome/free-solid-svg-icons'
 import {initializeAuthService, getAuthService} from './modules/authService'
 
 library.add(faHome, faUserGraduate, faUserTie, faFileAlt, faClipboard, faBars)
