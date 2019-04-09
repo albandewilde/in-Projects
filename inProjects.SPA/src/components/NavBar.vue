@@ -1,5 +1,5 @@
 <template>
-    <el-aside width="220px" style="background-color: rgb(238, 241, 246);">
+    <el-aside>
         <el-menu 
             default-active="1" 
             class="el-menu-vertical-demo" 
