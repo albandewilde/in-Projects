@@ -8,8 +8,14 @@
             active-text-color="#ffd04b"
             @open="handleOpen"
             @close="handleClose"
+            :collapse="isCollapse"
             :unique-opened="true"
             style="height: 100%;">
+
+            <font-awesome-icon icon="bars" 
+                size="lg" 
+                style="color: white; cursor: pointer;" 
+                @click="changeCollapse()"/>
 
             <h4 style="color: white;">Mon Pseudo</h4>
 
@@ -60,6 +66,8 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class NavBar extends Vue {
+    
+    isCollapse: boolean = true
 
     handleOpen(key, keyPath) {
         console.log(key, keyPath)
@@ -68,8 +76,16 @@ export default class NavBar extends Vue {
     handleClose(key, keyPath) {
         console.log(key, keyPath)
     }
+
+    changeCollapse() {
+        this.isCollapse = !this.isCollapse
+    }
 }
 </script>
 
 <style>
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+  }
 </style>

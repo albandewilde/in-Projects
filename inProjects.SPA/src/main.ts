@@ -5,11 +5,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCoffee, faHome, faUserGraduate, faUserTie, faFileAlt, faClipboard } from '@fortawesome/free-solid-svg-icons'
+import { faCoffee, faHome, faUserGraduate, faUserTie, faFileAlt, faClipboard, faBars } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {initializeAuthService, getAuthService} from './modules/authService'
 
-library.add(faHome, faUserGraduate, faUserTie, faFileAlt, faClipboard)
+library.add(faHome, faUserGraduate, faUserTie, faFileAlt, faClipboard, faBars)
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
