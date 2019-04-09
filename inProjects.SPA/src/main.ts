@@ -5,12 +5,17 @@ import App from "./App.vue"
 import router from "./router"
 import store from "./store"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
-
+import {faHome, faUserGraduate, faUserTie, faFileAlt, faClipboard } from "@fortawesome/free-solid-svg-icons"
+import { library } from "@fortawesome/fontawesome-svg-core"
 import {initializeAuthService, /*getAuthService*/} from "./modules/authService"
 
-Vue.config.productionTip = false
-Vue.use(ElementUI)
+library.add(faHome, faUserGraduate, faUserTie, faFileAlt, faClipboard)
+
 Vue.component("font-awesome-icon", FontAwesomeIcon)
+
+//Vue.config.productionTip = false
+
+Vue.use(ElementUI)
 
 initializeAuthService().then( () => {
   new Vue({
