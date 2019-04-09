@@ -25,7 +25,7 @@
             </el-menu-item>
             <el-submenu index="2">
                 <template slot="title">
-                    <font-awesome-icon icon="user-graduate" size="lg" />
+                    <font-awesome-icon icon="user-graduate" size="lg" spin />
                     <span> Étudiants</span>
                 </template>
                 <el-menu-item-group>
