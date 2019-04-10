@@ -1,5 +1,5 @@
 <template>
-    <el-aside>
+    <el-aside style="width: 201px;">
         <el-menu 
             default-active="1" 
             class="el-menu-vertical-demo" 
@@ -12,12 +12,33 @@
             :unique-opened="true"
             style="height: 100%;">
 
-            <font-awesome-icon icon="bars" 
-                size="lg" 
-                style="color: white; cursor: pointer;" 
-                @click="changeCollapse()"/>
+            <el-button class="collapseBtn" type="info" circle @click="changeCollapse()">
+                <font-awesome-icon icon="bars" />
+            </el-button>
 
+            <!-- if user is connected -->
             <h4 style="color: white;">Mon Pseudo</h4>
+            <el-button type="warning" size="small" circle>
+                <font-awesome-icon icon="bell" size="lg" />
+            </el-button>
+            <el-button type="warning" size="small" circle>
+                <font-awesome-icon icon="user" size="lg" />
+            </el-button>
+            <el-button type="info" size="small" circle>
+                <font-awesome-icon icon="cog" size="lg" />
+            </el-button>
+            <el-menu-item index="6">
+                <font-awesome-icon icon="sign-out-alt" size="lg" />
+                <span> Se déconnecter</span>
+            </el-menu-item>
+            <!--  -->
+
+            <!-- if user not connected -->
+            <el-menu-item index="6">
+                <font-awesome-icon icon="sign-in-alt" size="lg" />
+                <span> Se connecter</span>
+            </el-menu-item>
+            <!--  -->
 
             <el-menu-item index="1">
                 <font-awesome-icon icon="home" size="lg" />
@@ -84,8 +105,14 @@ export default class NavBar extends Vue {
 </script>
 
 <style>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
-  }
+    .el-menu-vertical-demo:not(.el-menu--collapse) {
+        width: 200px;
+        min-height: 400px;
+    }
+    .collapseBtn {
+        margin-top: 10px;   
+    }
+    .settingsBtn {
+        
+    }
 </style>
