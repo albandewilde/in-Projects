@@ -14,6 +14,8 @@ using System.IO;
 using System.Text;
 using inProjects.WebApp.Authentication;
 using System.Security.Claims;
+using inProjects.WebApp.Controllers;
+using CK.Auth;
 
 namespace WebApp
 {
@@ -36,8 +38,9 @@ namespace WebApp
             services.AddMvc();
 
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
+            services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
 
-            services.Configure<SpaOption>(o =>
+            services.Configure<SpaOptions>(o =>
             {
                 o.Host = Configuration["Spa:Host"];
             });
@@ -97,7 +100,6 @@ namespace WebApp
                     .AllowCredentials());
 
             app.UseAuthentication();
-
 
             app.UseMvc(routes =>
             {
