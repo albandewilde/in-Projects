@@ -9,7 +9,7 @@ namespace inProjects.Data
     [Versions( "1.0.0" )]
     public abstract class SchoolTable : SqlTable
     {
-        void StObjConstruct()
+        void StObjConstruct(CK.DB.HZone.ZoneTable zoneTable)
         {
 
         }
