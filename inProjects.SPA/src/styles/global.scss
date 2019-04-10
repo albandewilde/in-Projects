@@ -1,0 +1,20 @@
+@import "./config.scss";
+@import "~bootstrap/scss/bootstrap";
+@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css);
+
+/* -------- Forms -------- */
+.required:after {
+    content: " *";
+    font-weight: bold;
+    font-size: 18px;
+    color: red;
+}
+
+.el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
+    min-height: 400px;
+}
+
+.collapseBtn {
+    margin-top: 10px;   
+}

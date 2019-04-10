@@ -105,13 +105,6 @@ export default class NavBar extends Vue {
 </script>
 
 <style>
-    .el-menu-vertical-demo:not(.el-menu--collapse) {
-        width: 200px;
-        min-height: 400px;
-    }
-    .collapseBtn {
-        margin-top: 10px;   
-    }
     .settingsBtn {
         
     }
