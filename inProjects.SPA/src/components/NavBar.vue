@@ -1,11 +1,13 @@
 <template>
-    <el-aside style="width: 201px;">
+    <el-aside style="width: 200px;">
         <el-menu 
-            default-active="1" 
-            class="el-menu-vertical-demo" 
-            background-color="#545c64"
-            text-color="#fff" 
-            active-text-color="#ffd04b"
+            class="el-menu-vertical" 
+            width=200px
+            min-height=400px
+            background-color=#545c64
+            default-active="1"
+            text-color=white
+            active-text-color=#ffd04b
             @open="handleOpen"
             @close="handleClose"
             :collapse="isCollapse"
@@ -105,7 +107,4 @@ export default class NavBar extends Vue {
 </script>
 
 <style>
-    .settingsBtn {
-        
-    }
 </style>
