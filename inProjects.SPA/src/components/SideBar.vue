@@ -1,5 +1,5 @@
 <template>
-    <el-aside style="width: 201px;">
+    <el-aside style="width: 10%;">
         <el-menu 
             class="el-menu-vertical" 
             background-color=#545c64
@@ -132,11 +132,12 @@ export default class SideBar extends Vue {
 
 <style>
 .el-menu-vertical:not(.el-menu--collapse) {
-    width: 200px;
+    width: 100%;
     min-height: 400px;
 }
 .el-menu-vertical{
     width: 75px;
     min-height: 400px;
+    z-index: 10
 }
 </style>
