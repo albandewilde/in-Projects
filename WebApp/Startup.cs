@@ -1,16 +1,19 @@
 using CK.AspNet.Auth;
+using CK.DB.AspNet.Auth;
 using CK.Text;
 using WebApp.Controllers;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
-using CK.Auth;
-using CK.DB.AspNet.Auth;
+using System.Text;
+using inProjects.WebApp.Authentication;
+using System.Security.Claims;
 
 namespace WebApp
 {
@@ -29,17 +32,43 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
+            services.AddMvc();
+
+            services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
 
             services.Configure<SpaOption>(o =>
             {
                 o.Host = Configuration["Spa:Host"];
             });
 
+            string secretKey = Configuration["JwtBearer:SigningKey"];
+            SymmetricSecurityKey signingKey = new SymmetricSecurityKey( Encoding.ASCII.GetBytes( secretKey ) );
+
             services.AddAuthentication( WebFrontAuthOptions.OnlyAuthenticationScheme )
                 .AddWebFrontAuth( options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromHours( 1 );
                     options.SlidingExpirationTime = TimeSpan.FromHours( 1 );
+                } )
+                .AddJwtBearer( JwtBearerAuthentication.AuthenticationScheme, o =>
+                {
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingKey,
+
+                        ValidateIssuer = true,
+                        ValidIssuer = Configuration["JwtBearer:Issuer"],
+
+                        ValidateAudience = true,
+                        ValidAudience = Configuration["JwtBearer:Audience"],
+
+                        NameClaimType = ClaimTypes.Email,
+                        AuthenticationType = JwtBearerAuthentication.AuthenticationType,
+
+                        ValidateLifetime = true
+                    };
                 } );
 
             if( _env.IsDevelopment() )
