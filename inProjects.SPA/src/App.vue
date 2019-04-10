@@ -1,23 +1,30 @@
 <template>
   <div id="app">
+
     <el-container style="height: 100vh">
-      <NavBar></NavBar>
-      <el-container>
-        <el-main class="vue">
-          <router-view></router-view>
-        </el-main>
-      </el-container>
+      <SideBar></SideBar>
+
+          <TopBar style="width: 100%; height: 50px;"></TopBar>
+          <div><el-main class="vue">
+            <router-view></router-view>
+          </el-main></div>
+
     </el-container>
+
+
+      
   </div>
 </template>
 
 <script>
 import { Component, Vue } from "vue-property-decorator"
-import NavBar from "@/components/NavBar.vue"
+import SideBar from "@/components/SideBar.vue"
+import TopBar from "@/components/TopBar.vue"
 
 @Component({
   components: {
-    NavBar,
+    SideBar,
+    TopBar,
   },
 })
 
