@@ -1,0 +1,7 @@
+CREATE TABLE IPR.tTechno
+(
+    TechnoId INT NOT NULL IDENTITY(0,1),
+    [Name] NVARCHAR NOT NULL
+
+    CONSTRAINT PK_tTechno_TechnoId PRIMARY KEY (TechnoId)
+)

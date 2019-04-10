@@ -26,18 +26,5 @@ namespace inProjects.Tests
             }
         }
 
-    //    [Test]
-    //    [Explicit]
-    //    public async void Add_School()
-    //    {
-    //        var s = TestHelper.StObjMap.StObjs.Obtain<SchoolTable>();
-
-    //        using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
-    //        {
-    //            var i = await s.Create( ctx, "it works" );
-    //            Assert.Greater( i, 2 );
-    //        }
-
-    //    }
     }
 }
