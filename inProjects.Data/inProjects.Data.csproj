@@ -1,15 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Res\Model\" />
-    <Folder Include="Res\" />
+    <EmbeddedResource Include="Res\Model\IPR.SchoolTable.Install.1.0.0.sql" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="CK.DB.HZone" Version="5.0.1--0005-develop" />
+
     <PackageReference Include="CK.DB.DependencyInjection" Version="10.0.1--0006-develop" />
     <PackageReference Include="CK.SqlServer.Setup.Model" Version="10.0.1--0006-develop" />
     <PackageReference Include="CK.DB.Auth" Version="5.0.1--0005-develop" />

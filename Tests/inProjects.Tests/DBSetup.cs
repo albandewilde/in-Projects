@@ -3,6 +3,7 @@ using CK.DB.Auth;
 using CK.DB.HZone;
 using CK.DB.User.UserPassword;
 using CK.SqlServer;
+using inProjects.Data;
 using NUnit.Framework;
 using static CK.Testing.DBSetupTestHelper;
 
@@ -20,24 +21,23 @@ namespace inProjects.Tests
             using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
             {
                 var result = u.CreateOrUpdatePasswordUser( ctx, 1, 1, "a" );
-               
+
                 Assert.That( result.OperationResult == UCResult.Created || result.OperationResult == UCResult.Updated );
             }
         }
 
-        [Test]
-        [Explicit]
+    //    [Test]
+    //    [Explicit]
+    //    public async void Add_School()
+    //    {
+    //        var s = TestHelper.StObjMap.StObjs.Obtain<SchoolTable>();
 
-        public void Add_Zone()
-        {
-            var u = TestHelper.StObjMap.StObjs.Obtain<ZoneTable>();
-            using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
-            {
-                var result = u.CreateZone( ctx, 1, 1 );
+    //        using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
+    //        {
+    //            var i = await s.Create( ctx, "it works" );
+    //            Assert.Greater( i, 2 );
+    //        }
 
-                Assert.That( result.Equals(1));
-
-            }
-        }
+    //    }
     }
 }
