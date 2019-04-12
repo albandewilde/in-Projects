@@ -1,17 +1,36 @@
-import Vue from 'vue';
-import App from './App.vue';
-import router from './router';
-import store from './store';
-import axios from 'axios';
-import {initializeAuthService} from './modules/authService';
+import Vue from "vue"
+import ElementUI from "element-ui"
+import "element-ui/lib/theme-chalk/index.css"
+import App from "./App.vue"
+import router from "./router"
+import store from "./store"
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
+import { library } from "@fortawesome/fontawesome-svg-core"
+import {
+    faHome, faUserGraduate, faUserTie,
+    faFileAlt, faClipboard, faBars,
+    faSignInAlt, faSignOutAlt, faBell,
+    faUser, faCog
+} from "@fortawesome/free-solid-svg-icons"
+import {initializeAuthService, /*getAuthService*/} from "./modules/authService"
 
-Vue.config.productionTip = false;
-const axiosConst =  axios.create();
+library.add(
+    faHome, faUserGraduate, faUserTie,
+    faFileAlt, faClipboard, faBars,
+    faSignInAlt, faSignOutAlt, faBell,
+    faUser, faCog
+)
 
-initializeAuthService(axiosConst).then( () => {
-  new Vue({
-    router,
-    store,
-    render: (h) => h(App),
-  }).$mount('#app');
-});
+Vue.component("font-awesome-icon", FontAwesomeIcon)
+
+Vue.config.productionTip = false
+
+Vue.use(ElementUI)
+
+initializeAuthService().then( () => {
+    new Vue({
+        router,
+        store,
+        render: (h) => h(App),
+    }).$mount("#app")
+})
