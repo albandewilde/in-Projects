@@ -35,7 +35,6 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddMvc();
 
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
             services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
