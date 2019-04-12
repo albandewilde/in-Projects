@@ -13,6 +13,7 @@ import {
     faUser, faCog
 } from "@fortawesome/free-solid-svg-icons"
 import {initializeAuthService, /*getAuthService*/} from "./modules/authService"
+// import "./plugins/element.js"
 
 library.add(
     faHome, faUserGraduate, faUserTie,
