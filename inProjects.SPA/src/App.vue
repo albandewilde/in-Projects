@@ -1,31 +1,28 @@
 <template>
-  <div id="app">
+    <div id="app">
 
-    <el-container style="height: 100vh">
-      <SideBar></SideBar>
+        <el-container style="height: 100vh">
+            <SideBar></SideBar>
 
-          <TopBar style="width: 100%; height: 50px;"></TopBar>
-          <div><el-main class="vue">
-            <router-view></router-view>
-          </el-main></div>
+            <el-main class="vue">
 
-    </el-container>
+                <router-view></router-view>
 
+            </el-main>
 
+        </el-container>
       
-  </div>
+    </div>
 </template>
 
 <script>
 import { Component, Vue } from "vue-property-decorator"
 import SideBar from "@/components/SideBar.vue"
-import TopBar from "@/components/TopBar.vue"
 
 @Component({
-  components: {
-    SideBar,
-    TopBar,
-  },
+    components: {
+        SideBar,
+    },
 })
 
 export default class App extends Vue {}
@@ -35,10 +32,10 @@ export default class App extends Vue {}
 @import "./styles/global.scss";
 
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
 }
 </style>
