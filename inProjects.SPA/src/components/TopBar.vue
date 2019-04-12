@@ -30,7 +30,7 @@ import { Component, Vue } from "vue-property-decorator"
 
 @Component
 export default class TopBar extends Vue {
-    things: Boolean = true
+    things: boolean = true
 }
 </script>
 

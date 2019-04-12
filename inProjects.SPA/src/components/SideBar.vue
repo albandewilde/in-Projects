@@ -113,7 +113,7 @@ import { Component, Vue } from "vue-property-decorator"
 
 @Component
 export default class SideBar extends Vue {
-    
+
     isCollapse: boolean = true
 
     handleOpen(key: number, keyPath: number) {
