@@ -160,7 +160,7 @@ export default class SchemeDisplay extends Vue {
     try {
       return require("@/assets/" + schemeName + ".png")
     } catch (e) {
-      return require("@/assets/MissingProvider.png")
+      return require("@/assets/chapin.png")
     }
   }
 }

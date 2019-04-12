@@ -11,13 +11,13 @@
     <slot v-if="checkAuth(0)" name="None"></slot>
     <slot v-if="checkAuth(1)" name="Unsafe"></slot>
     <slot v-if="checkAuth(2)" name="Normal"></slot>
-    <slot v-if="checkAuth(3)"></slot>
+    <slot v-if="checkAuth(3)" name="Critical"></slot>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Watch, Vue } from "vue-property-decorator"
-import {AuthService} from "@signature/webfrontauth"
+import { AuthLevel, AuthService } from "@signature/webfrontauth"
 
 @Component
 export default class UserInfoBox extends Vue {

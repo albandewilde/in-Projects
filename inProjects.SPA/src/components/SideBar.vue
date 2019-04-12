@@ -19,7 +19,12 @@
 
             <!-- if user is connected -->
             <h4 style="color: white;" width="100%">
-                Side Bar
+                <UserInfoBox>
+                    <div name="Normal">
+
+                    </div>
+
+                </UserInfoBox>
             </h4>
 
             <div class="les_putains_de_bouttons">
@@ -46,20 +51,26 @@
                 <div v-if="this.isCollapse">
                     <br>
                 </div>
+
+                <el-button type="info" size="small" circle>
+                    <font-awesome-icon icon="search" size="lg" />
+                </el-button>
+
+                <div v-if="this.isCollapse">
+                    <br>
+                </div>
             </div> 
 
             <el-menu-item index="6">
                 <font-awesome-icon icon="sign-out-alt" size="lg" />
                 <span> Se déconnecter</span>
             </el-menu-item>
-            <!--  -->
 
             <!-- if user not connected -->
             <el-menu-item index="6">
                 <font-awesome-icon icon="sign-in-alt" size="lg" />
                 <span> Se connecter</span>
             </el-menu-item>
-            <!--  -->
 
             <el-menu-item index="1">
                 <font-awesome-icon icon="home" size="lg" />
@@ -110,11 +121,20 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
+import UserInfoBox from "./UserInfoBox.vue"
+import SchemeDisplay from "./SchemeDisplay.vue"
 
-@Component
+
+@Component({
+  components: {
+    UserInfoBox,
+    SchemeDisplay
+  },
+})
 export default class SideBar extends Vue {
 
     isCollapse: boolean = true
+    connected: boolean = true
 
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
@@ -127,6 +147,7 @@ export default class SideBar extends Vue {
     changeCollapse() {
         this.isCollapse = !this.isCollapse
     }
+
 }
 </script>
 

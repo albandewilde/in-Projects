@@ -10,7 +10,7 @@ import {
     faHome, faUserGraduate, faUserTie,
     faFileAlt, faClipboard, faBars,
     faSignInAlt, faSignOutAlt, faBell,
-    faUser, faCog
+    faUser, faCog, faSearch
 } from "@fortawesome/free-solid-svg-icons"
 import {initializeAuthService, /*getAuthService*/} from "./modules/authService"
 // import "./plugins/element.js"
@@ -19,7 +19,7 @@ library.add(
     faHome, faUserGraduate, faUserTie,
     faFileAlt, faClipboard, faBars,
     faSignInAlt, faSignOutAlt, faBell,
-    faUser, faCog
+    faUser, faCog, faSearch
 )
 
 Vue.component("font-awesome-icon", FontAwesomeIcon)
