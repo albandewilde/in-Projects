@@ -4,15 +4,12 @@
     <el-container style="height: 100vh">
       <SideBar></SideBar>
 
-          <TopBar style="width: 100%; height: 50px;"></TopBar>
-          <div><el-main class="vue">
-            <router-view></router-view>
-          </el-main></div>
+      <el-main class="vue">
+        <router-view></router-view>
+      </el-main>
 
     </el-container>
 
-
-      
   </div>
 </template>
 

@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{login.id}}
         <el-form :label-position="labelPosition" label-width="100px" :model="login">
             <center>
                 <b>
@@ -22,6 +21,7 @@
 
 <script lang="ts">
 import Vue from "vue"
+
 export default Vue.extend({
     data() {
         return {
