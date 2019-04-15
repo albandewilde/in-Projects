@@ -17,9 +17,9 @@ namespace inProjects.Data
 
         }
 
-        [SqlProcedure( "sCreateTimePeriod" )]
 
-        public abstract Task<int> CreateTimePeriodAsync( ISqlCallContext context, int actorId, DateTime begDate , DateTime endDate, String kind);
+        //[SqlProcedure( "sCreateTimePeriod" )]
+        //public abstract Task<int> CreateTimePeriodAsync( ISqlCallContext context, int actorId, DateTime begDate , DateTime endDate, String kind);
 
     }
 }
