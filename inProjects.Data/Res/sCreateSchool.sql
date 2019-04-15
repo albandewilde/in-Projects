@@ -10,6 +10,7 @@ begin
     --[beginsp]
     --<PreCreate />
 
+
     insert into IPR.tSchool ([Name]) VALUES (@Name);
     SET @SchoolIdResult = SCOPE_IDENTITY();
     --<PostCreate revert />
