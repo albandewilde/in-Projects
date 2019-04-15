@@ -12,7 +12,7 @@ namespace inProjects.Data
     {
         void StObjConstruct(ProjectStudentTable projectStudentTable)
         {
-
+           
         }
     }
 }

@@ -18,14 +18,14 @@ namespace inProjects.Tests
         [Test]
         public async Task create_period()
         {
-            DateTime dateTime = new DateTime();
-            DateTime dateTime2 = new DateTime();
+            DateTime dateTime = DateTime.Now;
+            DateTime dateTime2 = DateTime.Now.AddDays(1);
             var timePeriod = TestHelper.StObjMap.StObjs.Obtain<TimePeriodTable>();
             using( var ctx = new SqlStandardCallContext(TestHelper.Monitor) )
             {
                 var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "I" );
                 Assert.That( id > 0 );
- 
+
             }
 
         }
