@@ -5,6 +5,8 @@ using CK.DB.User.UserPassword;
 using CK.SqlServer;
 using inProjects.Data;
 using NUnit.Framework;
+using System.Threading.Tasks;
+using FluentAssertions;
 using static CK.Testing.DBSetupTestHelper;
 
 
@@ -23,6 +25,17 @@ namespace inProjects.Tests
                 var result = u.CreateOrUpdatePasswordUser( ctx, 1, 1, "a" );
 
                 Assert.That( result.OperationResult == UCResult.Created || result.OperationResult == UCResult.Updated );
+            }
+        }
+        [Test]
+        [Explicit]
+        public async Task Add_School()
+        {
+            var s = TestHelper.StObjMap.StObjs.Obtain<SchoolTable>();
+            using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
+            {
+                var result = await s.CreateSchool( ctx, 1, "ESIEA" );
+                Assert.That( result > 2 );
             }
         }
 
