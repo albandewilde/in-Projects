@@ -1,3 +1,5 @@
+
+
 CREATE TABLE IPR.tSchool
 (
     SchoolId INT NOT NULL,
@@ -8,5 +10,7 @@ CREATE TABLE IPR.tSchool
     CONSTRAINT UC_Name UNIQUE ([Name])
 
 )
+
+
 
 

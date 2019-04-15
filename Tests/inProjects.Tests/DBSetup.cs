@@ -8,7 +8,7 @@ using NUnit.Framework;
 using System.Threading.Tasks;
 using FluentAssertions;
 using static CK.Testing.DBSetupTestHelper;
-
+using CK.DB.Actor;
 
 namespace inProjects.Tests
 {
@@ -20,6 +20,7 @@ namespace inProjects.Tests
         public void Add_Admin()
         {
             var u = TestHelper.StObjMap.StObjs.Obtain<UserPasswordTable>();
+
             using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
             {
                 var result = u.CreateOrUpdatePasswordUser( ctx, 1, 1, "a" );
