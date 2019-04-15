@@ -1,13 +1,13 @@
 <template>
     <div>
-        <el-form :label-position="labelPosition" label-width="100px" :model="login">
+        <el-form :label-position="labelPosition" label-width="100px">
             <center>
                 <b>
                     <el-form-item label="Identifiant" style="width:60%">
-                        <el-input placeholder="Insérez votre identifiant" v-model="login.id"></el-input>
+                        <el-input placeholder="Insérez votre identifiant" v-model="user.email"></el-input>
                     </el-form-item>
                     <el-form-item label="Mot de passe" style="width:60%">
-                        <el-input placeholder="Insérez votre mot de passe" v-model="login.pw" show-password></el-input>
+                        <el-input placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="Login()">Valider</el-button>
@@ -21,29 +21,22 @@
 
 <script lang="ts">
 import Vue from "vue"
+import { User } from "../modules/classes/User"
+import { Component } from 'vue-property-decorator';
 
-export default Vue.extend({
-    data() {
-        return {
-            labelPosition: "top",
-            login: {
-                id: "".toString(),
-                pw: "".toString()
-            }
-        }
-    },
+@Component
+export default class Login extends Vue{
+    private labelPosition: string = "top"
+    private user: User = new User()
 
-    methods: {
-        async Login() {
-            throw new Error()
-        },
-
-        async Reset() {
-            this.login.id = "".toString()
-            this.login.pw = "".toString()
-        }
+    async Login() {
+        throw new Error()
     }
-})
+
+    async Reset() {
+        this.user.reset()
+    }
+}
 </script>
 
 <style>
