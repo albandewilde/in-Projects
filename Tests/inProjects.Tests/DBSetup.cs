@@ -1,7 +1,9 @@
 using CK.Core;
 using CK.DB.Auth;
+using CK.DB.HZone;
 using CK.DB.User.UserPassword;
 using CK.SqlServer;
+using inProjects.Data;
 using NUnit.Framework;
 using static CK.Testing.DBSetupTestHelper;
 
@@ -19,8 +21,10 @@ namespace inProjects.Tests
             using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
             {
                 var result = u.CreateOrUpdatePasswordUser( ctx, 1, 1, "a" );
+
                 Assert.That( result.OperationResult == UCResult.Created || result.OperationResult == UCResult.Updated );
             }
         }
+
     }
 }
