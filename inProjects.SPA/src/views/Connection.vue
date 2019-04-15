@@ -25,7 +25,7 @@ import Register from "@/components/Register.vue"
 })
 export default class Connection extends Vue {
     action: boolean = true
-    
+
     changeAction() {
         this.action = !this.action
     }

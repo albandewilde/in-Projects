@@ -52,25 +52,6 @@ namespace WebApp
                 {
                     options.ExpireTimeSpan = TimeSpan.FromHours( 1 );
                     options.SlidingExpirationTime = TimeSpan.FromHours( 1 );
-                } )
-                .AddJwtBearer( JwtBearerAuthentication.AuthenticationScheme, o =>
-                {
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = signingKey,
-
-                        ValidateIssuer = true,
-                        ValidIssuer = Configuration["JwtBearer:Issuer"],
-
-                        ValidateAudience = true,
-                        ValidAudience = Configuration["JwtBearer:Audience"],
-
-                        NameClaimType = ClaimTypes.Email,
-                        AuthenticationType = JwtBearerAuthentication.AuthenticationType,
-
-                        ValidateLifetime = true
-                    };
                 } );
 
             if( _env.IsDevelopment() )
@@ -92,7 +73,7 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-           app.UseCors( c =>
+            app.UseCors( c =>
                     c.SetIsOriginAllowed( host => true )
                     .AllowAnyMethod()
                     .AllowAnyHeader()

@@ -1,6 +1,6 @@
 import {
     postAsync
-} from "../helpers/apiHelper";
+} from "../helpers/apiHelper"
 import { User } from "../modules/classes/user"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/account";
