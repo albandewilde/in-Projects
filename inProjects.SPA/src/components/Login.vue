@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{test}}
         <el-form :label-position="labelPosition" label-width="100px">
             <center>
                 <b>
@@ -24,22 +23,21 @@
 import Vue from "vue"
 import { User } from "../modules/classes/User"
 import { Component } from 'vue-property-decorator'
-import { login as loginRequest } from "../api/accountApi"
+import { getUserName } from "../api/accountApi"
 import { UserLoginResult } from '../modules/classes/UserLoginResult';
 import { AuthService } from "@signature/webfrontauth"
+import { UserInfo } from '../modules/classes/UserInfo';
 
 @Component
 export default class Login extends Vue{
     private labelPosition: string = "top"
     private user: User = new User()
-    private userInfos!: UserLoginResult
     private authService!: AuthService
 
-    test: number = 0
-
     async Login() {
-        this.userInfos = await loginRequest(this.user)
-        this.test = this.authService.authenticationInfo.level
+        var userInfos: UserInfo = await getUserName(this.user)
+
+        this.authService.basicLogin(userInfos.userName, this.user.password)
     }
 
     async Reset() {
