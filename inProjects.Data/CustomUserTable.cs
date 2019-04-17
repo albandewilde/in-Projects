@@ -1,9 +1,10 @@
-
 using System.Threading.Tasks;
 using CK.DB.Actor;
 using CK.Setup;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace inProjects.Data
 {
@@ -18,7 +19,5 @@ namespace inProjects.Data
 
         [SqlProcedure( "transform:sUserCreate" )]
         public abstract Task<int> CreateUserAsync( ISqlCallContext context, int actorId, string userName, string firstName, string lastName );
-
-        public abstract Task<int> CreateActorEmailAsync( ISqlCallContext context, int actorId, int userId, string email, bool isPrimary, bool Validate );
     }
 }
