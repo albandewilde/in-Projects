@@ -64,18 +64,19 @@ namespace inProjects.WebApp.Controllers
             }
         }
 
-        [HttpPost ( "login" ) ]
+        [HttpPost ( "getUserName" ) ]
         [AllowAnonymous]
-        public async Task<UserLoginResult> Login([FromBody] LoginModel model)
+        public async Task<UserInfosModel> GetUserName([FromBody] LoginModel model)
         {
             var userTable = _stObjMap.StObjs.Obtain<CustomUserTable>();
             UserInfosModel user = await userTable.GetUserName( new SqlStandardCallContext(), model.Email );
+             
+            return user;
+            //IActivityMonitor monitor = HttpContext.RequestServices.GetService<IActivityMonitor>();
+            //UserLoginResult loginResult = await _loginService.BasicLoginAsync(
+            //    HttpContext, monitor, user.UserName, model.Password );
 
-            IActivityMonitor monitor = HttpContext.RequestServices.GetService<IActivityMonitor>();
-            UserLoginResult loginResult = await _loginService.BasicLoginAsync(
-                HttpContext, monitor, user.UserName, model.Password );
-
-            return loginResult;
+            //return loginResult;
         }
     }
 }
