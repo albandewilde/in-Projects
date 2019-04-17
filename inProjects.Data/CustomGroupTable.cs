@@ -9,7 +9,7 @@ namespace inProjects.Data
 
     public abstract class CustomGroupTable : GroupTable
     {
-        void StObjConstruct( GroupTable groupTable )
+        void StObjConstruct( GroupTable groupTable, SchoolTable schoolTable )
         {
 
         }
