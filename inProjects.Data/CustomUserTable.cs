@@ -19,5 +19,6 @@ namespace inProjects.Data
         [SqlProcedure( "transform:sUserCreate" )]
         public abstract Task<int> CreateUserAsync( ISqlCallContext context, int actorId, string userName, string firstName, string lastName );
 
+        public abstract Task<int> CreateActorEmailAsync( ISqlCallContext context, int actorId, int userId, string email, bool isPrimary, bool Validate );
     }
 }
