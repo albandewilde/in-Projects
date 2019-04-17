@@ -2,7 +2,9 @@ using System.Threading.Tasks;
 using CK.DB.Actor;
 using CK.Setup;
 using CK.SqlServer;
+using inProjects.ViewModels;
 using CK.SqlServer.Setup;
+using Dapper;
 using System.Data.SqlClient;
 using System.Data;
 
@@ -19,5 +21,14 @@ namespace inProjects.Data
 
         [SqlProcedure( "transform:sUserCreate" )]
         public abstract Task<int> CreateUserAsync( ISqlCallContext context, int actorId, string userName, string firstName, string lastName );
+
+        public async Task<UserInfosModel> GetUserName ( ISqlCallContext ctx, string email )
+        {
+            return await ctx[Database].Connection.QueryFirstAsync<UserInfosModel>(
+                @"SELECT UserName
+                  FROM CK.vUser
+                  WHERE PrimaryEMail = @PrimaryEMail", new { PrimaryEMail = email }
+                );
+        }
     }
 }

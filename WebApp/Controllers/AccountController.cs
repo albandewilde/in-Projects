@@ -1,17 +1,15 @@
 using CK.Auth;
 using CK.AspNet.Auth;
 using CK.Core;
-using CK.DB.Actor;
 using CK.DB.Auth;
 using CK.DB.Actor.ActorEMail;
 using CK.SqlServer;
 using inProjects.Data;
-using inProjects.WebApp.Models;
+using inProjects.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
@@ -33,7 +31,7 @@ namespace inProjects.WebApp.Controllers
             _loginService = loginService;
         }
 
-        [HttpPost]
+        [HttpPost ( "register" ) ]
         [AllowAnonymous]
         public async Task<UserLoginResult> Register( [FromBody]RegisterModel model )
         {
@@ -66,17 +64,18 @@ namespace inProjects.WebApp.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost ( "login" ) ]
         [AllowAnonymous]
         public async Task<UserLoginResult> Login([FromBody] LoginModel model)
         {
+            var userTable = _stObjMap.StObjs.Obtain<CustomUserTable>();
+            UserInfosModel user = await userTable.GetUserName( new SqlStandardCallContext(), model.Email );
 
+            IActivityMonitor monitor = HttpContext.RequestServices.GetService<IActivityMonitor>();
+            UserLoginResult loginResult = await _loginService.BasicLoginAsync(
+                HttpContext, monitor, user.UserName, model.Password );
 
-            //IActivityMonitor monitor = HttpContext.RequestServices.GetService<IActivityMonitor>();
-            //UserLoginResult loginResult = await _loginService.BasicLoginAsync(
-            //    HttpContext, monitor, loginId.ToString(), model.Password );
-
-            //return loginResult;
+            return loginResult;
         }
     }
 }

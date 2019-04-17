@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace inProjects.WebApp.Models
+namespace inProjects.ViewModels
 {
     public class RegisterModel
     {

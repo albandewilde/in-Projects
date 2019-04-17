@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
 
-namespace inProjects.WebApp.Models
+namespace inProjects.ViewModels
 {
     public class LoginModel
     {
         [Required]
-        public string LoginId { get; set; }
+        public string Email { get; set; }
 
         [Required]
         [DataType( DataType.Password )]
