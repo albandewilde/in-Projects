@@ -6,14 +6,15 @@ create procedure IPR.sCreateTimePeriod
     @BegDate DATETIME2,
     @EndDate DATETIME2,
     @Kind CHAR,
-    @TimePeriodIdResult INT OUTPUT
+    @TimePeriodIdResult INT OUTPUT,
+    @ParentId INT = 0
 )
 as
 begin
     --[beginsp]
     --<PreCreate />
 
-    EXEC CK.sZoneCreate @ActorId, @TimePeriodIdResult OUTPUT;
+    EXEC CK.sZoneCreate @ActorId, @TimePeriodIdResult OUTPUT, @ParentId;
     insert into IPR.tTimePeriod (TimePeriodId, BegDate, EndDate, Kind) VALUES (@TimePeriodIdResult, @BegDate, @EndDate, @Kind);
     --<PostCreate revert />
 

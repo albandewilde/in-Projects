@@ -29,3 +29,9 @@ EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S9';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
 EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S10';
+
+EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'Teacher';
+
+EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'Administration';

@@ -29,5 +29,20 @@ namespace inProjects.Tests
             }
 
         }
+
+        [Test]
+        public async Task create_period_with_parent_zone()
+        {
+            DateTime dateTime = DateTime.Now;
+            DateTime dateTime2 = DateTime.Now.AddDays( 1 );
+            var timePeriod = TestHelper.StObjMap.StObjs.Obtain<TimePeriodTable>();
+            using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
+            {
+                var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "I", 14 );
+                Assert.That( id > 0 );
+
+            }
+
+        }
     }
 }
