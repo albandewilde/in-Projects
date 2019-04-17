@@ -1,5 +1,6 @@
 <template>
     <el-form :label-position="labelPosition" label-width="100px">
+        {{loginResult}}
         <center>
             <b>
                 <el-form-item label="Nom" style="width:60%;">
@@ -28,15 +29,17 @@
 import { Component, Vue, Prop, Watch } from "vue-property-decorator"
 import { User } from "../modules/classes/User"
 import { register as registerRequest } from "../api/accountApi"
+import { UserLoginResult } from "../modules/classes/UserLoginResult"
 
 @Component
 export default class Register extends Vue {
 
     private labelPosition: string = "top"
     private user: User = new User()
+    private loginResult!: UserLoginResult
 
     async Register() {
-        await registerRequest(this.user)
+        this.loginResult = await registerRequest(this.user)
     }
 
     async Reset() {

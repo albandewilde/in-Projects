@@ -16,6 +16,7 @@
 import { Vue, Component } from "vue-property-decorator"
 import Login from "@/components/Login.vue"
 import Register from "@/components/Register.vue"
+import { AuthService } from "@signature/webfrontauth"
 
 @Component({
     components: {
@@ -25,7 +26,12 @@ import Register from "@/components/Register.vue"
 })
 export default class Connection extends Vue {
     action: boolean = true
+    authService!: AuthService
+    test: number = 0
 
+    getAuthService() {
+        this.test = this.authService.authenticationInfo.level
+    }
     changeAction() {
         this.action = !this.action
     }
