@@ -36,6 +36,9 @@ namespace inProject.ExtractOnlineTomlData.tests
             Nett.TomlTable THE_NAME_BITCH = toml["owner"] as Nett.TomlTable;
             Console.WriteLine(THE_NAME_BITCH["name"]);
 
+            Console.WriteLine("\nAnother table");
+            Console.WriteLine(((toml["database"] as Nett.TomlTable)["ports"] as Nett.TomlArray)[1]);
+
 
             Console.WriteLine("\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤");
             //Assert.IsTrue(toml.owner.name is string);
