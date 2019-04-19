@@ -12,5 +12,9 @@ export async function register(data: User): Promise<UserLoginResult> {
 }
 
 export async function getUserName(data: User): Promise<UserInfo> {
-    return await postAsync(`${endpoint}/getUserName`, data)
+    var response = await postAsync(`${endpoint}/getUserName`, data)
+    var result: UserInfo = new UserInfo
+    result.userName = response.data.userName
+
+    return result
 }

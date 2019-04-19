@@ -22,21 +22,24 @@
 <script lang="ts">
 import Vue from "vue"
 import { User } from "../modules/classes/User"
-import { Component } from 'vue-property-decorator'
+import { Component } from "vue-property-decorator"
 import { getUserName } from "../api/accountApi"
-import { UserLoginResult } from '../modules/classes/UserLoginResult';
+import { UserLoginResult } from "../modules/classes/UserLoginResult"
 import { AuthService } from "@signature/webfrontauth"
-import { UserInfo } from '../modules/classes/UserInfo';
+import { UserInfo } from "../modules/classes/UserInfo"
+import { getAuthService } from "../modules/authService"
 
 @Component
 export default class Login extends Vue{
     private labelPosition: string = "top"
     private user: User = new User()
-    private authService!: AuthService
+    private authService: AuthService = getAuthService()
 
     async Login() {
+        this.user.email = "delpierre@intechinfo.fr"
+        this.user.password = "azer"
         var userInfos: UserInfo = await getUserName(this.user)
-
+        console.debug(userInfos)
         this.authService.basicLogin(userInfos.userName, this.user.password)
     }
 
