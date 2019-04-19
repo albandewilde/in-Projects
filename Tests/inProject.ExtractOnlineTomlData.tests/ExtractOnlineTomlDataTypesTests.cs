@@ -30,13 +30,13 @@ namespace inProject.ExtractOnlineTomlData.tests
                 Console.WriteLine(elem);
             }
 
-            Console.WriteLine("THE FUCKING KEY AND VALUE");
+            Console.WriteLine("KEY AND VALUE");
             Console.WriteLine(toml["owner"]);
-            Console.WriteLine("ONLY THE DUMB NAME");
-            Nett.TomlTable THE_NAME_BITCH = toml["owner"] as Nett.TomlTable;
-            Console.WriteLine(THE_NAME_BITCH["name"]);
+            Console.WriteLine("ONLY THE NAME");
+            Nett.TomlTable ownerTable = toml["owner"] as Nett.TomlTable;
+            Console.WriteLine(ownerTable["name"]);
 
-            Console.WriteLine("\nAnother table");
+            Console.WriteLine("\nelement of an array in an other table");
             Console.WriteLine(((toml["database"] as Nett.TomlTable)["ports"] as Nett.TomlArray)[1]);
 
 
