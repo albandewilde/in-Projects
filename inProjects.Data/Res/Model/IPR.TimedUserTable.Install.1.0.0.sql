@@ -1,6 +1,6 @@
 CREATE TABLE IPR.tTimedUser
 (
-    TimedUserId INT NOT NULL,
+    TimedUserId INT NOT NULL IDENTITY(0,1),
     TimePeriodId INT NOT NULL,
 	UserId INT NOT NULL,
 

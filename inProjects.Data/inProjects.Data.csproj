@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,6 +12,7 @@
   <ItemGroup>
     <None Remove="Res\Model\CK.CustomGroupTable.Settle.1.0.0.sql" />
     <None Remove="Res\Model\IPR.SchoolTable.Settle.1.0.0.sql" />
+    <None Remove="Res\sCreateTimedUser.sql" />
     <None Remove="Res\sCreateTimePeriod.sql" />
     <None Remove="Res\sUserCreate.tql" />
   </ItemGroup>
@@ -24,6 +26,7 @@
     <PackageReference Include="CK.SqlServer.Setup.Model" Version="10.0.1--0006-develop" />
     <PackageReference Include="CK.DB.Auth" Version="5.0.1--0005-develop" />
     <PackageReference Include="CK.DB.User.UserPassword" Version="5.0.1--0005-develop" />
+    <PackageReference Include="CK.SqlServer.Dapper" Version="0.2.1--0014-develop" />
   </ItemGroup>
 
 
