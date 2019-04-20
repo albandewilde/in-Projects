@@ -1,8 +1,11 @@
 using CK.Setup;
+using CK.SqlServer;
 using CK.SqlServer.Setup;
+using inProjects.Data.Data.TimedUser;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace inProjects.Data
 {
@@ -14,5 +17,8 @@ namespace inProjects.Data
         {
 
         }
+
+        [SqlProcedure( "sCreateTimedUser" )]
+        public abstract Task<TimedUserStruct> CreateOrUpdateTimedUserAsync( ISqlCallContext context, int typeUser, int timePeriodId, int userId);
     }
 }
