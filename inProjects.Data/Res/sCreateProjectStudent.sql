@@ -1,6 +1,6 @@
 -- SetupConfig: {"Requires": ["CK.sGroupCreate", "CK.sCKTraitFindOrCreate"]}
 --
-create procedure IPR.sProjectStudentCreate
+create procedure IPR.sCreateProjectStudent
 (
     @ActorId int,
     @ProjectStudentId int output,
@@ -12,11 +12,10 @@ create procedure IPR.sProjectStudentCreate
     @CKTraitIdResult INT OUTPUT,
 
     @Logo nvarchar(126),
-    @Slogan TEXT,
+    @Slogan NVARCHAR(MAX),
     @Pitch NVARCHAR(255),
     @LeaderId INT  =  0,
-    @Type CHAR,
-    @TraitId INT
+    @Type CHAR
 )
 as
 begin
