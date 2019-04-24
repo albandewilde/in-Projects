@@ -64,11 +64,6 @@ namespace inProjects.WebApp.Controllers
             UserInfosModel user = await userTable.GetUserName( new SqlStandardCallContext(), model.Email );
              
             return user;
-            //IActivityMonitor monitor = HttpContext.RequestServices.GetService<IActivityMonitor>();
-            //UserLoginResult loginResult = await _loginService.BasicLoginAsync(
-            //    HttpContext, monitor, user.UserName, model.Password );
-
-            //return loginResult;
         }
     }
 }
