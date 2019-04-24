@@ -2,7 +2,7 @@
     <div>
         <div v-if="action == true">
             <Login></Login>
-            <el-button type="warning" @click="changeAction()">S'enregistrer</el-button>
+            <el-button type="warning" @click="changeAction()">Créer un compte</el-button>
         </div>
         <div v-else>
             <Register></Register>

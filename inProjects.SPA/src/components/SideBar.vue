@@ -15,47 +15,40 @@
         <el-button class="collapseBtn" type="info" circle @click="changeCollapse()">
             <font-awesome-icon icon="bars" />
         </el-button>
+        <br><br>
+                
+        <div v-if="authService.authenticationInfo.level != 0">
+            <el-button type="warning" size="small" circle>
+                <font-awesome-icon icon="bell" size="lg" />
+            </el-button>
+            <div v-if="this.isCollapse">
+                <br>
+            </div>
+            <el-button type="info" size="small" circle>
+                <font-awesome-icon icon="cog" size="lg" />
+            </el-button>
+            <div v-if="this.isCollapse">
+                <br>
+            </div>
+            <el-button type="info" size="small" circle>
+                <font-awesome-icon icon="search" size="lg" />
+            </el-button>
+            <div v-if="this.isCollapse">
+                <br>
+            </div>
+            <el-menu-item index="6" @click="logout()">
+                <font-awesome-icon icon="sign-out-alt" size="lg" />
+                <span v-if="!isCollapse"> Se déconnecter</span>
+            </el-menu-item>
+        </div>
+        <div v-else>
+            <el-menu-item index="7" @click="redirect(`/connection`)">
+                <font-awesome-icon icon="sign-in-alt" size="lg" />
+                <span v-if="!isCollapse"> Se connecter</span>
+            </el-menu-item>
+        </div>
 
-        <UserInfoBox :authService = "authService">
-            <div slot="Normal">
-                <el-button type="warning" size="small" circle>
-                    <font-awesome-icon icon="bell" size="lg" />
-                </el-button>
-
-                <div v-if="this.isCollapse">
-                    <br>
-                </div>
-
-                <el-button type="info" size="small" circle>
-                    <font-awesome-icon icon="cog" size="lg" />
-                </el-button>
-
-                <div v-if="this.isCollapse">
-                    <br>
-                </div>
-
-                <el-button type="info" size="small" circle>
-                    <font-awesome-icon icon="search" size="lg" />
-                </el-button>
-
-                <div v-if="this.isCollapse">
-                    <br>
-                </div>
-            </div> 
-        </UserInfoBox>
-        <br>
-        <el-menu-item index="6">
-            <font-awesome-icon icon="sign-out-alt" size="lg" />
-            <span> Se déconnecter</span>
-        </el-menu-item>
-
-        <!-- if user not connected -->
-        <el-menu-item index="7">
-            <font-awesome-icon icon="sign-in-alt" size="lg" />
-            <span> Se connecter</span>
-        </el-menu-item>
-
-        <el-menu-item index="1">
+        <el-menu-item index="1" @click="redirect(`/`)">
             <font-awesome-icon icon="home" size="lg" />
             <span> Accueil</span>
         </el-menu-item>
@@ -97,7 +90,6 @@
             <font-awesome-icon icon="clipboard" size="lg" />
             <span> Forum PI</span>
         </el-menu-item>
-
     </el-menu>
 </template>
 
@@ -130,7 +122,15 @@ export default class SideBar extends Vue {
     changeCollapse() {
         this.isCollapse = !this.isCollapse
     }
-
+    
+    redirect(destination: string) {
+        this.$router.replace(destination)
+    }
+    
+    async logout() {
+        await this.authService.logout(true)
+        this.$router.replace("/")
+    }
 }
 </script>
 
