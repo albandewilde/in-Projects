@@ -1,8 +1,10 @@
 using CK.Setup;
+using CK.SqlServer;
 using CK.SqlServer.Setup;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace inProjects.Data
 {
@@ -14,5 +16,9 @@ namespace inProjects.Data
         {
            
         }
+
+        [SqlProcedure( "sCreateOrUpdateProjectUrl" )]
+        public abstract Task<int> CreateOrUpdateProjectUrl(ISqlCallContext ctx, int projectId, string url, string urlType );
+
     }
 }

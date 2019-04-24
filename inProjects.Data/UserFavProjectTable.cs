@@ -1,10 +1,12 @@
 using CK.Setup;
+using CK.SqlServer;
 using CK.SqlServer.Setup;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace inProjects.Data
 {
@@ -17,5 +19,9 @@ namespace inProjects.Data
         {
 
         }
+
+        [SqlProcedure( "sUserFavUnfavProject" )]
+
+        public abstract Task FavOrUnfavProject(ISqlCallContext ctx, int userId, int ProjectId );
     }
 }
