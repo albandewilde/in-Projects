@@ -24,21 +24,20 @@ import Vue from "vue"
 import { User } from "../modules/classes/User"
 import { Component } from "vue-property-decorator"
 import { getUserName } from "../api/accountApi"
-import { UserLoginResult } from "../modules/classes/UserLoginResult"
 import { AuthService } from "@signature/webfrontauth"
 import { UserInfo } from "../modules/classes/UserInfo"
 import { getAuthService } from "../modules/authService"
-import { sha256, sha224 } from 'js-sha256'
+import { sha256 } from "js-sha256"
 
 @Component
-export default class Login extends Vue{
+export default class Login extends Vue {
     private labelPosition: string = "top"
     private user: User = new User()
     private authService: AuthService = getAuthService()
 
     async Login() {
-        var userInfos: UserInfo = await getUserName(this.user)
-        var password: string = sha256(this.user.password)
+        const userInfos: UserInfo = await getUserName(this.user)
+        const password: string = sha256(this.user.password)
         this.authService.basicLogin(userInfos.userName, password)
 
         this.$router.replace("/")

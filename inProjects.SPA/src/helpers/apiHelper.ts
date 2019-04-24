@@ -1,5 +1,4 @@
-import {getAxios} from '../modules/authService'
-import { AxiosResponse } from 'axios';
+import {getAxios} from "../modules/authService"
 
 export  async function postAsync(url: string, data: any) {
   return getAxios().post(url, data)
