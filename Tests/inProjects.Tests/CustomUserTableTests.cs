@@ -44,7 +44,6 @@ namespace inProjects.Tests
         }
 
         [Test]
-        [Explicit]
         public async Task Add_TimedUser_AnyType() 
         {
             var userTimed = TestHelper.StObjMap.StObjs.Obtain<TimedUserTable>();
