@@ -38,7 +38,7 @@ namespace inProjects.Tests
             var timePeriod = TestHelper.StObjMap.StObjs.Obtain<TimePeriodTable>();
             using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
             {
-                var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "I", 14 );
+                var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "I", 4 );
                 Assert.That( id > 0 );
 
             }

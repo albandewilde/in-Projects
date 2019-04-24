@@ -18,7 +18,7 @@ namespace inProjects.Data
 
         }
 
-        [SqlProcedure( "sCreateTimedUser" )]
+        [SqlProcedure( "sCreateOrUpdateTimedUser" )]
         public abstract Task<TimedUserStruct> CreateOrUpdateTimedUserAsync( ISqlCallContext context, int typeUser, int timePeriodId, int userId);
     }
 }

@@ -1,6 +1,6 @@
 -- SetupConfig: {}
 --
-create procedure IPR.sCreateTimedUser
+create procedure IPR.sCreateOrUpdateTimedUser
 (
     -- 0 is user anon, 1 is student, 2 is teacher, 3 is jury
     @TypeUser INT,

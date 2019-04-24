@@ -80,5 +80,48 @@ namespace inProjects.Tests
 
             }
         }
+
+        [Test]
+
+        public async Task add_or_update_note()
+        {
+            var userTable = TestHelper.StObjMap.StObjs.Obtain<CustomUserTable>();
+            var school = TestHelper.StObjMap.StObjs.Obtain<SchoolTable>();
+            var timePeriod = TestHelper.StObjMap.StObjs.Obtain<TimePeriodTable>();
+            var sqlDatabase = TestHelper.StObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            var noteTable = TestHelper.StObjMap.StObjs.Obtain<TimedUserNoteProjectTable>();
+            var projectStudent = TestHelper.StObjMap.StObjs.Obtain<ProjectStudentTable>();
+            var userTimed = TestHelper.StObjMap.StObjs.Obtain<TimedUserTable>();
+
+            DateTime dateTime = DateTime.Now;
+            DateTime dateTime2 = DateTime.Now.AddDays( 1 );
+
+            double grade = 10.5F;
+
+
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, sqlDatabase );
+
+                var idSchool = await school.CreateSchool( ctx, 1, Guid.NewGuid().ToString() );
+                var userId = await userTable.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() );
+                var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "S", idSchool );
+                var ProjectCreate = await projectStudent.CreateProjectStudent( ctx, 1, 2, 1, "a;b;c", "aaa", "okok", "wwww", 1, "I" );
+                // 0 = Anon Create TimedUser
+                TimedUserStruct result = await userTimed.CreateOrUpdateTimedUserAsync( ctx, 0, id, userId );
+                
+                await noteTable.AddOrUpdateNote( ctx, result.TimedUserId, ProjectCreate.ProjectStudentId, grade );
+
+                Assert.That( await timedUserQueries.GetProjectGradeSpecJury( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
+
+                grade = 15;
+
+                await noteTable.AddOrUpdateNote( ctx, result.TimedUserId, ProjectCreate.ProjectStudentId, grade );
+
+                Assert.That( await timedUserQueries.GetProjectGradeSpecJury( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
+
+            }
+        }
     }
 }

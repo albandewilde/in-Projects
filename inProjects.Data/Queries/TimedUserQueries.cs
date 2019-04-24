@@ -19,9 +19,14 @@ namespace inProjects.Data.Queries
         }
 
         public async Task<TimedUserData> GetTimedUser(int userId)
-        {
-            
+        {  
             TimedUserData result =  await _controller.QuerySingleOrDefaultAsync<TimedUserData>( "select * from IPR.tTimedUser tu where tu.UserId = @UserId", new { UserId = userId } );
+            return result;
+        }
+
+        public async Task<float> GetProjectGradeSpecJury(int projectId, int timedUserId)
+        {
+            float result = await _controller.QuerySingleOrDefaultAsync<float>( "select tu.Grade from IPR.tTimedUserNoteProject tu where tu.TimedUserId = @TimedUserId AND tu.StudentProjectId = @StudentProjectId", new { TimedUserId = timedUserId, StudentProjectId = projectId  } );
             return result;
         }
 
