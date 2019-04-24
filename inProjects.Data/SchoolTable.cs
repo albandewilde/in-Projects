@@ -13,6 +13,8 @@ namespace inProjects.Data
         {
 
         }
-        
+
+        [SqlProcedure( "sCreateSchool" )]
+        public abstract Task<int> CreateSchool( ISqlCallContext ctx, int actorId, string name );
     }
 }

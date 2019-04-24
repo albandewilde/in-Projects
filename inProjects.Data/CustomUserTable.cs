@@ -16,7 +16,7 @@ namespace inProjects.Data
     {
         void StObjConstruct(UserTable userTable)
         {
-
+            
         }
 
         [SqlProcedure( "transform:sUserCreate" )]
