@@ -45,17 +45,6 @@ namespace inProjects.Tests
 
         }
 
-        [Test]
-        public async Task create_a_project()
-        {
-            var projectStudent = TestHelper.StObjMap.StObjs.Obtain<ProjectStudentTable>();
-
-            using( var ctx = new SqlStandardCallContext() )
-            {
-                var ProjectCreate = await projectStudent.CreateProjectStudent( ctx, 1, 2, 1, "a;b;c", "aaa", "okok", "wwww", 1, "I" );
-                Assert.That( ProjectCreate.ProjectStudentId > 0 );
-            }
-        }
 
     }
 }
