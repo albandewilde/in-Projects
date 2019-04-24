@@ -1,6 +1,6 @@
 <template>
   <div>
-	Prochain forum PI dans : {{days}}d {{hours}}h {{minutes}}m {{seconds}}s
+	<h2>Prochain forum PI dans : {{days}}d {{hours}}h {{minutes}}m {{seconds}}s</h2>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default class Countdown extends Vue {
     minutes: number = 0
     seconds: number = 0
     vm = this
-    
+
     async mounted() {
         var vm = this
         var x = setInterval(function() {
