@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using static CK.Testing.DBSetupTestHelper;
 using CK.DB.Actor;
+using System;
 
 namespace inProjects.Tests
 {
@@ -35,7 +36,7 @@ namespace inProjects.Tests
             var s = TestHelper.StObjMap.StObjs.Obtain<SchoolTable>();
             using( var ctx = new SqlStandardCallContext( TestHelper.Monitor ) )
             {
-                var result = await s.CreateSchool( ctx, 1, "ESIEA" );
+                var result = await s.CreateSchool( ctx, 1, Guid.NewGuid().ToString() );
                 Assert.That( result > 2 );
             }
         }

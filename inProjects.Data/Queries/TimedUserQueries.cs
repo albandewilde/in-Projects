@@ -24,11 +24,5 @@ namespace inProjects.Data.Queries
             return result;
         }
 
-        public async Task<float> GetProjectGradeSpecJury(int projectId, int timedUserId)
-        {
-            float result = await _controller.QuerySingleOrDefaultAsync<float>( "select tu.Grade from IPR.tTimedUserNoteProject tu where tu.TimedUserId = @TimedUserId AND tu.StudentProjectId = @StudentProjectId", new { TimedUserId = timedUserId, StudentProjectId = projectId  } );
-            return result;
-        }
-
-    }
+      }
 }

@@ -102,7 +102,7 @@ namespace inProjects.Tests
 
             using( var ctx = new SqlStandardCallContext() )
             {
-                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, sqlDatabase );
+                ProjectQueries timedUserQueries = new ProjectQueries( ctx, sqlDatabase );
 
                 var idSchool = await school.CreateSchool( ctx, 1, Guid.NewGuid().ToString() );
                 var userId = await userTable.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() );
