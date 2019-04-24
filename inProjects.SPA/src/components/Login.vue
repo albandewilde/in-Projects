@@ -28,6 +28,7 @@ import { UserLoginResult } from "../modules/classes/UserLoginResult"
 import { AuthService } from "@signature/webfrontauth"
 import { UserInfo } from "../modules/classes/UserInfo"
 import { getAuthService } from "../modules/authService"
+import { sha256, sha224 } from 'js-sha256'
 
 @Component
 export default class Login extends Vue{
@@ -36,11 +37,11 @@ export default class Login extends Vue{
     private authService: AuthService = getAuthService()
 
     async Login() {
-        this.user.email = "delpierre@intechinfo.fr"
-        this.user.password = "azer"
         var userInfos: UserInfo = await getUserName(this.user)
-        console.debug(userInfos)
-        this.authService.basicLogin(userInfos.userName, this.user.password)
+        var password: string = sha256(this.user.password)
+        this.authService.basicLogin(userInfos.userName, password)
+
+        this.$router.replace("/")
     }
 
     async Reset() {

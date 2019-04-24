@@ -30,16 +30,33 @@ import { Component, Vue, Prop, Watch } from "vue-property-decorator"
 import { User } from "../modules/classes/User"
 import { register as registerRequest } from "../api/accountApi"
 import { UserLoginResult } from "../modules/classes/UserLoginResult"
+import { sha256, sha224 } from 'js-sha256'
+import { AuthService } from "@signature/webfrontauth"
+import { getAuthService } from "../modules/authService"
 
 @Component
 export default class Register extends Vue {
 
     private labelPosition: string = "top"
     private user: User = new User()
-    private loginResult!: UserLoginResult
+    private loginResult!: string
+    private hashedPassword: string = ""
+    private authService: AuthService = getAuthService()
 
     async Register() {
-        this.loginResult = await registerRequest(this.user)
+        var userHashed: User = new User()
+        userHashed.firstName = this.user.firstName
+        userHashed.lastName = this.user.lastName
+        userHashed.email = this.user.email
+        userHashed.password = sha256(this.user.password)
+        
+        this.loginResult = await registerRequest(userHashed)
+        this.Login(this.loginResult, userHashed.password)
+    }
+
+    Login(userId: string, pw: string) {
+        this.authService.basicLogin(userId, pw)
+        this.$router.replace("/")
     }
 
     async Reset() {

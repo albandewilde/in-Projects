@@ -33,7 +33,7 @@ namespace inProjects.WebApp.Controllers
 
         [HttpPost ( "register" ) ]
         [AllowAnonymous]
-        public async Task<UserLoginResult> Register( [FromBody]RegisterModel model )
+        public async Task<string> Register( [FromBody]RegisterModel model )
         {
             var userTable = _stObjMap.StObjs.Obtain<CustomUserTable>();
             var actorEmail = _stObjMap.StObjs.Obtain<ActorEMailTable>();
@@ -49,16 +49,8 @@ namespace inProjects.WebApp.Controllers
                 {
                     await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, userId, model.Password );
                     await actorEmail.AddEMailAsync( ctx, 1, userId, model.Email, true, false );
-                    
-                    LoginResult res = await basic.LoginUserAsync( ctx, userId, model.Password );
-                    if( res.IsSuccess )
-                    {
-                        IActivityMonitor monitor = HttpContext.RequestServices.GetService<IActivityMonitor>();
-                        UserLoginResult loginResult = await _loginService.BasicLoginAsync(
-                            HttpContext, monitor, loginId.ToString(), model.Password );
 
-                        return loginResult;
-                    }
+                    return loginId;
                 }
                 return null;
             }
