@@ -8,7 +8,7 @@ namespace inProjects.Data
 {
     [SqlPackage(
     ResourcePath = "Res",
-    Schema = "IP",
+    Schema = "IPR",
     Database = typeof( SqlDefaultDatabase ),
     ResourceType = typeof( Package ) ),
     Versions( "1.0.0" )]

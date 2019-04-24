@@ -1,14 +1,13 @@
 <template>
     <div>
-        {{login.id}}
-        <el-form :label-position="labelPosition" label-width="100px" :model="login">
+        <el-form :label-position="labelPosition" label-width="100px">
             <center>
                 <b>
                     <el-form-item label="Identifiant" style="width:60%">
-                        <el-input placeholder="Insérez votre identifiant" v-model="login.id"></el-input>
+                        <el-input placeholder="Insérez votre identifiant" v-model="user.email"></el-input>
                     </el-form-item>
                     <el-form-item label="Mot de passe" style="width:60%">
-                        <el-input placeholder="Insérez votre mot de passe" v-model="login.pw" show-password></el-input>
+                        <el-input placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="Login()">Valider</el-button>
@@ -22,28 +21,32 @@
 
 <script lang="ts">
 import Vue from "vue"
-export default Vue.extend({
-    data() {
-        return {
-            labelPosition: "top",
-            login: {
-                id: "".toString(),
-                pw: "".toString()
-            }
-        }
-    },
+import { User } from "../modules/classes/User"
+import { Component } from "vue-property-decorator"
+import { getUserName } from "../api/accountApi"
+import { AuthService } from "@signature/webfrontauth"
+import { UserInfo } from "../modules/classes/UserInfo"
+import { getAuthService } from "../modules/authService"
+import { sha256 } from "js-sha256"
 
-    methods: {
-        async Login() {
-            throw new Error()
-        },
+@Component
+export default class Login extends Vue {
+    private labelPosition: string = "top"
+    private user: User = new User()
+    private authService: AuthService = getAuthService()
 
-        async Reset() {
-            this.login.id = "".toString()
-            this.login.pw = "".toString()
-        }
+    async Login() {
+        const userInfos: UserInfo = await getUserName(this.user)
+        const password: string = sha256(this.user.password)
+        this.authService.basicLogin(userInfos.userName, password)
+
+        this.$router.replace("/")
     }
-})
+
+    async Reset() {
+        this.user.reset()
+    }
+}
 </script>
 
 <style>

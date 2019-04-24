@@ -20,6 +20,7 @@ namespace WebApp
                                      .AddJsonFile( "appsettings.json", optional: false, reloadOnChange: true )
                                      .AddJsonFile( $"appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true )
                                      .AddEnvironmentVariables();
+                                     
 
                              } )
                             .UseKestrel()
