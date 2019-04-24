@@ -11,7 +11,7 @@ using static CK.Testing.DBSetupTestHelper;
 namespace inProjects.Tests
 {
 
-    [TestFixture]
+    //[TestFixture]
 
     class TimePeriodTests
     {

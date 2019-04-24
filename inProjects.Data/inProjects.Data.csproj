@@ -36,5 +36,9 @@
 
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\inProjects.ViewModels\inProjects.ViewModels.csproj" />
+  </ItemGroup>
+
 
 </Project>

@@ -1,4 +1,3 @@
-
 using CK.SqlServer;
 using CK.SqlServer.Setup;
 using System;

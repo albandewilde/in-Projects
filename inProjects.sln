@@ -21,6 +21,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.WebApp", "WebApp\inProjects.WebApp.csproj", "{DAE344DE-95B2-4434-84CC-32255942E6DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProjects.ViewModels", "inProjects.ViewModels\inProjects.ViewModels.csproj", "{17AC78C0-75BC-490E-9FDA-3DF51476D526}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{DAE344DE-95B2-4434-84CC-32255942E6DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAE344DE-95B2-4434-84CC-32255942E6DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAE344DE-95B2-4434-84CC-32255942E6DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{17AC78C0-75BC-490E-9FDA-3DF51476D526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{17AC78C0-75BC-490E-9FDA-3DF51476D526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{17AC78C0-75BC-490E-9FDA-3DF51476D526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{17AC78C0-75BC-490E-9FDA-3DF51476D526}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
