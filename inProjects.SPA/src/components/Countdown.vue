@@ -1,6 +1,6 @@
 <template>
   <div>
-	Prochain forum PI dans : {{result}}
+	Prochain forum PI dans : {{days}}d {{hours}}h {{minutes}}m {{seconds}}s
   </div>
 </template>
 
@@ -14,26 +14,19 @@ export default class Countdown extends Vue {
     hours: number = 0
     minutes: number = 0
     seconds: number = 0
-    result: string = ""
+    vm = this
     
     async mounted() {
         var vm = this
-        var x = setInterval(vm.countDown(), 1000)
+        var x = setInterval(function() {
+            let timeToNextForum: number = vm.nextForum.getTime() - new Date().getTime()
+
+            vm.days = Math.floor(timeToNextForum / (1000 * 60 * 60 * 24))
+            vm.hours = Math.floor((timeToNextForum % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+            vm.minutes = Math.floor((timeToNextForum % (1000 * 60 * 60)) / (1000 * 60))
+            vm.seconds = Math.floor((timeToNextForum % (1000 * 60)) / 1000)
+        }, 1000)
     }
-
-    countDown() {
-        var vm = this
-		let timeToNextForum: number = vm.nextForum.getTime() - new Date().getTime()
-
-		vm.days = Math.floor(timeToNextForum / (1000 * 60 * 60 * 24))
-		vm.hours = Math.floor((timeToNextForum % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
-		vm.minutes = Math.floor((timeToNextForum % (1000 * 60 * 60)) / (1000 * 60))
-        vm.seconds = Math.floor((timeToNextForum % (1000 * 60)) / 1000)
-        
-        vm.result = vm.days + "d " + vm.hours + "h " + vm.minutes + "m " + vm.seconds + "s"
-        console.log(vm.result)
-        return vm.result
-	}
 }
 
 </script>
