@@ -16,8 +16,8 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop, Watch, Vue } from "vue-property-decorator"
-import { AuthLevel, AuthService } from "@signature/webfrontauth"
+import { Component, Prop, Vue } from "vue-property-decorator"
+import { AuthService } from "@signature/webfrontauth"
 
 @Component
 export default class UserInfoBox extends Vue {
