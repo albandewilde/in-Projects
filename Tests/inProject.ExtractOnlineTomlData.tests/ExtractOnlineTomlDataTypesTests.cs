@@ -3,7 +3,6 @@ using System.IO;
 using NUnit.Framework;
 
 
-
 namespace inProject.ExtractOnlineTomlData.tests
 {
     [TestFixture]
@@ -34,6 +33,7 @@ namespace inProject.ExtractOnlineTomlData.tests
             Console.WriteLine(toml["owner"]);
             Console.WriteLine("ONLY THE NAME");
             Nett.TomlTable ownerTable = toml["owner"] as Nett.TomlTable;
+            Console.WriteLine(ownerTable["name"].GetType());
             Console.WriteLine(ownerTable["name"]);
 
             Console.WriteLine("\nelement of an array in an other table");
