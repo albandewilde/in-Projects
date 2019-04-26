@@ -89,7 +89,6 @@ export default class SchemeDisplay extends Vue {
       )
     }
   }
-
   private static availableSchemeCasted(obj: SchemeDisplay): IUserSchemeInfo[] {
     // Casting available Scheme to add a date and sort it with the user schemes
     return obj.parameter.authService.availableSchemes.map(scheme => {
@@ -145,7 +144,6 @@ export default class SchemeDisplay extends Vue {
   private reloadSchemes() {
     SchemeDisplay.loadSchemes(this)
   }
-
   private schemeInfoArrayContain(
     scheme: IUserSchemeInfo,
     schemeArray: IUserSchemeInfo[]

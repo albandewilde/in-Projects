@@ -107,26 +107,20 @@ import { getAuthService } from "../modules/authService"
   },
 })
 export default class SideBar extends Vue {
-
     isCollapse: boolean = true
     authService: AuthService = getAuthService()
-    
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
-
     handleClose(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
-
     changeCollapse() {
         this.isCollapse = !this.isCollapse
     }
-    
     redirect(destination: string) {
         this.$router.replace(destination)
     }
-    
     async logout() {
         await this.authService.logout(true)
         this.$router.replace("/")
