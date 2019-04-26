@@ -341,3 +341,5 @@ inProjects\.WebApp/appsettings\.json
 WebApp/WebAppLogs/Textual/*
 
 WebApp/WebAppLogs/CriticalErrors/*
+
+*.vscode/

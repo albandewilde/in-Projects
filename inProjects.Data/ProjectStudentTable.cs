@@ -1,7 +1,9 @@
 
 using CK.Setup;
+using CK.SqlServer;
 using CK.SqlServer.Setup;
-
+using inProjects.Data.Data.ProjectStudent;
+using System.Threading.Tasks;
 
 namespace inProjects.Data
 {
@@ -13,5 +15,10 @@ namespace inProjects.Data
         {
 
         }
+
+        [SqlProcedure( "sCreateProjectStudent" )]
+         public abstract Task<ProjectStudentStruct> CreateProjectStudent( ISqlCallContext context, int actorId, int zoneId, int CKTraitContextId, string traitName, string logo, string slogan, string pitch, int leaderId, string type );
+
+
     }
 }

@@ -1,17 +1,19 @@
--- SetupConfig: {}
+-- SetupConfig: {"Requires": [ "CK.sZoneCreate" ]}
 --
 create procedure IPR.sCreateSchool
 (
+    @ActorId int,
     @Name nvarchar(128),
-    @SchoolIdResult int output
+    @SchoolId int output
 )
 as
 begin
     --[beginsp]
     --<PreCreate />
+   
+    exec CK.sZoneCreate @ActorId, @SchoolId output; 
+    insert into IPR.tSchool (SchoolId,[Name]) VALUES (@SchoolId,@Name);
 
-    insert into IPR.tSchool ([Name]) VALUES (@Name);
-    SET @SchoolIdResult = SCOPE_IDENTITY();
     --<PostCreate revert />
 
     --[endsp]

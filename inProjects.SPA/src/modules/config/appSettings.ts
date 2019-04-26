@@ -1,8 +1,9 @@
-import merge from 'lodash/merge';
+import merge from "lodash/merge"
 
-let c = require( "@/../appSettings.json" );
-let ce = require( `@/../appSettings.${process.env.NODE_ENV}.json` );
-merge(c,ce);
-Object.freeze( c );
+const c = require("../../../appSettings.json")
+const ce = require(`../../../appSettings.${process.env.NODE_ENV}.json`)
 
-export const appSettings = c;
+merge(c, ce)
+Object.freeze(c)
+
+export const appSettings = c

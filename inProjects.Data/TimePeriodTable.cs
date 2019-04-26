@@ -1,8 +1,10 @@
 using CK.Setup;
+using CK.SqlServer;
 using CK.SqlServer.Setup;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace inProjects.Data
 {
@@ -14,5 +16,9 @@ namespace inProjects.Data
         {
 
         }
+
+        [SqlProcedure( "sCreateTimePeriod" )]
+        public abstract Task<int> CreateTimePeriodAsync( ISqlCallContext context, int actorId, DateTime begDate, DateTime endDate, String kind, int parentId = 0 );
+
     }
 }

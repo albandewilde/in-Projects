@@ -1,44 +1,41 @@
-// import AuthService from '../services/AuthService'
-//import axios from 'axios';
-import {getAxios} from '../modules/authService';
+import {getAxios} from "../modules/authService"
 
-
-export function postAsync(url: string, data: any) {
-  getAxios().post(url, data)
+export  async function postAsync(url: string, data: any) {
+  return getAxios().post(url, data)
       .then((response) => {
-        return response;
+        return response
       })
       .catch((error) => {
-        return error;
-      });
+        return error
+      })
 }
 
-export function putAsync(url: string, data: any) {
-  getAxios().put(url, data)
+export async function putAsync(url: string, data: any) {
+  return getAxios().put(url, data)
       .then((response) => {
-        return response;
+        return response
       })
       .catch((error) => {
-        return error;
-      });
+        return error
+      })
 }
 
-export function getAsync(url: string) {
-  getAxios().get(url)
+export async function getAsync(url: string) {
+  return getAxios().get(url)
       .then((response) => {
-        return response;
+        return response
       })
       .catch((error) => {
-        return error;
-      });
+        return error
+      })
 }
 
-export function deleteAsync(url: string) {
-  getAxios().delete(url)
+export async function deleteAsync(url: string) {
+  return getAxios().delete(url)
       .then((response) => {
-        return response;
+        return response
       })
       .catch((error) => {
-        return error;
-      });
+        return error
+      })
 }
