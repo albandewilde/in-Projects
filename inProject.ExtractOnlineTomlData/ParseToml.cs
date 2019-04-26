@@ -13,12 +13,12 @@ namespace inProject.ParseToml
             // for technos
             Nett.TomlValue[] technos_tomlValue = ((shadowed_toml["technologies"] as Nett.TomlTable)["technologies"] as Nett.TomlArray).Items;
             string[] technos = new string[technos_tomlValue.Length];
-            foreach (Nett.TomlValue techno in technos_tomlValue) {technos[technos.Length] = techno.ToString();}
+            for(int idx = 0; idx < technos_tomlValue.Length; idx += 1) {technos[idx] = technos_tomlValue[idx].ToString();}
 
             // for members
             Nett.TomlValue[] members_tomlValue = ((shadowed_toml["team"] as Nett.TomlTable)["members"] as Nett.TomlArray).Items;
             string[] members = new string[members_tomlValue.Length];
-            foreach (Nett.TomlValue name in members_tomlValue) {members[members.Length] = name.ToString();}
+            for(int idx = 0; idx < members_tomlValue.Length; idx += 1) {members[idx] = members_tomlValue[idx].ToString();}
 
 
             Dictionary<string, object> dico = new Dictionary<string, object>()
@@ -31,7 +31,7 @@ namespace inProject.ParseToml
 
                 {"semester", new Dictionary<string, object>()
                 {
-                    {"semester", ((shadowed_toml["semester"] as Nett.TomlTable)["semester"] as Nett.TomlInt).ToString()},
+                    {"semester", int.Parse(((shadowed_toml["semester"] as Nett.TomlTable)["semester"] as Nett.TomlInt).ToString())},
                     {"sector", ((shadowed_toml["semester"] as Nett.TomlTable)["sector"] as Nett.TomlString).ToString()},
                 }
                 },

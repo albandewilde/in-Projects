@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 
 namespace inProject.ExtractOnlineTomlData.tests
@@ -11,38 +12,57 @@ namespace inProject.ExtractOnlineTomlData.tests
         [Test]
         public void ExtractOnlineTomlData_test_MatchRequiredFieldAndTypes_method()
         {
-            //dynamic types = (File.ReadAllText("./types.toml"));
-            Nett.TomlTable toml = Nett.Toml.ReadFile("./sample.toml");
-            //ExtractOnlineTomlData handler = new ExtractOnlineTomlData("test.toml", types);
+            Dictionary<string, object> toml = ParseToml.ParseToml.ParsePi(File.ReadAllText("ficheprojet.toml"));
 
-            Console.WriteLine("¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤\n");
+            Dictionary<string, object> dico = new Dictionary<string, object>()
+            {
+                {"name", new Dictionary<string, string>()
+                {
+                    {"project_name", "mon super projet"}
+                }
+                },
 
-            System.Collections.Generic.ICollection<string> thing = toml.Keys;
-            Console.WriteLine(thing.GetEnumerator());
-            foreach (var elem in thing) {
-                Console.WriteLine(elem);
-            }
+                {"semester", new Dictionary<string, object>()
+                {
+                    {"semester", 2},
+                    {"sector", "SR"}
+                }
+                },
 
-            Console.WriteLine(toml.Values);
-            foreach (var elem in toml.Values) {
-                Console.WriteLine("Content: ");
-                Console.WriteLine(elem);
-            }
+                {"technologies", new Dictionary<string, string[]>()
+                {
+                    {"technologies", new string[3]{"C#", "Kotlin", "Javascript"}}
+                }
+                },
 
-            Console.WriteLine("KEY AND VALUE");
-            Console.WriteLine(toml["owner"]);
-            Console.WriteLine("ONLY THE NAME");
-            Nett.TomlTable ownerTable = toml["owner"] as Nett.TomlTable;
-            Console.WriteLine(ownerTable["name"].GetType());
-            Console.WriteLine(ownerTable["name"]);
+                {"logo", new Dictionary<string, string>()
+                {
+                    {"url", "https://mon_super_logo.png"}
+                }
+                },
 
-            Console.WriteLine("\nelement of an array in an other table");
-            Console.WriteLine(((toml["database"] as Nett.TomlTable)["ports"] as Nett.TomlArray)[1]);
+                {"slogan", new Dictionary<string, string>()
+                {
+                    {"slogan", "the super project"}
+                }
+                },
 
+                {"pitch", new Dictionary<string, string>()
+                {
+                    {"pitch", "Vous avez des problemes ? Notre super project est là pour vous !"}
+                }
+                },
 
-            Console.WriteLine("\n¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤¤");
-            //Assert.IsTrue(toml.owner.name is string);
-            //Assert.AreEqual(toml.owner.name.GetType().Name, types.owner.name);
+                {"team", new Dictionary<string, object>()
+                {
+                    {"leader", "Chef de Projet"},
+                    {"members", new string[2]{"Team member one", "Team member two"}}
+                }
+                },
+
+            };
+
+            Assert.AreEqual(toml, dico);
         }
     }
 }
