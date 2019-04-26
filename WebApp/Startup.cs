@@ -9,7 +9,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
-using Microsoft.AspNetCore.Mvc.Razor;
+using CK.Auth;
+using CK.DB.AspNet.Auth;
 
 namespace WebApp
 {
