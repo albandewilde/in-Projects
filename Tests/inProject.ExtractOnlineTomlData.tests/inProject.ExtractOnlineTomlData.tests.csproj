@@ -14,13 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="../../documentations/projet_PI/ficheprojet.toml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="sample.toml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="types.toml">
+    <Content Include="./toml_sample_for_tests/*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

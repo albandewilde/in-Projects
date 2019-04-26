@@ -12,7 +12,7 @@ namespace inProject.ExtractOnlineTomlData.tests
         [Test]
         public void ExtractOnlineTomlData_test_MatchRequiredFieldAndTypes_method()
         {
-            Dictionary<string, object> toml = ParseToml.ParseToml.ParsePi(File.ReadAllText("ficheprojet.toml"));
+            Dictionary<string, object> toml = ParseToml.ParseToml.ParsePi(File.ReadAllText("toml_sample_for_tests/pi_given_pattern.toml"));
 
             Dictionary<string, object> dico = new Dictionary<string, object>()
             {
