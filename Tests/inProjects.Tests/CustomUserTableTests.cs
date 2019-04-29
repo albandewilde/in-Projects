@@ -81,7 +81,6 @@ namespace inProjects.Tests
         }
 
         [Test]
-
         public async Task add_or_update_note()
         {
             var userTable = TestHelper.StObjMap.StObjs.Obtain<CustomUserTable>();
@@ -96,9 +95,7 @@ namespace inProjects.Tests
             DateTime dateTime2 = DateTime.Now.AddDays( 1 );
 
             double grade = 10.5F;
-
-
-
+            
             using( var ctx = new SqlStandardCallContext() )
             {
                 ProjectQueries timedUserQueries = new ProjectQueries( ctx, sqlDatabase );
@@ -119,6 +116,46 @@ namespace inProjects.Tests
                 await noteTable.AddOrUpdateNote( ctx, result.TimedUserId, ProjectCreate.ProjectStudentId, grade );
 
                 Assert.That( await timedUserQueries.GetProjectGradeSpecJury( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
+
+            }
+        }
+
+        [Test]
+        public async Task verify_user_administration()
+        {
+            var userTimed = TestHelper.StObjMap.StObjs.Obtain<TimedUserTable>();
+            var userTable = TestHelper.StObjMap.StObjs.Obtain<CustomUserTable>();
+            var timePeriod = TestHelper.StObjMap.StObjs.Obtain<TimePeriodTable>();
+            var group = TestHelper.StObjMap.StObjs.Obtain<CustomGroupTable>();
+            var sqlDatabase = TestHelper.StObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            DateTime dateTime = DateTime.Now;
+            DateTime dateTime2 = DateTime.Now.AddDays( 1 );
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                //CaseIsAdmin
+
+                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, sqlDatabase );
+                var userId = await userTable.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() );
+                var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "S", 4 );
+                TimedUserStruct TimedUserResult = await userTimed.CreateOrUpdateTimedUserAsync( ctx, 2, id, userId );
+                var groupId = await group.CreateGroupAsync( ctx, userId, id );
+                await group.Naming.GroupRenameAsync( ctx, 1, groupId, "Administration" );
+                await group.AddUserAsync( ctx, 1, groupId, userId,true );
+
+                bool boolResult = await timedUserQueries.VerifyUserInSpecificGroup( TimedUserResult.TimedUserId, "Administration" );
+
+                Assert.That( boolResult == true );
+
+                //CaseIsNotAdmin
+
+                 userId = await userTable.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() );
+                 TimedUserResult = await userTimed.CreateOrUpdateTimedUserAsync( ctx, 1, id, userId );
+                 boolResult = await timedUserQueries.VerifyUserInSpecificGroup( TimedUserResult.TimedUserId, "Administration" );
+
+                 Assert.That( boolResult == false );
+
+
 
             }
         }
