@@ -66,5 +66,30 @@ namespace inProject.TomlObjectVisitor.Tests
             };
             Assert.AreEqual(toml.Keys, dico.Keys);
         }
+
+        class Person
+        {
+            public int age {get; set;}
+            public Name name {get; set;}
+        }
+        class Name
+        {
+            public string first {get; set;}
+        }
+
+        [Test]
+        public void how_TOML_to_class_work()
+        {
+            Person p = Nett.Toml.ReadFile<Person>("./toml_sample_for_tests/person.toml");
+            Person n = new Person();
+            n.age = 12;
+            Name m = new Name();
+            m.first = "Paul";
+            n.name = m;
+
+            Assert.AreEqual(p.age, n.age);
+            Assert.AreEqual(p.name.first, n.name.first);
+        }
     }
+
 }
