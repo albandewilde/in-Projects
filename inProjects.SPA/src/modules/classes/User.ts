@@ -3,6 +3,7 @@ class User {
     public lastName: string = ""
     public email: string = ""
     public password: string = ""
+    public semester: string = ""
 
     /**
      * Set or Reset a User to default values

@@ -1,4 +1,5 @@
 using CK.DB.Zone;
+using CK.DB.Group.SimpleNaming;
 using CK.Setup;
 using CK.SqlServer.Setup;
 
@@ -11,7 +12,7 @@ namespace inProjects.Data
     {
         void StObjConstruct( GroupTable groupTable, SchoolTable schoolTable )
         {
-
+           
         }
 
     }

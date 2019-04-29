@@ -21,6 +21,7 @@
     <None Remove="Res\sCreateTimePeriod.sql" />
     <None Remove="Res\sUserCreate.tql" />
     <None Remove="Res\sUserFavUnfavProject.sql" />
+    <None Remove="Res\vStudentList.sql" />
   </ItemGroup>
 
   <ItemGroup>

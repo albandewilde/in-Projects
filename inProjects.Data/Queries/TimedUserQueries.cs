@@ -9,7 +9,9 @@ using inProjects.Data.Data.TimedUser;
 
 namespace inProjects.Data.Queries
 {
-   public class TimedUserQueries
+    [SqlObjectItem( "vAnswer" )]
+
+    public class TimedUserQueries
     {
         private ISqlConnectionController _controller;
 
@@ -23,6 +25,11 @@ namespace inProjects.Data.Queries
             TimedUserData result =  await _controller.QuerySingleOrDefaultAsync<TimedUserData>( "select * from IPR.tTimedUser tu where tu.UserId = @UserId", new { UserId = userId } );
             return result;
         }
+
+        //public async Task<TimedStudentData> GetAllStudentInfos()
+        //{
+
+        //}
 
       }
 }
