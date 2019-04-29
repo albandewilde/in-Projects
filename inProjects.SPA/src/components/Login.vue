@@ -1,6 +1,7 @@
 <template>
     <div>
-        <el-form :label-position="labelPosition" label-width="100px">
+        <center><div style="color: red;"><u>{{error}}</u></div></center><br>
+        <el-form :label-position="labelPosition" ref="form" label-width="100px">
             <center>
                 <b>
                     <el-form-item label="Identifiant" style="width:60%">
@@ -11,7 +12,7 @@
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="Login()">Valider</el-button>
-                        <el-button type="info" @click="Reset()">Réinitialiser</el-button>
+                        <el-button type="info" @click="resetForm()">Réinitialiser</el-button>
                     </el-form-item>
                 </b>
             </center>
@@ -26,25 +27,42 @@ import { Component } from "vue-property-decorator"
 import { getUserName } from "../api/accountApi"
 import { AuthService } from "@signature/webfrontauth"
 import { UserInfo } from "../modules/classes/UserInfo"
+import { UserLoginResult } from "../modules/classes/UserLoginResult"
 import { getAuthService } from "../modules/authService"
 import { sha256 } from "js-sha256"
+import { Form as ElForm } from "element-ui"
 
 @Component
 export default class Login extends Vue {
     private labelPosition: string = "top"
     private user: User = new User()
     private authService: AuthService = getAuthService()
+    private error: string = ""
 
     async Login() {
         const userInfos: UserInfo = await getUserName(this.user)
-        const password: string = sha256(this.user.password)
-        this.authService.basicLogin(userInfos.userName, password)
 
-        this.$router.replace("/")
+        if(userInfos.userName != null) {
+            const password: string = sha256(this.user.password) 
+
+            await this.authService.basicLogin(userInfos.userName, password)
+
+            if(this.authService.authenticationInfo.level == 0) {
+                this.error = "La connexion a échouée ! Réessayez !"
+            }            
+            else {
+                this.error = ""
+                this.$router.replace("/")
+            }
+        }
+        else {
+            this.error = "Identifiant invalide !"
+        }
     }
 
-    async Reset() {
-        this.user.reset()
+    resetForm() {
+        const ref = <ElForm>this.$refs.form
+        ref.resetFields()
     }
 }
 </script>
