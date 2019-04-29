@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Nett;
 
 namespace inProject.TomlHelpers
 {
-    struct TomlHelpers
+    public class TomlHelpers
     {
-        public void GenerateClassFromTomlSchema(string tomlSchema)
+        public static void GenerateClassFromTomlSchema(string tomlSchema)
         {
             throw new NotImplementedException();
         }
 
-        public void GetInstanceFromToml<T>(string toml)
+        public static T GetInstanceFromToml<T>(string toml)
         {
-            throw new NotImplementedException();
+            return Toml.ReadString<T>(toml);
         }
     }
 }
