@@ -1,4 +1,5 @@
 import Vue from "vue"
+import VeeValidate from "vee-validate"
 import ElementUI from "element-ui"
 import "element-ui/lib/theme-chalk/index.css"
 import App from "./App.vue"
@@ -27,6 +28,7 @@ Vue.component("font-awesome-icon", FontAwesomeIcon)
 Vue.config.productionTip = false
 const axiosConst = axios.create()
 Vue.use(ElementUI)
+Vue.use(VeeValidate)
 
 initializeAuthService(axiosConst).then( () => {
     new Vue({
