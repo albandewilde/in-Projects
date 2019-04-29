@@ -5,10 +5,14 @@
             <center>
                 <b>
                     <el-form-item label="Identifiant" style="width:60%">
-                        <el-input placeholder="Insérez votre identifiant" v-model="user.email"></el-input>
+                        <el-input name="email" v-validate="'required|email'" placeholder="Insérez votre identifiant" v-model="user.email"></el-input>
+                        <i v-show="errors.has('email')" class="fa fa-warning" style="color:orange;"></i>
+                        <span v-show="errors.has('email')" class="errorStyle">{{ errors.first('email') }}</span>
                     </el-form-item>
                     <el-form-item label="Mot de passe" style="width:60%">
-                        <el-input placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
+                        <el-input name="password" v-validate="'required'" placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
+                        <i v-show="errors.has('password')" class="fa fa-warning" style="color:orange;"></i>
+                        <span v-show="errors.has('password')" class="errorStyle">{{ errors.first('password') }}</span>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="Login()">Valider</el-button>
@@ -41,12 +45,11 @@ export default class Login extends Vue {
 
     async Login() {
         const userInfos: UserInfo = await getUserName(this.user)
+        const password: string = sha256(this.user.password) 
 
-        if(userInfos.userName != null) {
-            const password: string = sha256(this.user.password) 
-
+        if(await this.$validator.validateAll()) {
             await this.authService.basicLogin(userInfos.userName, password)
-
+    
             if(this.authService.authenticationInfo.level == 0) {
                 this.error = "La connexion a échouée ! Réessayez !"
             }            
@@ -54,9 +57,6 @@ export default class Login extends Vue {
                 this.error = ""
                 this.$router.replace("/")
             }
-        }
-        else {
-            this.error = "Identifiant invalide !"
         }
     }
 
