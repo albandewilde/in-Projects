@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.Tests", "inProjects.Tests\inProjects.Tests\inProjects.Tests.csproj", "{3152117E-3048-40EA-A819-3F5D36A9A535}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.Tests", "Tests\inProjects.Tests\inProjects.Tests.csproj", "{3152117E-3048-40EA-A819-3F5D36A9A535}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "inProjects.Tests", "inProjects.Tests", "{51170987-06C1-447C-A402-D260CDFAD98D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "inProjects.Tests", "Tests", "{51170987-06C1-447C-A402-D260CDFAD98D}"
 	ProjectSection(SolutionItems) = preProject
 		TestHelper.config = TestHelper.config
 	EndProjectSection
@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.ViewModels", "in
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.TomlHelpers", "inProjects.TomlHelpers\inProjects.TomlHelpers.csproj", "{CAAC61DF-2734-454E-AFFA-684504777758}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.TomlHelpers.Tests", "inProjects.Tests\inProject.TomlHelpers.Tests\inProjects.TomlHelpers.Tests.csproj", "{48BD3CBC-2A64-4F84-8097-BDAC5F1DADE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.TomlHelpers.Tests", "Tests\inProject.TomlHelpers.Tests\inProjects.TomlHelpers.Tests.csproj", "{48BD3CBC-2A64-4F84-8097-BDAC5F1DADE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,7 +2,7 @@
 using NUnitLite;
 using NUnit.Common;
 
-namespace inProject.TomlObjectVisitor.Tests
+namespace inProject.TomlHelpers.Tests
 {
     class Program
     {
