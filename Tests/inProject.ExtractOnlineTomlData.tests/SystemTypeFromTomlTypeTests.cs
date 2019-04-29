@@ -2,18 +2,21 @@
 using System.IO;
 using NUnit.Framework;
 using System.Collections.Generic;
+using inProject.TomlObjectVisitor;
 
 
-namespace inProject.ExtractOnlineTomlData.tests
+namespace inProject.TomlObjectVisitor.Tests
 {
     [TestFixture]
-    public class ExtractOnlineTomlDataTypesTests
+    public class SystemTypeFromTomlTypeTest
     {
-        [Test]
-        public void ExtractOnlineTomlData_test_MatchRequiredFieldAndTypes_method()
-        {
-            Dictionary<string, object> toml = ParseToml.ParseToml.ParsePi(File.ReadAllText("toml_sample_for_tests/pi_given_pattern.toml"));
+        private GetSystemType getTypeVisitor = new GetSystemType();
+        private Dictionary<string, object> toml = Nett.Toml.ReadFile("./toml_sample_for_tests/pi_given_pattern.toml").ToDictionary();
 
+
+        [Test]
+        public void SystemTypeFromTomlType_visit_with_TomlString_we_will_get_a_string_out_parameter()
+        {
             Dictionary<string, object> dico = new Dictionary<string, object>()
             {
                 {"name", new Dictionary<string, string>()
@@ -61,8 +64,7 @@ namespace inProject.ExtractOnlineTomlData.tests
                 },
 
             };
-
-            Assert.AreEqual(toml, dico);
+            Assert.AreEqual(toml.Keys, dico.Keys);
         }
     }
 }

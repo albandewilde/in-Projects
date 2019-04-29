@@ -2,7 +2,7 @@
 using NUnitLite;
 using NUnit.Common;
 
-namespace inProject.ExtractOnlineTomlData.tests
+namespace inProject.TomlObjectVisitor.Tests
 {
     class Program
     {

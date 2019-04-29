@@ -10,13 +10,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\inProject.ExtractOnlineTomlData\inProject.ExtractOnlineTomlData.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="./toml_sample_for_tests/*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\inProject.ExtractOnlineTomlData\TomlObjectVisitor.csproj" />
   </ItemGroup>
 
 </Project>
