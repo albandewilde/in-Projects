@@ -2,6 +2,7 @@
     <el-form ref="user" :label-position="labelPosition" :model="user" label-width="100px">
         <center>
             <b>
+                {{test}}
                 <el-form-item label="Nom" style="width:60%;" prop="lastName">
                     <el-input name="lastName" placeholder="Insérez votre nom" v-model="user.lastName" v-validate="'required|alpha'"></el-input>
                     <i v-show="errors.has('lastName')" class="fa fa-warning" style="color:orange;"></i>
@@ -18,12 +19,12 @@
                     <span v-show="errors.has('email')" class="errorStyle">{{ errors.first('email') }}</span>
                 </el-form-item>
                 <el-form-item label="Mot de passe" style="width:60%" prop="password">
-                    <el-input name="password" v-validate="'required|min:6'" placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
+                    <el-input name="password" ref="password" v-validate="'required|min:6'" placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
                     <i v-show="errors.has('password')" class="fa fa-warning" style="color:orange;"></i>
                     <span v-show="errors.has('password')" class="errorStyle">{{ errors.first('password') }}</span>
                 </el-form-item>
                 <el-form-item label="Confirmer le mot de passe" style="width:60%" prop="verifiedPassword">
-                    <el-input name="verifiedPassword" v-validate="'required|min:6'" placeholder="Insérez votre mot de passe" v-model="verifiedPassword" show-password></el-input>
+                    <el-input name="verifiedPassword" v-validate="'required|min:6|confirmed:password'" placeholder="Insérez votre mot de passe" v-model="verifiedPassword" show-password></el-input>
                     <i v-show="errors.has('verifiedPassword')" class="fa fa-warning" style="color:orange;"></i>
                     <span v-show="errors.has('verifiedPassword')" class="errorStyle">{{ errors.first('verifiedPassword') }}</span>
                 </el-form-item>
@@ -54,6 +55,7 @@ export default class Register extends Vue {
     private loginResult!: string
     private authService: AuthService = getAuthService()
     private verifiedPassword: string = ""
+    private test: string = ""
 
     async Register() {
         const userHashed: User = new User()
@@ -61,20 +63,11 @@ export default class Register extends Vue {
         userHashed.lastName = this.user.lastName
         userHashed.email = this.user.email
 
-        // if(this.user.password == ""){
-        //     this.errors.push("Veuillez renseigner un mot de passe")
-        // }
-        // else {
-            if(this.user.password !== this.verifiedPassword) {
-                // this.errors.push("Les mots de passes renseignés ne sont pas identiques")
-            }
-            else {
-                userHashed.password = sha256(this.user.password)
-        
-                // this.loginResult = await registerRequest(userHashed)
-                // this.Login(this.loginResult, userHashed.password)
-            }
-        // }
+        if(await this.$validator.validateAll()) {
+            userHashed.password = sha256(this.user.password)
+            this.loginResult = await registerRequest(userHashed)    
+            this.Login(this.loginResult, userHashed.password)
+        }                
     }
 
     resetForm() {
