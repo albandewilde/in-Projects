@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img src="../assets/intechLogo.png" width="30%;"><br>
+    <img src="../assets/intechLogo.png" width="300em;"><br>
     
     <Countdown></Countdown>
 

@@ -11,11 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
+using CK.Auth;
 using System.Text;
 using inProjects.WebApp.Authentication;
 using System.Security.Claims;
 using inProjects.WebApp.Controllers;
-using CK.Auth;
 
 namespace WebApp
 {
