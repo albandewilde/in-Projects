@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProject.TomlHelpers", "in
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProject.TomlHelpers.Tests", "Tests\inProject.TomlHelpers.Tests\inProject.TomlHelpers.Tests.csproj", "{48BD3CBC-2A64-4F84-8097-BDAC5F1DADE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.CokeCakeBuilder", "inProjects.CokeCakeBuilder\inProjects.CokeCakeBuilder.csproj", "{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProjects.CokeCakeBuilder", "inProjects.CokeCakeBuilder\inProjects.CokeCakeBuilder.csproj", "{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
