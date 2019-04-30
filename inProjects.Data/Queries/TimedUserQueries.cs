@@ -6,6 +6,7 @@ using Dapper;
 using CK.SqlServer.Setup;
 using System.Threading.Tasks;
 using inProjects.Data.Data.TimedUser;
+using System.Collections;
 
 namespace inProjects.Data.Queries
 {
@@ -26,10 +27,11 @@ namespace inProjects.Data.Queries
             return result;
         }
 
-        //public async Task<TimedStudentData> GetAllStudentInfos()
-        //{
-
-        //}
+        public async Task<IEnumerable<TimedStudentData>> GetAllStudentInfosByGroup(int groupId)
+        {
+            IEnumerable<TimedStudentData> result = await _controller.QueryAsync<TimedStudentData>( "SELECT Semester = g.GroupName, u.FirstName, u.LastName FROM CK.tGroup g JOIN CK.tActor a ON a.ActorId = g.GroupId AND g.GroupId = @GroupId LEFT OUTER JOIN CK.tActorProfile ap ON ap.GroupId = g.GroupId AND ap.ActorId <> ap.GroupId LEFT OUTER JOIN CK.tUser u ON u.UserId = ap.ActorId LEFT OUTER JOIN IPR.tTimedUser tu ON tu.UserId = u.UserId LEFT OUTER JOIN IPR.tTimedStudent ts ON ts.TimedStudentId = tu.TimedUserId;", new { GroupId = groupId } );
+            return result;
+        }
 
       }
 }
