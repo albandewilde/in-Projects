@@ -343,3 +343,5 @@ WebApp/WebAppLogs/Textual/*
 WebApp/WebAppLogs/CriticalErrors/*
 
 *.vscode/
+
+inProjects\.WebApp/WebAppLogs/Textual/
