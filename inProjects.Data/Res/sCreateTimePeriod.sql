@@ -14,8 +14,11 @@ begin
     --[beginsp]
     --<PreCreate />
 
-    EXEC CK.sZoneCreate @ActorId, @TimePeriodIdResult OUTPUT, @ParentId;
-    insert into IPR.tTimePeriod (TimePeriodId, BegDate, EndDate, Kind) VALUES (@TimePeriodIdResult, @BegDate, @EndDate, @Kind);
+
+              EXEC CK.sZoneCreate @ActorId, @TimePeriodIdResult OUTPUT, @ParentId;
+              insert into IPR.tTimePeriod (TimePeriodId, BegDate, EndDate, Kind) VALUES (@TimePeriodIdResult, @BegDate, @EndDate, @Kind);
+
+
     --<PostCreate revert />
 
     --[endsp]

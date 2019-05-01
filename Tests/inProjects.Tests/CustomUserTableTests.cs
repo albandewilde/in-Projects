@@ -121,7 +121,7 @@ namespace inProjects.Tests
         }
 
         [Test]
-        public async Task verify_user_administration()
+        public async Task verify_user_is_in_group()
         {
             var userTimed = TestHelper.StObjMap.StObjs.Obtain<TimedUserTable>();
             var userTable = TestHelper.StObjMap.StObjs.Obtain<CustomUserTable>();

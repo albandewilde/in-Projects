@@ -41,9 +41,5 @@ EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'Administration';
 
 SELECT @SchoolId = SchoolId FROM IPR.tSchool ts WHERE ts.[Name] = 'IN''TECH';
 
-
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT, @SchoolId;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'IL';
-
-EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT, @SchoolId;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'SR';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'Administration';

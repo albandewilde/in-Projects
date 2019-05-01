@@ -8,6 +8,8 @@ namespace inProjects.WebApp.Models
     {
         public DateTime begDate { get; set; }
         public DateTime endDate { get; set; }
+        public char Kind { get; set; }
         public int idUser { get; set; }
+        public int idZone { get; set; }
     }
 }
