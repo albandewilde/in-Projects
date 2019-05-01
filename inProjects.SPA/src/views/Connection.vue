@@ -2,11 +2,11 @@
     <div>
         <div v-if="action == true">
             <Login></Login>
-            <el-button type="warning" @click="changeAction()">Créer un compte</el-button>
+            <el-button type="danger" @click="changeAction()">Créer un compte</el-button>
         </div>
         <div v-else>
             <Register></Register>
-            <el-button type="warning" @click="changeAction()">Se connecter</el-button>
+            <el-button type="danger" @click="changeAction()">Déja un compte ?</el-button>
         </div>
     </div>
 </template>
@@ -27,11 +27,7 @@ import { AuthService } from "@signature/webfrontauth"
 export default class Connection extends Vue {
     action: boolean = true
     authService!: AuthService
-    test: number = 0
 
-    getAuthService() {
-        this.test = this.authService.authenticationInfo.level
-    }
     changeAction() {
         this.action = !this.action
     }
