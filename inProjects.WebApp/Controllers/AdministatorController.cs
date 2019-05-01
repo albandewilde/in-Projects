@@ -3,7 +3,7 @@ using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data;
 using inProjects.Data.Queries;
-using inProjects.WebApp.Models;
+using inProjects.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

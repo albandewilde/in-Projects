@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace inProjects.WebApp.Models
+namespace inProjects.ViewModels
 {
     public class CreatePeriodModel
     {
