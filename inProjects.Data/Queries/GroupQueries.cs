@@ -27,6 +27,12 @@ namespace inProjects.Data.Queries
          return await _controller.QueryFirstOrDefaultAsync<int>( "SELECT GroupId FROM CK.tGroup where GroupName = @GroupName AND ZoneId =@ZoneId;", new { ZoneId = zoneId, GroupName = groupName } );
         }
 
+        public async Task<IEnumerable<string>> GetAllGroupByZoneId(int zoneID )
+        {
+            return await _controller.QueryAsync<string>( "select GroupName from CK.vGroup where ZoneId = 0 AND IsZone = 0 OR ZoneId = @ZoneId AND IsZone = 0 group by GroupName;", new { ZoneId = zoneID } );
+ 
+        }
+
       
     }
 }

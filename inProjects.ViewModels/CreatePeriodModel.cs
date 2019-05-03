@@ -8,8 +8,8 @@ namespace inProjects.ViewModels
     {
         public DateTime begDate { get; set; }
         public DateTime endDate { get; set; }
-        public char Kind { get; set; }
-        public int idUser { get; set; }
+        public string Kind { get; set; }
+        public List<string> Groups { get; set; }
         public int idZone { get; set; }
     }
 }

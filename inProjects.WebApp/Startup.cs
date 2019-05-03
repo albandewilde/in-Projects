@@ -38,6 +38,7 @@ namespace WebApp
 
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
             services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
+           
 
             services.Configure<SpaOptions>(o =>
             {

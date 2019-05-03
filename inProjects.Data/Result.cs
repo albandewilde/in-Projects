@@ -54,6 +54,7 @@ namespace inProjects.Data
     {
         Ok,
         BadRequest,
+        Forbidden,
         NotFound,
         Created
     }
