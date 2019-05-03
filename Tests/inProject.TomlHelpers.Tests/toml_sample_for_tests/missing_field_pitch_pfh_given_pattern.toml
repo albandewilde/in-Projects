@@ -20,10 +20,6 @@ url = "https://mon_super_logo.png"
 # Une chaine de caractere.
 slogan = "the super project"
 
-[pitch]
-# Une chaine de caractere.
-pitch = "Vous avez des problemes ? Notre super project est là pour vous !"
-
 [team]
 # Le chef de projet, "None" si vous n'en avez pas.
 leader = "Chef de Projet"

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using NUnit.Framework;
 
-namespace inProject.TomlHelpers.Tests
+namespace inProjects.TomlHelpers.Tests
 {
     [TestFixture]
     public class GetInstanceFromToml

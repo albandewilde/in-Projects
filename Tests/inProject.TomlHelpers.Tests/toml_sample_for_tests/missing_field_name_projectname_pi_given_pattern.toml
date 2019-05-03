@@ -1,6 +1,5 @@
 [name]
 # une chaine de caractere.
-project_name = "mon super projet"
 
 [semester]
 # un entier positif représentant votre semestre.
@@ -8,9 +7,9 @@ semester = 2
 # La chaine de caractere "SR" ou "IL" pour votre filière Systemes et Réseaux ou Ingénieurie Logiciel "None" si vous êtes en semestre 1 ou 2.
 sector = "SR"
 
-[background]
-# L'url publique de votre image de fond.
-image = "https://mon_image_de_background.png"
+[technologies]
+# Une liste de chaine de caracteres des technologies que vous avex utilisé.
+technologies = ["C#", "Kotlin", "Javascript"]
 
 [logo]
 # L'url publique de votre logo.

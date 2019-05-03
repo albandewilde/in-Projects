@@ -14,7 +14,6 @@ image = "https://mon_image_de_background.png"
 
 [logo]
 # L'url publique de votre logo.
-url = "https://mon_super_logo.png"
 
 [slogan]
 # Une chaine de caractere.
