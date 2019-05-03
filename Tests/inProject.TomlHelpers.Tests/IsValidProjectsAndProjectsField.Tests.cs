@@ -135,6 +135,7 @@ namespace inProjects.TomlHelpers.Tests
         [TestCase("./toml_sample_for_tests/missing_field_technologies_pi_given_pattern.toml", false)]
         [TestCase("./toml_sample_for_tests/pfh_given_pattern.toml", false)]
         [TestCase("./toml_sample_for_tests/missing_field_name_projectname_pi_given_pattern.toml", false)]
+        [TestCase("./toml_sample_for_tests/ficheprojet_in-projects.toml", true)]
         public void projectPi_valid_method(string filePath, bool expected)
         {
             string project_toml = File.ReadAllText(filePath);
