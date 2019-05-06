@@ -1,26 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using Nett;
 
 namespace inProjects.TomlHelpers
 {
-    public class TomlHelpers
+    public static class TomlHelpers
     {
         public static T GetInstanceFromToml<T>(string toml)
         {
             return Toml.ReadString<T>(toml);
         }
 
-        public static bool FichePiValidEh(Dictionary<string, object> fiche)
+        public static string GetOnlineToml(string url)
         {
-            throw new NotImplementedException();
-        }
+            string[] splitedUrl = url.Split("?");
+            string path = splitedUrl[0];
+            string query = splitedUrl[1];
 
-        public static bool FichePfhValidEh(Dictionary<string, object> fiche)
-        {
-            throw new NotImplementedException();
+            path = path.Replace("open", "uc");
+
+            string str = new WebClient().DownloadString(path + "?" + query);
+            return str;
         }
     }
 
@@ -33,15 +36,28 @@ namespace inProjects.TomlHelpers
         public Slogan slogan {get; set;}
         public Pitch pitch {get; set;}
         public Team team {get; set;}
+        public OthersDocuments othersDocuments {get; set;}
 
         public bool isValid()
         {
+            // properties that are optional, they can be null
+            string[] optionalProperties = new string[]{"othersDocuments"};
+
             foreach (PropertyInfo propertie in this.GetType().GetProperties())
             {
                 object propertieValue = propertie.GetValue(this, null);
 
-                if (propertieValue is null) return false;
-                if (propertieValue is IProjectField) if (!(propertieValue as IProjectField).isValid()) return false;
+                if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return false;
+                if (
+                    propertieValue is IProjectField //&&
+                    /*(
+                        // an optional propertie can be null, we check it here
+                        propertieValue != null &&
+                        optionalProperties.Contains(propertie.Name)
+                    )*/
+                ) if (!(propertieValue as IProjectField).isValid()) {
+                    return false;
+                }
             }
             return true;
         }
@@ -123,6 +139,19 @@ namespace inProjects.TomlHelpers
                 return true;
             }
                 
+        }
+    }
+
+    public class OthersDocuments: IProjectField
+    {
+        public string[] urls {get; set;}
+
+        public bool isValid()
+        {
+            if (this.urls == null || this.urls.Length <= 0) return false;
+            foreach (string url in this.urls){if (url is null || url is "") return false;}
+
+            return true;
         }
     }
 

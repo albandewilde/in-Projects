@@ -16,16 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="toml_sample_for_tests\missing_field_technologies_pi_given_pattern.toml" />
-    <None Remove="toml_sample_for_tests\wrong_semester_sector_pi_given_pattern.toml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="toml_sample_for_tests\missing_field_technologies_pi_given_pattern.toml" />
-    <Content Include="toml_sample_for_tests\wrong_semester_sector_pi_given_pattern.toml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\inProjects.TomlHelpers\inProjects.TomlHelpers.csproj" />
   </ItemGroup>
 
