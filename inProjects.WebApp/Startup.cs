@@ -16,6 +16,8 @@ using System.Text;
 using inProjects.WebApp.Authentication;
 using System.Security.Claims;
 using inProjects.WebApp.Controllers;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using CK.DB.User.UserOidc;
 
 namespace WebApp
 {
@@ -48,11 +50,36 @@ namespace WebApp
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey( Encoding.ASCII.GetBytes( secretKey ) );
 
             services.AddAuthentication( WebFrontAuthOptions.OnlyAuthenticationScheme )
+                //.AddOutlook( "Outlook", options =>
+                //{
+                //    options.SignInScheme = WebFrontAuthOptions.OnlyAuthenticationScheme;
+                //    options.ClientId = "1012618945754-fi8rm641pdegaler2paqgto94gkpp9du.apps.googleusercontent.com";
+                //    options.ClientSecret = "vRALhloGWbPs7PJ5LzrTZwkH";
+                //    options.Events = new OAuthEventHandler();
+                //} )
+                .AddOpenIdConnect( options =>
+                {
+                    options.SignInScheme = WebFrontAuthOptions.OnlyAuthenticationScheme;
+                    options.Authority = "https://login.microsoftonline.com/" + Configuration["Authentication:Outlook:TenantId"];
+                    options.ClientId = Configuration["Authentication:Outlook:ClientId"];
+                    options.ResponseType = OpenIdConnectResponseType.IdToken;
+                    options.CallbackPath = "/auth/signin-callback";
+                    options.SignedOutRedirectUri = "https://localhost:8080/";
+                    options.TokenValidationParameters.NameClaimType = "name";
+                    options.Events.OnTicketReceived = c => c.WebFrontAuthRemoteAuthenticateAsync<IUserOidcInfo>( payload =>
+                    {
+                        payload.SchemeSuffix = "";
+                        // Instead of "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+                        // Use standard System.Security.Claims.ClaimTypes.
+                        payload.Sub = c.Principal.FindFirst( ClaimTypes.NameIdentifier ).Value;
+                    } );
+                } )
                 .AddWebFrontAuth( options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromHours( 1 );
                     options.SlidingExpirationTime = TimeSpan.FromHours( 1 );
-                } );
+                } )
+                .AddCookie();
 
             if( _env.IsDevelopment() )
             {

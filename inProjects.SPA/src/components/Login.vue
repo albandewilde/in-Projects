@@ -22,6 +22,9 @@
                 </b>
             </center>
         </el-form>
+        <div>
+            <button @click="Outlook()">Connexion avec Outlook</button>
+        </div>
     </div>
 </template>
 
@@ -59,6 +62,10 @@ export default class Login extends Vue {
                 this.$router.replace("/")
             }
         }
+    }
+
+    async Outlook(){
+        this.authService.startPopupLogin("OpenIdConnect")
     }
 
     resetForm() {
