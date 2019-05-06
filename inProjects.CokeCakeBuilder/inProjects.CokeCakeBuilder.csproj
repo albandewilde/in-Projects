@@ -5,4 +5,9 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Code.Cake" Version="1.0.1" />
+    <PackageReference Include="SimpleGitVersion.Cake" Version="0.37.3" />
+  </ItemGroup>
+
 </Project>

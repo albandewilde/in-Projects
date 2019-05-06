@@ -1,15 +1,16 @@
 using Cake.Common.IO;
 using Cake.Common.Tools.DotNetCore;
 using Cake.Common.Tools.DotNetCore.Build;
-using CodeCake;
 using Cake.Core.Diagnostics;
 using System.Linq;
 using Cake.Core;
 using Cake.Common.Solution;
+using SimpleGitVersion;
+using System;
 
-namespace inProjects.CokeCakeBuilder
+namespace CodeCake
 {
-    public class Build : CodeCakeHost
+    public partial class Build : CodeCakeHost
     {
         public Build()
         {
@@ -19,20 +20,34 @@ namespace inProjects.CokeCakeBuilder
             var solutionName = "inProjects";
             var solutionFileName = solutionName + ".sln";
 
+            var projects = Cake.ParseSolution( solutionFileName )
+                .Projects
+                .Where( p => !(p is SolutionFolder) && p.Name != solutionName + ".CokeCakeBuilder" );
+
+            SimpleRepositoryInfo gitInfo = Cake.GetSimpleRepositoryInfo();
+            CheckRepositoryInfo globalInfo = new CheckRepositoryInfo( Cake, gitInfo );
+
+            Task( "Check-Repository" )
+                .Does( () =>
+                {
+                    globalInfo = globalInfo.StandardCheckRepository( gitInfo );                    
+                } );
+
             Task( "Clean" )
                 .Does( () =>
                 {
-                    Cake.CleanDirectories( "**/bin/" + configuration, d => !d.Path.Segments.Contains( "CodeCakeBuilder" ) );
-                    Cake.CleanDirectories( "**/obj/" + configuration, d => !d.Path.Segments.Contains( "CodeCakeBuilder" ) );
+                    Cake.CleanDirectories( "**/bin/" + configuration, d => !d.Path.Segments.Contains( solutionName + ".CokeCakeBuilder" ) );
+                    Cake.CleanDirectories( "**/obj/" + configuration, d => !d.Path.Segments.Contains( solutionName + ".CokeCakeBuilder" ) );
                 } );
 
             Task( "Build" )
+                .IsDependentOn( "Check-Repository" )
                 .IsDependentOn( "Clean" )
                 .Does( () =>
                 {
                     using( var tempSln = Cake.CreateTemporarySolutionFile( solutionFileName ) )
                     {
-                        tempSln.ExcludeProjectsFromBuild( "CodeCakeBuilder" );
+                        tempSln.ExcludeProjectsFromBuild( solutionName + ".CokeCakeBuilder" );
                         Cake.DotNetCoreBuild( tempSln.FullPath.FullPath, new DotNetCoreBuildSettings()
                         {
                             Configuration = configuration,
