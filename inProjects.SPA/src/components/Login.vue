@@ -1,17 +1,23 @@
 <template>
     <div>
-        <el-form :label-position="labelPosition" label-width="100px">
+        <br>
+        <el-form ref="user" :model="user" :label-position="labelPosition" label-width="100px">
             <center>
                 <b>
+                    <u style="color: red;">{{error}}</u>
                     <el-form-item label="Identifiant" style="width:60%">
-                        <el-input placeholder="Insérez votre identifiant" v-model="user.email"></el-input>
+                        <el-input name="email" v-validate="'required|email'" placeholder="Insérez votre identifiant" v-model="user.email"></el-input>
+                        <i v-show="errors.has('email')" class="fa fa-warning" style="color:orange;"></i>
+                        <span v-show="errors.has('email')" class="errorStyle">{{ errors.first('email') }}</span>
                     </el-form-item>
                     <el-form-item label="Mot de passe" style="width:60%">
-                        <el-input placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
+                        <el-input name="password" v-validate="'required'" placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
+                        <i v-show="errors.has('password')" class="fa fa-warning" style="color:orange;"></i>
+                        <span v-show="errors.has('password')" class="errorStyle">{{ errors.first('password') }}</span>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" @click="Login()">Valider</el-button>
-                        <el-button type="info" @click="Reset()">Réinitialiser</el-button>
+                        <el-button type="info" @click="resetForm()">Réinitialiser</el-button>
                     </el-form-item>
                 </b>
             </center>
@@ -26,25 +32,38 @@ import { Component } from "vue-property-decorator"
 import { getUserName } from "../api/accountApi"
 import { AuthService } from "@signature/webfrontauth"
 import { UserInfo } from "../modules/classes/UserInfo"
+import { UserLoginResult } from "../modules/classes/UserLoginResult"
 import { getAuthService } from "../modules/authService"
 import { sha256 } from "js-sha256"
+import { Form as ElForm } from "element-ui"
 
 @Component
 export default class Login extends Vue {
     private labelPosition: string = "top"
     private user: User = new User()
     private authService: AuthService = getAuthService()
+    private error: string = ""
 
     async Login() {
         const userInfos: UserInfo = await getUserName(this.user)
-        const password: string = sha256(this.user.password)
-        this.authService.basicLogin(userInfos.userName, password)
+        const password: string = sha256(this.user.password) 
 
-        this.$router.replace("/")
+        if(await this.$validator.validateAll()) {
+            await this.authService.basicLogin(userInfos.userName, password)
+    
+            if(this.authService.authenticationInfo.level == 0) {
+                this.error = "La connexion a échouée ! Réessayez !"
+            }            
+            else {
+                this.error = ""
+                this.$router.replace("/")
+            }
+        }
     }
 
-    async Reset() {
-        this.user.reset()
+    resetForm() {
+        this.user.email = ""
+        this.user.password = ""
     }
 }
 </script>
@@ -52,5 +71,8 @@ export default class Login extends Vue {
 <style>
 input {
     text-align: center
+}
+.errorStyle {
+    color: red
 }
 </style>

@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
-using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
 namespace inProjects.WebApp.Controllers
@@ -61,9 +60,15 @@ namespace inProjects.WebApp.Controllers
         public async Task<UserInfosModel> GetUserName([FromBody] LoginModel model)
         {
             var userTable = _stObjMap.StObjs.Obtain<CustomUserTable>();
-            UserInfosModel user = await userTable.GetUserName( new SqlStandardCallContext(), model.Email );
-             
-            return user;
+
+            try
+            {
+                return await userTable.GetUserName( new SqlStandardCallContext(), model.Email );
+            }
+            catch( Exception e )
+            {
+                return null;
+            }                      
         }
     }
 }

@@ -5,11 +5,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Emit } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 
 @Component
 export default class Countdown extends Vue {
-    nextForum: Date = new Date('July 05, 2019 13:15:00')
+    nextForum: Date = new Date("July 05, 2019 13:15:00")
     days: number = 0
     hours: number = 0
     minutes: number = 0
@@ -17,8 +17,8 @@ export default class Countdown extends Vue {
     vm = this
 
     async mounted() {
-        var vm = this
-        var x = setInterval(function() {
+        let vm = this
+        let x = setInterval(function() {
             let timeToNextForum: number = vm.nextForum.getTime() - new Date().getTime()
 
             vm.days = Math.floor(timeToNextForum / (1000 * 60 * 60 * 24))

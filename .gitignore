@@ -36,6 +36,7 @@ Generated\ Files/
 [Tt]est[Rr]esult*/
 [Bb]uild[Ll]og.*
 
+*.vscode/
 # NUNIT
 *.VisualState.xml
 TestResult.xml
@@ -342,3 +343,5 @@ WebApp/WebAppLogs/Textual/*
 WebApp/WebAppLogs/CriticalErrors/*
 
 *.vscode/
+
+inProjects\.WebApp/WebAppLogs/Textual/
