@@ -21,13 +21,12 @@ namespace CodeCake
             public SimpleRepositoryInfo GitInfo { get; }
             public ICakeContext Cake { get; }
             public bool IgnoreNoPackagesToProduce { get; set; }
-            public string BuildConfiguration { get; set; }
+            public string BuildConfiguration { get; set; } = "Debug";
 
-            public CheckRepositoryInfo( ICakeContext ctx, SimpleRepositoryInfo gitInfo, string configuration )
+            public CheckRepositoryInfo( ICakeContext ctx, SimpleRepositoryInfo gitInfo )
             {
                 GitInfo = gitInfo;
                 Cake = ctx;
-                BuildConfiguration = configuration;
             }           
         }
         CheckRepositoryInfo StandardCheckRepository( SimpleRepositoryInfo gitInfo )

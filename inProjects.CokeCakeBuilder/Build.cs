@@ -25,7 +25,7 @@ namespace CodeCake
                 .Where( p => !(p is SolutionFolder) && p.Name != solutionName + ".CokeCakeBuilder" );
 
             SimpleRepositoryInfo gitInfo = Cake.GetSimpleRepositoryInfo();
-            CheckRepositoryInfo globalInfo = new CheckRepositoryInfo( Cake, gitInfo, configuration );
+            CheckRepositoryInfo globalInfo = new CheckRepositoryInfo( Cake, gitInfo );
 
             Task( "Check-Repository" )
                 .Does( () =>
