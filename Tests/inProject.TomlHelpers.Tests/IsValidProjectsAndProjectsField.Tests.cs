@@ -34,6 +34,19 @@ namespace inProjects.TomlHelpers.Tests
             Assert.That(technologies.isValid(), Is.EqualTo(expected));
         }
 
+        [TestCase(new string[]{"http://ismycomputeron.com/", "https://theuselessweb.site/drunkronswanson/", "https://theuselessweb.site/lookadeadfly/"}, true)]
+        [TestCase(new string[]{}, false)]
+        [TestCase(new string[]{"", "https://pointerpointer.com/", "https://theuselessweb.site/"}, false)]
+        [TestCase(new string[]{"https://theuselessweb.site/", null, "https://theuselessweb.site/talktomyass/"}, false)]
+        [TestCase(new string[]{"https://theuselessweb.site/hmpg/", "https://theuselessweb.site/secretsfornicotine/", "https://theuselessweb.site/buzzybuzz/", "https://theuselessweb.site/sealspin/"}, true)]
+        public void urlDocument_valid_method(string[] docs, bool expected)
+        {
+            OthersDocuments documents = new OthersDocuments();
+            documents.urls = docs;
+
+            Assert.That(documents.isValid(), Is.EqualTo(expected));
+        }
+
         [TestCase("Tom", new string[]{"Python", "Rust", "Kotlin"}, true)]
         [TestCase("Tom", new string[]{}, true)]
         [TestCase("Tom", new string[]{"Bash", null, "Lua"}, false)]
@@ -136,6 +149,9 @@ namespace inProjects.TomlHelpers.Tests
         [TestCase("./toml_sample_for_tests/pfh_given_pattern.toml", false)]
         [TestCase("./toml_sample_for_tests/missing_field_name_projectname_pi_given_pattern.toml", false)]
         [TestCase("./toml_sample_for_tests/ficheprojet_in-projects.toml", true)]
+        [TestCase("./toml_sample_for_tests/with_othersDocuments_urlDocuments_ficheprojet_in-projects.toml", true)]
+        [TestCase("./toml_sample_for_tests/wrong_othersDocuments_ficheprojet_in-projects.toml", false)]
+        [TestCase("./toml_sample_for_tests/wrong_othersDocuments_urlDocuments_ficheprojet_in-projects.toml", false)]
         public void projectPi_valid_method(string filePath, bool expected)
         {
             string project_toml = File.ReadAllText(filePath);
@@ -149,6 +165,9 @@ namespace inProjects.TomlHelpers.Tests
         [TestCase("./toml_sample_for_tests/missing_field_pitch_pfh_given_pattern.toml", false)]
         [TestCase("./toml_sample_for_tests/pi_given_pattern.toml", false)]
         [TestCase("./toml_sample_for_tests/missing_field_logo_url_pfh_given_pattern.toml", false)]
+        [TestCase("./toml_sample_for_tests/with_otherDocuments_urlDocuments_pfh_given_pattern.toml", true)]
+        [TestCase("./toml_sample_for_tests/wrong_othersDocuments_pfh_given_pattern.toml", false)]
+        [TestCase("./toml_sample_for_tests/wrong_othersDocuments_urlDocuments_pfh_given_pattern.toml", false)]
         public void projectPfh_alid_method(string filepath, bool expected)
         {
             string project_toml = File.ReadAllText(filepath);
