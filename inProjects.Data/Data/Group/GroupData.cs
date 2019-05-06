@@ -2,10 +2,12 @@
 
 namespace inProjects.Data.Data.Group
 {
-    class GroupData
+    public class GroupData
     {
-        int GroupId { get; set; }
-        string GroupName { get; set; }
-        int UserCount { get; set; }
+        public int GroupId { get; set; }
+        public string GroupName { get; set; }
+
+        public int ZoneId { get; set; }
+      //  public int UserCount { get; set; }
     }
 }

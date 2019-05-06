@@ -1,34 +1,59 @@
 <template>
     <el-table
-        :data="studentList"
+        :data="test.filter(data => !search || data.firstName.toLowerCase().includes(search.toLowerCase()) || data.lastName.toLowerCase().includes(search.toLowerCase()) || data.semester.toLowerCase().includes(search.toLowerCase())) "
         stripe
         style="width: 100%">
         <el-table-column
             prop="lastName"
             label="Nom"
-            width="180">
+            width="180"
+            sortable>
         </el-table-column>
         <el-table-column
             prop="firstName"
             label="Prénom"
-            width="180">
+            width="180"
+            sortable>
         </el-table-column>
         <el-table-column
             prop="semester"
             label="Semestre actuel"
+            sortable
         >
         </el-table-column>
-    </el-table>
+        <el-table-column>
+            <template slot="header" slot-scope="scope">
+                <el-input
+                    v-model="search"
+                    size="mini"
+                    placeholder="Taper pour chercher"/>
+            </template>
+        </el-table-column>
+        </el-table>
+
 </template>
 
 <script lang ="ts">
     import Vue from "vue"
     import { User } from "../modules/classes/User"
     import { Component } from "vue-property-decorator"
+    import { getStudentList } from "../api/UserApi"
+
 
 @Component
-export default class StudentList extends Vue{
-    private studentList!: User[];
+export default class StudentList extends Vue {
+    private studentList!: User[]
+    private test: User[] = []
+    private search: string = ""
+    
+    async mounted(){
+        this.studentList = await getStudentList();
+        for(var i = 0; i < this.studentList.length; i++){
+            console.log(this.studentList[i])
+            this.test.push(this.studentList[i])
+
+        }
+    }
 }
 
 </script>

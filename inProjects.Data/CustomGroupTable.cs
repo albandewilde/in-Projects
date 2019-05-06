@@ -1,5 +1,4 @@
 using CK.DB.Zone;
-using CK.DB.Group.SimpleNaming;
 using CK.Setup;
 using CK.SqlServer.Setup;
 

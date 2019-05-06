@@ -123,16 +123,16 @@ namespace inProjects.Tests
                 enddate = begdate.AddMonths( 6 );
                 await period.CreateTimePeriodAsync( ctx, 1, begdate, enddate, "S", 4 );
 
-                await group.MoveGroupAsync( ctx, 1, 5, 4, GroupMoveOption.AutoUserRegistration);
-                await group.MoveGroupAsync( ctx, 1, 6, 4, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 7, 4, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 8, 4, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 9, 4, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 10, 4, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 11, 4, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 12, 4, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 13, 4, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 14, 4, GroupMoveOption.AutoUserRegistration );
+                await group.MoveGroupAsync( ctx, 1, 5, 22, GroupMoveOption.AutoUserRegistration);
+                await group.MoveGroupAsync( ctx, 1, 6, 22, GroupMoveOption.AutoUserRegistration );
+                await group.MoveGroupAsync( ctx, 1, 7, 22, GroupMoveOption.AutoUserRegistration );
+                await group.MoveGroupAsync( ctx, 1, 8, 22, GroupMoveOption.AutoUserRegistration );
+                await group.MoveGroupAsync( ctx, 1, 9, 22, GroupMoveOption.AutoUserRegistration );
+                await group.MoveGroupAsync( ctx, 1, 10, 22, GroupMoveOption.AutoUserRegistration );
+                await group.MoveGroupAsync( ctx, 1, 11, 22, GroupMoveOption.AutoUserRegistration );
+                await group.MoveGroupAsync( ctx, 1, 12, 22, GroupMoveOption.AutoUserRegistration );
+                await group.MoveGroupAsync( ctx, 1, 13, 22, GroupMoveOption.AutoUserRegistration );
+                await group.MoveGroupAsync( ctx, 1, 14, 22, GroupMoveOption.AutoUserRegistration );
 
 
             }
