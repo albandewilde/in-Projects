@@ -25,12 +25,12 @@ namespace CodeCake
                 .Where( p => !(p is SolutionFolder) && p.Name != solutionName + ".CokeCakeBuilder" );
 
             SimpleRepositoryInfo gitInfo = Cake.GetSimpleRepositoryInfo();
-            CheckRepositoryInfo globalInfo = new CheckRepositoryInfo( Cake, gitInfo );
+            CheckRepositoryInfo globalInfo = new CheckRepositoryInfo( Cake, gitInfo, configuration );
 
             Task( "Check-Repository" )
                 .Does( () =>
                 {
-                    globalInfo = globalInfo.StandardCheckRepository( gitInfo );                    
+                    globalInfo = StandardCheckRepository( gitInfo );                    
                 } );
 
             Task( "Clean" )
@@ -55,6 +55,13 @@ namespace CodeCake
                             ArgumentCustomization = args => args.Append( "/p:GenerateDocumentation=true" )
                         } );
                     }
+                } );
+
+            Task( "Unit-Testing" )
+                .IsDependentOn( "Build" )
+                .Does( () =>
+                {
+                    StandardUnitTests( globalInfo, projects.Where( p => p.Name.EndsWith( ".Tests" ) ) );
                 } );
 
             Task( "Default" )

@@ -21,73 +21,73 @@ namespace CodeCake
             public SimpleRepositoryInfo GitInfo { get; }
             public ICakeContext Cake { get; }
             public bool IgnoreNoPackagesToProduce { get; set; }
+            public string BuildConfiguration { get; set; }
 
-            public CheckRepositoryInfo( ICakeContext ctx, SimpleRepositoryInfo gitInfo )
+            public CheckRepositoryInfo( ICakeContext ctx, SimpleRepositoryInfo gitInfo, string configuration )
             {
                 GitInfo = gitInfo;
                 Cake = ctx;
-            }
+                BuildConfiguration = configuration;
+            }           
+        }
+        CheckRepositoryInfo StandardCheckRepository( SimpleRepositoryInfo gitInfo )
+        {
+            CheckRepositoryInfo result = new CheckRepositoryInfo( Cake, gitInfo );
 
-            public CheckRepositoryInfo StandardCheckRepository( SimpleRepositoryInfo gitInfo )
+            if( !gitInfo.IsValid )
             {
-                CheckRepositoryInfo result = new CheckRepositoryInfo( Cake, gitInfo );
-
-                if( !gitInfo.IsValid )
+                if( Cake.InteractiveMode() != InteractiveMode.NoInteraction
+                    && Cake.ReadInteractiveOption( "PublishDirtyRepo",
+                        "Repository is not ready to be published. Proceed anyway?", 'Y', 'N' ) == 'Y' )
                 {
-                    if( Cake.InteractiveMode() != InteractiveMode.NoInteraction
-                        && Cake.ReadInteractiveOption( "PublishDirtyRepo",
-                            "Repository is not ready to be published. Proceed anyway?", 'Y', 'N' ) == 'Y' )
-                    {
-                        Cake.Warning( "GitInfo is not valid, but you choose to continue..." );
-                        result.IgnoreNoPackagesToProduce = true;
-                    }
-                    else
-                    {
-                        Cake.TerminateWithError( "Repository is not ready to be published." );
-                    }
+                    Cake.Warning( "GitInfo is not valid, but you choose to continue..." );
+                    result.IgnoreNoPackagesToProduce = true;
                 }
                 else
                 {
-                    // gitInfo is valid: it is either ci or a release build. 
-                    // If a /LocalFeed/ directory exists above, we publish the packages in it.
-                    var localFeedRoot = Cake.FindDirectoryAbove( "LocalFeed" );
-                    if( localFeedRoot != null )
+                    Cake.TerminateWithError( "Repository is not ready to be published." );
+                }
+            }
+            else
+            {
+                // gitInfo is valid: it is either ci or a release build. 
+                // If a /LocalFeed/ directory exists above, we publish the packages in it.
+                var localFeedRoot = Cake.FindDirectoryAbove( "LocalFeed" );
+                if( localFeedRoot != null )
+                {
+                    var v = gitInfo.Info.FinalSemVersion;
+                    if( v.AsCSVersion == null )
                     {
-                        var v = gitInfo.Info.FinalSemVersion;
-                        if( v.AsCSVersion == null )
+                        if( v.Prerelease.EndsWith( ".local" ) )
                         {
-                            if( v.Prerelease.EndsWith( ".local" ) )
-                            {
-                                // Local releases must not be pushed on any remote and are copied to LocalFeed/Local
-                                // feed (if LocalFeed/ directory above exists).
-                                result.IsLocalCIRelease = true;
-                                result.LocalFeedPath = System.IO.Path.Combine( localFeedRoot, "Local" );
-                            }
-                            else
-                            {
-                                // CI build versions are routed to LocalFeed/CI
-                                result.LocalFeedPath = System.IO.Path.Combine( localFeedRoot, "CI" );
-                            }
+                            // Local releases must not be pushed on any remote and are copied to LocalFeed/Local
+                            // feed (if LocalFeed/ directory above exists).
+                            result.IsLocalCIRelease = true;
+                            result.LocalFeedPath = System.IO.Path.Combine( localFeedRoot, "Local" );
                         }
                         else
                         {
-                            // Release or prerelease go to LocalFeed/Release
-                            result.LocalFeedPath = System.IO.Path.Combine( localFeedRoot, "Release" );
+                            // CI build versions are routed to LocalFeed/CI
+                            result.LocalFeedPath = System.IO.Path.Combine( localFeedRoot, "CI" );
                         }
-                        System.IO.Directory.CreateDirectory( result.LocalFeedPath );
                     }
-
-                    // Creating the right remote feed.
-                    if( !result.IsLocalCIRelease
-                        && (Cake.InteractiveMode() == InteractiveMode.NoInteraction
-                            || Cake.ReadInteractiveOption( "PushToRemote", "Push to Remote feeds?", 'Y', 'N' ) == 'Y') )
+                    else
                     {
-                        result.PushToRemote = true;
+                        // Release or prerelease go to LocalFeed/Release
+                        result.LocalFeedPath = System.IO.Path.Combine( localFeedRoot, "Release" );
                     }
-                }                
-                return result;
-            }
+                    System.IO.Directory.CreateDirectory( result.LocalFeedPath );
+                }
 
+                // Creating the right remote feed.
+                if( !result.IsLocalCIRelease
+                    && (Cake.InteractiveMode() == InteractiveMode.NoInteraction
+                        || Cake.ReadInteractiveOption( "PushToRemote", "Push to Remote feeds?", 'Y', 'N' ) == 'Y') )
+                {
+                    result.PushToRemote = true;
+                }
+            }
+            return result;
         }
     }
 }
