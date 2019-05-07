@@ -25,20 +25,41 @@
 
             <div class="card-container">Groupes à ajouter : 
                 <el-card class="square">
-                <div v-for="(i,idx) in listGroup" :key="idx" class="list-groups-period">
+                    <el-table :data="listGroup" class="list-groups-period">
+                         <el-table-column label="Name" prop="name" ></el-table-column>
+                         <el-table-column label="Delete" width="65">
+                            <template slot-scope="scope">
+                                <el-button @click="Delete(scope.$index)" type="danger" class="el-icon-remove" circle></el-button> 
+                            </template>
+                         </el-table-column>
+                         <el-table-column label="Operations">
+                            <template slot-scope="scope">
+                                <div v-if="listGroup[scope.$index].isAlreadyPermanent == false" class="switch-container">
+                                    <el-switch :value="getState(scope.$index)" @change="setState(scope.$index)" active-text="Permanent" inactive-text="Temporaire" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                                </div>
+                            </template>
+                         </el-table-column>
+                    </el-table>
+                <!-- <div v-for="(i,idx) in listGroup" :key="idx" class="list-groups-period">
                     {{i.name}}&nbsp;&nbsp;<el-button @click="Delete(idx)" type="danger" class="el-icon-remove" circle></el-button> 
                     <div v-if="listGroup[idx].isAlreadyPermanent == false">
                         <el-switch :value="getState(idx)" @change="setState(idx)" active-text="Rendre Permanent" inactive-text="Rendre Temporaire" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
                     </div>
-                </div>
+                </div> -->
                 </el-card>
             </div>
 
             <div class="card-container">Groupes supprimer: 
                 <el-card class="square">
-                <div v-for="(i,idx) in listRemove" :key="idx" class="list-groups-period">
-                    {{i.name}} &nbsp;&nbsp; <el-button @click="AddToGroup(idx)" type="success" class="el-icon-circle-plus" circle></el-button>
-                </div>
+                 <el-table :data="listRemove" class="list-groups-period">
+                         <el-table-column label="Name" prop="name" ></el-table-column>
+                         <el-table-column label="Delete">
+                            <template slot-scope="scope">
+                                <el-button @click="AddToGroup(scope.$index)" type="success" class="el-icon-circle-plus" circle></el-button> 
+                            </template>
+                         </el-table-column>
+
+                    </el-table>
                 </el-card>
             </div>
         </div>
@@ -105,11 +126,11 @@ export default class CreatePeriod extends Vue {
          this.listRemove.splice(idx,1);
     }
 
-    getState(idx : Number){
+    getState(idx : number){
         return this.listGroup[idx].state;
     }
 
-    setState(idx : Number){
+    setState(idx : number){
         this.listGroup[idx].state = !this.listGroup[idx].state
     }
 
@@ -136,9 +157,8 @@ export default class CreatePeriod extends Vue {
 
 <style>
    .list-groups-period {
-        margin-left: 30%;
-        height: 40%;
-        width: 40%;
+        margin-left: 1%;
+      
     }
    .el-input-groupe{
        width: 10%;
@@ -161,7 +181,7 @@ export default class CreatePeriod extends Vue {
 
     overflow: hidden;
     overflow-y: auto;
-    max-height: 30vh;
+    max-height: 40vh;
     height: 100%;
     width: 100%;
     }
@@ -176,6 +196,13 @@ export default class CreatePeriod extends Vue {
         transform: scale(1.4);
         cursor: pointer;
         transition: all 0.5s;
+    }
+    .switch-container{
+        width: 11vw;
+        
+    }
+    .delete-container{
+      
     }
 
     #keep{
