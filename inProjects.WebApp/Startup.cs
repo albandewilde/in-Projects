@@ -50,14 +50,7 @@ namespace WebApp
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey( Encoding.ASCII.GetBytes( secretKey ) );
 
             services.AddAuthentication( WebFrontAuthOptions.OnlyAuthenticationScheme )
-                //.AddOutlook( "Outlook", options =>
-                //{
-                //    options.SignInScheme = WebFrontAuthOptions.OnlyAuthenticationScheme;
-                //    options.ClientId = "1012618945754-fi8rm641pdegaler2paqgto94gkpp9du.apps.googleusercontent.com";
-                //    options.ClientSecret = "vRALhloGWbPs7PJ5LzrTZwkH";
-                //    options.Events = new OAuthEventHandler();
-                //} )
-                .AddOpenIdConnect( options =>
+                .AddOpenIdConnect("Oidc", options =>
                 {
                     options.SignInScheme = WebFrontAuthOptions.OnlyAuthenticationScheme;
                     options.Authority = "https://login.microsoftonline.com/" + Configuration["Authentication:Outlook:TenantId"];

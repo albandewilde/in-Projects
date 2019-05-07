@@ -65,7 +65,7 @@ export default class Login extends Vue {
     }
 
     async Outlook(){
-        this.authService.startPopupLogin("OpenIdConnect")
+        this.authService.startPopupLogin("Oidc")
     }
 
     resetForm() {
