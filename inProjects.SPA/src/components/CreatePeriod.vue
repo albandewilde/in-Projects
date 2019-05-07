@@ -27,7 +27,7 @@
                 <el-card class="square">
                     <el-table :data="listGroup" class="list-groups-period">
                          <el-table-column label="Name" prop="name" ></el-table-column>
-                         <el-table-column label="Delete" width="65">
+                         <el-table-column label="Supprimer" width="90">
                             <template slot-scope="scope">
                                 <el-button @click="Delete(scope.$index)" type="danger" class="el-icon-remove" circle></el-button> 
                             </template>
@@ -53,7 +53,7 @@
                 <el-card class="square">
                  <el-table :data="listRemove" class="list-groups-period">
                          <el-table-column label="Name" prop="name" ></el-table-column>
-                         <el-table-column label="Delete">
+                         <el-table-column label="Ajouter">
                             <template slot-scope="scope">
                                 <el-button @click="AddToGroup(scope.$index)" type="success" class="el-icon-circle-plus" circle></el-button> 
                             </template>
@@ -66,7 +66,6 @@
      <br>
      <br>
     <el-button type="primary" @click="CreatePeriod()">Creer Periode</el-button>
-    <el-button type="primary" @click="Test()">Test</el-button>
     </div>
 
 </template>
