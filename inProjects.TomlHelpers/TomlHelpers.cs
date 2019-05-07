@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -16,13 +15,7 @@ namespace inProjects.TomlHelpers
 
         public static string GetOnlineToml(string url)
         {
-            string[] splitedUrl = url.Split("?");
-            string path = splitedUrl[0];
-            string query = splitedUrl[1];
-
-            path = path.Replace("open", "uc");
-
-            string str = new WebClient().DownloadString(path + "?" + query);
+            string str = new WebClient().DownloadString(url);
             return str;
         }
     }

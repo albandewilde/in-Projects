@@ -38,6 +38,7 @@ namespace WebApp
 
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
             services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
+            services.AddSingleton(_ => new GoogleServices(Configuration["Google:ApiKey"]));
 
             services.Configure<SpaOptions>(o =>
             {
