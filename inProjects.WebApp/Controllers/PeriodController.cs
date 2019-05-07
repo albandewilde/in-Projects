@@ -3,6 +3,7 @@ using CK.Core;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data;
+using inProjects.Data.Data.TimePeriod;
 using inProjects.Data.Queries;
 using inProjects.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +15,12 @@ using System.Threading.Tasks;
 namespace inProjects.WebApp.Controllers
 {
     [Route( "api/[controller]" )]
-    public class AdministatorController : Controller
+    public class PeriodController : Controller
     {
         readonly IStObjMap _stObjMap;
         readonly IAuthenticationInfo _authenticationInfo;
 
-        public AdministatorController( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo )
+        public PeriodController( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo )
         {
             _stObjMap = stObjMap;
             _authenticationInfo = authenticationInfo;
@@ -38,25 +39,31 @@ namespace inProjects.WebApp.Controllers
             {
                 AclQueries aclQueries = new AclQueries( ctx, sqlDatabase );
 
-                if(await aclQueries.VerifySuperiorOrEqualGrantLevelUserByUserId(112,9,userId) == false )
+                if(await aclQueries.VerifyGrantLevelByUserId(112,9,userId, Operator.SuperiorOrEqual ) == false )
                 {
-                    Result result = new Result( Status.BadRequest, "You are not allowed to do this action" );
-                    //Result resTest = new Result<CreatePeriodModel>( Status.Ok, createPeriodModel, "lol" );
-                    var test = this.CreateResult( result );
-                    return test ;
+                    Result result = new Result( Status.BadRequest, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                    return this.CreateResult( result);
                 }
 
                 var idZone = await timePeriod.CreateTimePeriodAsync( ctx, 1, createPeriodModel.begDate, createPeriodModel.endDate, createPeriodModel.Kind, createPeriodModel.idZone );
                 if(idZone == 0 )
                 {
-                    Result result = new Result( Status.BadRequest, "Something wrong has occured while the creation of period" );
+                    Result result = new Result( Status.BadRequest, "Quelques choses s'est mal passé durant la création de periode." );
                     return this.CreateResult( result );
                 }
 
                 for( int i = 0; i < createPeriodModel.Groups.Count; i++ )
                 {
-                    int idGroup = await group.CreateGroupAsync( ctx, userId, idZone );
-                    await group.Naming.GroupRenameAsync( ctx, 17, idGroup, createPeriodModel.Groups[i] );
+                    int idGroup;
+
+                    if( createPeriodModel.Groups[i].IsAlreadyPermanent == false && createPeriodModel.Groups[i].State == true )
+                    {
+                        idGroup = await group.CreateGroupAsync( ctx, userId, 4 );
+                        await group.Naming.GroupRenameAsync( ctx, 17, idGroup, createPeriodModel.Groups[i].Name );
+                    }
+
+                    idGroup = await group.CreateGroupAsync( ctx, userId, idZone );
+                    await group.Naming.GroupRenameAsync( ctx, 17, idGroup, createPeriodModel.Groups[i].Name );
                 }
 
                 return this.CreateResult( Result.Success() );

@@ -18,11 +18,43 @@ namespace inProjects.Data.Queries
             _controller = ctx.GetConnectionController( sqlDefaultDatabase );
         }
 
-        public async Task<bool> VerifySuperiorOrEqualGrantLevelUserByUserId(int grantLevel, int aclId, int userId )
+        public async Task<bool> VerifyGrantLevelByUserId(int grantLevel, int aclId, int userId, Operator op )
         {
-            int result = await _controller.QuerySingleOrDefaultAsync<int>
-                ( "select * from CK.vAclActor a where a.ActorId = @ActorId and a.AclId = @Acl and a.GrantLevel >= @GrantLevel",
-                         new { ActorId = userId, Acl = aclId, GrantLevel = grantLevel } );
+            int result = 0;
+
+            if( op == Operator.SuperiorOrEqual )
+            {
+                result = await _controller.QuerySingleOrDefaultAsync<int>
+                    ( "select * from CK.vAclActor a where a.ActorId = @ActorId and a.AclId = @Acl and a.GrantLevel >= @GrantLevel",
+                             new { ActorId = userId, Acl = aclId, GrantLevel = grantLevel } );
+
+            }else if(op == Operator.InferiorOrEqual )
+            {
+                result = await _controller.QuerySingleOrDefaultAsync<int>
+                   ( "select * from CK.vAclActor a where a.ActorId = @ActorId and a.AclId = @Acl and a.GrantLevel <= @GrantLevel",
+                            new { ActorId = userId, Acl = aclId, GrantLevel = grantLevel } );
+
+            }else if(op == Operator.Equal )
+            {
+                result = await _controller.QuerySingleOrDefaultAsync<int>
+                   ( "select * from CK.vAclActor a where a.ActorId = @ActorId and a.AclId = @Acl and a.GrantLevel = @GrantLevel",
+                            new { ActorId = userId, Acl = aclId, GrantLevel = grantLevel } );
+
+            }else if(op == Operator.StrictlyInferior )
+            {
+                result = await _controller.QuerySingleOrDefaultAsync<int>
+                   ( "select * from CK.vAclActor a where a.ActorId = @ActorId and a.AclId = @Acl and a.GrantLevel < @GrantLevel",
+                            new { ActorId = userId, Acl = aclId, GrantLevel = grantLevel } );
+
+            }else if(op == Operator.StrictlySuperior )
+            {
+                result = await _controller.QuerySingleOrDefaultAsync<int>
+                   ( "select * from CK.vAclActor a where a.ActorId = @ActorId and a.AclId = @Acl and a.GrantLevel > @GrantLevel",
+                            new { ActorId = userId, Acl = aclId, GrantLevel = grantLevel } );
+
+            }
+
+
             if(result == 0 )
             {
                 return false;
@@ -33,5 +65,14 @@ namespace inProjects.Data.Queries
             }
             
         }
+    }
+
+    public enum Operator
+    {
+        SuperiorOrEqual,
+        InferiorOrEqual,
+        Equal,
+        StrictlySuperior,
+        StrictlyInferior
     }
 }

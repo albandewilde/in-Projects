@@ -65,7 +65,7 @@ namespace inProjects.Tests
                 //17 is group Admin In intech
                 await group.AddUserAsync( ctx, 1, 17, userId, true );
                 //Acl ID 9 is AclManagementId of Zone ID InTech
-                if(await aclQueries.VerifySuperiorOrEqualGrantLevelUserByUserId(112,9,userId) == true )
+                if(await aclQueries.VerifyGrantLevelByUserId(112,9,userId,Operator.SuperiorOrEqual) == true )
                 {
                     var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "I", 4 );
                     result = true;
@@ -94,7 +94,7 @@ namespace inProjects.Tests
                 AclQueries aclQueries = new AclQueries( ctx, sqldatabase );
                 var userId = userTable.CreateUser( ctx, 1, Guid.NewGuid().ToString(), "NotAdmin", "NotAdmin" );
                 //Acl ID 9 is AclManagementId of Zone ID InTech
-                if( await aclQueries.VerifySuperiorOrEqualGrantLevelUserByUserId( 127, 9, userId ) == true )
+                if( await aclQueries.VerifyGrantLevelByUserId( 127, 9, userId, Operator.SuperiorOrEqual ) == true )
                 {
                     var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "I", 4 );
                     result = true;

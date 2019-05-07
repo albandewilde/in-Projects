@@ -99,7 +99,7 @@
                 <span> Periode </span>
             </template>
             <el-menu-item-group>
-                <el-menu-item index="3-1" @click="redirect('/createPeriod')" >Add Period</el-menu-item>
+                <el-menu-item index="3-1" @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
             </el-menu-item-group>
         </el-submenu>
     </el-menu>

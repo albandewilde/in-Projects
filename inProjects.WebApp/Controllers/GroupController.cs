@@ -3,6 +3,7 @@ using CK.Core;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data.Queries;
+using inProjects.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet("getAllGroupTemplate")]
-        public async Task<IEnumerable<string>> GetAllGroupTemplate()
+        public async Task<List<GroupPeriod>> GetAllGroupTemplate()
         {
             var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
 
@@ -32,8 +33,20 @@ namespace inProjects.WebApp.Controllers
             {
                 GroupQueries groupQueries = new GroupQueries( ctx, sqlDataBase );
 
-                IEnumerable<string> listeGroup = await groupQueries.GetAllGroupByZoneId( 4 );
-                return listeGroup;
+                List<string> listGroups = await groupQueries.GetAllGroupByZoneId( 4 );
+
+                List<GroupPeriod> list = new List<GroupPeriod>();
+
+                for( int i = 0; i < listGroups.Count; i++ )
+                {
+                    GroupPeriod gp = new GroupPeriod();
+                    gp.Name = listGroups[i];
+                    gp.State = true;
+                    gp.IsAlreadyPermanent = true;
+                    list.Add( gp );
+                }
+
+                return list;
             }
         }
     }
