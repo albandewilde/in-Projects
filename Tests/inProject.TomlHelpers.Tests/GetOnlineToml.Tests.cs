@@ -13,7 +13,7 @@ namespace inProjects.TomlHelpers.Tests
         {
             string offlineToml = File.ReadAllText("./toml_sample_for_tests/ficheprojet_in-projects.toml");
             //string onlineToml =  TomlHelpers.GetOnlineToml("https://drive.google.com/uc?authuser=0&id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl&export=download");
-            string onlineToml =  TomlHelpers.GetOnlineToml("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl");
+            string onlineToml =  TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl"));
 
             Assert.That(onlineToml, Is.EqualTo(offlineToml));
         }
@@ -21,7 +21,7 @@ namespace inProjects.TomlHelpers.Tests
         [Test]
         public void is_the_downloaded_file_a_valid_project()
         {
-            ProjectPi onlineProject =  TomlHelpers.GetInstanceFromToml<ProjectPi>(TomlHelpers.GetOnlineToml("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl"));
+            ProjectPi onlineProject =  TomlHelpers.GetInstanceFromToml<ProjectPi>(TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl")));
 
             Assert.That(onlineProject.isValid(), Is.True);
         }
@@ -30,7 +30,7 @@ namespace inProjects.TomlHelpers.Tests
         public void download_then_get_the_toml_as_object()
         {
             string offlineToml = File.ReadAllText("./toml_sample_for_tests/ficheprojet_in-projects.toml");
-            string onlineToml =  TomlHelpers.GetOnlineToml("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl");
+            string onlineToml =  TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl"));
             ProjectPi offlineProject = TomlHelpers.GetInstanceFromToml<ProjectPi>(offlineToml);
             ProjectPi onlineProject = TomlHelpers.GetInstanceFromToml<ProjectPi>(onlineToml);
 
