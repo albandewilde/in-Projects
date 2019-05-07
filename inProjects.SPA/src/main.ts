@@ -13,14 +13,14 @@ import {
     faHome, faUserGraduate, faUserTie,
     faFileAlt, faClipboard, faBars,
     faSignInAlt, faSignOutAlt, faBell,
-    faUser, faCog, faSearch
+    faUser, faCog, faSearch, faPlusSquare
 } from "@fortawesome/free-solid-svg-icons"
 
 library.add(
     faHome, faUserGraduate, faUserTie,
     faFileAlt, faClipboard, faBars,
     faSignInAlt, faSignOutAlt, faBell,
-    faUser, faCog, faSearch
+    faUser, faCog, faSearch, faPlusSquare
 )
 
 Vue.component("font-awesome-icon", FontAwesomeIcon)

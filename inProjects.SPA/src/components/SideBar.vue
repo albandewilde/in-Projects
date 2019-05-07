@@ -90,6 +90,11 @@
             <font-awesome-icon icon="clipboard" size="lg" />
             <span> Forum PI</span>
         </el-menu-item>
+
+        <el-menu-item index="6" @click="redirect(`/submit_project`)">
+            <font-awesome-icon icon="plus-square" size="lg" />
+            <span> Deposer un Projet</span>
+        </el-menu-item>
     </el-menu>
 </template>
 
@@ -106,6 +111,7 @@ import { getAuthService } from "../modules/authService"
     SchemeDisplay
   },
 })
+
 export default class SideBar extends Vue {
     isCollapse: boolean = true
     authService: AuthService = getAuthService()
