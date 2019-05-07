@@ -180,7 +180,7 @@ export default class CreatePeriod extends Vue {
 
     overflow: hidden;
     overflow-y: auto;
-    max-height: 40vh;
+    max-height: 50vh;
     height: 100%;
     width: 100%;
     }
