@@ -34,7 +34,7 @@ namespace inProjects.Data.Queries
 
         public async Task<GroupData> GetIdSchoolByConnectUser(int userId )
         {
-            GroupData result = await _controller.QuerySingleOrDefaultAsync<GroupData>( "SELECT g.GroupId, g.GroupName, g.ZoneId FROM CK.tActor a JOIN CK.tActorProfile ap ON a.ActorId = ap.ActorId AND a.ActorId = @UserId JOIN CK.vGroup g ON g.GroupId = ap.GroupId;", new { UserId = userId } );
+            GroupData result = await _controller.QuerySingleOrDefaultAsync<GroupData>( "SELECT * FROM CK.tActor a JOIN CK.tActorProfile ap ON a.ActorId = ap.ActorId AND a.ActorId = @UserId JOIN CK.vGroup g ON g.GroupId = ap.GroupId;", new { UserId = userId } );
             return result;
         }
     }

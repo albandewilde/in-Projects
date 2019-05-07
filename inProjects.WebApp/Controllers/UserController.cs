@@ -26,9 +26,9 @@ namespace inProjects.WebApp.Controllers
             _authenticationInfo = authenticationInfo;
         }
 
-        [HttpGet( "getStudentList" )]
+        [HttpPost( "getUserList" )]
 
-        public async Task<List<TimedStudentData>> GetAllStudentByPeriod()
+        public async Task<List<TimedStudentData>> GetAllUserByPeriod([FromBody] BddInfoModel model)
         {
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             IEnumerable<TimedStudentData> studentList = new List<TimedStudentData>();
@@ -50,7 +50,7 @@ namespace inProjects.WebApp.Controllers
                 List<GroupData> groupFinal = groupList.ToList();
                 for( int i = 0; i < groupFinal.Count; i++ )
                 {
-                    studentList = await timedUserQueries.GetAllStudentInfosByGroup( groupFinal[i].GroupId );
+                    studentList = await timedUserQueries.GetAllStudentInfosByGroup( groupFinal[i].GroupId, model.TableName, model.TableId );
                     timedStudentDatas.AddRange( studentList );
                 }
 

@@ -3,6 +3,7 @@ import Router from "vue-router"
 import Home from "./views/Home.vue"
 import Connection from "./views/Connection.vue"
 import Student from "./views/Student.vue"
+import StaffMember from "./views/StaffMember.vue"
 
 Vue.use(Router)
 
@@ -23,7 +24,13 @@ export default new Router({
       name: "student",
       component: Student,
 
+    },
+    {
+      path: "/staffMember",
+      name: "student",
+      component: StaffMember 
     }
+
   ],
   mode: "history",
 })

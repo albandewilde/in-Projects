@@ -70,7 +70,7 @@
                 <span> Professeurs</span>
             </template>
             <el-menu-item-group>
-                <el-menu-item index="3-1">Liste des professeurs</el-menu-item>
+                <el-menu-item index="3-1" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
                 <el-menu-item index="3-2">Trouver un professeur</el-menu-item>
             </el-menu-item-group>
         </el-submenu>
