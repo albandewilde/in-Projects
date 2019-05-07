@@ -86,7 +86,6 @@ namespace WebApp
             }
 
             services.AddCKDatabase( "CK.StObj.AutoAssembly" );
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
