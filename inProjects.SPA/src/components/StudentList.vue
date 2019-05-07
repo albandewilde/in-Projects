@@ -39,18 +39,17 @@
     import { Component } from "vue-property-decorator"
     import { getStudentList } from "../api/UserApi"
 
-
 @Component
 export default class StudentList extends Vue {
     private studentList!: User[]
     private test: User[] = []
     private search: string = ""
     
-    async mounted(){
-        this.studentList = await getStudentList();
-        for(var i = 0; i < this.studentList.length; i++){
-            console.log(this.studentList[i])
-            this.test.push(this.studentList[i])
+    async mounted() {
+        this.studentList = await getStudentList()
+        for (const user of this.studentList) {
+            console.log(user)
+            this.test.push(user)
 
         }
     }
