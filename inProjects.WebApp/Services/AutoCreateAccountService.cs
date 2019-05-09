@@ -39,7 +39,7 @@ namespace inProjects.WebApp.Services
         {
             ISqlCallContext ctx = context.HttpContext.RequestServices.GetService<ISqlCallContext>();
             int userId = await _userTable.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString() );
-            await _actorEmailTable.AddEMailAsync( ctx, 1, userId, context.HttpContext.User.Identity.Name, true );
+            //await _actorEmailTable.AddEMailAsync( ctx, 1, userId, context.HttpContext.User.Identity.Name, true );
             UCLResult result = await _oidcTable.CreateOrUpdateOidcUserAsync(
                 ctx, 1, userId, (IUserOidcInfo)context.Payload, UCLMode.CreateOrUpdate | UCLMode.WithActualLogin );
 

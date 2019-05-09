@@ -18,6 +18,7 @@ using System.Security.Claims;
 using inProjects.WebApp.Controllers;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using CK.DB.User.UserOidc;
+using inProjects.WebApp.Services;
 
 namespace WebApp
 {
@@ -40,6 +41,7 @@ namespace WebApp
 
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
             services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
+            services.AddSingleton<IWebFrontAuthAutoCreateAccountService, AutoCreateAccountService>();
 
             services.Configure<SpaOptions>(o =>
             {
