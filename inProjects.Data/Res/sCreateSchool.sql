@@ -12,7 +12,7 @@ begin
     --<PreCreate />
    
     exec CK.sZoneCreate @ActorId, @SchoolId output; 
-    insert into IPR.tSchool (SchoolId,[Name]) VALUES (@SchoolId,@Name);
+    insert into IPR.tSchool VALUES (@SchoolId,@Name,0);
 
     --<PostCreate revert />
 

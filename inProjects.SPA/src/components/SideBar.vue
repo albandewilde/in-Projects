@@ -74,6 +74,8 @@
                 <el-menu-item index="3-2">Trouver un professeur</el-menu-item>
             </el-menu-item-group>
         </el-submenu>
+
+        
         
         <el-submenu index="4">
             <template slot="title">
@@ -90,6 +92,16 @@
             <font-awesome-icon icon="clipboard" size="lg" />
             <span> Forum PI</span>
         </el-menu-item>
+
+        <el-submenu index="6">
+            <template slot="title">
+                <font-awesome-icon icon="user-tie" size="lg" />
+                <span> Periode </span>
+            </template>
+            <el-menu-item-group>
+                <el-menu-item index="3-1" @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
+            </el-menu-item-group>
+        </el-submenu>
     </el-menu>
 </template>
 
