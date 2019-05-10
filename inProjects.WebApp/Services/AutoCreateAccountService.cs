@@ -1,7 +1,6 @@
 using CK.AspNet.Auth;
 using CK.Auth;
 using CK.Core;
-using CK.DB.Actor.ActorEMail;
 using CK.DB.Auth;
 using CK.DB.User.UserOidc;
 using CK.SqlServer;

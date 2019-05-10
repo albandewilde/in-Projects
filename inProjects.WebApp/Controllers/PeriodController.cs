@@ -30,7 +30,6 @@ namespace inProjects.WebApp.Controllers
         public async Task<IActionResult> CreatePeriod( [FromBody] CreatePeriodModel createPeriodModel )
         {
             int userId = _authenticationInfo.ActualUser.UserId;
-            userId = 20;
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             var group = _stObjMap.StObjs.Obtain<CustomGroupTable>();
             var timePeriod = _stObjMap.StObjs.Obtain<TimePeriodTable>();

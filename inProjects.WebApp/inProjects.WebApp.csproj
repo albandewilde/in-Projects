@@ -22,8 +22,8 @@
 
   <ItemGroup>
     <PackageReference Include="CK.AspNet" Version="3.0.3--0014-develop" />
-    <PackageReference Include="CK.AspNet.Auth" Version="5.0.1--0006-develop" />
-    <PackageReference Include="CK.DB.AspNet.Auth" Version="5.0.1--0006-develop" />
+    <PackageReference Include="CK.AspNet.Auth" Version="5.0.0" />
+    <PackageReference Include="CK.DB.AspNet.Auth" Version="5.0.0" />    
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="2.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />

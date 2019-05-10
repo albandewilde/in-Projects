@@ -58,11 +58,8 @@ namespace WebApp
                     options.CallbackPath = "/auth/signin-callback";
                     options.SignedOutRedirectUri = "https://localhost:8080/";
                     options.TokenValidationParameters.NameClaimType = "name";
-                    options.Events.OnTicketReceived = c => c.WebFrontAuthRemoteAuthenticateAsync<CK.DB.User.UserOidc.IUserOidcInfo>( payload =>
+                    options.Events.OnTicketReceived = c => c.WebFrontAuthRemoteAuthenticateAsync<IUserOidcInfo>( payload =>
                     {
-                        //payload.Email = c.Principal.FindFirst( ClaimTypes.Name ).Value;
-                        //payload.LastName = c.Principal.FindFirst( ClaimTypes.Surname ).Value;
-                        //payload.FirstName = c.Principal.FindFirst( ClaimTypes.GivenName ).Value;
                         payload.SchemeSuffix = "";
                         // Instead of "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
                         // Use standard System.Security.Claims.ClaimTypes.

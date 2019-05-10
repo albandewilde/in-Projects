@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -27,6 +27,7 @@
   <ItemGroup>
     <PackageReference Include="CK.DB.Acl" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.Actor.ActorEMail" Version="5.0.1--0011-develop" />
+    <PackageReference Include="CK.DB.Group.SimpleNaming" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.HZone" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.DependencyInjection" Version="10.0.1--0013-develop" />
     <PackageReference Include="CK.DB.SqlCKTrait" Version="0.6.1--0011-develop" />
@@ -35,6 +36,7 @@
     <PackageReference Include="CK.DB.Auth" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.User.UserPassword" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.SqlServer.Dapper" Version="0.2.1--0016-develop" />
+    <PackageReference Include="CK.DB.User.UserOidc" Version="5.0.0" />
 
   </ItemGroup>
 
