@@ -35,10 +35,8 @@ import { Component } from "vue-property-decorator"
 import { getUserName } from "../api/accountApi"
 import { AuthService } from "@signature/webfrontauth"
 import { UserInfo } from "../modules/classes/UserInfo"
-import { UserLoginResult } from "../modules/classes/UserLoginResult"
 import { getAuthService } from "../modules/authService"
 import { sha256 } from "js-sha256"
-import { Form as ElForm } from "element-ui"
 
 @Component
 export default class Login extends Vue {
@@ -49,15 +47,13 @@ export default class Login extends Vue {
 
     async Login() {
         const userInfos: UserInfo = await getUserName(this.user)
-        const password: string = sha256(this.user.password) 
+        const password: string = sha256(this.user.password)
 
-        if(await this.$validator.validateAll()) {
+        if (await this.$validator.validateAll()) {
             await this.authService.basicLogin(userInfos.userName, password)
-    
-            if(this.authService.authenticationInfo.level == 0) {
+            if (this.authService.authenticationInfo.level == 0) {
                 this.error = "La connexion a échouée ! Réessayez !"
-            }            
-            else {
+            } else {
                 this.error = ""
                 this.$router.replace("/")
             }
