@@ -13,6 +13,7 @@
     <None Remove="Res\Model\CK.CustomAclTable.Settle.1.0.0.sql" />
     <None Remove="Res\Model\CK.CustomGroupTable.Settle.1.0.0.sql" />
     <None Remove="Res\Model\CK.TraitContextTable.Settle.1.0.0.sql" />
+    <None Remove="Res\Model\IPR.EvaluatesTable.Install.1.0.0.sql" />
     <None Remove="Res\Model\IPR.SchoolTable.Settle.1.0.0.sql" />
     <None Remove="Res\sCreateOrUpdateProjectUrl.sql" />
     <None Remove="Res\sCreateTimedUser.sql" />
