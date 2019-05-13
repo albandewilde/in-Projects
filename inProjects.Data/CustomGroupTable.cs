@@ -10,7 +10,7 @@ namespace inProjects.Data
     public abstract class CustomGroupTable : GroupTable
     {
         CK.DB.Zone.SimpleNaming.Package _zoneNaming;
-
+           
         void StObjConstruct( GroupTable groupTable, SchoolTable schoolTable, CK.DB.Zone.SimpleNaming.Package zN )
         {
             _zoneNaming = zN;

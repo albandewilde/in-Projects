@@ -1,4 +1,4 @@
-//     ___     __    _______               __
+ //     ___     __    _______               __
 //    |    \  |  |  |   ____|             |  |
 //    |  |  \ |  |  |  |__                |  |
 //    |  |\  \|  |  |   __|               |__|
@@ -27,8 +27,8 @@
   </div>
 </template>
 
-<script lang="ts">
-import { Component, Prop, Watch, Vue } from "vue-property-decorator"
+ <script lang="ts">
+/*import { Component, Prop, Watch, Vue } from "vue-property-decorator"
 
 import {
   IUserSchemeInfo,
@@ -167,4 +167,4 @@ export default class SchemeDisplay extends Vue {
 .button {
   cursor: pointer;
 }
-</style>
+</style> */ */

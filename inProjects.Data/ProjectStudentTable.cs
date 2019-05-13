@@ -11,7 +11,7 @@ namespace inProjects.Data
     [Versions( "1.0.0" )]
     public abstract class ProjectStudentTable : SqlTable
     {
-        void StObjConstruct( CK.DB.Actor.GroupTable groupTable, CK.DB.Actor.UserTable userTable, CK.DB.SqlCKTrait.CKTraitTable cKTraitTable)
+        void StObjConstruct( CK.DB.Actor.GroupTable groupTable, TimedUserTable timedUserTable , CK.DB.SqlCKTrait.CKTraitTable cKTraitTable)
         {
 
         }
