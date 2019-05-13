@@ -8,3 +8,8 @@ export async function getTemplateGroupsAsync(): Promise<Array<GroupPeriod>> {
     const response = await getAsync(`${endpoint}/getAllGroupTemplate`)
     return response.data
 }
+
+export async function getGroupUserAccessPanel(idZone : Number): Promise<string> {
+    const response = await getAsync(`${endpoint}/getGroupUserAccessPanel?idZone=${idZone}`)
+    return response.data
+}

@@ -75,8 +75,7 @@
             </el-menu-item-group>
         </el-submenu>
 
-        
-        
+           
         <el-submenu index="4">
             <template slot="title">
                 <font-awesome-icon icon="file-alt" size="lg" />
@@ -93,32 +92,44 @@
             <span> Forum PI</span>
         </el-menu-item>
 
-        <el-submenu index="6">
-            <template slot="title">
-                <font-awesome-icon icon="user-tie" size="lg" />
-                <span> Periode </span>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item index="3-1" @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
-            </el-menu-item-group>
-        </el-submenu>
+        <div v-if="whatTimed == 'Administration'">
+          <AdminPanel :isCollapse="isCollapse"></AdminPanel>
+        </div>
+
     </el-menu>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
 import UserInfoBox from "./UserInfoBox.vue"
+import AdminPanel from "./AdminPanel.vue"
 import { AuthService } from "@signature/webfrontauth"
+import { getGroupUserAccessPanel } from "../api/groupApi"
 import { getAuthService } from "../modules/authService"
 
 @Component({
   components: {
-    UserInfoBox
+    UserInfoBox,
+    AdminPanel
   },
 })
 export default class SideBar extends Vue {
     isCollapse: boolean = true
+    whatTimed : string = "Anon"
+    ZoneId : number = 4
     authService: AuthService = getAuthService()
+
+     async mounted(){
+       const vm = this;
+        await this.getAuthorizedAccess();
+
+           this.$root.$on('refreshSideBar', function () {
+               vm.getAuthorizedAccess()
+        })
+     }
+
+    
+
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
@@ -134,6 +145,11 @@ export default class SideBar extends Vue {
     async logout() {
         await this.authService.logout(true)
         this.$router.replace("/")
+        this.getAuthorizedAccess();
+    }
+    async getAuthorizedAccess(){
+        this.whatTimed = await getGroupUserAccessPanel(this.ZoneId);
+        console.log(this.whatTimed)
     }
 }
 </script>

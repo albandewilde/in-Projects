@@ -21,7 +21,7 @@ namespace inProjects.Data.Queries
             _controller = ctx.GetConnectionController( sqlDefaultDatabase );
         }
 
-        public async Task<TimedUserData> GetTimedUserByUserId(int userId)
+        public async Task<TimedUserData> GetAllTimedUserByUserId(int userId)
         {  
             TimedUserData result =  await _controller.QuerySingleOrDefaultAsync<TimedUserData>( "select * from IPR.tTimedUser tu where tu.UserId = @UserId", new { UserId = userId } );
             return result;
@@ -69,6 +69,75 @@ namespace inProjects.Data.Queries
                 return false;
             }
 
+        }
+
+        public async Task<string> getWhichCat( int timedUserId )
+        {
+
+            if( await this.IsJury( timedUserId ) == true )
+            {
+                return "Jury";
+            }
+            else if( await this.IsStaffMember( timedUserId ) == true )
+            {
+                return "StaffMember";
+            }
+            else if( await this.IsStudent( timedUserId ) == true )
+            {
+                return "Student";
+            }
+            else
+            {
+                return "User";
+            }
+        }
+
+        public async Task<bool> IsJury( int timedUserId )
+        {
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "select * from IPR.tTimedJury tu where tu.TimedJuryId = @TimedUserId", new { TimedUserId = timedUserId } );
+
+            if( result != 0 )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> IsStudent( int timedUserId )
+        {
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "select * from IPR.tTimedStudent tu where tu.TimedStudentId = @TimedUserId", new { TimedUserId = timedUserId} );
+
+            if(result != 0 )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> IsStaffMember( int timedUserId )
+        {
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "select * from IPR.tTimedStaffMember tu where tu.TimedStaffMemberId = @TimedUserId", new { TimedUserId = timedUserId } );
+
+            if( result != 0 )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<TimedUserData> GetTimedUser( int userId, int periodId )
+        {
+            TimedUserData result = await _controller.QuerySingleOrDefaultAsync<TimedUserData>( "select * from IPR.tTimedUser tu where tu.UserId = @UserId AND tu.TimePeriodId = @TimePeriodId", new { UserId = userId, TimePeriodId = periodId } );
+            return result;
         }
 
     }

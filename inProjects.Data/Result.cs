@@ -56,6 +56,7 @@ namespace inProjects.Data
         BadRequest,
         Forbidden,
         NotFound,
-        Created
+        Created,
+        Unauthorized
     }
 }

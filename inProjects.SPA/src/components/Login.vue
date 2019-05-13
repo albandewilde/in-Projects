@@ -56,6 +56,7 @@ export default class Login extends Vue {
             } else {
                 this.error = ""
                 this.$router.replace("/")
+                this.$root.$emit('refreshSideBar');
             }
         }
     }
