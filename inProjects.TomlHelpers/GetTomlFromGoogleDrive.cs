@@ -1,6 +1,4 @@
-﻿using System.Net;
-
-namespace inProjects.TomlHelpers
+﻿namespace inProjects.TomlHelpers
 {
     public static class GetTomlFromGoogleDrive
     {

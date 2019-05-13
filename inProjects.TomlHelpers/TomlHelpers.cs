@@ -18,6 +18,41 @@ namespace inProjects.TomlHelpers
             string str = new WebClient().DownloadString(url);
             return str;
         }
+
+        public static (bool, string) RegisterProject(string url)
+        // given url, we register the project if he can be downloaded and parsed
+        {
+            string tomlString;
+            Project toml;
+
+            try    // to get the ressource
+            {
+                tomlString = GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource(url));
+            }
+            catch
+            {
+                return (false, "Ressource not found, may the link is wrong.");
+            }
+
+            try    // parse the toml
+            {
+                toml = GetInstanceFromToml<Project>(tomlString);
+            }
+            catch
+            {
+                return (false, "Failed to parse the toml file, is the file a correct toml format ?");
+            }
+
+            if( !toml.isValid() )    // check if we got fild we want
+            {
+                return (false, "There is missing or bad field in the toml file");
+            }
+            else
+            {
+                // enregistrer le projet dans la bdd
+                return (true, "The project was succefully register");
+            }
+        }
     }
 
     // class project

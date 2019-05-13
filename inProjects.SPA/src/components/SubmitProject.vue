@@ -18,7 +18,11 @@
         Les fichiers d'exemples se trouvent dans les repertoires ./projet_PFH et ./projet_PI.<br>
         <br>
         
-        <el-button type="primary" @click="DownloadTemplates()">Télécherger les templates</el-button>
+        <a href="documentations.zip" download>
+            <el-button type="primary">
+                Télécherger les templates
+            </el-button>
+        </a>
 
         </div>
         </center>
@@ -27,39 +31,76 @@
         <br>
         <br>
 
-        <el-form :inline="true" :model="formInline">
-            <b>
-                <el-form-item label="Lien du fichier toml: ">
-                    <el-input
-                            placeholder="Lien de partege du fichier toml"
-                            v-model="projectLink"
-                            clearable
-                            style="width: 400px"
-                    >
-                    </el-input>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="SubmitProject()">Soumettre le projet</el-button>
-                </el-form-item>
-            </b>
-        </el-form>
+        <div v-if="msg">
+            <div v-if="isSucces">
+                <font color="green">
+                    <b>
+                        {{msg}}
+                    </b>
+                </font>
+            </div>
+            <div v-else>
+                <font color="red">
+                    <b>
+                        {{msg}}
+                    </b>
+                </font>
+            </div>
+        </div>
+        <div v-else>
+            <br>
+        </div>
+
+        <br>
+
+        <div v-if="this.loading"
+            v-loading="loading"
+            element-loading-text="Loading..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(0, 0, 0, 0.8)"
+        >
+        </div>
+        <div v-else>
+            <el-form :inline="true">
+                <b>
+                    <el-form-item label="Lien du fichier toml: ">
+                        <el-input
+                                placeholder="Lien de partege du fichier toml"
+                                v-model="projectLink"
+                                clearable
+                                style="width: 600px"
+                        >
+                        </el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" @click="Submit()">Soumettre le projet</el-button>
+                    </el-form-item>
+                </b>
+            </el-form>
+        </div>
     </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator"
+import {Component, Vue} from "vue-property-decorator"
+import {SubmitProject} from "../api/submitProjectApi"
 
 @Component
-export default class SubmitProject extends Vue {
+export default class Submit extends Vue {
     private projectLink: string = ""
-    private error: string = ""
+    private msg: string = ""
+    private isSucces: boolean = false
+    private return_msg: string = ""
+    private loading: boolean = false
 
-    SubmitProject() {
-        console.log(this.projectLink)
-    }
+    async Submit() {
+        this.loading = true
 
-    DownloadTemplates() {
-        console.log("please give me templates")
+        this.isSucces = false,  this.msg = ""
+        const futur = await SubmitProject(this.projectLink)
+        this.isSucces = futur[0], this.msg = futur[1]
+
+        this.loading = false
     }
 }
 </script>
