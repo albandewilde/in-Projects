@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProject.TomlHelpers", "in
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProject.TomlHelpers.Tests", "Tests\inProject.TomlHelpers.Tests\inProject.TomlHelpers.Tests.csproj", "{48BD3CBC-2A64-4F84-8097-BDAC5F1DADE1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProjects.CokeCakeBuilder", "inProjects.CokeCakeBuilder\inProjects.CokeCakeBuilder.csproj", "{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.CokeCakeBuilder", "inProjects.CokeCakeBuilder\inProjects.CokeCakeBuilder.csproj", "{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProject.ExcelHelper", "inProject.ExcelHelper\inProject.ExcelHelper.csproj", "{21750181-699D-4B86-AFFA-6CF98279BFFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -77,6 +79,10 @@ Global
 		{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21750181-699D-4B86-AFFA-6CF98279BFFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21750181-699D-4B86-AFFA-6CF98279BFFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21750181-699D-4B86-AFFA-6CF98279BFFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21750181-699D-4B86-AFFA-6CF98279BFFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

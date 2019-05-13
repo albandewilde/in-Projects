@@ -1,4 +1,4 @@
-class BddInfo{
+class BddInfo {
     public tableName: string = ""
     public tableId: string = ""
 

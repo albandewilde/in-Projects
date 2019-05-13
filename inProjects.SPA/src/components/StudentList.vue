@@ -29,6 +29,11 @@
                     placeholder="Taper pour chercher"/>
             </template>
         </el-table-column>
+        <el-table-column>
+            <template slot="header">
+                <ExcelImport></ExcelImport>
+            </template>
+        </el-table-column>
         </el-table>
 
 </template>
@@ -39,15 +44,22 @@
     import { BddInfo } from "../modules/classes/BddInfo"
     import { Component } from "vue-property-decorator"
     import { getUserList } from "../api/UserApi"
+    import ExcelImport from "@/components/ExcelImport.vue"
 
-@Component
+@Component({
+    components: {
+     ExcelImport
+
+    }
+
+})
 export default class StudentList extends Vue {
     private bddInfo: BddInfo = new BddInfo()
     private studentList!: User[]
     private userListDisplay: User[] = []
     private search: string = ""
-    
-    async mounted() {
+
+     async mounted() {
         this.bddInfo.tableName = "TimedStudent"
         this.bddInfo.tableId = "StudentId"
         this.studentList = await getUserList(this.bddInfo)

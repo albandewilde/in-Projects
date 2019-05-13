@@ -33,24 +33,24 @@
 </template>
 
 <script lang="ts">
-    import Vue from 'vue'
+    import Vue from "vue"
     import { BddInfo } from "../modules/classes/BddInfo"
     import { Component } from "vue-property-decorator"
     import { User } from "../modules/classes/User"
-    import { getUserList } from '../api/UserApi';
+    import { getUserList } from "../api/UserApi"
 
 @Component
-export default class StaffMemberList extends Vue{
+export default class StaffMemberList extends Vue {
     private bddInfo: BddInfo = new BddInfo()
     private staffMemberList!: User[]
     private userListDisplay: User[] = []
     private search: string = ""
 
-    async mounted(){
+    async mounted() {
         this.bddInfo.tableName = "TimedStaffMember"
         this.bddInfo.tableId = "StaffMemberId"
-        this.staffMemberList = await getUserList(this.bddInfo);
-        for(const user of this.staffMemberList){
+        this.staffMemberList = await getUserList(this.bddInfo)
+        for (const user of this.staffMemberList) {
             this.userListDisplay.push(user)
         }
     }

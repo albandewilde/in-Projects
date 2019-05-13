@@ -61,19 +61,19 @@ export default class Register extends Vue {
         userHashed.lastName = this.user.lastName
         userHashed.email = this.user.email
 
-        if(await this.$validator.validateAll()) {
+        if (await this.$validator.validateAll()) {
             userHashed.password = sha256(this.user.password)
-            this.loginResult = await registerRequest(userHashed)    
+            this.loginResult = await registerRequest(userHashed)
             this.Login(this.loginResult, userHashed.password)
-        }                
+        }
     }
 
     resetForm() {
-        const ref = <ElForm>this.$refs.user
+        const ref = this.$refs.user as ElForm
         this.verifiedPassword = ""
         ref.resetFields()
     }
-    
+
     async Login(userId: string, pw: string) {
         await this.authService.basicLogin(userId, pw)
         this.$router.replace("/")

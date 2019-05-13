@@ -17,9 +17,9 @@ export default class Countdown extends Vue {
     vm = this
 
     async mounted() {
-        let vm = this
-        let x = setInterval(function() {
-            let timeToNextForum: number = vm.nextForum.getTime() - new Date().getTime()
+        const vm = this
+        const x = setInterval(() => {
+            const timeToNextForum: number = vm.nextForum.getTime() - new Date().getTime()
 
             vm.days = Math.floor(timeToNextForum / (1000 * 60 * 60 * 24))
             vm.hours = Math.floor((timeToNextForum % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))

@@ -12,25 +12,23 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: Home
     },
     {
       path: "/connection",
       name: "connection",
-      component: Connection,
+      component: Connection
     },
     {
       path: "/student",
       name: "student",
-      component: Student,
-
+      component: Student
     },
     {
       path: "/staffMember",
-      name: "student",
-      component: StaffMember 
+      name: "staffMember",
+      component: StaffMember
     }
-
   ],
-  mode: "history",
+  mode: "history"
 })

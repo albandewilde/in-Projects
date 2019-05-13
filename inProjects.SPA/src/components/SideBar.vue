@@ -96,14 +96,12 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
 import UserInfoBox from "./UserInfoBox.vue"
-import SchemeDisplay from "./SchemeDisplay.vue"
 import { AuthService } from "@signature/webfrontauth"
 import { getAuthService } from "../modules/authService"
 
 @Component({
   components: {
-    UserInfoBox,
-    SchemeDisplay
+    UserInfoBox
   },
 })
 export default class SideBar extends Vue {

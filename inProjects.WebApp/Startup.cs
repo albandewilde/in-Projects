@@ -37,7 +37,6 @@ namespace WebApp
         {
            
             services.AddCors();
-
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
             services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
 
