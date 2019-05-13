@@ -19,11 +19,21 @@ namespace inProjects.TomlHelpers
             return str;
         }
 
-        public static (bool, string) RegisterProject(string url)
+        public static (bool, string) RegisterProject(string url, int projectNumber)
         // given url, we register the project if he can be downloaded and parsed
         {
             string tomlString;
             Project toml;
+            Type projectType;
+
+            try    // get the type of the project
+            {
+                projectType = new Type[]{typeof(ProjectPi), typeof(ProjectPfh)}[projectNumber];
+            }
+            catch
+            {
+                return (false, "The number for the projet type is wrong");
+            }
 
             try    // to get the ressource
             {
@@ -36,7 +46,9 @@ namespace inProjects.TomlHelpers
 
             try    // parse the toml
             {
-                toml = GetInstanceFromToml<Project>(tomlString);
+                var method = typeof(TomlHelpers).GetMethod("GetInstanceFromToml");
+                method = method.MakeGenericMethod(projectType);
+                toml = (Project)method.Invoke(null, new object[] { tomlString }); 
             }
             catch
             {

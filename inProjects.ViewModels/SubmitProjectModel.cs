@@ -7,5 +7,6 @@ namespace inProjects.ViewModels
     public class SubmitProjectModel
     {
         public string Link {get; set;}
+        public int ProjectType {get; set;}
     }
 }

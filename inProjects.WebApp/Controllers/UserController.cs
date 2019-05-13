@@ -18,9 +18,9 @@ namespace inProjects.WebApp.Controllers
 
         [HttpPost("submitProject")]
         [AllowAnonymous]
-        public async Task<IActionResult> SubmitProject( [FromBody] SubmitProjectModel project )
+        public async Task<IActionResult> SubmitProject([FromBody] SubmitProjectModel project)
         {
-            return Ok(TomlHelpers.TomlHelpers.RegisterProject(project.Link));
+            return Ok(TomlHelpers.TomlHelpers.RegisterProject(project.Link, project.ProjectType));
         }
     }
 }

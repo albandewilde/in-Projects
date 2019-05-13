@@ -63,6 +63,19 @@
         <div v-else>
             <el-form :inline="true">
                 <b>
+
+                    <el-radio-group v-model="projectType">
+                        <el-radio :label="0">
+                            Projet Informatique
+                        </el-radio>
+                        <el-radio :label="1">
+                            Projet de Formation Humaine
+                        </el-radio>
+                    </el-radio-group>
+
+                    <br>
+                    <br>
+
                     <el-form-item label="Lien du fichier toml: ">
                         <el-input
                                 placeholder="Lien de partege du fichier toml"
@@ -85,6 +98,7 @@
 import {Component, Vue} from "vue-property-decorator"
 import {SubmitProject} from "../api/submitProjectApi"
 
+
 @Component
 export default class Submit extends Vue {
     private projectLink: string = ""
@@ -92,12 +106,16 @@ export default class Submit extends Vue {
     private isSucces: boolean = false
     private return_msg: string = ""
     private loading: boolean = false
+    private projectType: number = 0
+
 
     async Submit() {
         this.loading = true
 
+        // initialisation
         this.isSucces = false,  this.msg = ""
-        const futur = await SubmitProject(this.projectLink)
+
+        const futur = await SubmitProject(this.projectLink, this.projectType)
         this.isSucces = futur[0], this.msg = futur[1]
 
         this.loading = false
