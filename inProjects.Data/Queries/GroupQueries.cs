@@ -6,11 +6,12 @@ using Dapper;
 using inProjects.Data.Data.Group;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace inProjects.Data.Queries
 {
-    public class GroupQueries
+   public class GroupQueries
     {
         private ISqlConnectionController _controller;
 
@@ -20,6 +21,22 @@ namespace inProjects.Data.Queries
 
         }
 
+        public GroupQueries(ISqlConnectionController controller )
+        {
+            _controller = controller;
+        }
+
+        public async Task<int> GetSpecificIdGroupByZoneIdAndGroupName(int zoneId,string groupName )
+        {
+         return await _controller.QueryFirstOrDefaultAsync<int>( "SELECT GroupId FROM CK.tGroup where GroupName = @GroupName AND ZoneId =@ZoneId;", new { ZoneId = zoneId, GroupName = groupName } );
+        }
+
+        public async Task<List<string>> GetAllGroupByZoneId(int zoneID )
+        {
+            IEnumerable<string> list = await _controller.QueryAsync<string>( "select GroupName from CK.vGroup where ZoneId = 0 AND IsZone = 0 OR ZoneId = @ZoneId AND IsZone = 0 group by GroupName;", new { ZoneId = zoneID } );
+            return list.AsList();
+        }
+        
         public async Task<IEnumerable<GroupData>> GetAllGroupByPeriod(int zoneId)
         {
             IEnumerable<GroupData> result = await _controller.QueryAsync<GroupData>( "SELECT * FROM CK.vGroup WHERE ZoneId = @ZoneId AND IsZone = 0 AND UserCount <> 0;", new { ZoneId = zoneId } );

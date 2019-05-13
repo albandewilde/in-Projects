@@ -103,7 +103,7 @@ namespace inProjects.Tests
             var userTable = TestHelper.StObjMap.StObjs.Obtain<UserTable>();
             var userFavTable = TestHelper.StObjMap.StObjs.Obtain<UserFavProjectTable>();
             var sqlDatabase = TestHelper.StObjMap.StObjs.Obtain<SqlDefaultDatabase>();
-
+           
             using( var ctx = new SqlStandardCallContext() )
             {
                 ProjectQueries projectQueries = new ProjectQueries( ctx, sqlDatabase );
