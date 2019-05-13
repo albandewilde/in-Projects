@@ -44,10 +44,7 @@ namespace WebApp
             {
                 o.Host = Configuration["Spa:Host"];
             });
-
-            string secretKey = Configuration["JwtBearer:SigningKey"];
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey( Encoding.ASCII.GetBytes( secretKey ) );
-
+            
             services.AddAuthentication( WebFrontAuthOptions.OnlyAuthenticationScheme )
                 .AddOpenIdConnect( "Oidc", options =>
                 {
