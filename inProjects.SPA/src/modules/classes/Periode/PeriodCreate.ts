@@ -1,11 +1,11 @@
-import { GroupPeriod } from './GroupPeriod';
+import { GroupPeriod } from "./GroupPeriod"
 
 class PeriodCreate {
-    public begDate! : Date 
-    public endDate! : Date 
-    public Kind! : String
-    public Groups! : Array<GroupPeriod>
-    public idZone! : Number
+    public begDate!: Date
+    public endDate!: Date
+    public Kind!: string
+    public Groups!: GroupPeriod[]
+    public idZone!: number
 
 }
 export { PeriodCreate }
