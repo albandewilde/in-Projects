@@ -97,7 +97,8 @@
 <script lang="ts">
 import {Component, Vue} from "vue-property-decorator"
 import {SubmitProject} from "../api/submitProjectApi"
-
+import {getAuthService} from "../modules/authService"
+import {AuthService} from "@signature/webfrontauth"
 
 @Component
 export default class Submit extends Vue {
@@ -107,7 +108,7 @@ export default class Submit extends Vue {
     private return_msg: string = ""
     private loading: boolean = false
     private projectType: number = 0
-
+    private authService: AuthService = getAuthService()
 
     async Submit() {
         this.loading = true
@@ -115,7 +116,7 @@ export default class Submit extends Vue {
         // initialisation
         this.isSucces = false,  this.msg = ""
 
-        const futur = await SubmitProject(this.projectLink, this.projectType)
+        const futur = await SubmitProject(this.projectLink, this.projectType, this.authService.authenticationInfo.user.userId)
         this.isSucces = futur[0], this.msg = futur[1]
 
         this.loading = false

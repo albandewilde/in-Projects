@@ -8,5 +8,6 @@ namespace inProjects.ViewModels
     {
         public string Link {get; set;}
         public int ProjectType {get; set;}
+        public int UserId {get; set;}
     }
 }

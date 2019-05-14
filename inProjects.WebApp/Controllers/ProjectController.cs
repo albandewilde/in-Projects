@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CK.AspNet.Auth;
+using CK.Core;
 using inProjects.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,11 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace inProjects.WebApp.Controllers
 {
     [Route("api/[controller]")]
-    public class UserController: Controller
+    public class ProjectController: Controller
     {
-
-        public UserController()
+        readonly IStObjMap _stObjMap;
+        public ProjectController(IStObjMap stObjMap)
         {
+            _stObjMap = stObjMap
         }
 
 

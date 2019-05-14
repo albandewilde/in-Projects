@@ -3,6 +3,10 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 using Nett;
+using inProjects.Data;
+using CK.SqlServer;
+using inProjects.Data.Data.ProjectStudent;
+using CK.SqlServer.Setup;
 
 namespace inProjects.TomlHelpers
 {
@@ -19,7 +23,13 @@ namespace inProjects.TomlHelpers
             return str;
         }
 
-        public static (bool, string) RegisterProject(string url, int projectNumber)
+        public static (bool, string) RegisterProject(
+            string url,
+            int projectNumber,
+            ProjectStudentTable projectTable,
+            int userId,
+            SqlDefaultDatabase db
+        )
         // given url, we register the project if he can be downloaded and parsed
         {
             string tomlString;
@@ -60,7 +70,15 @@ namespace inProjects.TomlHelpers
                 return (false, "There is missing or bad field in the toml file");
             }
 
-            // enregistrer le projet dans la bdd
+            // register the project in the bdd
+
+            using(SqlStandardCallContext ctx = new SqlStandardCallContext())
+            {
+                ProjectStudentStruct ProjectCreate = await projectTable.CreateProjectStudent(
+                    ctx,
+                    userId,
+            }
+
             return (true, "The project was succefully register");
         }
     }
