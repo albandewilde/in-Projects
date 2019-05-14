@@ -1,6 +1,6 @@
 <template>
     <el-table
-        :data="userListDisplay.filter(data => !search || data.firstName.toLowerCase().includes(search.toLowerCase()) || data.lastName.toLowerCase().includes(search.toLowerCase()) || data.groupName.toLowerCase().includes(search.toLowerCase())) "
+        :data="userListDisplay.filter(data => !search || data.firstName.toLowerCase().includes(search.toLowerCase()) || data.lastName.toLowerCase().includes(search.toLowerCase()) || data.groupName.toLowerCase().includes(search.toLowerCase()))"
         stripe
         style="width: 100%">
         <el-table-column
@@ -34,25 +34,23 @@
                 <ExcelImport></ExcelImport>
             </template>
         </el-table-column>
-        </el-table>
-
+    </el-table>
 </template>
 
 <script lang ="ts">
-    import Vue from "vue"
-    import { User } from "../modules/classes/User"
-    import { BddInfo } from "../modules/classes/BddInfo"
-    import { Component } from "vue-property-decorator"
-    import { getUserList } from "../api/UserApi"
-    import ExcelImport from "@/components/ExcelImport.vue"
+import Vue from "vue"
+import { User } from "../modules/classes/User"
+import { BddInfo } from "../modules/classes/BddInfo"
+import { Component } from "vue-property-decorator"
+import { getUserList } from "../api/UserApi"
+import ExcelImport from "@/components/ExcelImport.vue"
 
 @Component({
     components: {
-     ExcelImport
-
+        ExcelImport
     }
-
 })
+
 export default class StudentList extends Vue {
     private bddInfo: BddInfo = new BddInfo()
     private studentList!: User[]

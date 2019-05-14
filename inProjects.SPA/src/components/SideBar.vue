@@ -96,10 +96,10 @@
         <el-submenu index="6">
             <template slot="title">
                 <font-awesome-icon icon="user-tie" size="lg" />
-                <span> Periode </span>
+                <span> Période </span>
             </template>
             <el-menu-item-group>
-                <el-menu-item index="3-1" @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
+                <el-menu-item index="3-1" @click="redirect('/createPeriod')" >Créer Période </el-menu-item>
             </el-menu-item-group>
         </el-submenu>
     </el-menu>
