@@ -80,8 +80,8 @@ namespace inProjects.TomlHelpers
             {
                 // letter of project type
                 string type;
-                if(projectType is typeof(ProjectPi) ) type = "I";
-                else if( projectType is ProjectPfh ) type = "H";
+                if(projectType.Name == "ProjectPi") type = "I";
+                else if(projectType.Name == "ProjectPfh") type = "H";
                 else type = "¤";
 
                 if(type == "I")
