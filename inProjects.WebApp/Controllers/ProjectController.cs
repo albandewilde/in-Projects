@@ -1,7 +1,7 @@
-﻿using System;
-using System.Threading.Tasks;
-using CK.AspNet.Auth;
+﻿using System.Threading.Tasks;
 using CK.Core;
+using CK.SqlServer.Setup;
+using inProjects.Data;
 using inProjects.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,7 @@ namespace inProjects.WebApp.Controllers
         readonly IStObjMap _stObjMap;
         public ProjectController(IStObjMap stObjMap)
         {
-            _stObjMap = stObjMap
+            _stObjMap = stObjMap;
         }
 
 
@@ -22,7 +22,10 @@ namespace inProjects.WebApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SubmitProject([FromBody] SubmitProjectModel project)
         {
-            return Ok(TomlHelpers.TomlHelpers.RegisterProject(project.Link, project.ProjectType));
+            ProjectStudentTable projectTable = _stObjMap.StObjs.Obtain<ProjectStudentTable>();
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+            return Ok(TomlHelpers.TomlHelpers.RegisterProject(project.Link, project.ProjectType, projectTable, project.UserId, db));
         }
     }
 }
