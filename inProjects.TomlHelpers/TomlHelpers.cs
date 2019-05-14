@@ -55,15 +55,13 @@ namespace inProjects.TomlHelpers
                 return (false, "Failed to parse the toml file, is the file a correct toml format ?");
             }
 
-            if( !toml.isValid() )    // check if we got fild we want
+            if(!toml.isValid())    // check if we got fild we want
             {
                 return (false, "There is missing or bad field in the toml file");
             }
-            else
-            {
-                // enregistrer le projet dans la bdd
-                return (true, "The project was succefully register");
-            }
+
+            // enregistrer le projet dans la bdd
+            return (true, "The project was succefully register");
         }
     }
 
