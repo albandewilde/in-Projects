@@ -52,11 +52,16 @@ namespace inProjects.WebApp.Controllers
             }
         }
         [HttpGet( "getGroupUserAccessPanel" )]
-        public async Task<string> GetGroupUserAccessPanel(int idZone)
+        public async Task<List<string>> GetGroupUserAccessPanel(int idZone)
         {
+            List<string> listGroupToReturn = new List<string>();
             int userId = _authenticationInfo.ActualUser.UserId;
             var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
-            if( userId == 0 ) return "Anon";
+            if( userId == 0 )
+            {
+                listGroupToReturn.Add( "Anon" );
+                return listGroupToReturn;
+            }
 
             using( var ctx = new SqlStandardCallContext() )
             {
@@ -69,13 +74,14 @@ namespace inProjects.WebApp.Controllers
 
                 if(timedUserData == null )
                 {
-                    return "Anon";
+                    listGroupToReturn.Add( "Anon" );
+                    return listGroupToReturn;
                 }
 
-                string whatTimed = await timedUser.getWhichCat( timedUserData.TimedUserId );
-                if(whatTimed != "StaffMember")
+                listGroupToReturn = await timedUser.getWhichCat( timedUserData.TimedUserId,listGroupToReturn );
+                if(!listGroupToReturn.Contains("StaffMember"))
                 {
-                    return whatTimed;
+                    return listGroupToReturn;
                 }
 
                 List<string> listGroupsOfTimedUser = new List<string>();
@@ -86,16 +92,21 @@ namespace inProjects.WebApp.Controllers
                 {
                     if(listGroupsOfTimedUser[i] == "Administration" )
                     {
-                        return "Administration";
+                        listGroupToReturn.Add( "Administration" );
                     }
                     else if(listGroupsOfTimedUser[i] == "Teacher" )
                     {
-                        return "Teacher";
+                        listGroupToReturn.Add( "Teacher" );
+
                     }
-                    
+
+                }
+                if( listGroupToReturn.Count == 0 )
+                {
+                    listGroupToReturn.Add( "User" );
                 }
 
-                return "User";
+                return listGroupToReturn;
             }
         }
     }

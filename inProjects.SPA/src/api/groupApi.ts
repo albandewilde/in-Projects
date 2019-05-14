@@ -9,7 +9,7 @@ export async function getTemplateGroupsAsync(): Promise<Array<GroupPeriod>> {
     return response.data
 }
 
-export async function getGroupUserAccessPanel(idZone : Number): Promise<string> {
+export async function getGroupUserAccessPanel(idZone : Number): Promise<string[]> {
     const response = await getAsync(`${endpoint}/getGroupUserAccessPanel?idZone=${idZone}`)
     return response.data
 }

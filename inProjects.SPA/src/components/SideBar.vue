@@ -92,8 +92,31 @@
             <span> Forum PI</span>
         </el-menu-item>
 
-        <div v-if="whatTimed == 'Administration'">
-          <AdminPanel :isCollapse="isCollapse"></AdminPanel>
+        <div v-for="(o,idx) in whatTimed" :key="idx">
+            <!-- index Admin 10 to 30 -->
+            <div v-if="o == 'Administration'">
+                <AdminPanel :isCollapse="isCollapse"></AdminPanel>
+            </div>
+
+            <!-- index Teacher 31 to 51 -->
+             <div v-if="o == 'Teacher'">
+                <TeacherPanel :isCollapse="isCollapse"></TeacherPanel>
+            </div>
+
+            <!-- index User 52 to 72 -->
+            <div v-if="o == 'User'">
+                <UserPanel :isCollapse="isCollapse"></UserPanel>
+            </div>
+
+            <!-- index Jury 73 to 93 -->
+            <div v-if="o == 'Jury'">
+                <JuryPanel :isCollapse="isCollapse"></JuryPanel>
+            </div>
+
+            <!-- index Student 94 to 114 -->
+            <div v-if="o == 'Student'">
+                <StudentPanel :isCollapse="isCollapse"></StudentPanel>
+            </div>
         </div>
 
     </el-menu>
@@ -103,6 +126,10 @@
 import { Component, Vue } from "vue-property-decorator"
 import UserInfoBox from "./UserInfoBox.vue"
 import AdminPanel from "./AdminPanel.vue"
+import TeacherPanel from "./TeacherPanel.vue"
+import JuryPanel from "./JuryPanel.vue"
+import UserPanel from "./UserPanel.vue"
+import StudentPanel from "./StudentPanel.vue"
 import { AuthService } from "@signature/webfrontauth"
 import { getGroupUserAccessPanel } from "../api/groupApi"
 import { getAuthService } from "../modules/authService"
@@ -110,25 +137,27 @@ import { getAuthService } from "../modules/authService"
 @Component({
   components: {
     UserInfoBox,
-    AdminPanel
+    AdminPanel,
+    TeacherPanel,
+    UserPanel,
+    JuryPanel,
+    StudentPanel
   },
 })
 export default class SideBar extends Vue {
     isCollapse: boolean = true
-    whatTimed : string = "Anon"
+    whatTimed : string[] = []
     ZoneId : number = 4
     authService: AuthService = getAuthService()
 
      async mounted(){
        const vm = this;
-        await this.getAuthorizedAccess();
+        await this.getAuthorizedAccess()
 
-           this.$root.$on('refreshSideBar', function () {
+        this.$root.$on('refreshSideBar', function () {
                vm.getAuthorizedAccess()
         })
      }
-
-    
 
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)

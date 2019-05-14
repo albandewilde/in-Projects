@@ -71,25 +71,25 @@ namespace inProjects.Data.Queries
 
         }
 
-        public async Task<string> getWhichCat( int timedUserId )
+        public async Task<List<string>> getWhichCat( int timedUserId, List<string> list )
         {
-
             if( await this.IsJury( timedUserId ) == true )
             {
-                return "Jury";
+                list.Add( "Jury" );
             }
-            else if( await this.IsStaffMember( timedUserId ) == true )
+            if( await this.IsStaffMember( timedUserId ) == true )
             {
-                return "StaffMember";
+                list.Add( "StaffMember" );
             }
-            else if( await this.IsStudent( timedUserId ) == true )
+
+            if( await this.IsStudent( timedUserId ) == true )
             {
-                return "Student";
+                list.Add( "Student" );
+
             }
-            else
-            {
-                return "User";
-            }
+
+            return list;
+
         }
 
         public async Task<bool> IsJury( int timedUserId )

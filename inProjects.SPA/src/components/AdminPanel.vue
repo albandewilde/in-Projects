@@ -1,13 +1,15 @@
 <template>
-    <el-submenu>
-            <template slot="title" index="6">
-                <font-awesome-icon icon="user-tie" size="lg" />
-                <span v-if="isCollapse == false"> Periode </span>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
-            </el-menu-item-group>
-    </el-submenu>
+<div>
+        <el-submenu index="10">
+                <template slot="title">
+                    <font-awesome-icon icon="user-tie" size="lg" />
+                    <span v-if="isCollapse == false"> Periode </span>
+                </template>
+                <el-menu-item-group>
+                    <el-menu-item @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
+                </el-menu-item-group>
+        </el-submenu>
+</div>
 </template>
 
 <script lang="ts">
