@@ -1,7 +1,7 @@
 <template>
     <div>
         <Error :error="error"/>
-        Dates pour la nouvelle periode : 
+        Dates pour la nouvelle période : 
         <br>
      <el-date-picker
       v-model="date"
@@ -19,7 +19,7 @@
     <el-button @click="Add()">Ajouter</el-button>
     <br>
     <br>
-    Choissisez les groupes de la nouvelle periode :
+    Choissisez les groupes de la nouvelle période :
         
         <div class="square-container">
 
@@ -40,16 +40,10 @@
                             </template>
                          </el-table-column>
                     </el-table>
-                <!-- <div v-for="(i,idx) in listGroup" :key="idx" class="list-groups-period">
-                    {{i.name}}&nbsp;&nbsp;<el-button @click="Delete(idx)" type="danger" class="el-icon-remove" circle></el-button> 
-                    <div v-if="listGroup[idx].isAlreadyPermanent == false">
-                        <el-switch :value="getState(idx)" @change="setState(idx)" active-text="Rendre Permanent" inactive-text="Rendre Temporaire" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-                    </div>
-                </div> -->
                 </el-card>
             </div>
 
-            <div class="card-container">Groupes supprimer: 
+            <div class="card-container">Groupes supprimés: 
                 <el-card class="square">
                  <el-table :data="listRemove" class="list-groups-period">
                          <el-table-column label="Name" prop="name" ></el-table-column>
@@ -65,7 +59,7 @@
         </div>
      <br>
      <br>
-    <el-button type="primary" @click="CreatePeriod()">Creer Periode</el-button>
+    <el-button type="primary" @click="CreatePeriod()">Créer Période</el-button>
     </div>
 
 </template>
