@@ -9,14 +9,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue,Prop } from "vue-property-decorator"
-
-
+import { Component, Vue, Prop } from "vue-property-decorator"
 
 @Component
-export default class Erreur extends Vue{
+
+export default class Erreur extends Vue {
      @Prop()
-      error = new Array<String>();
+      error: string[] = []
 }
 </script>
 

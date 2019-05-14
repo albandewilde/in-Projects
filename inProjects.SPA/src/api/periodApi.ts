@@ -1,5 +1,5 @@
 import { postAsync } from "../helpers/apiHelper"
-import { PeriodCreate } from '@/modules/classes/Periode/PeriodCreate';
+import { PeriodCreate } from "@/modules/classes/Periode/PeriodCreate"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/period"
 

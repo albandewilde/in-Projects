@@ -1,6 +1,6 @@
 class GroupPeriod {
-    public name! : String;
-    public state! :Boolean;
-    public isAlreadyPermanent! :Boolean;
+    public name!: string
+    public state!: boolean
+    public isAlreadyPermanent!: boolean
 }
 export { GroupPeriod }
