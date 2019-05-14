@@ -59,7 +59,7 @@
                 <span> Étudiants</span>
             </template>
             <el-menu-item-group width="100%">
-                <el-menu-item index="2-1">Liste des étudiants</el-menu-item>
+                <el-menu-item index="2-1" @click="redirect('/student')">Liste des étudiants</el-menu-item>
                 <el-menu-item index="2-2">Trouver un étudiant</el-menu-item>
             </el-menu-item-group>
         </el-submenu>
@@ -70,10 +70,12 @@
                 <span> Professeurs</span>
             </template>
             <el-menu-item-group>
-                <el-menu-item index="3-1">Liste des professeurs</el-menu-item>
+                <el-menu-item index="3-1" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
                 <el-menu-item index="3-2">Trouver un professeur</el-menu-item>
             </el-menu-item-group>
         </el-submenu>
+
+        
         
         <el-submenu index="4">
             <template slot="title">
@@ -95,20 +97,28 @@
             <font-awesome-icon icon="plus-square" size="lg" />
             <span> Deposer un Projet</span>
         </el-menu-item>
+
+        <el-submenu index="6">
+            <template slot="title">
+                <font-awesome-icon icon="user-tie" size="lg" />
+                <span> Periode </span>
+            </template>
+            <el-menu-item-group>
+                <el-menu-item index="3-1" @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
+            </el-menu-item-group>
+        </el-submenu>
     </el-menu>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
 import UserInfoBox from "./UserInfoBox.vue"
-import SchemeDisplay from "./SchemeDisplay.vue"
 import { AuthService } from "@signature/webfrontauth"
 import { getAuthService } from "../modules/authService"
 
 @Component({
   components: {
-    UserInfoBox,
-    SchemeDisplay
+    UserInfoBox
   },
 })
 

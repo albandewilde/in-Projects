@@ -2,7 +2,6 @@
     <el-form ref="user" :label-position="labelPosition" :model="user" label-width="100px">
         <center>
             <b>
-                {{test}}
                 <el-form-item label="Nom" style="width:60%;" prop="lastName">
                     <el-input name="lastName" placeholder="Insérez votre nom" v-model="user.lastName" v-validate="'required|alpha'"></el-input>
                     <i v-show="errors.has('lastName')" class="fa fa-warning" style="color:orange;"></i>
@@ -55,7 +54,6 @@ export default class Register extends Vue {
     private loginResult!: string
     private authService: AuthService = getAuthService()
     private verifiedPassword: string = ""
-    private test: string = ""
 
     async Register() {
         const userHashed: User = new User()
@@ -63,18 +61,19 @@ export default class Register extends Vue {
         userHashed.lastName = this.user.lastName
         userHashed.email = this.user.email
 
-        if(await this.$validator.validateAll()) {
+        if (await this.$validator.validateAll()) {
             userHashed.password = sha256(this.user.password)
-            this.loginResult = await registerRequest(userHashed)    
+            this.loginResult = await registerRequest(userHashed)
             this.Login(this.loginResult, userHashed.password)
-        }                
+        }
     }
 
     resetForm() {
-        const ref = <ElForm>this.$refs.user
+        const ref = this.$refs.user as ElForm
+        this.verifiedPassword = ""
         ref.resetFields()
     }
-    
+
     async Login(userId: string, pw: string) {
         await this.authService.basicLogin(userId, pw)
         this.$router.replace("/")

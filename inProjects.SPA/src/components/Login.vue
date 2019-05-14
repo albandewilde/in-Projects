@@ -1,9 +1,10 @@
 <template>
     <div>
-        <center><div style="color: red;"><u>{{error}}</u></div></center><br>
-        <el-form :label-position="labelPosition" ref="form" label-width="100px">
+        <br>
+        <el-form ref="user" :model="user" :label-position="labelPosition" label-width="100px">
             <center>
                 <b>
+                    <u style="color: red;">{{error}}</u>
                     <el-form-item label="Identifiant" style="width:60%">
                         <el-input name="email" v-validate="'required|email'" placeholder="Insérez votre identifiant" v-model="user.email"></el-input>
                         <i v-show="errors.has('email')" class="fa fa-warning" style="color:orange;"></i>
@@ -21,6 +22,9 @@
                 </b>
             </center>
         </el-form>
+        <div>
+            <button @click="Outlook()">Connexion avec Outlook</button>
+        </div>
     </div>
 </template>
 
@@ -31,10 +35,8 @@ import { Component } from "vue-property-decorator"
 import { getUserName } from "../api/accountApi"
 import { AuthService } from "@signature/webfrontauth"
 import { UserInfo } from "../modules/classes/UserInfo"
-import { UserLoginResult } from "../modules/classes/UserLoginResult"
 import { getAuthService } from "../modules/authService"
 import { sha256 } from "js-sha256"
-import { Form as ElForm } from "element-ui"
 
 @Component
 export default class Login extends Vue {
@@ -45,24 +47,27 @@ export default class Login extends Vue {
 
     async Login() {
         const userInfos: UserInfo = await getUserName(this.user)
-        const password: string = sha256(this.user.password) 
+        const password: string = sha256(this.user.password)
 
-        if(await this.$validator.validateAll()) {
+        if (await this.$validator.validateAll()) {
             await this.authService.basicLogin(userInfos.userName, password)
-    
-            if(this.authService.authenticationInfo.level == 0) {
+            if (this.authService.authenticationInfo.level == 0) {
                 this.error = "La connexion a échouée ! Réessayez !"
-            }            
-            else {
+            } else {
                 this.error = ""
                 this.$router.replace("/")
             }
         }
     }
 
+    async Outlook(){
+        await this.authService.startPopupLogin("Oidc")
+        this.$router.replace("/")
+    }
+
     resetForm() {
-        const ref = <ElForm>this.$refs.form
-        ref.resetFields()
+        this.user.email = ""
+        this.user.password = ""
     }
 }
 </script>
@@ -70,5 +75,8 @@ export default class Login extends Vue {
 <style>
 input {
     text-align: center
+}
+.errorStyle {
+    color: red
 }
 </style>

@@ -1,6 +1,8 @@
 import Vue from "vue"
-import VeeValidate from "vee-validate"
+import VeeValidate,{Validator} from "vee-validate"
+import fr from "vee-validate/dist/locale/fr"
 import ElementUI from "element-ui"
+import locale from "element-ui/lib/locale/lang/fr"
 import "element-ui/lib/theme-chalk/index.css"
 import App from "./App.vue"
 import router from "./router"
@@ -27,8 +29,10 @@ Vue.component("font-awesome-icon", FontAwesomeIcon)
 
 Vue.config.productionTip = false
 const axiosConst = axios.create()
-Vue.use(ElementUI)
+
+Vue.use(ElementUI, { locale })
 Vue.use(VeeValidate)
+Validator.localize('fr', fr)
 
 initializeAuthService(axiosConst).then( () => {
     new Vue({
