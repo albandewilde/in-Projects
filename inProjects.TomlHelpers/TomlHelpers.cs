@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Net;
 using System.Reflection;
@@ -7,6 +7,11 @@ using inProjects.Data;
 using CK.SqlServer;
 using inProjects.Data.Data.ProjectStudent;
 using CK.SqlServer.Setup;
+using inProjects.Data.Queries;
+using inProjects.Data.Data.Group;
+using inProjects.Data.Res.Model;
+using inProjects.Data.Data.User;
+using System.Threading.Tasks;
 
 namespace inProjects.TomlHelpers
 {
@@ -23,7 +28,7 @@ namespace inProjects.TomlHelpers
             return str;
         }
 
-        public static (bool, string) RegisterProject(
+        public static async Task<(bool, string)> RegisterProject(
             string url,
             int projectNumber,
             ProjectStudentTable projectTable,
@@ -71,12 +76,41 @@ namespace inProjects.TomlHelpers
             }
 
             // register the project in the bdd
-
             using(SqlStandardCallContext ctx = new SqlStandardCallContext())
             {
-                ProjectStudentStruct ProjectCreate = await projectTable.CreateProjectStudent(
-                    ctx,
-                    userId,
+                // letter of project type
+                string type;
+                if(projectType is typeof(ProjectPi) ) type = "I";
+                else if( projectType is ProjectPfh ) type = "H";
+                else type = "¤";
+
+                if(type == "I")
+                {
+                    ProjectPi project = toml as ProjectPi;
+                    GroupQueries groupQueries = new GroupQueries( ctx, db );
+                    GroupData school = await groupQueries.GetIdSchoolByConnectUser( userId
+                        );
+                    TraitContextQueries traitContext = new TraitContextQueries( ctx, db );
+                    int traitContextId = await traitContext.GetTraitContextId( type );
+
+                    string leaderFirstName = project.team.leader.Split( " " )[0];
+                    string leaderLastName = project.team.leader.Split( " " )[1];
+                    UserQueries userQueries = new UserQueries( ctx, db );
+                    UserData user = await userQueries.GetUserByName(leaderFirstName, leaderLastName);
+
+                    ProjectStudentStruct ProjectCreate = await projectTable.CreateProjectStudent(
+                        ctx,
+                        userId,
+                        school.ZoneId,
+                        traitContextId,
+                        string.Join(";", project.technologies),
+                        project.logo.url,
+                        project.slogan.slogan,
+                        project.pitch.pitch,
+                        user.UserId,
+                        type
+                    );
+                }
             }
 
             return (true, "The project was succefully register");

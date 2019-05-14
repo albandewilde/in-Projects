@@ -3,6 +3,7 @@ using CK.SqlServer.Setup;
 using inProjects.Data.Data.ProjectStudent;
 using Dapper;
 using System.Threading.Tasks;
+using inProjects.Data.Data.Trait;
 
 namespace inProjects.Data.Queries
 {
@@ -33,6 +34,5 @@ namespace inProjects.Data.Queries
             float result = await _controller.QuerySingleOrDefaultAsync<float>( "select tu.Grade from IPR.tTimedUserNoteProject tu where tu.TimedUserId = @TimedUserId AND tu.StudentProjectId = @StudentProjectId", new { TimedUserId = timedUserId, StudentProjectId = projectId } );
             return result;
         }
-
     }
 }
