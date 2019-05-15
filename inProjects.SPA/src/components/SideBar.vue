@@ -88,7 +88,7 @@
         </el-menu-item-group>
         </el-submenu>
 
-        <el-menu-item index="5">
+        <el-menu-item index="5" @click="redirect('/plan')">
             <font-awesome-icon icon="clipboard" size="lg" />
             <span> Forum PI</span>
         </el-menu-item>
