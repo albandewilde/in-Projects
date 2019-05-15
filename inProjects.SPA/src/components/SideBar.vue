@@ -75,8 +75,7 @@
             </el-menu-item-group>
         </el-submenu>
 
-        
-        
+           
         <el-submenu index="4">
             <template slot="title">
                 <font-awesome-icon icon="file-alt" size="lg" />
@@ -93,32 +92,73 @@
             <span> Forum PI</span>
         </el-menu-item>
 
-        <el-submenu index="6">
-            <template slot="title">
-                <font-awesome-icon icon="user-tie" size="lg" />
-                <span> Période </span>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item index="3-1" @click="redirect('/createPeriod')" >Créer Période </el-menu-item>
-            </el-menu-item-group>
-        </el-submenu>
+        <div v-for="(o,idx) in whatTimed" :key="idx">
+            <!-- index Admin 10 to 30 -->
+            <div v-if="o == 'Administration'">
+                <AdminPanel :isCollapse="isCollapse"></AdminPanel>
+            </div>
+
+            <!-- index Teacher 31 to 51 -->
+             <div v-if="o == 'Teacher'">
+                <TeacherPanel :isCollapse="isCollapse"></TeacherPanel>
+            </div>
+
+            <!-- index User 52 to 72 -->
+            <div v-if="o == 'User'">
+                <UserPanel :isCollapse="isCollapse"></UserPanel>
+            </div>
+
+            <!-- index Jury 73 to 93 -->
+            <div v-if="o == 'Jury'">
+                <JuryPanel :isCollapse="isCollapse"></JuryPanel>
+            </div>
+
+            <!-- index Student 94 to 114 -->
+            <div v-if="o == 'Student'">
+                <StudentPanel :isCollapse="isCollapse"></StudentPanel>
+            </div>
+        </div>
+
     </el-menu>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
 import UserInfoBox from "./UserInfoBox.vue"
+import AdminPanel from "./AdminPanel.vue"
+import TeacherPanel from "./TeacherPanel.vue"
+import JuryPanel from "./JuryPanel.vue"
+import UserPanel from "./UserPanel.vue"
+import StudentPanel from "./StudentPanel.vue"
 import { AuthService } from "@signature/webfrontauth"
+import { getGroupUserAccessPanel } from "../api/groupApi"
 import { getAuthService } from "../modules/authService"
 
 @Component({
   components: {
-    UserInfoBox
+    UserInfoBox,
+    AdminPanel,
+    TeacherPanel,
+    UserPanel,
+    JuryPanel,
+    StudentPanel
   },
 })
 export default class SideBar extends Vue {
     isCollapse: boolean = true
+    whatTimed : string[] = []
+    ZoneId : number = 4
     authService: AuthService = getAuthService()
+
+     async mounted(){
+       const vm = this;
+        await this.getAuthorizedAccess()
+
+        this.$root.$on('refreshSideBar', function () {
+               vm.getAuthorizedAccess()
+        })
+     }
+
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
@@ -134,6 +174,11 @@ export default class SideBar extends Vue {
     async logout() {
         await this.authService.logout(true)
         this.$router.replace("/")
+        this.getAuthorizedAccess();
+    }
+    async getAuthorizedAccess(){
+        this.whatTimed = await getGroupUserAccessPanel(this.ZoneId);
+        console.log(this.whatTimed)
     }
 }
 </script>

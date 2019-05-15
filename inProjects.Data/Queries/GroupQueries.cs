@@ -54,5 +54,12 @@ namespace inProjects.Data.Queries
             GroupData result = await _controller.QuerySingleOrDefaultAsync<GroupData>( "SELECT * FROM CK.tActor a JOIN CK.tActorProfile ap ON a.ActorId = ap.ActorId AND a.ActorId = @UserId JOIN CK.vGroup g ON g.GroupId = ap.GroupId;", new { UserId = userId } );
             return result;
         }
+
+        //Recupere la liste de nom de tous les groupe de l'utilisateur par sa periodId et son timePeriodId
+        public async Task<List<string>> GetAllGroupOfTimedUser( int periodId, int timedUserID )
+        {
+            IEnumerable<string> result = await _controller.QueryAsync<string>( "select g.GroupName from CK.tGroup g join CK.tActorProfile ac on ac.GroupId = g.GroupId join IPR.tTimedUser tu on tu.TimedUserId = ac.ActorId where tu.TimePeriodId = @TimePeriodId AND tu.TimedUserId = @TimedUserId; ", new { TimePeriodId = periodId, TimedUserId = timedUserID } );
+            return result.AsList();
+        }
     }
 }

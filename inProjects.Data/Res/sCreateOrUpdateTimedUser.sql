@@ -2,7 +2,7 @@
 --
 create procedure IPR.sCreateOrUpdateTimedUser
 (
-    -- 0 is user anon, 1 is student, 2 is teacher, 3 is jury
+    -- 0 is user anon, 1 is student, 2 is staffMember, 3 is jury
     @TypeUser INT,
     @TimePeriodId INT,
     @UserId INT,
@@ -15,10 +15,10 @@ begin
     --<PreCreate />
     declare @VerifyUser bit;
 
-    if exists(select * from IPR.tTimedUser tu where tu.UserId = @UserId)
+    if exists(select * from IPR.tTimedUser tu where tu.UserId = @UserId and tu.TimePeriodId = @TimePeriodId)
         begin
           set @VerifyUser =1;
-          SET @TimedUserId = (select TimedUserId from IPR.tTimedUser tu where tu.UserId = @UserId);
+          SET @TimedUserId = (select TimedUserId from IPR.tTimedUser tu where tu.UserId = @UserId and tu.TimePeriodId = @TimePeriodId);
         end
 
     if(@VerifyUser is null)
