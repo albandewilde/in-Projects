@@ -17,7 +17,7 @@
         Pour les valeurs possible à chaque clés referez vous aux fichiers d'exemple.<br>
         Les fichiers d'exemples se trouvent dans les repertoires ./projet_PFH et ./projet_PI.<br>
         <br>
-        
+        https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl
         <a href="documentations.zip" download>
             <el-button type="primary">
                 Télécherger les templates

@@ -19,7 +19,7 @@ namespace inProjects.Data.Queries
         }
         public async Task<int> GetTraitContextId( string contextName )
         {
-            return await _controller.QueryFirstAsync(
+            return await _controller.QueryFirstAsync<int>(
                 "SELECT tc.CKTraitContextId FROM CK.tCKTraitContext tc WHERE tc.ContextName = @contextName",
                 new { contextName = contextName }
             );

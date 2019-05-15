@@ -25,15 +25,18 @@ namespace inProjects.WebApp.Controllers
         {
             ProjectStudentTable projectTable = _stObjMap.StObjs.Obtain<ProjectStudentTable>();           
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            CustomGroupTable groupTable = _stObjMap.StObjs.Obtain<CustomGroupTable>();
 
-
-            return Ok(TomlHelpers.TomlHelpers.RegisterProject(
+           var lol =  Ok(await TomlHelpers.TomlHelpers.RegisterProject(
                 project.Link,
                 project.ProjectType,
                 projectTable,
                 project.UserId,
-                db
+                db,
+                groupTable
             ));
+
+            return lol;
         }
     }
 }

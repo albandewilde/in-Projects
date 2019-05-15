@@ -20,8 +20,8 @@ namespace inProjects.Data.Queries
 
         public async Task<UserData> GetUserByName( string firstName, string lastName )
         {
-            return await _controller.QueryFirstAsync(
-                "SELECT * FROM CK.tUser u WHERE u.firstName = @FirstName AND u.lastName = @LastName",
+            return await _controller.QueryFirstAsync<UserData>(
+                "SELECT * FROM CK.tUser u WHERE u.FirstName = @FirstName AND u.LastName = @LastName",
                 new { FirstName = firstName, LastName = lastName }
             );
         }
