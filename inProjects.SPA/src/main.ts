@@ -1,5 +1,5 @@
 import Vue from "vue"
-import VeeValidate,{Validator} from "vee-validate"
+import VeeValidate, { Validator } from "vee-validate"
 import fr from "vee-validate/dist/locale/fr"
 import ElementUI from "element-ui"
 import locale from "element-ui/lib/locale/lang/fr"
@@ -8,7 +8,7 @@ import App from "./App.vue"
 import router from "./router"
 import store from "./store"
 import axios from "axios"
-import {initializeAuthService} from "./modules/authService"
+import { initializeAuthService } from "./modules/authService"
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome"
 import { library } from "@fortawesome/fontawesome-svg-core"
 import {
@@ -32,7 +32,7 @@ const axiosConst = axios.create()
 
 Vue.use(ElementUI, { locale })
 Vue.use(VeeValidate)
-Validator.localize('fr', fr)
+Validator.localize("fr", fr)
 
 initializeAuthService(axiosConst).then( () => {
     new Vue({

@@ -39,6 +39,7 @@ import { getAuthService } from "../modules/authService"
 import { sha256 } from "js-sha256"
 
 @Component
+
 export default class Login extends Vue {
     private labelPosition: string = "top"
     private user: User = new User()
@@ -56,11 +57,12 @@ export default class Login extends Vue {
             } else {
                 this.error = ""
                 this.$router.replace("/")
+                this.$root.$emit('refreshSideBar');
             }
         }
     }
 
-    async Outlook(){
+    async Outlook() {
         await this.authService.startPopupLogin("Oidc")
         this.$router.replace("/")
     }
