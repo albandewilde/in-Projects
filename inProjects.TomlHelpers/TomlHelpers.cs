@@ -88,6 +88,10 @@ namespace inProjects.TomlHelpers
                 if(type == "I")
                 {
                     ProjectPi project = toml as ProjectPi;
+                    GroupQueries groupQueries = new GroupQueries( ctx, db );
+                    GroupData school = await groupQueries.GetIdSchoolByConnectUser( userId );
+                    TraitContextQueries traitContext = new TraitContextQueries( ctx, db );
+                    int traitContextId = await traitContext.GetTraitContextId( type );
 
                     string leaderFirstName = project.team.leader.Split( " " )[0];
                     string leaderLastName = project.team.leader.Split( " " )[1];
