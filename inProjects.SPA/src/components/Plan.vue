@@ -16,20 +16,20 @@
                     <td
                         v-for="box in boxes[boxRow - 1].length"
                         :key="box">
-                        kjk
                         <div
+                            v-on:dragenter.prevent="dragEnter(boxRow - 1, box - 1)"
                             v-on:dragover.prevent="allowDrop(boxRow - 1, box - 1)"
                             v-on:dragleave.prevent="leave(boxRow - 1, box - 1)"
                             v-on:drop.prevent="drop(boxRow - 1, box - 1)"
                             v-bind:style="{background: boxesColors[boxRow - 1][box - 1]}"
-                            style="height: 200px; width: 200px; opacity: 0.33">
+                            class="dropZones">
 
                             <img
                                 v-if="boxes[boxRow - 1][box - 1]"
                                 v-bind:src="boxes[boxRow - 1][box - 1].logo"
                                 :draggable="true"
                                 v-on:dragstart="setDrag(boxes[boxRow - 1][box - 1])"
-                                style="height: 150px; width: auto; opacity: 1;" />
+                                class="logos" />
                         </div>
                     </td>
                 </tr>
@@ -37,7 +37,7 @@
             <!-- <img :src="plan" style="width: 100%"/> -->
         </div>
 
-        <div
+        <!-- <div
             v-for="box in boxes.length"
             :key="box"
             v-on:dragover.prevent="allowDrop(box - 1)"
@@ -51,7 +51,7 @@
                 <br/>
                 <span v-if="boxes[box - 1] && boxes[box - 1].name"> {{boxes[box - 1].name}}</span>
 
-        </div>
+        </div> -->
 
         <button @click="checkBoxes()">Boites</button>
     </div>
@@ -70,25 +70,27 @@ export default class Plan extends Vue {
     private boxesColors: string[][] = []
     private dragged!: Project
     private plan: string = "/plan.png"
+    private defaultProject = new Project()
 
     async mounted() {
         let i!: number
         let j!: number
         // max is the number of stands, will need some tweaks for the real plan
-        const maxWidth: number = 7
-        const maxHeight: number = 4
+        const maxWidth: number = 14
+        const maxHeight: number = 8 
         let rowBoxes: Project[] = []
         let rowColors: string[] = []
-        for (i = 0; i < maxHeight; i += 1) {
-            rowBoxes = this.boxes[i]
-            rowColors = this.boxesColors[i]
-            for (j = 0; j < maxWidth; j += 1) {
 
-                Vue.set(rowColors, j, "green")
-                Vue.set(rowBoxes, j, null)
+        for (i = 0; i < maxHeight; i += 1) {
+            for (j = 0; j < maxWidth; j += 1) {
+                rowColors.push("green")
+                rowBoxes.push(this.defaultProject)
             }
+
             Vue.set(this.boxes, i, rowBoxes)
             Vue.set(this.boxesColors, i, rowColors)
+            rowColors = []
+            rowBoxes = []
         }
 
         // FOR TESTING NEEDS
@@ -113,7 +115,7 @@ export default class Plan extends Vue {
         this.dragged = project
     }
 
-    async allowDrop(idxRow: number, idxBox: number): Promise<void> {
+    async dragEnter(idxRow: number, idxBox: number): Promise<void> {
         if (this.dragged != undefined && this.dragged != this.boxes[idxRow][idxBox]) {
             const color: string[] = this.boxesColors[idxRow]
             color[idxBox] = "blue"
@@ -121,9 +123,13 @@ export default class Plan extends Vue {
         }
     }
 
+    async allowDrop(idxRow: number, idxBox: number): Promise<void> {
+        // Does nothing
+    }
+
     async leave(idxRow: number, idxBox: number): Promise<void> {
         const color: string[] = this.boxesColors[idxRow]
-        if (this.boxes[idxRow][idxBox]) {
+        if (this.boxes[idxRow][idxBox] != this.defaultProject) {
             color[idxBox] = "red"
             Vue.set(this.boxesColors, idxRow, color)
         } else {
@@ -133,7 +139,6 @@ export default class Plan extends Vue {
     }
 
     async drop(idxRow: number, idxBox: number) {
-        // const idxPresent = this.boxes.findIndex(box => box == this.dragged)
         let rowPresent: number
         let idxPresent!: number
         for (rowPresent = 0; rowPresent < this.boxes.length; rowPresent += 1) {
@@ -157,8 +162,8 @@ export default class Plan extends Vue {
         this.leave(rowPresent, idxPresent)
     }
 
+    // Need to be optimized
     isPresent(project: Project): boolean {
-        // const idxPresent = this.boxes.findIndex(box => box == project)
         let rowPresent: number
         let idxPresent!: number
         for (rowPresent = 0; rowPresent < this.boxes.length; rowPresent += 1) {
@@ -167,23 +172,53 @@ export default class Plan extends Vue {
                 break
         }
 
-        // console.debug(this.boxes)
-        // console.debug(idxPresent)
         if (idxPresent >= 0) {
-            // console.debug("is true")
             return true
         }
-        // console.debug("is false")
         return false
+    }
+
+    checkBoxes() {
+        console.debug("_________________")
+        console.debug("BOXES")
+        console.debug(this.boxes)
+        console.debug("_________________")
     }
 }
 </script>
 
 <style>
 .plan {
-    background-image: url("/plan.jpg");
-    height: 200px;
-    width: 200px;
+    background-image: url("/plan.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    size: 10%;
+    border-width: 0px;
+    border-spacing: 0;
+    display:grid;
+    height: auto;
+    width: 80%;
+    box-sizing: 100px;
+}
+
+.dropZones {
+    height: 100px;
+    width: 100px;
+    opacity: 0.2;
+}
+
+.logos {
+    height: auto;
+    width: 100%;
+    opacity: 1;
+}
+
+#tr {
+}
+
+#td {
+    /* height: 100px;
+    width: 100px; */
 }
 
 </style>
