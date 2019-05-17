@@ -57,7 +57,7 @@ export default class Login extends Vue {
             } else {
                 this.error = ""
                 this.$router.replace("/")
-                this.$root.$emit('refreshSideBar');
+                this.$root.$emit('refreshSideBar')
             }
         }
     }
@@ -65,6 +65,7 @@ export default class Login extends Vue {
     async Outlook() {
         await this.authService.startPopupLogin("Oidc")
         this.$router.replace("/")
+        this.$root.$emit('refreshSideBar')
     }
 
     resetForm() {
