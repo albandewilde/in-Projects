@@ -144,21 +144,19 @@ import { getAuthService } from "../modules/authService"
     StudentPanel
   },
 })
-
- 
 export default class SideBar extends Vue {
     isCollapse: boolean = true
-    whatTimed : string[] = []
-    ZoneId : number = 4
+    whatTimed: string[] = []
+    ZoneId: number = 4
     authService: AuthService = getAuthService()
 
-@Watch('authService.authenticationInfo.level', { immediate: true, deep: true })
+@Watch("authService.authenticationInfo.level", { immediate: true, deep: true })
   async onLevelChange() {
-      await this.getAuthorizedAccess();
+      await this.getAuthorizedAccess()
     }
 
-     async mounted(){
-       const vm = this;
+     async mounted() {
+       const vm = this
        await this.getAuthorizedAccess()
      }
 
@@ -177,10 +175,10 @@ export default class SideBar extends Vue {
     async logout() {
         await this.authService.logout(true)
         this.$router.replace("/")
-        this.getAuthorizedAccess();
+        this.getAuthorizedAccess()
     }
-    async getAuthorizedAccess(){
-        this.whatTimed = await getGroupUserAccessPanel(this.ZoneId);
+    async getAuthorizedAccess() {
+        this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
         console.log(this.whatTimed)
     }
 }
