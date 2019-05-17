@@ -63,6 +63,8 @@ namespace inProjects.WebApp.Controllers
                 return listGroupToReturn;
             }
 
+            listGroupToReturn.Add( "User" );
+
             using( var ctx = new SqlStandardCallContext() )
             {
                 TimedPeriodQueries timedPeriod = new TimedPeriodQueries( ctx, sqlDataBase );
@@ -74,7 +76,6 @@ namespace inProjects.WebApp.Controllers
 
                 if(timedUserData == null )
                 {
-                    listGroupToReturn.Add( "Anon" );
                     return listGroupToReturn;
                 }
 
@@ -100,10 +101,6 @@ namespace inProjects.WebApp.Controllers
 
                     }
 
-                }
-                if( listGroupToReturn.Count == 0 )
-                {
-                    listGroupToReturn.Add( "User" );
                 }
 
                 return listGroupToReturn;
