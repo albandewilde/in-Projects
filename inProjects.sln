@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.ViewModels", "in
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.TomlHelpers", "inProjects.TomlHelpers\inProjects.TomlHelpers.csproj", "{CAAC61DF-2734-454E-AFFA-684504777758}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.TomlHelpers.Tests", "Tests\inProject.TomlHelpers.Tests\inProjects.TomlHelpers.Tests.csproj", "{48BD3CBC-2A64-4F84-8097-BDAC5F1DADE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.TomlHelpers.Tests", "Tests\inProjects.TomlHelpers.Tests\inProjects.TomlHelpers.Tests.csproj", "{48BD3CBC-2A64-4F84-8097-BDAC5F1DADE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.CokeCakeBuilder", "inProjects.CokeCakeBuilder\inProjects.CokeCakeBuilder.csproj", "{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}"
 EndProject

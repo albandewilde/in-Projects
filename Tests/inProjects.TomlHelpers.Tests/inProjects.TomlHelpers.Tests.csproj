@@ -1,11 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <OutputType>Exe</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="NUnitLite" Version="3.11.0" />
+
+    <PackageReference Include="CK.DB.Tests.NUnit" Version="10.0.1--0013-develop" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\inProjects.TomlHelpers\inProject.TomlHelpers.csproj" />
+    <ProjectReference Include="..\..\inProjects.TomlHelpers\inProjects.TomlHelpers.csproj" />
   </ItemGroup>
 
 </Project>

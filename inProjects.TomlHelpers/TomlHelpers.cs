@@ -4,15 +4,8 @@ using System.Net;
 using System.Reflection;
 using Nett;
 using inProjects.Data;
-using CK.SqlServer;
-using inProjects.Data.Data.ProjectStudent;
 using CK.SqlServer.Setup;
-using inProjects.Data.Queries;
-using inProjects.Data.Data.Group;
-using inProjects.Data.Data.User;
 using System.Threading.Tasks;
-using inProjects.Data.Data.TimedUser;
-using inProjects.Data.Data.Period;
 
 namespace inProjects.TomlHelpers
 {
@@ -77,58 +70,13 @@ namespace inProjects.TomlHelpers
                 return (false, "There is missing or bad field in the toml file");
             }
 
-            // register the project in the bdd
-            using(SqlStandardCallContext ctx = new SqlStandardCallContext())
+            try    // register the project in the bdd
             {
-                // letter of project type
-                string type;
-                if(projectType.Name == "ProjectPi") type = "I";
-                else if(projectType.Name == "ProjectPfh") type = "H";
-                else type = "¤";
-
-                if(type == "I")
-                {
-                    ProjectPi project = toml as ProjectPi;
-
-                    GroupQueries groupQueries = new GroupQueries( ctx, db );
-                    TraitContextQueries traitContext = new TraitContextQueries( ctx, db );
-                    TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
-                    TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
-                    UserQueries userQueries = new UserQueries( ctx, db );
-
-                    GroupData school = await groupQueries.GetIdSchoolByConnectUser( userId );
-                    PeriodData timePeriod = await timedPeriodQueries.GetLastPeriodBySchool( school.ZoneId );
-                    TimedUserData timedUser = await timedUserQueries.GetTimedUser( userId, timePeriod.ChildId );
-                    int traitContextId = await traitContext.GetTraitContextId( type );
-
-                    string leaderFirstName = project.team.leader.Split( " " )[0];
-                    string leaderLastName = project.team.leader.Split( " " )[1];
-                    UserData user = await userQueries.GetUserByName(leaderFirstName, leaderLastName);
-                    TimedUserData timedLeader = await timedUserQueries.GetTimedUser( user.UserId, timePeriod.ChildId );
-
-                    ProjectStudentStruct ProjectCreate = await projectTable.CreateProjectStudent(
-                        ctx,
-                        timedUser.TimedUserId,
-                        school.ZoneId,
-                        traitContextId,
-                        string.Join( ";", project.technologies ),
-                        project.logo.url,
-                        project.slogan.slogan,
-                        project.pitch.pitch,
-                        timedLeader.TimedUserId,
-                        type
-                    );
-
-                    for( int i=0; i < project.team.members.Length; i++ )
-                    {
-                        string memberFirstName = project.team.members[i].Split( " " )[0];
-                        string memberLastName = project.team.members[i].Split( " " )[1];
-                        UserData member = await userQueries.GetUserByName( memberFirstName, memberLastName );
-                        TimedUserData timedMember = await timedUserQueries.GetAllTimedUserByUserId( member.UserId );
-                        await groupTable.AddUserAsync(
-                            ctx, timedUser.TimedUserId, ProjectCreate.ProjectStudentId, timedMember.TimedUserId );
-                    }
-                }
+                await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable);
+            }
+            catch 
+            {
+                return (false, "Failed to save the project in the BDD");
             }
 
             return (true, "The project was succefully register");

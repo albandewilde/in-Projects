@@ -27,7 +27,7 @@ namespace inProjects.WebApp.Controllers
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             CustomGroupTable groupTable = _stObjMap.StObjs.Obtain<CustomGroupTable>();
 
-           var lol =  Ok(await TomlHelpers.TomlHelpers.RegisterProject(
+           return Ok(await TomlHelpers.TomlHelpers.RegisterProject(
                 project.Link,
                 project.ProjectType,
                 projectTable,
@@ -35,8 +35,6 @@ namespace inProjects.WebApp.Controllers
                 db,
                 groupTable
             ));
-
-            return lol;
         }
     }
 }

@@ -12,7 +12,6 @@ namespace inProjects.TomlHelpers.Tests
         public void is_the_downloaded_string_is_correct()
         {
             string offlineToml = File.ReadAllText("./toml_sample_for_tests/ficheprojet_in-projects.toml");
-            //string onlineToml =  TomlHelpers.GetOnlineToml("https://drive.google.com/uc?authuser=0&id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl&export=download");
             string onlineToml =  TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl"));
 
             Assert.That(onlineToml, Is.EqualTo(offlineToml));
