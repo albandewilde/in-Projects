@@ -76,7 +76,7 @@ export default class Register extends Vue {
 
     async Login(userId: string, pw: string) {
         await this.authService.basicLogin(userId, pw)
-        this.$router.replace("/")
+                this.$router.replace("/")
     }
 }
 

@@ -123,7 +123,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Watch} from "vue-property-decorator"
 import UserInfoBox from "./UserInfoBox.vue"
 import AdminPanel from "./AdminPanel.vue"
 import TeacherPanel from "./TeacherPanel.vue"
@@ -144,19 +144,22 @@ import { getAuthService } from "../modules/authService"
     StudentPanel
   },
 })
+
+ 
 export default class SideBar extends Vue {
     isCollapse: boolean = true
     whatTimed : string[] = []
     ZoneId : number = 4
     authService: AuthService = getAuthService()
 
+@Watch('authService.authenticationInfo.level', { immediate: true, deep: true })
+  async onLevelChange() {
+      await this.getAuthorizedAccess();
+    }
+
      async mounted(){
        const vm = this;
-        await this.getAuthorizedAccess()
-
-        this.$root.$on('refreshSideBar', function () {
-               vm.getAuthorizedAccess()
-        })
+       await this.getAuthorizedAccess()
      }
 
     handleOpen(key: number, keyPath: number) {
