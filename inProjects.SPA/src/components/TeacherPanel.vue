@@ -5,6 +5,12 @@
                 <font-awesome-icon icon="user-tie" size="lg" />
                 <span v-if="isCollapse == false"> TeacherPanel </span>
             </template>
+            <el-menu-item-group>
+                <el-menu-item index="2-1" @click="redirect('/student')">Liste des étudiants</el-menu-item>
+            </el-menu-item-group>
+            <el-menu-item-group>
+                <el-menu-item index="2-1" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
+            </el-menu-item-group>
     </el-submenu>
 
 </div>

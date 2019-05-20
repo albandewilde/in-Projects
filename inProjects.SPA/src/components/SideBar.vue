@@ -53,28 +53,6 @@
             <span> Accueil</span>
         </el-menu-item>
 
-        <el-submenu index="2">
-            <template slot="title">
-                <font-awesome-icon icon="user-graduate" size="lg" />
-                <span> Étudiants</span>
-            </template>
-            <el-menu-item-group width="100%">
-                <el-menu-item index="2-1" @click="redirect('/student')">Liste des étudiants</el-menu-item>
-                <el-menu-item index="2-2">Trouver un étudiant</el-menu-item>
-            </el-menu-item-group>
-        </el-submenu>
-
-        <el-submenu index="3">
-            <template slot="title">
-                <font-awesome-icon icon="user-tie" size="lg" />
-                <span> Professeurs</span>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item index="3-1" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
-                <el-menu-item index="3-2">Trouver un professeur</el-menu-item>
-            </el-menu-item-group>
-        </el-submenu>
-
            
         <el-submenu index="4">
             <template slot="title">
@@ -155,10 +133,10 @@ export default class SideBar extends Vue {
       await this.getAuthorizedAccess()
     }
 
-     async mounted() {
+/*      async mounted() {
        const vm = this
        await this.getAuthorizedAccess()
-     }
+     } */
 
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
@@ -175,11 +153,10 @@ export default class SideBar extends Vue {
     async logout() {
         await this.authService.logout(true)
         this.$router.replace("/")
-        this.getAuthorizedAccess()
     }
     async getAuthorizedAccess() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
-        console.log(this.whatTimed)
+        console.log("ok" + this.whatTimed)
     }
 }
 </script>

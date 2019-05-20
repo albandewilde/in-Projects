@@ -8,6 +8,12 @@
                 <el-menu-item-group>
                     <el-menu-item @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
                 </el-menu-item-group>
+                <el-menu-item-group>
+                    <el-menu-item index="2-1" @click="redirect('/student')">Liste des étudiants</el-menu-item>
+                </el-menu-item-group>
+                <el-menu-item-group>
+                    <el-menu-item index="2-1" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
+                </el-menu-item-group>
         </el-submenu>
 </div>
 </template>

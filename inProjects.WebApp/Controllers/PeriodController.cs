@@ -38,11 +38,11 @@ namespace inProjects.WebApp.Controllers
             {
                 AclQueries aclQueries = new AclQueries( ctx, sqlDatabase );
 
-                //if(await aclQueries.VerifyGrantLevelByUserId(112,9,userId, Operator.SuperiorOrEqual ) == false )
-                //{
-                //    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
-                //    return this.CreateResult( result);
-                //}
+                if( await aclQueries.VerifyGrantLevelByUserId( 112, 9, userId, Operator.SuperiorOrEqual ) == false )
+                {
+                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                    return this.CreateResult( result );
+                }
 
                 var idZone = await timePeriod.CreateTimePeriodAsync( ctx, 1, createPeriodModel.begDate, createPeriodModel.endDate, createPeriodModel.Kind, createPeriodModel.idZone );
                 if(idZone == 0 )
