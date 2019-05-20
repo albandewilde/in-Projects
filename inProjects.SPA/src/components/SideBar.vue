@@ -53,28 +53,6 @@
             <span> Accueil</span>
         </el-menu-item>
 
-        <el-submenu index="2">
-            <template slot="title">
-                <font-awesome-icon icon="user-graduate" size="lg" />
-                <span> Étudiants</span>
-            </template>
-            <el-menu-item-group width="100%">
-                <el-menu-item index="2-1" @click="redirect('/student')">Liste des étudiants</el-menu-item>
-                <el-menu-item index="2-2">Trouver un étudiant</el-menu-item>
-            </el-menu-item-group>
-        </el-submenu>
-
-        <el-submenu index="3">
-            <template slot="title">
-                <font-awesome-icon icon="user-tie" size="lg" />
-                <span> Professeurs</span>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item index="3-1" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
-                <el-menu-item index="3-2">Trouver un professeur</el-menu-item>
-            </el-menu-item-group>
-        </el-submenu>
-
            
         <el-submenu index="4">
             <template slot="title">
@@ -127,7 +105,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Watch} from "vue-property-decorator"
 import UserInfoBox from "./UserInfoBox.vue"
 import AdminPanel from "./AdminPanel.vue"
 import TeacherPanel from "./TeacherPanel.vue"
@@ -151,18 +129,19 @@ import { getAuthService } from "../modules/authService"
 
 export default class SideBar extends Vue {
     isCollapse: boolean = true
-    whatTimed : string[] = []
-    ZoneId : number = 4
+    whatTimed: string[] = []
+    ZoneId: number = 4
     authService: AuthService = getAuthService()
 
-     async mounted(){
-       const vm = this;
-        await this.getAuthorizedAccess()
+@Watch("authService.authenticationInfo.level", { immediate: true, deep: true })
+  async onLevelChange() {
+      await this.getAuthorizedAccess()
+    }
 
-        this.$root.$on('refreshSideBar', function () {
-               vm.getAuthorizedAccess()
-        })
-     }
+/*      async mounted() {
+       const vm = this
+       await this.getAuthorizedAccess()
+     } */
 
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
@@ -179,11 +158,10 @@ export default class SideBar extends Vue {
     async logout() {
         await this.authService.logout(true)
         this.$router.replace("/")
-        this.getAuthorizedAccess();
     }
-    async getAuthorizedAccess(){
-        this.whatTimed = await getGroupUserAccessPanel(this.ZoneId);
-        console.log(this.whatTimed)
+    async getAuthorizedAccess() {
+        this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
+        console.log("ok" + this.whatTimed)
     }
 }
 </script>

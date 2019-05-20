@@ -126,11 +126,13 @@ export default class CreatePeriod extends Vue {
     }
 
     Add() {
-        const addToList: GroupPeriod = new GroupPeriod()
-        addToList.name = this.groupName
-        addToList.state = false
-        addToList.isAlreadyPermanent = false
-        this.listGroup.push(addToList)
+        if (this.groupName.trim()) {
+            const addToList: GroupPeriod = new GroupPeriod()
+            addToList.name = this.groupName
+            addToList.state = false
+            addToList.isAlreadyPermanent = false
+            this.listGroup.push(addToList)
+        }
     }
 
     Delete(idx: number) {

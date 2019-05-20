@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
+using inProjects.Data;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -33,14 +34,22 @@ namespace inProjects.WebApp.Controllers
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             IEnumerable<TimedStudentData> studentList = new List<TimedStudentData>();
             List<TimedStudentData> timedStudentDatas = new List<TimedStudentData>();
+            int userId = _authenticationInfo.ActualUser.UserId;
 
 
             using( var ctx = new SqlStandardCallContext() )
             {
+                AclQueries aclQueries = new AclQueries( ctx, sqlDatabase );
+
+                if(!await aclQueries.VerifyGrantLevelByUserId(112, 9, userId, Operator.SuperiorOrEqual ) )
+                {
+                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                }
+
+
                 TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDatabase );
                 GroupQueries groupQueries = new GroupQueries( ctx, sqlDatabase );
                 TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, sqlDatabase );
-                int userId = _authenticationInfo.ActualUser.UserId;
 
 
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );

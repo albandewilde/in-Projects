@@ -8,17 +8,30 @@
                 <el-menu-item-group>
                     <el-menu-item @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
                 </el-menu-item-group>
+
+        </el-submenu>
+        <el-submenu index="11">
+            <template slot="title">
+                <font-awesome-icon icon="user-tie" size="lg"/>
+                    <span v-if="isCollapse == false"> Listes</span>
+            </template>
+                <el-menu-item-group>
+                    <el-menu-item index="11-1" @click="redirect('/student')">Liste des étudiants</el-menu-item>
+                </el-menu-item-group>
+                <el-menu-item-group>
+                    <el-menu-item index="11-2" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
+                </el-menu-item-group>
         </el-submenu>
 </div>
 </template>
 
 <script lang="ts">
-import { Component, Vue,Prop } from "vue-property-decorator"
+import { Component, Vue, Prop } from "vue-property-decorator"
 
 @Component
 export default class AdminPanel extends Vue {
 @Prop()
-isCollapse! : boolean;
+isCollapse!: boolean
 
  redirect(destination: string) {
         this.$router.replace(destination)
