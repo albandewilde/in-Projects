@@ -3,6 +3,7 @@ using CK.SqlServer.Setup;
 using inProjects.Data.Data.ProjectStudent;
 using Dapper;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace inProjects.Data.Queries
 {
@@ -28,11 +29,16 @@ namespace inProjects.Data.Queries
             return result;
         }
 
-        public async Task<float> GetProjectGradeSpecJury( int projectId, int timedUserId )
+        public async Task<float> GetProjectGradeSpecificTimedUser( int projectId, int timedUserId )
         {
             float result = await _controller.QuerySingleOrDefaultAsync<float>( "select tu.Grade from IPR.tTimedUserNoteProject tu where tu.TimedUserId = @TimedUserId AND tu.StudentProjectId = @StudentProjectId", new { TimedUserId = timedUserId, StudentProjectId = projectId } );
             return result;
         }
 
+        //public async Task<IEnumerable<ProjectData>> GetAllProjects()
+        //{
+        //    IEnumerable<ProjectData> allProjects = await _controller.QueryAsync( "SELECT * FROM IPR.tProjectStudent" );
+        //    return allProjects;
+        //}
     }
 }
