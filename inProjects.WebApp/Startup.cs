@@ -32,8 +32,7 @@ namespace WebApp
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-            
+        public void ConfigureServices(IServiceCollection services)            
         {
            
             services.AddCors();
@@ -45,12 +44,9 @@ namespace WebApp
             {
                 o.Host = Configuration["Spa:Host"];
             });
-
-            string secretKey = Configuration["JwtBearer:SigningKey"];
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey( Encoding.ASCII.GetBytes( secretKey ) );
-
+            
             services.AddAuthentication( WebFrontAuthOptions.OnlyAuthenticationScheme )
-                .AddOpenIdConnect("Oidc", options =>
+                .AddOpenIdConnect( "Oidc", options =>
                 {
                     options.SignInScheme = WebFrontAuthOptions.OnlyAuthenticationScheme;
                     options.Authority = "https://login.microsoftonline.com/" + Configuration["Authentication:Outlook:TenantId"];
