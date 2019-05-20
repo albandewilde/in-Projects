@@ -8,8 +8,8 @@
                 style="height: 200px; width: auto;"/>
         </div>
 
-        <div >
-            <table class="plan">
+        <div class="plan" >
+            <table class="table">
                 <tr
                     v-for="boxRow in boxes.length"
                     :key="boxRow">
@@ -190,20 +190,24 @@ export default class Plan extends Vue {
 <style>
 .plan {
     background-image: url("/plan.png");
-    background-repeat: no-repeat;
     background-size: 100%;
-    size: 10%;
+    background-repeat: no-repeat;
+    width: 80vw;
+    height: auto;
+}
+
+.table {
     border-width: 0px;
     border-spacing: 0;
-    display:grid;
-    height: auto;
-    width: 80%;
-    box-sizing: 100px;
+    display: grid;
+    height: 100%;
+    width: 100%;
+    box-sizing: content-box;
 }
 
 .dropZones {
     height: 100px;
-    width: 100px;
+    width: 100%;
     opacity: 0.2;
 }
 
@@ -214,11 +218,12 @@ export default class Plan extends Vue {
 }
 
 #tr {
+
 }
 
-#td {
-    /* height: 100px;
-    width: 100px; */
+td {
+    height: 100px;
+    width: 7.14vw;
 }
 
 </style>
