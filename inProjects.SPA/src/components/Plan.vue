@@ -1,25 +1,27 @@
 <template>
     <div>
-        <div v-for="project in projects" :key="project.name">
-            <img v-if="!isPresent(project)"
-                v-on:dragstart="setDrag(project)"
-                v-bind:src="project.logo" 
-                :draggable="true"
-                style="height: 200px; width: auto;"/>
+        <div class="projectsList">
+            <div 
+                class="project"
+                v-for="project in projects" :key="project.name">
+                <img
+                    class="projectImage"
+                    v-if="!isPresent(project)"
+                    v-on:dragstart="setDrag(project)"
+                    v-bind:src="project.logo" 
+                    :draggable="true"/>
+            </div>
         </div>
 
         <div class="plan" >
             <table class="table">
                 <tr
                     v-for="boxRow in boxes.length"
-                    :key="boxRow"
-                    
-                    style="height: fit-content">
+                    :key="boxRow">
                     <td
-                        id="box"
                         v-for="box in boxes[boxRow - 1].length"
                         :key="box" 
-                        :style="{width: boxSizeW, height: boxSizeH}">
+                        :style="{width: boxSizeW, height: boxSizeH, maxWidth: boxSizeW, maxHeight: boxSizeH}">
                         <div
                             v-on:dragenter.prevent="dragEnter(boxRow - 1, box - 1)"
                             v-on:dragover.prevent="allowDrop(boxRow - 1, box - 1)"
@@ -29,11 +31,11 @@
                             class="dropZones">
 
                             <img
-                                v-if="boxes[boxRow - 1][box - 1]"
+                                class="logos"
+                                v-if="boxes[boxRow - 1][box - 1] != defaultProject"
                                 v-bind:src="boxes[boxRow - 1][box - 1].logo"
                                 :draggable="true"
-                                v-on:dragstart="setDrag(boxes[boxRow - 1][box - 1])"
-                                class="logos" />
+                                v-on:dragstart="setDrag(boxes[boxRow - 1][box - 1])" />
                         </div>
                     </td>
                 </tr>
@@ -59,7 +61,7 @@ export default class Plan extends Vue {
     private plan: string = "/plan.png"
     private defaultProject = new Project()
     private maxWidth: number = 14
-    private maxHeight: number = 8
+    private maxHeight: number = 12
     private boxSizeH: string = 100 / this.maxWidth + "vh"
     private boxSizeW: string = 100 / this.maxWidth + "vw"
 
@@ -137,18 +139,29 @@ export default class Plan extends Vue {
                 break
         }
 
-        // Keep the content of the destination
-        const tempBox = this.boxes[idxRow][idxBox]
-        const tempBoxColor = this.boxesColors[idxRow][idxBox]
+        if (this.boxes[idxRow][idxBox] != this.defaultProject) {
+            // Move the project
+            Vue.set(this.boxes[idxRow], idxBox, this.dragged)
+            Vue.set(this.boxesColors[idxRow], idxBox, "red")
 
-        // Copy the target into the destination
-        Vue.set(this.boxes[idxRow], idxBox, this.dragged)
-        Vue.set(this.boxesColors[idxRow], idxBox, "red")
+            // Reset the box
+            Vue.set(this.boxes[rowPresent], idxPresent, this.defaultProject)
+            Vue.set(this.boxesColors[rowPresent], idxPresent, "green")
+        } else {
+            // Keep the content of the destination
+            const tempBox = this.boxes[idxRow][idxBox]
+            const tempBoxColor = this.boxesColors[idxRow][idxBox]
 
-        // Put the content of the destination into the target origin
-        Vue.set(this.boxesColors[rowPresent], idxPresent, tempBoxColor)
-        Vue.set(this.boxes[rowPresent], idxPresent, tempBox)
-        this.leave(rowPresent, idxPresent)
+            // Copy the target into the destination
+            Vue.set(this.boxes[idxRow], idxBox, this.dragged)
+            Vue.set(this.boxesColors[idxRow], idxBox, "red")
+
+            // Put the content of the destination into the target origin
+            Vue.set(this.boxesColors[rowPresent], idxPresent, tempBoxColor)
+            Vue.set(this.boxes[rowPresent], idxPresent, tempBox)
+            this.leave(rowPresent, idxPresent)
+        }
+
     }
 
     // Need to be optimized
@@ -179,30 +192,49 @@ export default class Plan extends Vue {
 <style>
 .plan {
     background-image: url("/plan.png");
-    background-size: 100%;
+    background-size: 100% 100%;
     background-repeat: no-repeat;
-    width: 80vw;
+    width: 70vw;
     height: auto;
 }
 
 .table {
-    border-width: 0px;
+    border-width: 0px;  
     border-spacing: 0;
     display: grid;
     height: 100%;
     width: 100%;
-    box-sizing: content-box;
 }
 
 .dropZones {
     height: 100%;
     width: 100%;
+    /*  */
+    max-width: inherit;
+    max-height: inherit;
     opacity: 0.2;
 }
 
 .logos {
-    height: auto;
-    width: 100%;
+    width: inherit;
+    height: inherit;
+    max-width: 100%;
+    max-height: 100%;
     opacity: 1;
+}
+
+.projectsList {
+    position: absolute;
+    margin-left: 72vw;
+}
+
+.project {
+    height: auto;
+    width: auto;
+}
+
+.projectImage {
+    height: 200px;
+    width: auto;
 }
 </style>
