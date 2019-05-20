@@ -44,12 +44,18 @@ namespace inProjects.TomlHelpers.Tests
 
             using(SqlStandardCallContext ctx = new SqlStandardCallContext())
             {
+
+
                 // get school id
                 GroupQueries groupeQueries = new GroupQueries(ctx, db);
                 int schoolId = await groupeQueries.GetIdSchoolByName("IN'TECH");
 
                 // create the time period
                 int periodId = await timePeriod.CreateTimePeriodAsync(ctx, 1, dateBegin, dateEnd, "S", schoolId);
+
+                // create group S5
+                int idGroup = await groupTable.CreateGroupAsync( ctx, 1, periodId );
+                await groupTable.Naming.GroupRenameAsync( ctx, 1, idGroup, "S5" );
 
                 // inserts students
                 int idx = 0;
@@ -59,9 +65,7 @@ namespace inProjects.TomlHelpers.Tests
                     int userId = await userTable.CreateUserAsync(ctx, 1, Guid.NewGuid().ToString(), name[0], name[1]);
                     membersId[idx] = userId;
                     TimedUserStruct timedUser = await userTimed.CreateOrUpdateTimedUserAsync( ctx, 1, periodId, userId );
-
-
-
+                    await groupTable.AddUserAsync( ctx, 1, idGroup, userId );
                     idx += 1;
                 }
 

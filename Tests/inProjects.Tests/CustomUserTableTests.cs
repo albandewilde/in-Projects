@@ -67,10 +67,10 @@ namespace inProjects.Tests
                     TimedUserStruct result = await userTimed.CreateOrUpdateTimedUserAsync( ctx, i, id, userId );
                     Assert.That( result.Status == i );
 
-                    if( await timedUserQueries.GetTimedUser(userId) == null )
+                    if( await timedUserQueries.GetAllTimedUserByUserId(userId) == null )
                     {
-                        TimedUserStruct result = await userTimed.CreateOrUpdateTimedUserAsync( ctx, i, id, userId );
-                        Assert.That(result.Status == i);
+                        TimedUserStruct result2 = await userTimed.CreateOrUpdateTimedUserAsync( ctx, i, id, userId );
+                        Assert.That(result2.Status == i);
                     }
 
 
