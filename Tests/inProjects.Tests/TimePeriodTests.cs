@@ -62,6 +62,7 @@ namespace inProjects.Tests
             {
                 AclQueries aclQueries = new AclQueries( ctx, sqldatabase );
                 var userId = userTable.CreateUser( ctx, 1, Guid.NewGuid().ToString(), "Admin", "Admin" );
+               
                 //17 is group Admin In intech
                 await group.AddUserAsync( ctx, 1, 17, userId, true );
                 //Acl ID 9 is AclManagementId of Zone ID InTech

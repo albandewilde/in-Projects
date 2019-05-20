@@ -76,6 +76,11 @@ namespace inProjects.WebApp.Controllers
 
                 if(timedUserData == null )
                 {
+                    if(await groupsQueries.GetSpecificIdGroupByZoneIdAndGroupName( idZone, "Administration" ) != 0 )
+                    {
+                        listGroupToReturn.Add( "Administration" );
+                    }
+
                     return listGroupToReturn;
                 }
 
@@ -102,6 +107,8 @@ namespace inProjects.WebApp.Controllers
                     }
 
                 }
+
+             
 
                 return listGroupToReturn;
             }

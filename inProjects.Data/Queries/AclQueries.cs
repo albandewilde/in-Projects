@@ -65,6 +65,11 @@ namespace inProjects.Data.Queries
             }
             
         }
+
+        public async Task<int> GetAclIdBySchoolId (int idSchool )
+        {
+            return await _controller.QuerySingleAsync<int>( "SELECT AclPeriodManagementId FROM IPR.tSchool where SchoolId = @IdSchool ", new { IdSchool = idSchool } );
+        }
     }
 
     public enum Operator
