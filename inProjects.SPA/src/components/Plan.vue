@@ -12,10 +12,14 @@
             <table class="table">
                 <tr
                     v-for="boxRow in boxes.length"
-                    :key="boxRow">
+                    :key="boxRow"
+                    
+                    style="height: fit-content">
                     <td
+                        id="box"
                         v-for="box in boxes[boxRow - 1].length"
-                        :key="box">
+                        :key="box" 
+                        :style="{width: boxSizeW, height: boxSizeH}">
                         <div
                             v-on:dragenter.prevent="dragEnter(boxRow - 1, box - 1)"
                             v-on:dragover.prevent="allowDrop(boxRow - 1, box - 1)"
@@ -34,24 +38,7 @@
                     </td>
                 </tr>
             </table>
-            <!-- <img :src="plan" style="width: 100%"/> -->
         </div>
-
-        <!-- <div
-            v-for="box in boxes.length"
-            :key="box"
-            v-on:dragover.prevent="allowDrop(box - 1)"
-            v-on:dragleave.prevent="leave(box - 1)"
-            v-on:drop.prevent="drop(box - 1)"
-            v-bind:style="{background: boxesColors[box - 1]}"
-            style="height: 200px; width: 200px; opacity: 0.33;"> 
-                Drop Zone {{box}}
-
-                <img :draggable="true" v-on:dragstart="setDrag(boxes[box - 1])" v-if="boxes[box - 1]" v-bind:src="boxes[box - 1].logo" style="height: 150px; width: auto; opacity: 1;"/>
-                <br/>
-                <span v-if="boxes[box - 1] && boxes[box - 1].name"> {{boxes[box - 1].name}}</span>
-
-        </div> -->
 
         <button @click="checkBoxes()">Boites</button>
     </div>
@@ -71,18 +58,20 @@ export default class Plan extends Vue {
     private dragged!: Project
     private plan: string = "/plan.png"
     private defaultProject = new Project()
+    private maxWidth: number = 14
+    private maxHeight: number = 8
+    private boxSizeH: string = 100 / this.maxWidth + "vh"
+    private boxSizeW: string = 100 / this.maxWidth + "vw"
 
     async mounted() {
         let i!: number
         let j!: number
         // max is the number of stands, will need some tweaks for the real plan
-        const maxWidth: number = 14
-        const maxHeight: number = 8 
         let rowBoxes: Project[] = []
         let rowColors: string[] = []
 
-        for (i = 0; i < maxHeight; i += 1) {
-            for (j = 0; j < maxWidth; j += 1) {
+        for (i = 0; i < this.maxHeight; i += 1) {
+            for (j = 0; j < this.maxWidth; j += 1) {
                 rowColors.push("green")
                 rowBoxes.push(this.defaultProject)
             }
@@ -206,7 +195,7 @@ export default class Plan extends Vue {
 }
 
 .dropZones {
-    height: 100px;
+    height: 100%;
     width: 100%;
     opacity: 0.2;
 }
@@ -216,14 +205,4 @@ export default class Plan extends Vue {
     width: 100%;
     opacity: 1;
 }
-
-#tr {
-
-}
-
-td {
-    height: 100px;
-    width: 7.14vw;
-}
-
 </style>
