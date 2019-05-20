@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using CK.Auth;
@@ -16,6 +15,7 @@ using inProjects.WebApp.Controllers;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using CK.DB.User.UserOidc;
 using inProjects.WebApp.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApp
 {
@@ -49,8 +49,8 @@ namespace WebApp
             string secretKey = Configuration["JwtBearer:SigningKey"];
             SymmetricSecurityKey signingKey = new SymmetricSecurityKey( Encoding.ASCII.GetBytes( secretKey ) );
 
-            services.AddAuthentication( WebFrontAuthOptions.OnlyAuthenticationScheme )
-                .AddOpenIdConnect("Oidc", options =>
+            services.AddAuthentication( WebFrontAuthOptions.OnlyAuthenticationScheme )              
+               .AddOpenIdConnect("Oidc", options =>
                 {
                     options.SignInScheme = WebFrontAuthOptions.OnlyAuthenticationScheme;
                     options.Authority = "https://login.microsoftonline.com/" + Configuration["Authentication:Outlook:TenantId"];

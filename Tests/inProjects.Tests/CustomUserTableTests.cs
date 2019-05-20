@@ -1,14 +1,12 @@
 using CK.Core;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
-using Dapper;
 using FluentAssertions;
 using inProjects.Data;
 using inProjects.Data.Data.TimedUser;
 using inProjects.Data.Queries;
 using NUnit.Framework;
 using System;
-using System.Data;
 using System.Threading.Tasks;
 using static CK.Testing.DBSetupTestHelper;
 

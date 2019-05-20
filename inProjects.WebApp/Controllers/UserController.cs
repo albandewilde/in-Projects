@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
+using inProjects.WebApp.Services.CSV;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -44,7 +45,7 @@ namespace inProjects.WebApp.Controllers
 
 
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
-    //PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( groupData.ZoneId );
+               //PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( groupData.ZoneId );
                 IEnumerable<GroupData> groupList = await groupQueries.GetAllGroupByPeriod( groupData.ZoneId );
 
                 List<GroupData> groupFinal = groupList.ToList();
