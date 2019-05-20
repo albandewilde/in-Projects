@@ -46,7 +46,8 @@ namespace inProjects.WebApp.Controllers
             if( result.Status == Status.Ok ) return @this.Ok();
             if( result.Status == Status.NotFound ) return @this.NotFound( result.ErrorMessage );
             if( result.Status == Status.BadRequest ) return @this.BadRequest( result.ErrorMessage );
-            if( result.Status == Status.Forbidden ) return @this.Forbid();
+            if( result.Status == Status.Forbidden ) return @this.Forbid(result.ErrorMessage);
+            if( result.Status == Status.Unauthorized ) return @this.Unauthorized(result.ErrorMessage);
 
             throw new ArgumentException( "Unknown status.", nameof( result ) );
         }

@@ -2,6 +2,8 @@ using CK.Auth;
 using CK.Core;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
+using inProjects.Data.Data.Period;
+using inProjects.Data.Data.TimedUser;
 using inProjects.Data.Queries;
 using inProjects.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -47,6 +49,61 @@ namespace inProjects.WebApp.Controllers
                 }
 
                 return list;
+            }
+        }
+        [HttpGet( "getGroupUserAccessPanel" )]
+        public async Task<List<string>> GetGroupUserAccessPanel(int idZone)
+        {
+            List<string> listGroupToReturn = new List<string>();
+            int userId = _authenticationInfo.ActualUser.UserId;
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            if( userId == 0 )
+            {
+                listGroupToReturn.Add( "Anon" );
+                return listGroupToReturn;
+            }
+
+            listGroupToReturn.Add( "User" );
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                TimedPeriodQueries timedPeriod = new TimedPeriodQueries( ctx, sqlDataBase );
+                TimedUserQueries timedUser = new TimedUserQueries( ctx, sqlDataBase );
+                GroupQueries groupsQueries = new GroupQueries( ctx, sqlDataBase );
+
+                PeriodData period = await timedPeriod.GetLastPeriodBySchool( idZone );
+                TimedUserData timedUserData = await timedUser.GetTimedUser( userId, period.ChildId );
+
+                if(timedUserData == null )
+                {
+                    return listGroupToReturn;
+                }
+
+                listGroupToReturn = await timedUser.getWhichCat( timedUserData.TimedUserId,listGroupToReturn );
+                if(!listGroupToReturn.Contains("StaffMember"))
+                {
+                    return listGroupToReturn;
+                }
+
+                List<string> listGroupsOfTimedUser = new List<string>();
+
+                listGroupsOfTimedUser = await groupsQueries.GetAllGroupOfTimedUser( period.ChildId, timedUserData.TimedUserId );
+
+                for( int i = 0; i < listGroupsOfTimedUser.Count; i++ )
+                {
+                    if(listGroupsOfTimedUser[i] == "Administration" )
+                    {
+                        listGroupToReturn.Add( "Administration" );
+                    }
+                    else if(listGroupsOfTimedUser[i] == "Teacher" )
+                    {
+                        listGroupToReturn.Add( "Teacher" );
+
+                    }
+
+                }
+
+                return listGroupToReturn;
             }
         }
     }

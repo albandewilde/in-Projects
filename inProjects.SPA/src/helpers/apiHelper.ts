@@ -6,7 +6,7 @@ export  async function postAsync(url: string, data: any, ) {
         return response
       })
       .catch((error) => {
-        throw error;
+        throw error
       })
 }
 
