@@ -70,14 +70,14 @@ namespace inProjects.TomlHelpers
                 return (false, "There is missing or bad field in the toml file");
             }
 
-            try    // register the project in the bdd
-            {
+            //try    // register the project in the bdd
+            //{
                 await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable);
-            }
-            catch 
-            {
-                return (false, "Failed to save the project in the BDD");
-            }
+            //}
+            //catch 
+            //{
+            //    return (false, "Failed to save the project in the BDD");
+            //}
 
             return (true, "The project was succefully register");
         }

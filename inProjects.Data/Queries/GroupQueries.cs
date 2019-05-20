@@ -45,7 +45,7 @@ namespace inProjects.Data.Queries
 
         public async Task<int> GetIdSchoolByName(string schoolName)
         {
-            int result = await _controller.QuerySingleOrDefault( "SELECT * FROM IPR.tSchool WHERE[Name] = @SchoolName;", new { SchoolName = schoolName } );
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "SELECT SchoolId FROM IPR.tSchool WHERE[Name] = @SchoolName;", new { SchoolName = schoolName } );
             return result;
         }
 

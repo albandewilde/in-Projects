@@ -40,7 +40,7 @@ namespace inProjects.TomlHelpers
                     (UserQueries userQueries, TimedUserQueries timedUserQueries, ProjectStudentStruct ProjectCreate, TimedUserData timedUser) = await SaveProjectPi(project, projectTable, userId, db, ctx, type);
 
                     // link members to the project
-                    await LinkMembersToProject(project, userQueries, timedUserQueries, ProjectCreate, timedUser, groupTable, ctx);
+                    if (toml.team.members.Length > 0) await LinkMembersToProject(project, userQueries, timedUserQueries, ProjectCreate, timedUser, groupTable, ctx);
                 }
             }
         }
