@@ -41,8 +41,6 @@
                 </tr>
             </table>
         </div>
-
-        <button @click="checkBoxes()">Boites</button>
     </div>
 </template>
 

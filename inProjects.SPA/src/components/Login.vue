@@ -16,14 +16,14 @@
                         <span v-show="errors.has('password')" class="errorStyle">{{ errors.first('password') }}</span>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="Login()">Valider</el-button>
+                        <el-button type="success" @click="Login()">Valider</el-button>
                         <el-button type="info" @click="resetForm()">Réinitialiser</el-button>
                     </el-form-item>
                 </b>
             </center>
         </el-form>
         <div>
-            <button @click="Outlook()">Connexion avec Outlook</button>
+            <el-button type="primary" @click="Outlook()">Connexion avec Outlook</el-button>
         </div>
     </div>
 </template>

@@ -65,10 +65,7 @@
         </el-menu-item-group>
         </el-submenu>
 
-        <el-menu-item index="5" @click="redirect('/plan')">
-            <font-awesome-icon icon="clipboard" size="lg" />
-            <span> Forum PI</span>
-        </el-menu-item>
+        
 
         <div v-for="(o,idx) in whatTimed" :key="idx">
             <!-- index Admin 10 to 30 -->
