@@ -60,7 +60,7 @@ export default class StudentList extends Vue {
     private userListDisplay: User[] = []
     private search: string = ""
     private isAdmin: boolean = false
-    private userState: String[] = []
+    private userState: string[] = []
     private zoneId: number = 4
 
      async mounted() {
@@ -74,14 +74,14 @@ export default class StudentList extends Vue {
         console.log(this.isAdmin)
     }
 
-    async checkAdmin(){
+    async checkAdmin() {
         this.userState = await getGroupUserAccessPanel(this.zoneId)
-        for(var i = 0; i < this.userState.length; i++){
-            console.log(this.userState[i])
-            if(this.userState[i] == "Administration"){
+        for (const user of this.userState) {
+            console.log(user)
+            if (user == "Administration") {
                 this.isAdmin = true
             }
-        }        
+        }
     }
 }
 

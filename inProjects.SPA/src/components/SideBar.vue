@@ -157,7 +157,7 @@ export default class SideBar extends Vue {
     async getAuthorizedAccess() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
         console.log("ok" + this.whatTimed)
-        this.$store.state.currentUserType = this.whatTimed;
+        this.$store.state.currentUserType = this.whatTimed
         console.log("store :")
         console.log(this.$store.state)
     }
