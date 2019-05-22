@@ -6,7 +6,7 @@ using System.Text;
 
 namespace inProjects.Data
 {
-    [SqlTable( "tTimePeriod", Package = typeof( Package ) )]
+    [SqlTable( "tForumInfos", Package = typeof( Package ) )]
     [Versions( "1.0.0" )]
     public abstract class ForumInfosTable : SqlTable
     {
