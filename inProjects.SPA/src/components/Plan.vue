@@ -30,17 +30,26 @@
                             v-bind:style="{background: boxesColors[boxRow - 1][box - 1]}"
                             class="dropZones">
 
-                            <img
+                            <div
+                                class="projectInGrid"
+                                v-if="boxes[boxRow - 1][box - 1] != defaultProject"
+                                :draggable="true"
+                                v-on:dragstart="setDrag(boxes[boxRow - 1][box - 1])">
+                                {{boxes[boxRow - 1][box - 1].name}}
+                            </div>
+
+                            <!-- <img
                                 class="logos"
                                 v-if="boxes[boxRow - 1][box - 1] != defaultProject"
                                 v-bind:src="boxes[boxRow - 1][box - 1].logo"
                                 :draggable="true"
-                                v-on:dragstart="setDrag(boxes[boxRow - 1][box - 1])" />
+                                v-on:dragstart="setDrag(boxes[boxRow - 1][box - 1])" /> -->
                         </div>
                     </td>
                 </tr>
             </table>
         </div>
+        <button @click="checkBoxes()">Boîtes</button>
     </div>
 </template>
 
@@ -105,7 +114,7 @@ export default class Plan extends Vue {
     }
 
     async dragEnter(idxRow: number, idxBox: number): Promise<void> {
-        if (this.dragged != undefined && this.dragged != this.boxes[idxRow][idxBox]) {
+        if (this.dragged != this.defaultProject && this.dragged != this.boxes[idxRow][idxBox]) {
             const color: string[] = this.boxesColors[idxRow]
             color[idxBox] = "blue"
             Vue.set(this.boxesColors, idxRow, color)
@@ -113,7 +122,9 @@ export default class Plan extends Vue {
     }
 
     async allowDrop(idxRow: number, idxBox: number): Promise<void> {
-        // Does nothing
+        // if (this.dragged == this.defaultProject)
+        //     return false
+        // return true
     }
 
     async leave(idxRow: number, idxBox: number): Promise<void> {
@@ -128,6 +139,9 @@ export default class Plan extends Vue {
     }
 
     async drop(idxRow: number, idxBox: number) {
+        if (this.dragged == this.defaultProject)
+            return
+
         let rowPresent: number
         let idxPresent!: number
         for (rowPresent = 0; rowPresent < this.boxes.length; rowPresent += 1) {
@@ -137,7 +151,7 @@ export default class Plan extends Vue {
                 break
         }
 
-        if (this.boxes[idxRow][idxBox] != this.defaultProject) {
+        if (this.boxes[idxRow][idxBox] != this.defaultProject && idxPresent != -1) {
             // Move the project
             Vue.set(this.boxes[idxRow], idxBox, this.dragged)
             Vue.set(this.boxesColors[idxRow], idxBox, "red")
@@ -154,12 +168,14 @@ export default class Plan extends Vue {
             Vue.set(this.boxes[idxRow], idxBox, this.dragged)
             Vue.set(this.boxesColors[idxRow], idxBox, "red")
 
-            // Put the content of the destination into the target origin
-            Vue.set(this.boxesColors[rowPresent], idxPresent, tempBoxColor)
-            Vue.set(this.boxes[rowPresent], idxPresent, tempBox)
-            this.leave(rowPresent, idxPresent)
+            if (idxPresent != -1) {
+                // Put the content of the destination into the target origin
+                Vue.set(this.boxesColors[rowPresent], idxPresent, tempBoxColor)
+                Vue.set(this.boxes[rowPresent], idxPresent, tempBox)
+                this.leave(rowPresent, idxPresent)
+            }
         }
-
+        this.dragged = this.defaultProject
     }
 
     // Need to be optimized
@@ -213,7 +229,7 @@ export default class Plan extends Vue {
     opacity: 0.2;
 }
 
-.logos {
+.projectInGrid {
     /* width: inherit;
     height: inherit; */
     max-width: 100%;
