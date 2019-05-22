@@ -42,5 +42,11 @@
     <ProjectReference Include="..\inProjects.Data\inProjects.Data.csproj" />
     <ProjectReference Include="..\inProjects.ViewModels\inProjects.ViewModels.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="classRooms.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   
 </Project>

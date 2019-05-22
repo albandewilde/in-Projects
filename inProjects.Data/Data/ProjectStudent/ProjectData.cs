@@ -13,5 +13,9 @@ namespace inProjects.Data.Data.ProjectStudent
         public int LeaderId { get; set; }
         public string Type { get; set; }
         public int TraitId { get; set; }
+        public string Name { get; set; }
+        public string Semester { get; set; }
+        public int PosX { get; set; }
+        public int PosY { get; set; }
     }
 }

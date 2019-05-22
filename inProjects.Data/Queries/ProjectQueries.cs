@@ -57,5 +57,16 @@ namespace inProjects.Data.Queries
 
             return result;
         }
+
+        public async Task<IEnumerable<ProjectData>> GetAllProjectByForum( int forumId )
+        {
+            IEnumerable<ProjectData> result = await _controller.QueryAsync<ProjectData>(
+                "SELECT *" +
+                "FROM IPR.vForumProjectInfos" +
+                "WHERE SchoolId = @SchoolId",
+                new { SchoolId = forumId } );
+
+            return result;
+        }
     }
 }

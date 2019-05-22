@@ -67,8 +67,8 @@ export default class Plan extends Vue {
     private dragged!: Project
     private plan: string = "/plan.png"
     private defaultProject = new Project()
-    private maxWidth: number = 14
-    private maxHeight: number = 12
+    private maxWidth: number = 28
+    private maxHeight: number = 24
     private boxSizeH: string = 100 / this.maxWidth + "vh"
     private boxSizeW: string = 100 / this.maxWidth + "vw"
 
