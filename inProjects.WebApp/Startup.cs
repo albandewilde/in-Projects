@@ -1,21 +1,22 @@
 using CK.AspNet.Auth;
 using CK.DB.AspNet.Auth;
 using CK.Text;
-using WebApp.Controllers;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using CK.Auth;
 using System.Text;
-using inProjects.WebApp.Authentication;
 using System.Security.Claims;
 using inProjects.WebApp.Controllers;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using CK.DB.User.UserOidc;
+using inProjects.WebApp.Services;
+using inProjects.Data;
 
 namespace WebApp
 {
@@ -32,28 +33,46 @@ namespace WebApp
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)            
         {
+           
             services.AddCors();
-
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
             services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
-           
+            services.AddSingleton<IWebFrontAuthAutoCreateAccountService, AutoCreateAccountService>();
 
             services.Configure<SpaOptions>(o =>
             {
                 o.Host = Configuration["Spa:Host"];
             });
-
-            string secretKey = Configuration["JwtBearer:SigningKey"];
-            SymmetricSecurityKey signingKey = new SymmetricSecurityKey( Encoding.ASCII.GetBytes( secretKey ) );
-
+            
             services.AddAuthentication( WebFrontAuthOptions.OnlyAuthenticationScheme )
+                .AddOpenIdConnect( "Oidc", options =>
+                {
+                    options.SignInScheme = WebFrontAuthOptions.OnlyAuthenticationScheme;
+                    options.Authority = "https://login.microsoftonline.com/" + Configuration["Authentication:Outlook:TenantId"];
+                    options.ClientId = Configuration["Authentication:Outlook:ClientId"];
+                    options.ResponseType = OpenIdConnectResponseType.IdToken;
+                    options.CallbackPath = "/auth/signin-callback";
+                    options.SignedOutRedirectUri = "https://localhost:8080/";
+                    options.TokenValidationParameters.NameClaimType = "name";
+                    options.Events.OnTicketReceived = c => c.WebFrontAuthRemoteAuthenticateAsync<ICustomUserOidcInfos>( payload =>
+                    {
+                        payload.Email = c.Principal.FindFirst( ClaimTypes.Name ).Value;
+                        payload.FirstName = c.Principal.FindFirst( ClaimTypes.GivenName ).Value;
+                        payload.LastName = c.Principal.FindFirst( ClaimTypes.Surname ).Value;
+                        payload.SchemeSuffix = "";
+                        // Instead of "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
+                        // Use standard System.Security.Claims.ClaimTypes.
+                        payload.Sub = c.Principal.FindFirst( ClaimTypes.NameIdentifier ).Value;
+                    } );
+                } )
                 .AddWebFrontAuth( options =>
                 {
                     options.ExpireTimeSpan = TimeSpan.FromHours( 1 );
                     options.SlidingExpirationTime = TimeSpan.FromHours( 1 );
-                } );
+                } )
+                .AddCookie();
 
             if( _env.IsDevelopment() )
             {
@@ -67,7 +86,6 @@ namespace WebApp
             }
 
             services.AddCKDatabase( "CK.StObj.AutoAssembly" );
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

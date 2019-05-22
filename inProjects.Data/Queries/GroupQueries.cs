@@ -1,7 +1,10 @@
+
+
 using CK.SqlServer;
 using CK.SqlServer.Setup;
 using Dapper;
-using System;
+using inProjects.Data.Data.Group;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +18,7 @@ namespace inProjects.Data.Queries
         public GroupQueries( ISqlCallContext ctx, SqlDefaultDatabase sqlDefaultDatabase )
         {
             _controller = ctx.GetConnectionController( sqlDefaultDatabase );
+
         }
 
         public GroupQueries(ISqlConnectionController controller )
@@ -32,7 +36,30 @@ namespace inProjects.Data.Queries
             IEnumerable<string> list = await _controller.QueryAsync<string>( "select GroupName from CK.vGroup where ZoneId = 0 AND IsZone = 0 OR ZoneId = @ZoneId AND IsZone = 0 group by GroupName;", new { ZoneId = zoneID } );
             return list.AsList();
         }
+        
+        public async Task<IEnumerable<GroupData>> GetAllGroupByPeriod(int zoneId)
+        {
+            IEnumerable<GroupData> result = await _controller.QueryAsync<GroupData>( "SELECT * FROM CK.vGroup WHERE ZoneId = @ZoneId AND IsZone = 0 AND UserCount <> 0;", new { ZoneId = zoneId } );
+            return result;
+        }
 
-      
+        public async Task<int> GetIdSchoolByName(string schoolName)
+        {
+            int result = await _controller.QuerySingleOrDefault( "SELECT * FROM IPR.tSchool WHERE[Name] = @SchoolName;", new { SchoolName = schoolName } );
+            return result;
+        }
+
+        public async Task<GroupData> GetIdSchoolByConnectUser(int userId )
+        {
+            GroupData result = await _controller.QuerySingleOrDefaultAsync<GroupData>( "SELECT TOP(1) * FROM CK.tActor a JOIN CK.tActorProfile ap ON a.ActorId = ap.ActorId AND a.ActorId = @UserId JOIN CK.vGroup g ON g.GroupId = ap.GroupId AND g.IsZone = 0 ORDER BY g.ZoneId DESC;", new { UserId = userId } );
+            return result;
+        }
+
+        //Recupere la liste de nom de tous les groupe de l'utilisateur par sa periodId et son timePeriodId
+        public async Task<List<string>> GetAllGroupOfTimedUser( int periodId, int timedUserID )
+        {
+            IEnumerable<string> result = await _controller.QueryAsync<string>( "  select g.GroupName from CK.tGroup g join CK.tActorProfile ac on ac.GroupId = g.GroupId AND g.ZoneId = @TimePeriodId join IPR.tTimedUser tu on tu.UserId = ac.ActorId AND tu.TimedUserId = @TimedUserId ", new { TimePeriodId = periodId, TimedUserId = timedUserID } );
+            return result.AsList();
+        }
     }
 }

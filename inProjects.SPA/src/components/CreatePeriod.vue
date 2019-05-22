@@ -1,7 +1,7 @@
 <template>
     <div>
         <Error :error="error"/>
-        Dates pour la nouvelle periode : 
+        Dates pour la nouvelle période : 
         <br>
      <el-date-picker
       v-model="date"
@@ -19,7 +19,7 @@
     <el-button @click="Add()">Ajouter</el-button>
     <br>
     <br>
-    Choissisez les groupes de la nouvelle periode :
+    Choissisez les groupes de la nouvelle période :
         
         <div class="square-container">
 
@@ -40,16 +40,10 @@
                             </template>
                          </el-table-column>
                     </el-table>
-                <!-- <div v-for="(i,idx) in listGroup" :key="idx" class="list-groups-period">
-                    {{i.name}}&nbsp;&nbsp;<el-button @click="Delete(idx)" type="danger" class="el-icon-remove" circle></el-button> 
-                    <div v-if="listGroup[idx].isAlreadyPermanent == false">
-                        <el-switch :value="getState(idx)" @change="setState(idx)" active-text="Rendre Permanent" inactive-text="Rendre Temporaire" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-                    </div>
-                </div> -->
                 </el-card>
             </div>
 
-            <div class="card-container">Groupes supprimer: 
+            <div class="card-container">Groupes supprimés: 
                 <el-card class="square">
                  <el-table :data="listRemove" class="list-groups-period">
                          <el-table-column label="Name" prop="name" ></el-table-column>
@@ -65,91 +59,95 @@
         </div>
      <br>
      <br>
-    <el-button type="primary" @click="CreatePeriod()">Creer Periode</el-button>
+    <el-button type="primary" @click="CreatePeriod()">Créer Période</el-button>
     </div>
 
 </template>
 
 <script lang="ts">
-
 import { Component, Vue, Prop } from "vue-property-decorator"
-import { DatePickerType } from 'element-ui/types/date-picker';
-import { PeriodCreate } from '@/modules/classes/Periode/PeriodCreate';
-import { GroupPeriod } from '@/modules/classes/Periode/GroupPeriod';
+import { DatePickerType } from "element-ui/types/date-picker"
+import { PeriodCreate } from "@/modules/classes/Periode/PeriodCreate"
+import { GroupPeriod } from "@/modules/classes/Periode/GroupPeriod"
 import { createPeriodAsync } from "../api/periodApi"
 import { getTemplateGroupsAsync } from "../api/groupApi"
 import Error from "./Erreur.vue"
-
 
 @Component({
     components: {
         Error
     }
 })
-export default class CreatePeriod extends Vue {
-    private date: Array<Date> = new Array<Date>()
-    private listGroup : Array<GroupPeriod> = new Array<GroupPeriod>()
-    private groupName : String = ""
-    private listRemove : Array<GroupPeriod> = new Array<GroupPeriod>()
-    public error : Array<String> = new Array<String>()
 
-    async created(){
+export default class CreatePeriod extends Vue {
+    public error: string[] = []
+    private date: Date[] = []
+    private listGroup: GroupPeriod[] = []
+    private groupName: string = ""
+    private listRemove: GroupPeriod[] = []
+
+    async created() {
         this.listGroup = await getTemplateGroupsAsync()
     }
 
-    async CreatePeriod(){
-        let date = new Date();
+    async CreatePeriod() {
+        const date = new Date()
 
-        this.error = new Array<String>();
-            if(this.date.length != 0){
-                const pc : PeriodCreate = new PeriodCreate();
-                pc.begDate = this.date[0];
-                pc.endDate = this.date[1];
-                pc.Kind = "S";
-                pc.Groups = this.listGroup;
-                pc.idZone = 4;
-                try{
-                let lol = await createPeriodAsync(pc);
-                }catch(e){
-                console.log(e.response);
-                this.error.push(e.response.data);
-                }
-            }else{
-            this.error.push("Les dates ne sont pas choisies");
+        this.error = []
+        if (this.date.length != 0) {
+            const pc: PeriodCreate = new PeriodCreate()
+            pc.begDate = this.date[0]
+            pc.endDate = this.date[1]
+            pc.Kind = "S"
+            pc.Groups = this.listGroup
+            pc.idZone = 4
+            try {
+                const createdPeriod = await createPeriodAsync(pc)
+                this.$message({
+                    message: "La période a été créée avec succès.",
+                    type: "success"
+                })
+            } catch (e) {
+                console.log(e.response)
+                this.error.push(e.response.data)
             }
-        
-     }
-
-    AddToGroup(idx : number){
-         this.listGroup.push(this.listRemove[idx]);
-         this.listRemove.splice(idx,1);
+        } else {
+            this.error.push("Les dates ne sont pas choisies")
+        }
     }
 
-    getState(idx : number){
-        return this.listGroup[idx].state;
+    AddToGroup(idx: number) {
+         this.listGroup.push(this.listRemove[idx])
+         this.listRemove.splice(idx, 1)
     }
 
-    setState(idx : number){
+    getState(idx: number) {
+        return this.listGroup[idx].state
+    }
+
+    setState(idx: number) {
         this.listGroup[idx].state = !this.listGroup[idx].state
     }
 
-     Add(){
-         let addToList : GroupPeriod = new GroupPeriod();
-         addToList.name = this.groupName;
-         addToList.state = false;
-         addToList.isAlreadyPermanent = false;
-         this.listGroup.push(addToList);
-     }
+    Add() {
+        if (this.groupName.trim()) {
+            const addToList: GroupPeriod = new GroupPeriod()
+            addToList.name = this.groupName
+            addToList.state = false
+            addToList.isAlreadyPermanent = false
+            this.listGroup.push(addToList)
+        }
+    }
 
-     Delete(idx : number){
-         this.listRemove.push(this.listGroup[idx]);
-         this.listGroup.splice(idx,1);
-     }
-        
-     Test(){
-         this.error = new Array<String>();
-         console.log(this.listGroup);
-     }
+    Delete(idx: number) {
+        this.listRemove.push(this.listGroup[idx])
+        this.listGroup.splice(idx, 1)
+    }
+
+    Test() {
+        this.error = []
+        console.log(this.listGroup)
+    }
 }
 </script>
 

@@ -103,19 +103,19 @@ namespace inProjects.Tests
                 var idSchool = await school.CreateSchool( ctx, 1, Guid.NewGuid().ToString() );
                 var userId = await userTable.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString() );
                 var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "S", idSchool );
-                var ProjectCreate = await projectStudent.CreateProjectStudent( ctx, 1, 2, 1, "a;b;c", "aaa", "okok", "wwww", 1, "I" );
                 // 0 = Anon Create TimedUser
                 TimedUserStruct result = await userTimed.CreateOrUpdateTimedUserAsync( ctx, 0, id, userId );
-                
+                var ProjectCreate = await projectStudent.CreateProjectStudent( ctx, 1, 2, 1, "a;b;c", "aaa", "okok", "wwww", result.TimedUserId, "I" );
+
                 await noteTable.AddOrUpdateNote( ctx, result.TimedUserId, ProjectCreate.ProjectStudentId, grade );
 
-                Assert.That( await timedUserQueries.GetProjectGradeSpecJury( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
+                Assert.That( await timedUserQueries.GetProjectGradeSpecificTimedUser( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
 
                 grade = 15;
 
                 await noteTable.AddOrUpdateNote( ctx, result.TimedUserId, ProjectCreate.ProjectStudentId, grade );
 
-                Assert.That( await timedUserQueries.GetProjectGradeSpecJury( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
+                Assert.That( await timedUserQueries.GetProjectGradeSpecificTimedUser( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
 
             }
         }

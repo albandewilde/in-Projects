@@ -16,12 +16,15 @@
                         <span v-show="errors.has('password')" class="errorStyle">{{ errors.first('password') }}</span>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="Login()">Valider</el-button>
+                        <el-button type="success" @click="Login()">Valider</el-button>
                         <el-button type="info" @click="resetForm()">Réinitialiser</el-button>
                     </el-form-item>
                 </b>
             </center>
         </el-form>
+        <div>
+            <el-button type="primary" @click="Outlook()">Connexion avec Outlook</el-button>
+        </div>
     </div>
 </template>
 
@@ -32,12 +35,11 @@ import { Component } from "vue-property-decorator"
 import { getUserName } from "../api/accountApi"
 import { AuthService } from "@signature/webfrontauth"
 import { UserInfo } from "../modules/classes/UserInfo"
-import { UserLoginResult } from "../modules/classes/UserLoginResult"
 import { getAuthService } from "../modules/authService"
 import { sha256 } from "js-sha256"
-import { Form as ElForm } from "element-ui"
 
 @Component
+
 export default class Login extends Vue {
     private labelPosition: string = "top"
     private user: User = new User()
@@ -46,19 +48,22 @@ export default class Login extends Vue {
 
     async Login() {
         const userInfos: UserInfo = await getUserName(this.user)
-        const password: string = sha256(this.user.password) 
+        const password: string = sha256(this.user.password)
 
-        if(await this.$validator.validateAll()) {
+        if (await this.$validator.validateAll()) {
             await this.authService.basicLogin(userInfos.userName, password)
-    
-            if(this.authService.authenticationInfo.level == 0) {
+            if (this.authService.authenticationInfo.level == 0) {
                 this.error = "La connexion a échouée ! Réessayez !"
-            }            
-            else {
+            } else {
                 this.error = ""
                 this.$router.replace("/")
             }
         }
+    }
+
+    async Outlook() {
+        await this.authService.startPopupLogin("Oidc")
+        this.$router.replace("/")
     }
 
     resetForm() {

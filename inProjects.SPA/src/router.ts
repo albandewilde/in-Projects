@@ -2,7 +2,10 @@ import Vue from "vue"
 import Router from "vue-router"
 import Home from "./views/Home.vue"
 import Connection from "./views/Connection.vue"
+import Student from "./views/Student.vue"
 import CreatePeriod from "./components/CreatePeriod.vue"
+import StaffMember from "./views/StaffMember.vue"
+import Plan from "./components/Plan.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -10,18 +13,33 @@ export default new Router({
     {
       path: "/",
       name: "home",
-      component: Home,
+      component: Home
     },
     {
       path: "/connection",
       name: "connection",
-      component: Connection,
+      component: Connection
     },
     {
-      path: "/createPeriod",
-      name: "createPeriod",
-      component: CreatePeriod,
+      path: "/student",
+      name: "student",
+      component: Student
+    },
+    {
+     path: "/createPeriod",
+     name: "createPeriod",
+     component: CreatePeriod,
+    },
+    {
+      path: "/staffMember",
+      name: "staffMember",
+      component: StaffMember
+    },
+    {
+      path: "/plan",
+      name: "plan",
+      component: Plan
     }
   ],
-  mode: "history",
+  mode: "history"
 })

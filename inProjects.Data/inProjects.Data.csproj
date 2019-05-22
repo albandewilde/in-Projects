@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
@@ -13,6 +13,7 @@
     <None Remove="Res\Model\CK.CustomAclTable.Settle.1.0.0.sql" />
     <None Remove="Res\Model\CK.CustomGroupTable.Settle.1.0.0.sql" />
     <None Remove="Res\Model\CK.TraitContextTable.Settle.1.0.0.sql" />
+    <None Remove="Res\Model\IPR.EvaluatesTable.Install.1.0.0.sql" />
     <None Remove="Res\Model\IPR.SchoolTable.Settle.1.0.0.sql" />
     <None Remove="Res\sCreateOrUpdateProjectUrl.sql" />
     <None Remove="Res\sCreateTimedUser.sql" />
@@ -22,11 +23,13 @@
     <None Remove="Res\sCreateTimePeriod.sql" />
     <None Remove="Res\sUserCreate.tql" />
     <None Remove="Res\sUserFavUnfavProject.sql" />
+    <None Remove="Res\vStudentList.sql" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="CK.DB.Acl" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.Actor.ActorEMail" Version="5.0.1--0011-develop" />
+    <PackageReference Include="CK.DB.Group.SimpleNaming" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.HZone" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.DependencyInjection" Version="10.0.1--0013-develop" />
     <PackageReference Include="CK.DB.SqlCKTrait" Version="0.6.1--0011-develop" />
@@ -35,11 +38,18 @@
     <PackageReference Include="CK.DB.Auth" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.User.UserPassword" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.SqlServer.Dapper" Version="0.2.1--0016-develop" />
+    <PackageReference Include="CK.DB.User.UserOidc" Version="5.0.0" />
 
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\inProjects.ViewModels\inProjects.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>System</HintPath>
+    </Reference>
   </ItemGroup>
 
 

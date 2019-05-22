@@ -30,7 +30,6 @@ namespace inProjects.WebApp.Controllers
         public async Task<IActionResult> CreatePeriod( [FromBody] CreatePeriodModel createPeriodModel )
         {
             int userId = _authenticationInfo.ActualUser.UserId;
-            userId = 20;
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             var group = _stObjMap.StObjs.Obtain<CustomGroupTable>();
             var timePeriod = _stObjMap.StObjs.Obtain<TimePeriodTable>();
@@ -39,10 +38,10 @@ namespace inProjects.WebApp.Controllers
             {
                 AclQueries aclQueries = new AclQueries( ctx, sqlDatabase );
 
-                if(await aclQueries.VerifyGrantLevelByUserId(112,9,userId, Operator.SuperiorOrEqual ) == false )
+                if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( createPeriodModel.idZone ), userId, Operator.SuperiorOrEqual ) == false )
                 {
-                    Result result = new Result( Status.BadRequest, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
-                    return this.CreateResult( result);
+                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                    return this.CreateResult( result );
                 }
 
                 var idZone = await timePeriod.CreateTimePeriodAsync( ctx, 1, createPeriodModel.begDate, createPeriodModel.endDate, createPeriodModel.Kind, createPeriodModel.idZone );

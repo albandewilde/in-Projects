@@ -1,8 +1,6 @@
 using CK.Setup;
 using CK.SqlServer.Setup;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace inProjects.Data.Res.Model
 {
