@@ -345,3 +345,6 @@ WebApp/WebAppLogs/CriticalErrors/*
 *.vscode/
 
 inProjects\.WebApp/WebAppLogs/Textual/
+
+# don't commit logs
+inProjects.WebApp/WebAppLogs
