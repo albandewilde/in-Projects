@@ -16,6 +16,7 @@ using inProjects.WebApp.Controllers;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using CK.DB.User.UserOidc;
 using inProjects.WebApp.Services;
+using inProjects.Data;
 
 namespace WebApp
 {
@@ -55,8 +56,11 @@ namespace WebApp
                     options.CallbackPath = "/auth/signin-callback";
                     options.SignedOutRedirectUri = "https://localhost:8080/";
                     options.TokenValidationParameters.NameClaimType = "name";
-                    options.Events.OnTicketReceived = c => c.WebFrontAuthRemoteAuthenticateAsync<IUserOidcInfo>( payload =>
+                    options.Events.OnTicketReceived = c => c.WebFrontAuthRemoteAuthenticateAsync<ICustomUserOidcInfos>( payload =>
                     {
+                        payload.Email = c.Principal.FindFirst( ClaimTypes.Name ).Value;
+                        payload.FirstName = c.Principal.FindFirst( ClaimTypes.GivenName ).Value;
+                        payload.LastName = c.Principal.FindFirst( ClaimTypes.Surname ).Value;
                         payload.SchemeSuffix = "";
                         // Instead of "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"
                         // Use standard System.Security.Claims.ClaimTypes.

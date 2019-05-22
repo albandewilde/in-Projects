@@ -41,8 +41,6 @@
                 </tr>
             </table>
         </div>
-
-        <button @click="checkBoxes()">Boites</button>
     </div>
 </template>
 
@@ -194,8 +192,8 @@ export default class Plan extends Vue {
     background-image: url("/plan.png");
     background-size: 100% 100%;
     background-repeat: no-repeat;
-    width: 70vw;
-    height: auto;
+    width: 65vw;
+    height: 90vh;
 }
 
 .table {
@@ -216,8 +214,8 @@ export default class Plan extends Vue {
 }
 
 .logos {
-    width: inherit;
-    height: inherit;
+    /* width: inherit;
+    height: inherit; */
     max-width: 100%;
     max-height: 100%;
     opacity: 1;
