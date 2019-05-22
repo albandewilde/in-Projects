@@ -6,6 +6,7 @@ import SubmitProject from "./components/SubmitProject.vue"
 import Student from "./views/Student.vue"
 import CreatePeriod from "./components/CreatePeriod.vue"
 import StaffMember from "./views/StaffMember.vue"
+import Plan from "./components/Plan.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +40,11 @@ export default new Router({
       path: "/staffMember",
       name: "staffMember",
       component: StaffMember
+    },
+    {
+      path: "/plan",
+      name: "plan",
+      component: Plan
     }
   ],
   mode: "history"

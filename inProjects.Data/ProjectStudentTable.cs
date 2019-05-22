@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace inProjects.Data
 {
     [SqlTable( "tProjectStudent", Package = typeof( Package ) )]
+    [SqlObjectItem("vProjectsDetails")]
     [Versions( "1.0.0" )]
     public abstract class ProjectStudentTable : SqlTable
     {

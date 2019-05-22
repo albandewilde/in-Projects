@@ -2,9 +2,6 @@ using CK.SqlServer;
 using CK.SqlServer.Setup;
 using Dapper;
 using inProjects.Data.Data.User;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace inProjects.Data.Queries
@@ -15,7 +12,7 @@ namespace inProjects.Data.Queries
 
         public UserQueries( ISqlCallContext ctx, SqlDefaultDatabase sqlDefaultDatabase )
         {
-            _controller = ctx.GetConnectionController( sqlDefaultDatabase );        
+            _controller = ctx.GetConnectionController(sqlDefaultDatabase);        
         }
 
         public async Task<UserData> GetUserByName( string firstName, string lastName )
@@ -32,6 +29,12 @@ namespace inProjects.Data.Queries
                 "select UserId, FirstName, LastName from CK.vUser where PrimaryEMail = @Address",
                 new {Address = address}
             );
+        }
+
+        public async Task<int> VerifyGroupUser(int idUser,int idGroup )
+        {
+            int isExist =  await _controller.QuerySingleOrDefaultAsync<int>( "select ActorId from CK.tActorProfile where GroupId = @GroupId and ActorId = @ActorId;", new { GroupId = idGroup, ActorId = idUser } );
+            return isExist;
         }
     }
 }

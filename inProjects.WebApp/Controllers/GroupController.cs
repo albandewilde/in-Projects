@@ -70,12 +70,20 @@ namespace inProjects.WebApp.Controllers
                 TimedPeriodQueries timedPeriod = new TimedPeriodQueries( ctx, sqlDataBase );
                 TimedUserQueries timedUser = new TimedUserQueries( ctx, sqlDataBase );
                 GroupQueries groupsQueries = new GroupQueries( ctx, sqlDataBase );
+                UserQueries userQueries = new UserQueries( ctx, sqlDataBase );
 
                 PeriodData period = await timedPeriod.GetLastPeriodBySchool( idZone );
                 TimedUserData timedUserData = await timedUser.GetTimedUser( userId, period.ChildId );
 
                 if(timedUserData == null )
                 {
+                    int adminIdZoneSchool = await groupsQueries.GetSpecificIdGroupByZoneIdAndGroupName( idZone, "Administration" );
+
+                    if( await userQueries.VerifyGroupUser( userId, adminIdZoneSchool) != 0)
+                    {
+                        listGroupToReturn.Add( "Administration" );
+                    }
+
                     return listGroupToReturn;
                 }
 
@@ -102,6 +110,8 @@ namespace inProjects.WebApp.Controllers
                     }
 
                 }
+
+             
 
                 return listGroupToReturn;
             }

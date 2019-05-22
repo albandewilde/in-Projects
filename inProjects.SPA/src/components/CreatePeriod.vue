@@ -103,6 +103,10 @@ export default class CreatePeriod extends Vue {
             pc.idZone = 4
             try {
                 const createdPeriod = await createPeriodAsync(pc)
+                this.$message({
+                    message: "La période a été créée avec succès.",
+                    type: "success"
+                })
             } catch (e) {
                 console.log(e.response)
                 this.error.push(e.response.data)
