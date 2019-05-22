@@ -65,10 +65,7 @@
         </el-menu-item-group>
         </el-submenu>
 
-        <el-menu-item index="5">
-            <font-awesome-icon icon="clipboard" size="lg" />
-            <span> Forum PI</span>
-        </el-menu-item>
+        
 
         <div v-for="(o,idx) in whatTimed" :key="idx">
             <!-- index Admin 10 to 30 -->
@@ -157,7 +154,7 @@ export default class SideBar extends Vue {
     async getAuthorizedAccess() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
         console.log("ok" + this.whatTimed)
-        this.$store.state.currentUserType = this.whatTimed;
+        this.$store.state.currentUserType = this.whatTimed
         console.log("store :")
         console.log(this.$store.state)
     }
