@@ -6,6 +6,7 @@ using Nett;
 using inProjects.Data;
 using CK.SqlServer.Setup;
 using System.Threading.Tasks;
+using System.Net.Mail;
 
 namespace inProjects.TomlHelpers
 {
@@ -70,14 +71,14 @@ namespace inProjects.TomlHelpers
                 return (false, "There is missing or bad field in the toml file");
             }
 
-            //try    // register the project in the bdd
-            //{
+            try    // register the project in the bdd
+            {
                 await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable);
-            //}
-            //catch 
-            //{
-            //    return (false, "Failed to save the project in the BDD");
-            //}
+            }
+            catch 
+            {
+                return (false, "Failed to save the project in the BDD");
+            }
 
             return (true, "The project was succefully register");
         }
@@ -186,15 +187,29 @@ namespace inProjects.TomlHelpers
                 // the list member must have people in it
                 if (this.members == null || this.members.Length == 0){return false;}
                 // people in the list can't be null or empty string
-                foreach (string member in members){if (member == null || member == "") return false;}
+                foreach (string member in members){if (member == null || member == "" || !Team.isValidEmail(member)) return false;}
                 return true;
             }
             else    // there is a leader
             {
-                foreach (string member in members){if (member == null || member == "") return false;}
+                if (!Team.isValidEmail(leader)) return false;
+                foreach (string member in members){if (member == null || member == "" || !Team.isValidEmail(member)) return false;}
                 return true;
             }
                 
+        }
+
+        private static bool isValidEmail(string email)
+        {
+            try
+            {
+                new MailAddress(email);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 

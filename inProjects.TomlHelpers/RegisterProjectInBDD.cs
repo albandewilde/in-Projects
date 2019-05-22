@@ -8,6 +8,7 @@ using inProjects.Data.Data.TimedUser;
 using inProjects.Data.Data.User;
 using inProjects.Data.Queries;
 using System;
+using System.Net.Mail;
 using System.Threading.Tasks;
 
 namespace inProjects.TomlHelpers
@@ -61,25 +62,26 @@ namespace inProjects.TomlHelpers
             UserQueries userQueries = new UserQueries(ctx, db);
 
             GroupData school = await groupQueries.GetIdSchoolByConnectUser(userId);
-            PeriodData timePeriod = await timedPeriodQueries.GetLastPeriodBySchool(school.ZoneId);
-            TimedUserData timedUser = await timedUserQueries.GetTimedUser(userId, timePeriod.ChildId);
+            // PeriodData timePeriod = await timedPeriodQueries.GetLastPeriodBySchool(school.ZoneId);
+            TimedUserData timedUser = await timedUserQueries.GetTimedUser(userId, school.ZoneId);
             int traitContextId = await traitContext.GetTraitContextId(type);
 
-            string leaderFirstName = project.team.leader.Split(" ")[0];
-            string leaderLastName = project.team.leader.Split(" ")[1];
-            UserData user = await userQueries.GetUserByName(leaderFirstName, leaderLastName);
-            TimedUserData timedLeader = await timedUserQueries.GetTimedUser(user.UserId, timePeriod.ChildId);
+            string email = project.team.leader;
+            UserData user = await userQueries.GetUserByEmail(email);
+            TimedUserData timedLeader = await timedUserQueries.GetTimedUser(user.UserId, school.ZoneId);
 
             ProjectStudentStruct ProjectCreate = await projectTable.CreateProjectStudent(
                 ctx,
-                timedUser.TimedUserId,
+                userId,
                 school.ZoneId,
+                project.name.project_name,
                 traitContextId,
                 string.Join( ";", project.technologies ),
                 project.logo.url,
                 project.slogan.slogan,
                 project.pitch.pitch,
                 timedLeader.TimedUserId,
+                timedLeader.UserId,
                 type
             );
 
@@ -99,12 +101,10 @@ namespace inProjects.TomlHelpers
         {
             for( int i=0; i < project.team.members.Length; i++ )
             {
-                string memberFirstName = project.team.members[i].Split( " " )[0];
-                string memberLastName = project.team.members[i].Split( " " )[1];
-                UserData member = await userQueries.GetUserByName( memberFirstName, memberLastName );
-                TimedUserData timedMember = await timedUserQueries.GetAllTimedUserByUserId( member.UserId );
+                string email = project.team.members[i];
+                UserData member = await userQueries.GetUserByEmail(email);
                 await groupTable.AddUserAsync(
-                    ctx, timedUser.TimedUserId, ProjectCreate.ProjectStudentId, timedMember.TimedUserId );
+                    ctx, timedUser.TimedUserId, ProjectCreate.ProjectStudentId, member.UserId, true);
             }
         }
     }

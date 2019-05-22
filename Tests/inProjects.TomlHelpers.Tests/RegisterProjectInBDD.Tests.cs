@@ -6,19 +6,19 @@ namespace inProjects.TomlHelpers.Tests
     [TestFixture]
     public class RegisterProjectInBDD
     {
-        [Test]
+        //[Test]
         public static void test_the_SaveProjectPi_method()
         {
             throw new NotImplementedException();
         }
 
-        [Test]
+        //[Test]
         public static void test_the_SaveProject_method()
         {
             throw new NotImplementedException();
         }
 
-        [Test]
+        //[Test]
         public static void test_the_LinkMembersToProject_method()
         {
             throw new NotImplementedException();

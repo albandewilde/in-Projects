@@ -11,7 +11,7 @@ using System.Data;
 namespace inProjects.Data
 {
     [SqlTable("tUser", Package = typeof( Package ) ), Versions( "1.0.0" )]
-    
+    [SqlObjectItem("transform:vUser")]
     public abstract partial class CustomUserTable : UserTable
     {
         void StObjConstruct(UserTable userTable)

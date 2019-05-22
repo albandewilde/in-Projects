@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Net.Mail;
 using NUnit.Framework;
 
 namespace inProjects.TomlHelpers.Tests
@@ -47,16 +48,18 @@ namespace inProjects.TomlHelpers.Tests
             Assert.That(documents.isValid(), Is.EqualTo(expected));
         }
 
-        [TestCase("Tom", new string[]{"Python", "Rust", "Kotlin"}, true)]
-        [TestCase("Tom", new string[]{}, true)]
-        [TestCase("Tom", new string[]{"Bash", null, "Lua"}, false)]
-        [TestCase("Tom", new string[]{"Bash", "null", ""}, false)]
-        [TestCase("Tom", null, false)]
+        [TestCase("Tom@poulet.org", new string[]{"Python@fondation.org", "Rust@cargo.net", "Kotlin@Java.net"}, true)]
+        [TestCase("Tom", new string[]{"Python@fondation.org", "Rust@cargo.net", "Kotlin@Java.net"}, false)]
+        [TestCase("Tom", new string[]{"Python", "Rust", "Kotlin"}, false)]
+        [TestCase("Tom@poulet.org", new string[]{}, true)]
+        [TestCase("Tom@poulet.org", new string[]{"Bash@Linux.sh", null, "Lua@lu.a"}, false)]
+        [TestCase("Tom@poulet.org", new string[]{"Bash@Linux.sh", "null.null@null.null", ""}, false)]
+        [TestCase("Tom@poulet.org", null, false)]
 
-        [TestCase("Tom", new string[]{"Python", "Rust", "Kotlin"}, true)]
-        [TestCase("None", new string[]{"Python", "Rust", "Kotlin"}, true)]
-        [TestCase("", new string[]{"Python", "Rust", "Kotlin"}, false)]
-        [TestCase(null, new string[]{"Python", "Rust", "Kotlin"}, false)]
+        [TestCase("None", new string[]{"Python@fondation.org", "Rust@cargo.net", "Kotlin@Java.net"}, true)]
+        [TestCase("None", new string[]{"Python", "Rust@cargo.net", "Kotlin@Java.net"}, false)]
+        [TestCase("", new string[]{"Python@fundation.org", "Rust@cargo.net", "Kotlin@Java.net"}, false)]
+        [TestCase(null, new string[]{"Python@fundation.org", "Rust@cargo.net", "Kotlin@Java.net"}, false)]
 
         [TestCase("", new string[]{}, false)]
         public void team_valid_method(string leader, string[] members, bool expected)

@@ -25,6 +25,6 @@ pitch = "Vous avez des problemes ? Notre super project est là pour vous !"
 
 [team]
 # Le chef de projet, "None" si vous n'en avez pas.
-leader = "Chef de Projet"
+leader = "Chef@de.Projet"
 # La liste des membres de votre projet. Ne remettez pas le chef de projet si il est précisé.
-members = ["Team member one", "Team member two"]
+members = ["Team@member.one", "Team@member.two"]

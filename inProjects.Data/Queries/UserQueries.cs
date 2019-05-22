@@ -25,5 +25,13 @@ namespace inProjects.Data.Queries
                 new { FirstName = firstName, LastName = lastName }
             );
         }
+
+        public async Task<UserData> GetUserByEmail(string address)
+        {
+            return await _controller.QuerySingleAsync<UserData>(
+                "select UserId, FirstName, LastName from CK.vUser where PrimaryEMail = @Address",
+                new {Address = address}
+            );
+        }
     }
 }

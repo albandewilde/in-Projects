@@ -71,7 +71,7 @@ namespace inProjects.Tests
                         userType = 1;
                         TimedUserStruct timedStudent = await userTimed.CreateOrUpdateTimedUserAsync( ctx, userType, id, userid );
                         timedStudents.Add( timedStudent );
-                        var ProjectCreate = await projectStudent.CreateProjectStudent( ctx, 1, 2, 1, "a;b;c", logo, slogan, pitch, timedStudent.TimedUserId, "I" );
+                        var ProjectCreate = await projectStudent.CreateProjectStudent( ctx, 1, 2, "name", 1, "a;b;c", logo, slogan, pitch, timedStudent.TimedUserId, 1, "I" );
                         group.AddUser( ctx, 1, 6, userid, true );
 
                     }

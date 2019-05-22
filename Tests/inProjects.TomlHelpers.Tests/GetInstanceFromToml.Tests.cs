@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net.Mail;
 using NUnit.Framework;
 
 namespace inProjects.TomlHelpers.Tests
@@ -27,9 +28,10 @@ namespace inProjects.TomlHelpers.Tests
         public int age {get; set;}
         public Name name {get; set;}
     }
+
     class Name
     {
-    public string first {get; set;}
-    public string last {get; set;}
+        public string first {get; set;}
+        public string last {get; set;}
     }
 }
