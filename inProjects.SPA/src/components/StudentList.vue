@@ -70,6 +70,7 @@ export default class StudentList extends Vue {
         for (const user of this.studentList) {
             this.userListDisplay.push(user)
         }
+        console.log(this.userListDisplay.length + "n°")
         await this.checkAdmin()
         console.log(this.isAdmin)
     }

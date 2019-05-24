@@ -13,6 +13,7 @@ using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.WebApp.Services.CSV;
 using inProjects.Data;
+using System;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -66,7 +67,27 @@ namespace inProjects.WebApp.Controllers
 
             }
 
-            return timedStudentDatas;
+            var duplicates = timedStudentDatas
+                .GroupBy( x => x.UserId )
+                .Where( g => g.Count() > 1 )
+                .Select( g => g.Select( gg => gg ) );
+
+            var single = timedStudentDatas
+                .GroupBy( x => x.UserId )
+                .Where( g => g.Count() == 1 )
+                .SelectMany( g => g.Select( gg => gg ) );
+
+            List<TimedStudentData> timedStudentDatasClean = new List<TimedStudentData>();
+            timedStudentDatasClean = single.ToList();
+            for( var i = 0; i < duplicates.Count(); i++ )
+            {
+                var a = duplicates.ElementAt( i );
+                a.ElementAt(0).GroupName = a.ElementAt( 1 ).GroupName + " - " + a.ElementAt( 0 ).GroupName;
+                timedStudentDatasClean.Add( a.ElementAt( 0 ));
+            }
+;
+
+            return timedStudentDatasClean;
 
         }
 
