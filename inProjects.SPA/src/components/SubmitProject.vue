@@ -104,7 +104,7 @@ export default class Submit extends Vue {
     private projectLink: string = ""
     private msg: string = ""
     private isSucces: boolean = false
-    private return_msg: string = ""
+    private returnMsg: string = ""
     private loading: boolean = false
     private projectType: number = 0
     private authService: AuthService = getAuthService()
@@ -115,7 +115,11 @@ export default class Submit extends Vue {
         // initialisation
         this.isSucces = false, this.msg = ""
 
-        let futur: Promise<[boolean, string]> = SubmitProject(this.projectLink, this.projectType, this.authService.authenticationInfo.user.userId)
+        const futur: Promise<[boolean, string]> = SubmitProject(
+            this.projectLink,
+            this.projectType,
+            this.authService.authenticationInfo.user.userId
+        )
 
         futur.catch(() => {
             this.isSucces = false, this.msg = "Failed to join the server"
