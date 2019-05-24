@@ -15,12 +15,11 @@ export async function verifyActualPeriod(idZone: number): Promise<boolean> {
 }
 
 export async function getAllPeriod(idZone: number): Promise<Period[]> {
-    console.log(idZone);
     const response = await getAsync(`${endpoint}/getAllPeriod?idZone=${idZone}`)
     return response.data
 }
 
 export async function changeDateOfPeriod(idPeriod: number, begDate: Date, endDate: Date): Promise<any> {
-    const response = await postAsync(`${endpoint}/changeDateOfPeriod`, {idPeriod: idPeriod, begDate: begDate, endDate: endDate})
+    const response = await postAsync(`${endpoint}/changeDateOfPeriod`, {idPeriod, begDate, endDate})
     return response
 }

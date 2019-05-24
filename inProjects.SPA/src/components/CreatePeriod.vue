@@ -96,7 +96,7 @@ export default class CreatePeriod extends Vue {
     private idZone!: number
 
     async created() {
-        this.idZone = 4;
+        this.idZone = 4
         this.listGroup = await getTemplateGroupsAsync()
         this.isInPeriod = await verifyActualPeriod(this.idZone)
     }
@@ -159,17 +159,6 @@ export default class CreatePeriod extends Vue {
         this.error = []
         console.log(this.listGroup)
     }
-
-    // dateChange(){
-    //     let dateNow = new Date();
-        
-    //     console.log("Beg" + dateNow.getDate());
-    //     console.log("Date " + this.date[0].getDate())
-    //     if(dateNow.getDate() > this.date[0].getDate()) {
-    //         this.date = []
-    //         this.error.push("Date incorrect, Veuillez ne pas prendre des dates passées")
-    //     }
-    // }
 }
 </script>
 
