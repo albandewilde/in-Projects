@@ -7,6 +7,7 @@
                 </template>
                 <el-menu-item-group>
                     <el-menu-item index="10-1" @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
+                    <el-menu-item index="10-2" @click="redirect('/listPeriod')" >List Periode </el-menu-item>
                 </el-menu-item-group>
 
         </el-submenu>
