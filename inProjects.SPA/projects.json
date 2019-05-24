@@ -1,0 +1,81 @@
+{
+    "Projects": [
+        {
+            "Name": "in'Project",
+            "Semester": "S5",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "ViWork",
+            "Semester": "S5",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "Project1",
+            "Semester": "S2",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "Project2",
+            "Semester": "S3",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "Project3",
+            "Semester": "S4",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "Project4",
+            "Semester": "S1",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "Project5",
+            "Semester": "S3",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "Project6",
+            "Semester": "S4",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "Project7",
+            "Semester": "S2",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "Project8",
+            "Semester": "S3",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        },
+        {
+            "Name": "Project9",
+            "Semester": "S1",
+            "PosX": -1,
+            "PosY": -1,
+            "ClassRoom": ""
+        }
+    ]
+}
