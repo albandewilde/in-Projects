@@ -16,7 +16,7 @@
 
         
         Confirmer le nouveau mot de passe : <el-form-item>
-                                                <el-input name="confirmation" v-validate="'required|min:6|confirmed:nouveau mot de passe'" placeholder="Confimer votre mot de passe"  show-password></el-input>
+                                                <el-input name="confirmation" v-validate="'required|min:6|confirmed:nouveau mot de passe'" placeholder="Confimer votre mot de passe" v-model="password.confirmNewPassword" show-password></el-input>
                                                 <i v-show="errors.has('confirmation')" class="fa fa-warning" style="color:orange;"></i>
                                                 <span v-show="errors.has('confirmation')" class="errorStyle">{{ errors.first('confirmation') }}</span>
                                              </el-form-item>
@@ -47,8 +47,8 @@ export default class PasswordChange extends Vue {
             this.error =[]
             const passwordHashed = new PasswordChangeInfo()
 
-            passwordHashed.oldPassword = sha256(passwordHashed.oldPassword)
-            passwordHashed.newPassword = sha256(passwordHashed.newPassword)
+            passwordHashed.oldPassword = sha256(this.password.oldPassword)
+            passwordHashed.newPassword = sha256(this.password.newPassword)
 
             try {
                 const changepassword = await changePassword(passwordHashed)

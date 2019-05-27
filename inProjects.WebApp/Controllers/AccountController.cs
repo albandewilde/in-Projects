@@ -82,7 +82,7 @@ namespace inProjects.WebApp.Controllers
 
             using( var ctx = new SqlStandardCallContext() )
             {
-                LoginResult login = await basic.LoginUserAsync( ctx, userId, model.oldPassword );
+                LoginResult login = await basic.LoginUserAsync( ctx, userId, model.oldPassword, false );
                 
                 if(!login.IsSuccess)
                 {
