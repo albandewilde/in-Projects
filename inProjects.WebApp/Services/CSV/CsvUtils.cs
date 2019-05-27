@@ -13,7 +13,9 @@ using CK.SqlServer;
 using inProjects.Data.Queries;
 using CK.SqlServer.Setup;
 using inProjects.Data.Data.Group;
-using CK.DB.Actor;
+using CK.DB.Actor.ActorEMail;
+using System.Text;
+using CK.DB.Auth;
 
 namespace inProjects.WebApp.Services.CSV
 {
@@ -55,12 +57,16 @@ namespace inProjects.WebApp.Services.CSV
                 var userTable = stObjMap.StObjs.Obtain<CustomUserTable>();
                 var userTimedTable = stObjMap.StObjs.Obtain<TimedUserTable>();
                 var groupTable = stObjMap.StObjs.Obtain<CustomGroupTable>();
+                var actorEmail = stObjMap.StObjs.Obtain<ActorEMailTable>();
+                var basic = stObjMap.StObjs.Obtain<IBasicAuthenticationProvider>();
 
                 GroupQueries groupQueries = new GroupQueries( ctx, sqlDatabase );
+                UserQueries userQueries = new UserQueries( ctx, sqlDatabase );
 
                 int userId = authenticationInfo.ActualUser.UserId;
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
                 int zoneId = groupData.ZoneId;
+
 
                 foreach( var element in studentList )
                 {
@@ -68,6 +74,10 @@ namespace inProjects.WebApp.Services.CSV
                     string firstName = element.FirstName;
                     string lastName = element.Name;
                     string[] promotions = element.Promotion.Split('-');
+                    string mail = element.Mail;
+                    string tempPwd = RandomPassword();
+
+                    int exists = await userQueries.CheckEmail( mail );
 
                     int newUserId = await userTable.CreateUserAsync( ctx, userId, userName, firstName, lastName );
                     await userTimedTable.CreateOrUpdateTimedUserAsync( ctx, 1, zoneId, newUserId );
@@ -81,9 +91,30 @@ namespace inProjects.WebApp.Services.CSV
                         groupTable.AddUser( ctx, userId, sector, newUserId, true );
                     }
 
-                   
+                    if( exists == 0 )
+                    {
+                        await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
+                        await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
+                    }
+
+
                 }
             }
+
+        }
+
+        public string RandomPassword(int size = 8)
+        {
+            StringBuilder builder = new StringBuilder();
+            Random random = new Random();
+            char ch;
+            for(int i = 0; i < size; i++ )
+            {
+                ch = Convert.ToChar( Convert.ToInt32( Math.Floor( 26 * random.NextDouble() + 65 ) ) );
+                builder.Append( ch );
+            }
+
+            return builder.ToString();
 
         }
 
