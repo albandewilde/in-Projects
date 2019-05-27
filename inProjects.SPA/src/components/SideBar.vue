@@ -24,7 +24,7 @@
             <div v-if="this.isCollapse">
                 <br>
             </div>
-            <el-button type="info" size="small" circle>
+            <el-button @click="redirect(`/MyProfil`)" type="info" size="small" circle>
                 <font-awesome-icon icon="cog" size="lg" />
             </el-button>
             <div v-if="this.isCollapse">

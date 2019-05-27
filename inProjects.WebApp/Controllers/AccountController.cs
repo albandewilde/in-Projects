@@ -14,23 +14,25 @@ using System.Threading.Tasks;
 
 namespace inProjects.WebApp.Controllers
 {
-    [Route("api/[controller]")]
+    [Route( "api/[controller]" )]
     public class AccountController : Controller
     {
         readonly IOptions<SpaOptions> _spaOptions;
         readonly IAuthenticationTypeSystem _typeSystem;
         readonly IStObjMap _stObjMap;
         readonly IWebFrontAuthLoginService _loginService;
+        readonly IAuthenticationInfo _authenticationInfo;
 
-        public AccountController( IOptions<SpaOptions> spaOptions, IAuthenticationTypeSystem typeSystem, IStObjMap stObjMap, IWebFrontAuthLoginService loginService )
+        public AccountController( IOptions<SpaOptions> spaOptions, IAuthenticationTypeSystem typeSystem, IStObjMap stObjMap, IWebFrontAuthLoginService loginService, IAuthenticationInfo authenticationInfo )
         {
             _spaOptions = spaOptions;
             _typeSystem = typeSystem;
             _stObjMap = stObjMap;
             _loginService = loginService;
+            _authenticationInfo = authenticationInfo;
         }
 
-        [HttpPost ( "register" ) ]
+        [HttpPost( "register" )]
         [AllowAnonymous]
         public async Task<string> Register( [FromBody]RegisterModel model )
         {
@@ -38,13 +40,13 @@ namespace inProjects.WebApp.Controllers
             var actorEmail = _stObjMap.StObjs.Obtain<ActorEMailTable>();
             var basic = _stObjMap.StObjs.Obtain<IBasicAuthenticationProvider>();
 
-            using ( var ctx = new SqlStandardCallContext() )
+            using( var ctx = new SqlStandardCallContext() )
             {
                 var loginId = Guid.NewGuid().ToString();
                 var userId = await userTable.CreateUserAsync( ctx, 1,
                     loginId, model.FirstName, model.LastName );
 
-                if( userId != 0 && userId != 1)
+                if( userId != 0 && userId != 1 )
                 {
                     await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, userId, model.Password );
                     await actorEmail.AddEMailAsync( ctx, 1, userId, model.Email, true, false );
@@ -55,9 +57,9 @@ namespace inProjects.WebApp.Controllers
             }
         }
 
-        [HttpPost ( "getUserName" ) ]
+        [HttpPost( "getUserName" )]
         [AllowAnonymous]
-        public async Task<UserInfosModel> GetUserName([FromBody] LoginModel model)
+        public async Task<UserInfosModel> GetUserName( [FromBody] LoginModel model )
         {
             var userTable = _stObjMap.StObjs.Obtain<CustomUserTable>();
 
@@ -68,7 +70,32 @@ namespace inProjects.WebApp.Controllers
             catch( Exception e )
             {
                 return null;
-            }                      
-        }       
+            }
+        }
+
+        [HttpPost( "changePassword" )]
+        public async Task<IActionResult> ChangePassword( [FromBody] PasswordChangeModel model )
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            var userTable = _stObjMap.StObjs.Obtain<CustomUserTable>();
+            var basic = _stObjMap.StObjs.Obtain<IBasicAuthenticationProvider>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                LoginResult login = await basic.LoginUserAsync( ctx, userId, model.oldPassword );
+                
+                if(!login.IsSuccess)
+                {
+                    Result result = new Result( Status.Unauthorized, "L'ancien mot de passe ne correspond pas " );
+                    return this.CreateResult( result );
+                }
+
+                await basic.SetPasswordAsync( ctx, userId, userId, model.newPassword);
+
+                return Ok();
+            }
+
+        }
+
     }
 }
