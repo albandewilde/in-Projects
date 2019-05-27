@@ -51,13 +51,11 @@ export default class ListPeriod extends Vue {
         begDate.setHours(0, 0, 0, 0)
         endDate.setHours(0, 0, 0, 0)
 
-        if(type == 'begDate'){
+        if (type == "begDate") {
             begDate.setDate(begDate.getDate() + 1 )
-        }else{
+        } else {
             endDate.setDate(endDate.getDate() + 1)
         }
-       
-
         this.error = []
 
         if (begDate >= endDate) {
