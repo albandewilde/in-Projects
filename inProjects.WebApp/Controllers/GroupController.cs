@@ -85,6 +85,7 @@ namespace inProjects.WebApp.Controllers
                     }
                 }
 
+                if( period == null ) period = periods[0];
                 TimedUserData timedUserData = await timedUser.GetTimedUser( userId, period.ChildId );
 
                 if(timedUserData == null )
