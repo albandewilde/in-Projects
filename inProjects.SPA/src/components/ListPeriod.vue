@@ -5,13 +5,13 @@
              <el-table-column label="Non de la periode" prop="groupName" ></el-table-column>
              <el-table-column label="Date de debut">
                   <template slot-scope="scope">
-                    <el-date-picker :clearable="false" v-model="listPeriods[scope.$index].begDate"  @change="changeDate(scope.$index,'begDate')" type="date">    
+                    <el-date-picker :clearable="false" v-model="listPeriods[scope.$index].begDate"  @change="changeDate(scope.$index)" type="date">    
                     </el-date-picker>
                  </template>
              </el-table-column>
              <el-table-column label="Date de fin">
                   <template slot-scope="scope">
-                    <el-date-picker :clearable="false" v-model="listPeriods[scope.$index].endDate"  @change="changeDate(scope.$index,'endDate')" type="date">    
+                    <el-date-picker :clearable="false" v-model="listPeriods[scope.$index].endDate"  @change="changeDate(scope.$index)" type="date">    
                     </el-date-picker>
                  </template>
              </el-table-column>
@@ -40,7 +40,7 @@ export default class ListPeriod extends Vue {
         this.idZone = 4
         this.listPeriods = await getAllPeriod(this.idZone)
     }
-    async changeDate(idx: number, type: string) {
+    async changeDate(idx: number) {
         let begDate!: Date
         let endDate!: Date
 
@@ -51,17 +51,16 @@ export default class ListPeriod extends Vue {
         begDate.setHours(0, 0, 0, 0)
         endDate.setHours(0, 0, 0, 0)
 
-        if (type == "begDate") {
-            begDate.setDate(begDate.getDate() + 1 )
-        } else {
-            endDate.setDate(endDate.getDate() + 1)
-        }
         this.error = []
 
         if (begDate >= endDate) {
             this.error.push("Date de debut superieur ou egale à celle de fin")
         } else {
             try {
+
+             begDate.setDate(begDate.getDate() + 1 )
+             endDate.setDate(endDate.getDate() + 1)
+
              await changeDateOfPeriod(this.listPeriods[idx].childId, begDate, endDate)
              this.$message({
                     message: "La date de la période " + this.listPeriods[idx].groupName + " a bien été changé",
