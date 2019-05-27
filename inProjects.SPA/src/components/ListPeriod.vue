@@ -40,24 +40,29 @@ export default class ListPeriod extends Vue {
         this.idZone = 4
         this.listPeriods = await getAllPeriod(this.idZone)
     }
-      async changeDate(idx: number, type: string) {
-         let begDate!: Date
-         let endDate!: Date
+    async changeDate(idx: number, type: string) {
+        let begDate!: Date
+        let endDate!: Date
 
-         begDate = new Date(this.listPeriods[idx].begDate)
-         endDate = new Date(this.listPeriods[idx].endDate)
+        begDate = new Date(this.listPeriods[idx].begDate)
+        endDate = new Date(this.listPeriods[idx].endDate)
 
          // Change hours to compare equals Date, if Date is the same but hours different begDate might be bigger than endDate
-         begDate.setHours(0, 0, 0, 0)
-         endDate.setHours(0, 0, 0, 0)
+        begDate.setHours(0, 0, 0, 0)
+        endDate.setHours(0, 0, 0, 0)
 
-         this.error = []
+        if (type == "begDate") {
+            begDate.setDate(begDate.getDate() + 1 )
+        } else {
+            endDate.setDate(endDate.getDate() + 1)
+        }
+        this.error = []
 
         if (begDate >= endDate) {
             this.error.push("Date de debut superieur ou egale à celle de fin")
         } else {
             try {
-             await changeDateOfPeriod(this.listPeriods[idx].childId, this.listPeriods[idx].begDate, this.listPeriods[idx].endDate)
+             await changeDateOfPeriod(this.listPeriods[idx].childId, begDate, endDate)
              this.$message({
                     message: "La date de la période " + this.listPeriods[idx].groupName + " a bien été changé",
                     type: "success"

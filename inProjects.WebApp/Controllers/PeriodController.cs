@@ -128,17 +128,6 @@ namespace inProjects.WebApp.Controllers
 
                 PeriodData period = await timedPeriod.GetPeriodById( periodChangeDateModel.idPeriod );
 
-                if(period.BegDate != periodChangeDateModel.begDate )
-                {
-                    periodChangeDateModel.begDate = periodChangeDateModel.begDate.AddDays( 1 );
-                }
-                
-
-                if( period.EndDate != periodChangeDateModel.endDate )
-                {
-                    periodChangeDateModel.endDate = periodChangeDateModel.endDate.AddDays( 1 );
-                }
-
                 await timedPeriod.UpdatePeriodDate( periodChangeDateModel.idPeriod, periodChangeDateModel.begDate, periodChangeDateModel.endDate );
 
                 if( periodChangeDateModel.begDate.Year > period.BegDate.Year || periodChangeDateModel.begDate.Year < period.BegDate.Year )
