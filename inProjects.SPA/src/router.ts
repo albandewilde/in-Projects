@@ -2,6 +2,7 @@ import Vue from "vue"
 import Router from "vue-router"
 import Home from "./views/Home.vue"
 import Connection from "./views/Connection.vue"
+import SubmitProject from "./components/SubmitProject.vue"
 import Student from "./views/Student.vue"
 import CreatePeriod from "./components/CreatePeriod.vue"
 import StaffMember from "./views/StaffMember.vue"
@@ -18,7 +19,12 @@ export default new Router({
     {
       path: "/connection",
       name: "connection",
-      component: Connection
+      component: Connection,
+    },
+    {
+      path: "/submit_project",
+      name: "submit_project",
+      component: SubmitProject
     },
     {
       path: "/student",

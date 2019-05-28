@@ -338,9 +338,9 @@ inProjects\.SPA/target/
 
 inProjects\.WebApp/appsettings\.json
 
-WebApp/WebAppLogs/Textual/*
+inProjects.WebApp/WebAppLogs/Textual/*
 
-WebApp/WebAppLogs/CriticalErrors/*
+inProjects.WebApp/WebAppLogs/CriticalErrors/*
 
 *.vscode/
 

@@ -45,11 +45,11 @@ namespace inProjects.Data.Queries
 
         public async Task<int> GetIdSchoolByName(string schoolName)
         {
-            int result = await _controller.QuerySingleOrDefault( "SELECT * FROM IPR.tSchool WHERE[Name] = @SchoolName;", new { SchoolName = schoolName } );
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "SELECT SchoolId FROM IPR.tSchool WHERE[Name] = @SchoolName;", new { SchoolName = schoolName } );
             return result;
         }
 
-        public async Task<GroupData> GetIdSchoolByConnectUser(int userId )
+        public async Task<GroupData> GetIdSchoolByConnectUser(int userId)
         {
             GroupData result = await _controller.QuerySingleOrDefaultAsync<GroupData>( "SELECT TOP(1) * FROM CK.tActor a JOIN CK.tActorProfile ap ON a.ActorId = ap.ActorId AND a.ActorId = @UserId JOIN CK.vGroup g ON g.GroupId = ap.GroupId AND g.IsZone = 0 ORDER BY g.ZoneId DESC;", new { UserId = userId } );
             return result;

@@ -23,13 +23,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.WebApp", "inProj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.ViewModels", "inProjects.ViewModels\inProjects.ViewModels.csproj", "{17AC78C0-75BC-490E-9FDA-3DF51476D526}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProject.TomlHelpers", "inProjects.TomlHelpers\inProject.TomlHelpers.csproj", "{CAAC61DF-2734-454E-AFFA-684504777758}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.TomlHelpers", "inProjects.TomlHelpers\inProjects.TomlHelpers.csproj", "{CAAC61DF-2734-454E-AFFA-684504777758}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProject.TomlHelpers.Tests", "Tests\inProject.TomlHelpers.Tests\inProject.TomlHelpers.Tests.csproj", "{48BD3CBC-2A64-4F84-8097-BDAC5F1DADE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.TomlHelpers.Tests", "Tests\inProjects.TomlHelpers.Tests\inProjects.TomlHelpers.Tests.csproj", "{48BD3CBC-2A64-4F84-8097-BDAC5F1DADE1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.CokeCakeBuilder", "inProjects.CokeCakeBuilder\inProjects.CokeCakeBuilder.csproj", "{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProject.ExcelHelper", "inProject.ExcelHelper\inProject.ExcelHelper.csproj", "{21750181-699D-4B86-AFFA-6CF98279BFFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProjects.ExcelHelper", "inProjects.ExcelHelper\inProjects.ExcelHelper.csproj", "{21750181-699D-4B86-AFFA-6CF98279BFFB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProjects.EmailJury", "inProjects.EmailJury\inProjects.EmailJury.csproj", "{6F8EB0E3-9F94-470F-90A3-19754F1BEF2D}"
 EndProject
