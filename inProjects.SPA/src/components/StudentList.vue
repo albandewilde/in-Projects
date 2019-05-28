@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column>
             <template slot="header" slot-scope="scope" v-if="isAdmin">
-                <CsvImport></CsvImport>
+                <CsvImport type="student"></CsvImport>
             </template>
         </el-table-column>
     </el-table>
@@ -43,9 +43,9 @@
 import Vue from "vue"
 import { User } from "../modules/classes/User"
 import { BddInfo } from "../modules/classes/BddInfo"
-import { Component } from "vue-property-decorator"
+import { Component, Prop } from "vue-property-decorator"
 import { getUserList } from "../api/UserApi"
-    import CsvImport from "@/components/CsvImport.vue"
+import CsvImport from "@/components/CsvImport.vue"
 import { getGroupUserAccessPanel } from "../api/groupApi"
 
 @Component({
@@ -55,12 +55,13 @@ import { getGroupUserAccessPanel } from "../api/groupApi"
 })
 
 export default class StudentList extends Vue {
+
     private bddInfo: BddInfo = new BddInfo()
     private studentList!: User[]
     private userListDisplay: User[] = []
     private search: string = ""
     private isAdmin: boolean = false
-    private userState: String[] = []
+    private userState: string[] = []
     private zoneId: number = 4
 
      async mounted() {
@@ -70,19 +71,16 @@ export default class StudentList extends Vue {
         for (const user of this.studentList) {
             this.userListDisplay.push(user)
         }
-        console.log(this.userListDisplay.length + "n°")
         await this.checkAdmin()
-        console.log(this.isAdmin)
     }
 
-    async checkAdmin(){
+    async checkAdmin() {
         this.userState = await getGroupUserAccessPanel(this.zoneId)
-        for(var i = 0; i < this.userState.length; i++){
-            console.log(this.userState[i])
-            if(this.userState[i] == "Administration"){
+        for (const i of this.userState) {
+            if (i == "Administration") {
                 this.isAdmin = true
             }
-        }        
+        }
     }
 }
 

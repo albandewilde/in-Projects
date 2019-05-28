@@ -9,7 +9,6 @@ using inProjects.Data.Data.Group;
 using inProjects.Data.Queries;
 using inProjects.WebApp.Services;
 using inProjects.WebApp.Services.CSV;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -18,7 +17,6 @@ namespace inProjects.WebApp.Controllers
 {
     [Route("api/[controller]")]
     
-    [AllowAnonymous]
 
     public  class StudentController : Controller
     {
@@ -30,7 +28,7 @@ namespace inProjects.WebApp.Controllers
             _stObjMap = stObjMap;
         }
         [HttpPost, DisableRequestSizeLimit]
-        public async Task<IActionResult> AddStudentListCsv()
+        public async Task<IActionResult> AddStudentListCsv(string type)
         {
             CsvStudentMapping csvStudentMapping = new CsvStudentMapping();
             var file = Request.Form.Files[0];
@@ -52,7 +50,7 @@ namespace inProjects.WebApp.Controllers
                     return this.CreateResult( result );
                 }
 
-                List<StudentList> studentResult = await csvStudentMapping.CSVReader( file );
+                List<UserList> studentResult = await csvStudentMapping.CSVReader( file );
                 bool isInPeriod = await periodServices.CheckInPeriod( _stObjMap, _authenticationInfo );
 
                 // The school in wich the user is need to be in a period when the action is done
@@ -61,7 +59,7 @@ namespace inProjects.WebApp.Controllers
                     Result result = new Result( Status.Unauthorized, "A la date d'aujourd'hui votre etablissement n'est dans une aucune periode" );
                     return this.CreateResult( result );
                 }
-                csvStudentMapping.StudentParser( studentResult, _stObjMap, _authenticationInfo );              
+                csvStudentMapping.StudentParser( studentResult, _stObjMap, _authenticationInfo, type );              
             }
 
             return Ok();

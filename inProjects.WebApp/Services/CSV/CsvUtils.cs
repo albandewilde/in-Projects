@@ -16,6 +16,7 @@ using inProjects.Data.Data.Group;
 using CK.DB.Actor.ActorEMail;
 using System.Text;
 using CK.DB.Auth;
+using inProjects.Data.Data.TimedUser;
 
 namespace inProjects.WebApp.Services.CSV
 {
@@ -23,14 +24,14 @@ namespace inProjects.WebApp.Services.CSV
     {
         readonly IStObjMap _stObjMap;
    
-        private List<StudentList> _studentLists = new List<StudentList>();
+        private List<UserList> _studentLists = new List<UserList>();
         public CsvStudentMapping()
             :base()
         {
 
         }
 
-        public async Task<List<StudentList>> CSVReader(IFormFile path )
+        public async Task<List<UserList>> CSVReader(IFormFile path )
         {
             var streamResult = path.OpenReadStream();
 
@@ -38,18 +39,18 @@ namespace inProjects.WebApp.Services.CSV
             using( var csv = new CsvReader( reader ) )
             {
                 csv.Configuration.Delimiter = ",";
-                var records = csv.GetRecords<StudentList>();
+                var records = csv.GetRecords<UserList>();
                 var studentInfo = records.ToList();
                 foreach(var e in studentInfo )
                 {
-                    string[] promotion = e.Promotion.Split( '-' );
+                    string[] promotion = e.GroupName.Split( '-' );
                 }
                 return studentInfo;
             }
 
         }
 
-        public async void StudentParser(List<StudentList> studentList, IStObjMap stObjMap, IAuthenticationInfo authenticationInfo )
+        public async void StudentParser(List<UserList> studentList, IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string type )
         {
             using(var ctx = new SqlStandardCallContext() )
             {
@@ -57,14 +58,13 @@ namespace inProjects.WebApp.Services.CSV
                 var userTable = stObjMap.StObjs.Obtain<CustomUserTable>();
                 var userTimedTable = stObjMap.StObjs.Obtain<TimedUserTable>();
                 var groupTable = stObjMap.StObjs.Obtain<CustomGroupTable>();
-                var actorEmail = stObjMap.StObjs.Obtain<ActorEMailTable>();
-                var basic = stObjMap.StObjs.Obtain<IBasicAuthenticationProvider>();
 
                 GroupQueries groupQueries = new GroupQueries( ctx, sqlDatabase );
                 UserQueries userQueries = new UserQueries( ctx, sqlDatabase );
 
-                int userId = authenticationInfo.ActualUser.UserId;
-                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+                int currentUserId = authenticationInfo.ActualUser.UserId;
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( currentUserId );
+
                 int zoneId = groupData.ZoneId;
 
 
@@ -73,34 +73,90 @@ namespace inProjects.WebApp.Services.CSV
                     string userName = Guid.NewGuid().ToString();
                     string firstName = element.FirstName;
                     string lastName = element.Name;
-                    string[] promotions = element.Promotion.Split('-');
+                    int timedUserType = 0;
+                    string[] groupName = new string[1];
                     string mail = element.Mail;
-                    string tempPwd = RandomPassword();
+                    int idUser = await CheckIfUserExists( stObjMap, authenticationInfo, mail, userName, firstName, lastName );
 
-                    int exists = await userQueries.CheckEmail( mail );
-
-                    int newUserId = await userTable.CreateUserAsync( ctx, userId, userName, firstName, lastName );
-                    await userTimedTable.CreateOrUpdateTimedUserAsync( ctx, 1, zoneId, newUserId );
-
-                    int promotion = await groupQueries.GetIdGroupByNameAndPeriod( promotions[0], zoneId );
-                    groupTable.AddUser( ctx, userId, promotion, newUserId, true );
-
-                    if(promotions[1] != "A" )
+                    if( type == "student" )
                     {
-                        int sector = await groupQueries.GetIdGroupByNameAndPeriod( promotions[1], zoneId );
-                        groupTable.AddUser( ctx, userId, sector, newUserId, true );
+                        groupName = element.GroupName.Split( '-' );
+                        timedUserType = 1;
+                    }
+                    else if (type == "staffMember")
+                    {
+                        
+                        groupName[0] = element.GroupName;
+                        timedUserType = 2;
                     }
 
-                    if( exists == 0 )
-                    {
-                        await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
-                        await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
-                    }
+                    int groupId = await groupQueries.GetIdGroupByNameAndPeriod( groupName[0], zoneId );
 
+
+                    TimedUserData timedUserData = await userQueries.CheckIfTimedUserExists( idUser, zoneId );
+
+                    if (timedUserData == null )
+                    {
+                        await userTimedTable.CreateOrUpdateTimedUserAsync( ctx, timedUserType, zoneId, idUser );
+                        groupTable.AddUser( ctx, currentUserId, groupId, idUser, true );
+                        if( type == "student" && groupName[1] != "A" )
+                        {
+                            int sector = await groupQueries.GetIdGroupByNameAndPeriod( groupName[1], zoneId );
+                            groupTable.AddUser( ctx, currentUserId, sector, idUser, true );
+                        }
+                    }
+                    else
+                    {
+                        int isUserInGroup = await groupQueries.GetGroupByNamePeriodUser( groupName[0], idUser, zoneId );
+                        if(isUserInGroup == 0 )
+                        {
+                            groupTable.AddUser( ctx, currentUserId, groupId, idUser, true );
+                            if( type == "student" && groupName[1] != "A" )
+                            {
+                                int sector = await groupQueries.GetIdGroupByNameAndPeriod( groupName[1], zoneId );
+                                groupTable.AddUser( ctx, currentUserId, sector, idUser, true );
+                            }
+
+                        }
+                    }
 
                 }
             }
 
+        }
+
+        public async Task<int> CheckIfUserExists( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string mail, string userName, string firstName, string lastName )
+        {
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                var sqlDatabase = stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+                var userTable = stObjMap.StObjs.Obtain<CustomUserTable>();
+                var actorEmail = stObjMap.StObjs.Obtain<ActorEMailTable>();
+                var basic = stObjMap.StObjs.Obtain<IBasicAuthenticationProvider>();
+
+                UserQueries userQueries = new UserQueries( ctx, sqlDatabase );
+
+                int currentIdUser = authenticationInfo.ActualUser.UserId;
+
+                int idUser = await userQueries.CheckEmail( mail );
+
+                if(idUser != 0 )
+                {
+                    return idUser;
+                }
+                else
+                {
+                    string tempPwd = RandomPassword();
+
+                    int newUserId = await userTable.CreateUserAsync( ctx, currentIdUser, userName, firstName, lastName );
+                    await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
+                    await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
+                    return newUserId;
+
+                }
+
+
+            }
         }
 
         public string RandomPassword(int size = 8)

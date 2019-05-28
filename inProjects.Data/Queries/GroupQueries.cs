@@ -67,6 +67,12 @@ namespace inProjects.Data.Queries
             int result = await _controller.QuerySingleOrDefaultAsync<int>( "SELECT GroupId FROM CK.tGroup WHERE GroupName = @GroupName AND ZoneId = @ZoneId;", new { GroupName = groupName, ZoneId = periodId } );
             return result;
         }
+
+        public async Task<int> GetGroupByNamePeriodUser(string groupName, int actorId, int zoneId )
+        {
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "SELECT * FROM CK.vGroup g JOIN CK.tActorProfile ap ON ap.GroupId = g.GroupId AND g.GroupName = @GroupName AND ap.ActorId = @UserId AND g.ZoneId = @ZoneId", new { GroupName = groupName, @UserId = actorId, @ZoneId = zoneId } );
+            return result;
+        }
             
        
     }
