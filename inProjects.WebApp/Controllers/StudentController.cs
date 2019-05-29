@@ -59,7 +59,7 @@ namespace inProjects.WebApp.Controllers
                     Result result = new Result( Status.Unauthorized, "A la date d'aujourd'hui votre etablissement n'est dans une aucune periode" );
                     return this.CreateResult( result );
                 }
-                csvStudentMapping.StudentParser( studentResult, _stObjMap, _authenticationInfo, type );              
+                await csvStudentMapping.StudentParser( studentResult, _stObjMap, _authenticationInfo, type );              
             }
 
             return Ok();
