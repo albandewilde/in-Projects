@@ -15,9 +15,9 @@
                 ref="projectsTable"
                 :data="projects"
                 row-key="projectIdx">
-                <el-table-column :draggable="true" type="index"/>
-                <el-table-column property="name"/>
-                <el-table-column property="semester"/>
+                <el-table-column type="index"/>
+                <el-table-column label="Nom" property="nom"/>
+                <el-table-column label="Semestre" property="semester"/>
             </el-table>
         </div>
 

@@ -6,6 +6,7 @@ import Student from "./views/Student.vue"
 import CreatePeriod from "./components/CreatePeriod.vue"
 import StaffMember from "./views/StaffMember.vue"
 import Plan from "./components/Plan.vue"
+import ForumPlan from "./components/ForumPlan.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +40,11 @@ export default new Router({
       path: "/plan",
       name: "plan",
       component: Plan
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: ForumPlan
     }
   ],
   mode: "history"

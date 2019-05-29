@@ -7,6 +7,10 @@ class Project {
 
     public posY!: number
 
+    public width!: number
+
+    public height!: number
+
     public semester!: string
     
     public classroom!: string
