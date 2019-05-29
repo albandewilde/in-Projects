@@ -13,10 +13,10 @@ using System.Text;
 using System.Security.Claims;
 using inProjects.WebApp.Controllers;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using CK.DB.User.UserOidc;
 using inProjects.WebApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using inProjects.Data;
+using inProjects.WebApp.Hubs;
 
 namespace WebApp
 {
@@ -91,6 +91,7 @@ namespace WebApp
 
             services.AddCKDatabase( "CK.StObj.AutoAssembly" );
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -103,6 +104,11 @@ namespace WebApp
                     .AllowCredentials());
 
             app.UseAuthentication();
+
+            app.UseSignalR( routes =>
+             {
+                 routes.MapHub<StaffMemberHub>( "/StaffMemberHub" );
+             } );
 
             app.UseMvc(routes =>
             {

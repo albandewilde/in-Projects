@@ -31,6 +31,7 @@ export default class CsvImport extends Vue {
     private file: any = ""
     private env: any = process.env.VUE_APP_BACKEND
     private formData: FormData = new FormData()
+    private idZone: number = 4
 
     handleFileChange() {
         const test =  this.$refs.file.files[0]
@@ -41,8 +42,18 @@ export default class CsvImport extends Vue {
         }
     }
     async submitFile() {
-        await sendCsv(this.formData)
-        this.dialogVisible = false
+        try{
+            await sendCsv(this.formData)
+        }
+        catch(e){
+            console.log(e)
+        }
+        finally{
+            this.dialogVisible = false
+            var co = this.$store.state.connectionStaffMember
+            await co.invoke("RefreshList", this.idZone)
+        }
+
     }
 }
 </script>

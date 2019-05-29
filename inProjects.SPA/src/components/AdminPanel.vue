@@ -31,11 +31,21 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator"
+import * as SignalR from "@aspnet/signalr" 
 
 @Component
 export default class AdminPanel extends Vue {
 @Prop()
 isCollapse!: boolean
+private connection!: SignalR.HubConnection
+private idZone: number = 4
+
+async created(){
+    this.connection = await new SignalR.HubConnectionBuilder().withUrl(process.env.VUE_APP_BACKEND + "/staffMemberHub").build()
+    await this.connection.start();
+    await this.connection.invoke("JoinRoom", this.idZone)
+    this.$store.state.connectionStaffMember = this.connection
+}
 
  redirect(destination: string) {
         this.$router.replace(destination)

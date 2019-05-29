@@ -47,6 +47,7 @@ import { Component, Prop } from "vue-property-decorator"
 import { getUserList } from "../api/UserApi"
 import CsvImport from "@/components/CsvImport.vue"
 import { getGroupUserAccessPanel } from "../api/groupApi"
+import * as SignalR from "@aspnet/signalr" 
 
 @Component({
     components: {
@@ -63,6 +64,7 @@ export default class StudentList extends Vue {
     private isAdmin: boolean = false
     private userState: string[] = []
     private zoneId: number = 4
+    private co!: SignalR.HubConnection
 
      async mounted() {
         this.bddInfo.tableName = "TimedStudent"
@@ -72,6 +74,19 @@ export default class StudentList extends Vue {
             this.userListDisplay.push(user)
         }
         await this.checkAdmin()
+        this.co = this.$store.state.connectionStaffMember
+
+        console.log(this.co)
+        await this.co.on("RefreshList", async () => {
+            console.log("je suis la")
+            this.studentList = []
+            this.userListDisplay = []
+            this.studentList = await getUserList(this.bddInfo)
+            console.log(this.studentList)
+            for (const user of this.studentList) {
+            this.userListDisplay.push(user)
+            }
+        })
     }
 
     async checkAdmin() {
