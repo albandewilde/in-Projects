@@ -37,8 +37,8 @@ export default {
         this.plan = await getPlan()
         this.projects = await getProjects()
 
-        this.layout.cols = this.plan.height
-        this.layout.rows = this.plan.width
+        this.layout.cols = this.plan.width
+        this.layout.rows = this.plan.height
 
         for (let i = 0; i < this.projects.length; i += 1) {
             const c = new Chacheli(i + 1, this.projects[i].posX, this.projects[i].posY, this.projects[i].width,
