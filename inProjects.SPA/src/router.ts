@@ -29,11 +29,6 @@ export default new Router({
      name: "createPeriod",
      component: CreatePeriod,
     },
-        {
-     path: "/createPeriod",
-     name: "createPeriod",
-     component: CreatePeriod,
-    },
     {
       path: "/staffMember",
       name: "staffMember",
