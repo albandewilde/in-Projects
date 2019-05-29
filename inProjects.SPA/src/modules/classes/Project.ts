@@ -12,7 +12,7 @@ class Project {
     public height!: number
 
     public semester!: string
-    
+
     public classroom!: string
 }
 export { Project }

@@ -1,20 +1,20 @@
 import { postAsync, getAsync } from "../helpers/apiHelper"
 import { Plan } from "../modules/classes/Plan"
-import { ClassRoom } from '@/modules/classes/ClassRoom'
+import { ClassRoom } from "@/modules/classes/ClassRoom"
 import { Project } from "@/modules/classes/Project"
 import * as jsonPlan from "../../plan.json"
 import * as jsonProjects from "../../projects.json"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/forum"
 
-export async function getPlan(): Promise<Plan> {
-    //const response = await getAsync(`${endpoint}/getPlan`)
+export async function getPlan() {
+    // const response = await getAsync(`${endpoint}/getPlan`)
 
     // For testing purpose
-    let plan = new Plan()    
+    const plan = new Plan()
     plan.classRooms = []
     jsonPlan.Classrooms.forEach(room => {
-        let newroom: ClassRoom = new ClassRoom
+        const newroom: ClassRoom = new ClassRoom()
         newroom.endPositionX = room.EndPositionX
         newroom.endPositionY = room.EndPositionY
         newroom.name = room.Name
@@ -22,19 +22,19 @@ export async function getPlan(): Promise<Plan> {
         newroom.originY = room.OriginY
 
         plan.classRooms.push(newroom)
-    });
+    })
     plan.height = jsonPlan.height
     plan.width = jsonPlan.width
     return plan
 
-    //return response.data
+    // return response.data
 }
 
-export async function getProjects(): Promise<Project[]> {
-    let projects: Project[] = []
+export async function getProjects() {
+    const projects: Project[] = []
 
     jsonProjects.Projects.forEach(project => {
-        let np = new Project()
+        const np = new Project()
         np.name = project.Name
         np.posX = project.PosX
         np.posY = project.PosY
