@@ -11,6 +11,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Threading.Tasks;
+using inProjects.Data.Queries;
+using CK.SqlServer.Setup;
+using inProjects.Data.Data.User;
+using inProjects.Data.Data.Group;
+using inProjects.Data.Data.Period;
+using inProjects.Data.Data.TimedUser;
+using System.Collections.Generic;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -97,5 +104,88 @@ namespace inProjects.WebApp.Controllers
 
         }
 
+        [HttpGet( "getInfosAccount" )]
+        public async Task<IActionResult> GetInfosOwnAccount( int idZone )
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                AccountUserData accountUserData = new AccountUserData();
+
+                UserQueries userQueries = new UserQueries( ctx, sqlDataBase );
+                GroupQueries groupQueries = new GroupQueries( ctx, sqlDataBase );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDataBase );
+                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, sqlDataBase );
+
+                //Donnée de l'utilisateur
+                UserData userData = await userQueries.GetInfosUserById( userId );
+
+                //Derniere PeriodId de l'user et timedUserId
+                TimedUserData timedUser = await timedUserQueries.GetLastTimedUserId( userId );
+
+                if(timedUser == null )
+                {
+                    accountUserData.UserData = userData;
+                    accountUserData.Group = "User";
+                    return Ok( accountUserData );
+
+                }
+                //Periode actuelle
+                PeriodData actualPeriod = await timedPeriodQueries.GetLastPeriodBySchool( idZone );
+
+                //Recuperer Groupe du timedUser
+                List<string> listGroupUser = await groupQueries.GetAllGroupOfTimedUser( timedUser.TimePeriodId, timedUser.TimedUserId );
+
+                string group = listGroupUser.Find( x => x.StartsWith( "S" ) || x.StartsWith( "S1" ) || x == "Teacher" || x == "Administration" );
+                string spec = listGroupUser.Find( x => x == "IL" || x == "SR" );
+
+                if( spec != null ) group += "-" + spec;
+
+                accountUserData.UserData = userData;
+                accountUserData.Group = group;
+
+                if( actualPeriod.ChildId == timedUser.TimePeriodId )
+                {
+                    accountUserData.IsActual = true;
+                }
+                else
+                {
+                    accountUserData.IsActual = false;
+                }
+
+                return Ok( accountUserData );
+            }
+        }
+
+        [HttpPost( "changeInfosAccount" )]
+        public async Task<IActionResult> changeInfosUser( [FromBody] AccountUserData account )
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            var userTable = _stObjMap.StObjs.Obtain<CustomUserTable>();
+            var actorEmail = _stObjMap.StObjs.Obtain<ActorEMailTable>();
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+
+                int status = await userTable.UpdateUserInfos( ctx,account.UserData.FirstName, account.UserData.LastName, account.UserData.Email, account.UserData.EmailSecondary, userId );
+
+                if(status == 1 )
+                {
+                    Result result = new Result( Status.Unauthorized, "Email principale deja existant" );
+                    return this.CreateResult( result );
+                }
+
+                if(status == 2 )
+                {
+                    Result result = new Result( Status.Unauthorized, "Email principale ne peut pas etre egal à l'email secondaire" );
+                    return this.CreateResult( result );
+                }
+                return Ok();
+            }
+
+        }
     }
 }
