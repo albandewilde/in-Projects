@@ -39,31 +39,35 @@
         <!-- Mode edit -->
         <div v-else>
             <el-form ref="infosUser" label-suffix=" :" size="medium">
-                    <el-form-item>
-                        Nom :
-                            <el-input class="text-input-my-profil" name="Nom" v-validate="'required'" v-model="infosUser.userData.firstName"></el-input>
+
                             <i v-show="errors.has('Nom')" class="fa fa-warning" style="color:orange;"></i>
                             <span v-show="errors.has('Nom')" class="errorStyle">{{ errors.first('Nom') }}</span>
+                    <el-form-item>
+                        Nom :
+                            <el-input class="text-input-my-profil" name="Nom" v-validate="'required|alpha'" v-model="infosUser.userData.firstName"></el-input>
                         </el-form-item>
 
-                    <el-form-item>
-                        Prénom :
-                            <el-input class="text-input-my-profil" name="Prenom" v-validate="'required'" v-model="infosUser.userData.lastName"></el-input>
+
                             <i v-show="errors.has('Prenom')" class="fa fa-warning" style="color:orange;"></i>
                             <span v-show="errors.has('Prenom')" class="errorStyle">{{ errors.first('Prenom') }}</span>
+                    <el-form-item>
+                        Prénom :
+                            <el-input class="text-input-my-profil" name="Prenom" v-validate="'required|alpha'" v-model="infosUser.userData.lastName"></el-input>
                         </el-form-item>
 
-                        <el-form-item v-if="CheckUserSchemes('Basic')">
-                        Email :
-                            <el-input class="text-input-my-profil" name="Email" v-validate="'required'" v-model="infosUser.userData.email"></el-input>
                             <i v-show="errors.has('Email')" class="fa fa-warning" style="color:orange;"></i>
                             <span v-show="errors.has('Email')" class="errorStyle">{{ errors.first('Email') }}</span>
+                        <el-form-item v-if="CheckUserSchemes('Basic')">
+                        Email :
+                            <el-input class="text-input-my-profil" name="Email" v-validate="'required|email'" v-model="infosUser.userData.email"></el-input>
                         </el-form-item>
 
 
+                            <i v-show="errors.has('Email Secondaire')" class="fa fa-warning" style="color:orange;"></i>
+                            <span v-show="errors.has('Email Secondaire')" class="errorStyle">{{ errors.first('Email Secondaire') }}</span>
                         <el-form-item>
                             Email Secondaire :
-                            <el-input class="text-input-my-profil"  name="EmailSecondary" v-model="infosUser.userData.emailSecondary"></el-input>
+                            <el-input name="Email Secondaire" class="text-input-my-profil" v-validate="'email'" v-model="infosUser.userData.emailSecondary"></el-input>
                         </el-form-item>
     
                 <el-button type="success" @click="ChangeInformation()">Changer ses infos</el-button>

@@ -15,7 +15,7 @@ begin
     --<PreCreate />
     declare @VerifyUser bit;
 
-    if exists(SELECT * FROM CK.tActorEMail aem where aem.EMail =@PrimaryEmail and ActorId <> 46 and IsPrimary = 1)
+    if exists(SELECT * FROM CK.tActorEMail aem where aem.EMail =@PrimaryEmail and ActorId <> @UserId and IsPrimary = 1)
         begin
           set @Status =1
           COMMIT
