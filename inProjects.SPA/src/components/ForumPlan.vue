@@ -111,4 +111,12 @@ body {
     background-image: url("/plan.jpg");
     background-size: 100% 100%;
 }
+
+.chacheli-designer-layout .grid {
+    color: transparent;
+}
+
+.chacheli-designer-layout .chacheli .content {
+    background-color: hsla(0, 0%, 94%, 0.7);
+}
 </style>
