@@ -47,6 +47,8 @@ import { User } from "../modules/classes/User"
 import { getUserList } from "../api/UserApi"
 import CsvImport from "@/components/CsvImport.vue"
 import { getGroupUserAccessPanel } from "../api/groupApi"
+import * as SignalR from "@aspnet/signalr"
+import { SignalRGestion } from "../modules/classes/SignalR"
 
 @Component({
     components: {
@@ -62,6 +64,8 @@ export default class StaffMemberList extends Vue {
     private isAdmin: boolean = false
     private userState: string[] = []
     private zoneId: number = 4
+    private co!: SignalR.HubConnection
+    private signalr: SignalRGestion = new SignalRGestion()
 
     async mounted() {
         this.bddInfo.tableName = "TimedStaffMember"
@@ -71,6 +75,17 @@ export default class StaffMemberList extends Vue {
             this.userListDisplay.push(user)
         }
         await this.checkAdmin()
+        this.co = this.$store.state.connectionStaffMember
+        if ( this.co.state == undefined ) await this.signalr.connect()
+        await this.co.on("RefreshList", async () => {
+            console.log("je suis la")
+            this.staffMemberList = []
+            this.userListDisplay = []
+            this.staffMemberList = await getUserList(this.bddInfo)
+            for (const user of this.staffMemberList) {
+            this.userListDisplay.push(user)
+            }
+        })
     }
 
     async checkAdmin() {

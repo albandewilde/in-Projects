@@ -47,7 +47,8 @@ import { Component, Prop } from "vue-property-decorator"
 import { getUserList } from "../api/UserApi"
 import CsvImport from "@/components/CsvImport.vue"
 import { getGroupUserAccessPanel } from "../api/groupApi"
-import * as SignalR from "@aspnet/signalr" 
+import * as SignalR from "@aspnet/signalr"
+import { SignalRGestion } from "../modules/classes/SignalR"
 
 @Component({
     components: {
@@ -65,6 +66,7 @@ export default class StudentList extends Vue {
     private userState: string[] = []
     private zoneId: number = 4
     private co!: SignalR.HubConnection
+    private signalr: SignalRGestion = new SignalRGestion()
 
      async mounted() {
         this.bddInfo.tableName = "TimedStudent"
@@ -74,15 +76,15 @@ export default class StudentList extends Vue {
             this.userListDisplay.push(user)
         }
         await this.checkAdmin()
+        // co.state is undefined when co is not working
         this.co = this.$store.state.connectionStaffMember
-
-        console.log(this.co)
+        console.log("je teste la co")
+        console.log(this.co.state)
         await this.co.on("RefreshList", async () => {
             console.log("je suis la")
             this.studentList = []
             this.userListDisplay = []
             this.studentList = await getUserList(this.bddInfo)
-            console.log(this.studentList)
             for (const user of this.studentList) {
             this.userListDisplay.push(user)
             }

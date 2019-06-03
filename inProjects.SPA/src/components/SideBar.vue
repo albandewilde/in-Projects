@@ -108,6 +108,8 @@ import StudentPanel from "./StudentPanel.vue"
 import { AuthService } from "@signature/webfrontauth"
 import { getGroupUserAccessPanel } from "../api/groupApi"
 import { getAuthService } from "../modules/authService"
+import * as SignalR from "@aspnet/signalr"
+import { SignalRGestion } from "../modules/classes/SignalR"
 
 @Component({
   components: {
@@ -124,17 +126,22 @@ export default class SideBar extends Vue {
     whatTimed: string[] = []
     ZoneId: number = 4
     authService: AuthService = getAuthService()
+    private co!: SignalR.HubConnection
+    private signalr: SignalRGestion = new SignalRGestion()
 
 @Watch("authService.authenticationInfo.level", { immediate: true, deep: true })
   async onLevelChange() {
-      await this.getAuthorizedAccess()
+        await this.getAuthorizedAccess()
+
     }
 
-/*      async mounted() {
-       const vm = this
-       await this.getAuthorizedAccess()
-     } */
-
+    async mounted (){
+        this.co = this.$store.state.connectionStaffMember
+        if ( this.co.state == undefined ) {
+            console.log("c'est undefined")
+            await this.signalr.connect()
+        } 
+    }
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
     }

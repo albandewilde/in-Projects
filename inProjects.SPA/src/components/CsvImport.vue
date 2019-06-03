@@ -6,7 +6,6 @@
             title="Ajouter une liste d'élèves via un csv"
             :visible.sync="dialogVisible"
             width="30%"
-            :before-close="handleClose"
             class="dialog--uploadxcel">
             <el-form enctype="mutltipart/form-data">
                 <input type="file" name="file" accept=".csv" ref="file" @change="handleFileChange()"/>
@@ -26,7 +25,7 @@ import { sendCsv } from "../api/csvApi"
 
 @Component
 export default class CsvImport extends Vue {
-    @Prop(String) type!: ''
+    @Prop(String) type!: ""
     private dialogVisible: boolean = false
     private file: any = ""
     private env: any = process.env.VUE_APP_BACKEND
@@ -37,22 +36,23 @@ export default class CsvImport extends Vue {
     handleFileChange() {
         const test =  this.$refs.file.files[0]
         this.formData.append("file", test)
-        this.formData.append('type', this.type)
+        this.formData.append("type", this.type)
         for ( const i of this.formData.entries()) {
             console.log(i)
         }
     }
     async submitFile() {
-        try{
+        try {
          this.test = await sendCsv(this.formData)
+         this.$refs.file.files[0] = ""
         }
-        catch(e){
+        catch (e) {
             console.log(e)
         }
-        finally{
+        finally {
             console.log(this.test)
             this.dialogVisible = false
-            var co = this.$store.state.connectionStaffMember
+            const co = this.$store.state.connectionStaffMember
             await co.invoke("RefreshList", this.idZone)
         }
 

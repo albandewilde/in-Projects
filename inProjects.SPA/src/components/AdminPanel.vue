@@ -31,7 +31,8 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator"
-import * as SignalR from "@aspnet/signalr" 
+import * as SignalR from "@aspnet/signalr"
+import { SignalRGestion } from "../modules/classes/SignalR"
 
 @Component
 export default class AdminPanel extends Vue {
@@ -39,12 +40,14 @@ export default class AdminPanel extends Vue {
 isCollapse!: boolean
 private connection!: SignalR.HubConnection
 private idZone: number = 4
+private signalr: SignalRGestion = new SignalRGestion()
 
-async created(){
-    this.connection = await new SignalR.HubConnectionBuilder().withUrl(process.env.VUE_APP_BACKEND + "/staffMemberHub").build()
-    await this.connection.start();
-    await this.connection.invoke("JoinRoom", this.idZone)
-    this.$store.state.connectionStaffMember = this.connection
+async created() {
+    await this.signalr.connect()
+    console.log("co")
+    console.log(this.$store.state.connectionStaffMember)
+
+    //this.$store.state.connectionStaffMember = this.connection
 }
 
  redirect(destination: string) {
