@@ -94,6 +94,10 @@
             </div>
         </div>
 
+        <el-menu-item index="6" @click="redirect(`/submit_project`)">
+            <font-awesome-icon icon="plus-square" size="lg" />
+            <span> Deposer un Projet</span>
+        </el-menu-item>
     </el-menu>
 </template>
 
@@ -119,6 +123,7 @@ import { getAuthService } from "../modules/authService"
     StudentPanel
   },
 })
+
 export default class SideBar extends Vue {
     isCollapse: boolean = true
     whatTimed: string[] = []

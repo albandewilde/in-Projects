@@ -12,3 +12,5 @@ namespace inProjects.Data.Data.User
         public string EmailSecondary { get; set; }
     }
 }
+
+        public int UserId { get; set; }
