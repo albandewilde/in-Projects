@@ -2,6 +2,7 @@ import { postAsync, getAsync } from "../helpers/apiHelper"
 import { Plan } from "../modules/classes/Plan"
 import { ClassRoom } from "@/modules/classes/ClassRoom"
 import { Project } from "@/modules/classes/Project"
+import { Chacheli } from "../modules/classes/Chacheli"
 import * as jsonPlan from "../../plan.json"
 import * as jsonProjects from "../../projects.json"
 
@@ -44,4 +45,9 @@ export async function getProjects() {
     })
 
     return projects
+}
+
+export async function savePlan(plan: Chacheli[]): Promise<any> {
+    const response = await postAsync(`${endpoint}/savePlan`, plan)
+    return response
 }

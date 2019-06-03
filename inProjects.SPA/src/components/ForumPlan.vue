@@ -1,5 +1,6 @@
 <template>
     <div id="plan">
+        <!-- <center><el-button style="width: 50%;" @click="this.SavePlan()" type="success">Sauvegarder</el-button></center><br> -->
         <chacheli-designer v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" />
     </div>
 </template>
@@ -8,7 +9,7 @@
 import Vue from "vue"
 import { Component } from "vue-property-decorator"
 import { Project } from "../modules/classes/Project"
-import { getPlan, getProjects } from "../api/forumApi"
+import { getPlan, getProjects, savePlan } from "../api/forumApi"
 import { Plan } from "../modules/classes/Plan"
 import { Layout } from "../modules/classes/Layout"
 import { Chacheli } from "../modules/classes/Chacheli"
@@ -29,7 +30,14 @@ export default {
                 cols: 0,
                 rows: 0
             },
-            projects: new Array()
+            projects: new Array(),
+            savedPlan: new Array()
+        }
+    },
+
+    watch: {
+        async savedPlan() {
+            const response = await savePlan(this.savedPlan)
         }
     },
 
@@ -44,6 +52,40 @@ export default {
             const c = new Chacheli(i + 1, this.projects[i].posX, this.projects[i].posY, this.projects[i].width,
                 this.projects[i].height, this.projects[i].name, true, "dummy-green")
             this.chachelis.push(c)
+        }
+        setInterval(this.SavePlan, 10000)
+    },
+
+    methods: {
+        async SavePlan() {
+            for(let i = 0; i < this.chachelis.length; i += 1) {
+                if(this.chachelis[i].x != -1) {
+                    for(let j = 0; j < this.plan.classRooms.length; j += 1) {
+                        if(this.chachelis[i].x >= this.plan.classRooms[j].originX && this.chachelis[i].x <= this.plan.classRooms[j].endPositionX) {
+                            if(this.chachelis[i].y >= this.plan.classRooms[j].originY && this.chachelis[i].y <= this.plan.classRooms[j].endPositionY) {
+                                console.debug(this.chachelis)
+                                console.debug(this.plan)
+                                this.chachelis[i].classRoom = this.plan.classRoom[j].name
+                                const item = this.savedPlan.find(project => project.text === this.chachelis[i].text)
+
+                                if(!item) {
+                                    const project = this.projects.find(project => project.name === this.chachelis[i].text)
+                                    const p = new Project(this.chachelis[i].text, this.chachelis[i].x, this.chachelis[i].y, 
+                                        this.chachelis[i].w, this.chachelis[i].h, project.semester, this.chachelis[i].classRoom)
+                                    this.savedPlan.push(p)
+                                    break
+                                } else {
+                                    item.classRoom = this.plan.classRooms[j].name
+                                    item.posX = this.chachelis[i].x
+                                    item.posY = this.chachelis[i].y
+                                    item.height = this.chachelis[i].h
+                                    item.width = this.chachelis[i].w                       
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }

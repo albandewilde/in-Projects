@@ -17,5 +17,8 @@ namespace inProjects.Data.Data.ProjectStudent
         public string Semester { get; set; }
         public int PosX { get; set; }
         public int PosY { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
+        public string ClassRoom { get; set; }
     }
 }
