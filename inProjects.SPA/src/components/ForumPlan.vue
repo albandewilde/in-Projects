@@ -9,7 +9,7 @@
 import Vue from "vue"
 import { Component } from "vue-property-decorator"
 import { Project } from "../modules/classes/Project"
-import { getPlan, getProjects, savePlan } from "../api/forumApi"
+import { getPlan, getProjects, savePlan as saveForumPlan } from "../api/forumApi"
 import { Plan } from "../modules/classes/Plan"
 import { Layout } from "../modules/classes/Layout"
 import { Chacheli } from "../modules/classes/Chacheli"
@@ -37,7 +37,7 @@ export default {
 
     watch: {
         async savedPlan() {
-            const response = await savePlan(this.savedPlan)
+            const response = await saveForumPlan(this.savedPlan)
         }
     },
 
@@ -53,12 +53,11 @@ export default {
                 this.projects[i].height, this.projects[i].name, true, "dummy-green")
             this.chachelis.push(c)
         }
-        setInterval(this.SavePlan, 2000)
+        setInterval(this.SavePlan, 10000)
     },
 
     methods: {
         async SavePlan() {
-            const _ = require("underscore")
             for(let i = 0; i < this.chachelis.length; i += 1) {
                 if(!this.chachelis[i].available) {
                     for(let j = 0; j < this.plan.classRooms.length; j += 1) {
@@ -78,7 +77,7 @@ export default {
                                     item.posY = this.chachelis[i].y
                                     item.height = this.chachelis[i].h
                                     item.width = this.chachelis[i].w
-                                    _.delay(savePlan(this.savedPlan), 10000)
+                                    await saveForumPlan(this.savedPlan)
                                 }
                             }
                         }
