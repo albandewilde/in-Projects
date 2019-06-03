@@ -24,7 +24,7 @@
             <div v-if="this.isCollapse">
                 <br>
             </div>
-            <el-button type="info" size="small" circle>
+            <el-button @click="redirect(`/MyProfil`)" type="info" size="small" circle>
                 <font-awesome-icon icon="cog" size="lg" />
             </el-button>
             <div v-if="this.isCollapse">
@@ -94,6 +94,10 @@
             </div>
         </div>
 
+        <el-menu-item index="6" @click="redirect(`/submit_project`)">
+            <font-awesome-icon icon="plus-square" size="lg" />
+            <span> Deposer un Projet</span>
+        </el-menu-item>
     </el-menu>
 </template>
 
@@ -121,6 +125,7 @@ import { SignalRGestion } from "../modules/classes/SignalR"
     StudentPanel
   },
 })
+
 export default class SideBar extends Vue {
     isCollapse: boolean = true
     whatTimed: string[] = []

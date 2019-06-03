@@ -4,6 +4,7 @@ class User {
     public email: string = ""
     public password: string = ""
     public groupName: string = ""
+    public emailSecondary: string =""
 
     /**
      * Set or Reset a User to default values

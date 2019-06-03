@@ -1,4 +1,4 @@
--- SetupConfig: {}
+-- SetupConfig: {"Requires":["CK.sGroupUserAdd"]}
 --
 create procedure IPR.sCreateOrUpdateTimedUser
 (
@@ -24,6 +24,7 @@ begin
     if(@VerifyUser is null)
         begin
              insert into IPR.tTimedUser (TimePeriodId, UserId) VALUES (@TimePeriodId, @UserId);
+             EXEC CK.sGroupUserAdd 1,@TimePeriodId,@UserId,1
              SET @TimedUserId = SCOPE_IDENTITY();
         end
 

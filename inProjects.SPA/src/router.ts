@@ -2,10 +2,12 @@ import Vue from "vue"
 import Router from "vue-router"
 import Home from "./views/Home.vue"
 import Connection from "./views/Connection.vue"
+import SubmitProject from "./components/SubmitProject.vue"
 import Student from "./views/Student.vue"
 import CreatePeriod from "./components/CreatePeriod.vue"
 import ListPeriod from "./components/ListPeriod.vue"
 import StaffMember from "./views/StaffMember.vue"
+import MyProfil from "./views/MyProfil.vue"
 import Plan from "./components/Plan.vue"
 import ProjectList from "./components/ProjectList.vue"
 Vue.use(Router)
@@ -20,7 +22,12 @@ export default new Router({
     {
       path: "/connection",
       name: "connection",
-      component: Connection
+      component: Connection,
+    },
+    {
+      path: "/submit_project",
+      name: "submit_project",
+      component: SubmitProject
     },
     {
       path: "/student",
@@ -51,6 +58,11 @@ export default new Router({
       path: "/projectList",
       name: "projectList",
       component: ProjectList
+     },
+     {
+      path: "/MyProfil",
+      name: "MyProfil",
+      component: MyProfil
     }
   ],
   mode: "history"

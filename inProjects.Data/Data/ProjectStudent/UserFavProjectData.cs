@@ -8,5 +8,7 @@ namespace inProjects.Data.Data.ProjectStudent
     {
         public int ProjectId { get; set; }
         public int UserId { get; set; }
+        public string GroupName { get; set; }
+        public string Logo { get; set; }
     }
 }

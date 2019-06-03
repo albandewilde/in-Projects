@@ -124,7 +124,16 @@ namespace inProjects.WebApp.Controllers
 
                 }
 
-             
+                if( !listGroupToReturn.Contains( "Administration" ) )
+                {
+                    int adminIdZoneSchool = await groupsQueries.GetSpecificIdGroupByZoneIdAndGroupName( idZone, "Administration" );
+
+                    if( await userQueries.VerifyGroupUser( userId, adminIdZoneSchool ) != 0 )
+                    {
+                        listGroupToReturn.Add( "Administration" );
+                    }
+                }
+                
 
                 return listGroupToReturn;
             }
