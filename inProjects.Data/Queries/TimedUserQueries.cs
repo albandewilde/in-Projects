@@ -29,7 +29,7 @@ namespace inProjects.Data.Queries
 
         public async Task<IEnumerable<TimedStudentData>> GetAllStudentInfosByGroup(int groupId, string userTimedTable, string specificTimedUserId )
         {
-            IEnumerable<TimedStudentData> result = await _controller.QueryAsync<TimedStudentData>( "SELECT * FROM CK.tGroup g JOIN CK.tActor a ON a.ActorId = g.GroupId AND g.GroupId = @GroupId JOIN CK.tActorProfile ap ON ap.GroupId = g.GroupId AND ap.ActorId <> ap.GroupId JOIN CK.tUser u ON u.UserId = ap.ActorId  JOIN IPR.tTimedUser tu ON tu.UserId = u.UserId JOIN IPR.t" + userTimedTable + " ts ON ts.Timed" + specificTimedUserId + " = tu.TimedUserId AND ts.Timed" + specificTimedUserId + " is not null;", new { GroupId = groupId } );
+            IEnumerable<TimedStudentData> result = await _controller.QueryAsync<TimedStudentData>( "SELECT * FROM CK.tGroup g JOIN CK.tActor a ON a.ActorId = g.GroupId AND g.GroupId = @GroupId JOIN CK.tActorProfile ap ON ap.GroupId = g.GroupId AND ap.ActorId <> ap.GroupId JOIN CK.tUser u ON u.UserId = ap.ActorId  JOIN IPR.tTimedUser tu ON tu.UserId = u.UserId  AND tu.TimePeriodId = g.ZoneId JOIN IPR.t" + userTimedTable + " ts ON ts.Timed" + specificTimedUserId + " = tu.TimedUserId AND ts.Timed" + specificTimedUserId + " is not null;", new { GroupId = groupId } );
             return result;
         }
 

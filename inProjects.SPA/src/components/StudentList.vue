@@ -32,7 +32,7 @@
         </el-table-column>
         <el-table-column>
             <template slot="header" slot-scope="scope" v-if="isAdmin">
-                <ExcelImport></ExcelImport>
+                <CsvImport type="student"></CsvImport>
             </template>
         </el-table-column>
     </el-table>
@@ -43,18 +43,21 @@
 import Vue from "vue"
 import { User } from "../modules/classes/User"
 import { BddInfo } from "../modules/classes/BddInfo"
-import { Component } from "vue-property-decorator"
+import { Component, Prop } from "vue-property-decorator"
 import { getUserList } from "../api/UserApi"
-import ExcelImport from "@/components/ExcelImport.vue"
+import CsvImport from "@/components/CsvImport.vue"
 import { getGroupUserAccessPanel } from "../api/groupApi"
+import * as SignalR from "@aspnet/signalr"
+import { SignalRGestion } from "../modules/classes/SignalR"
 
 @Component({
     components: {
-        ExcelImport
+     CsvImport
     }
 })
 
 export default class StudentList extends Vue {
+
     private bddInfo: BddInfo = new BddInfo()
     private studentList!: User[]
     private userListDisplay: User[] = []
@@ -62,6 +65,8 @@ export default class StudentList extends Vue {
     private isAdmin: boolean = false
     private userState: string[] = []
     private zoneId: number = 4
+    private co!: SignalR.HubConnection
+    private signalr: SignalRGestion = new SignalRGestion()
 
      async mounted() {
         this.bddInfo.tableName = "TimedStudent"
@@ -71,14 +76,25 @@ export default class StudentList extends Vue {
             this.userListDisplay.push(user)
         }
         await this.checkAdmin()
-        console.log(this.isAdmin)
+        // co.state is undefined when co is not working
+        this.co = this.$store.state.connectionStaffMember
+        console.log("je teste la co")
+        console.log(this.co.state)
+        await this.co.on("RefreshList", async () => {
+            console.log("je suis la")
+            this.studentList = []
+            this.userListDisplay = []
+            this.studentList = await getUserList(this.bddInfo)
+            for (const user of this.studentList) {
+            this.userListDisplay.push(user)
+            }
+        })
     }
 
     async checkAdmin() {
         this.userState = await getGroupUserAccessPanel(this.zoneId)
-        for (const user of this.userState) {
-            console.log(user)
-            if (user == "Administration") {
+        for (const i of this.userState) {
+            if (i == "Administration") {
                 this.isAdmin = true
             }
         }
