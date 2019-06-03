@@ -2,7 +2,7 @@
 <div>
         <el-submenu index="10">
                 <template slot="title">
-                    <font-awesome-icon icon="user-tie" size="lg" />
+                <i class="fa fa-calendar-plus-o" aria-hidden="true" style="color: white; font-size: 24px" ></i>
                     <span v-if="isCollapse == false"> Periode </span>
                 </template>
                 <el-menu-item-group>

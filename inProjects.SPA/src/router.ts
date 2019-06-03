@@ -7,6 +7,7 @@ import CreatePeriod from "./components/CreatePeriod.vue"
 import ListPeriod from "./components/ListPeriod.vue"
 import StaffMember from "./views/StaffMember.vue"
 import Plan from "./components/Plan.vue"
+import ProjectList from "./components/ProjectList.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -45,7 +46,12 @@ export default new Router({
       path: "/listPeriod",
       name: "listPeriod",
       component: ListPeriod
-     }
+    },
+    {
+      path: "/projectList",
+      name: "projectList",
+      component: ProjectList
+    }
   ],
   mode: "history"
 })
