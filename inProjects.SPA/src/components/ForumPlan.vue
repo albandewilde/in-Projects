@@ -53,21 +53,19 @@ export default {
                 this.projects[i].height, this.projects[i].name, true, "dummy-green")
             this.chachelis.push(c)
         }
-        setInterval(this.SavePlan, 10000)
+        setInterval(this.SavePlan, 2000)
     },
 
     methods: {
         async SavePlan() {
+            const _ = require("underscore")
             for(let i = 0; i < this.chachelis.length; i += 1) {
-                if(this.chachelis[i].x != -1) {
+                if(!this.chachelis[i].available) {
                     for(let j = 0; j < this.plan.classRooms.length; j += 1) {
                         if(this.chachelis[i].x >= this.plan.classRooms[j].originX && this.chachelis[i].x <= this.plan.classRooms[j].endPositionX) {
                             if(this.chachelis[i].y >= this.plan.classRooms[j].originY && this.chachelis[i].y <= this.plan.classRooms[j].endPositionY) {
-                                console.debug(this.chachelis)
-                                console.debug(this.plan)
-                                this.chachelis[i].classRoom = this.plan.classRoom[j].name
-                                const item = this.savedPlan.find(project => project.text === this.chachelis[i].text)
-
+                                this.chachelis[i].classRoom = this.plan.classRooms[j].name
+                                const item = this.savedPlan.find(project => project.name === this.chachelis[i].text)
                                 if(!item) {
                                     const project = this.projects.find(project => project.name === this.chachelis[i].text)
                                     const p = new Project(this.chachelis[i].text, this.chachelis[i].x, this.chachelis[i].y, 
@@ -79,10 +77,16 @@ export default {
                                     item.posX = this.chachelis[i].x
                                     item.posY = this.chachelis[i].y
                                     item.height = this.chachelis[i].h
-                                    item.width = this.chachelis[i].w                       
+                                    item.width = this.chachelis[i].w
+                                    _.delay(savePlan(this.savedPlan), 10000)
                                 }
                             }
                         }
+                    }
+                } else {
+                    const idxProject = this.savedPlan.indexOf(this.chachelis[i])
+                    if(idxProject >= 0) {
+                        this.savedPlan.splice(idxProject, 1)
                     }
                 }
             }
