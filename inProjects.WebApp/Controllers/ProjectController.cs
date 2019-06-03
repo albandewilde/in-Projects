@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using CK.Core;
+using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data;
 using inProjects.Data.Res.Model;

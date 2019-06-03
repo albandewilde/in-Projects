@@ -71,7 +71,7 @@
                         </el-form-item>
     
                 <el-button type="success" @click="ChangeInformation()">Changer ses infos</el-button>
-                <el-button type="danger" @click="ChangeMode('normal')">Annuler</el-button>
+                <el-button type="danger" @click="Cancel('normal')">Annuler</el-button>
             </el-form>
         </div>
     </div>
@@ -92,6 +92,7 @@ import Error from "./Erreur.vue"
 export default class InformationsMyProfil extends Vue {
     private idZone: number = 4
     private infosUser: InfosAccount = new InfosAccount()
+    private infosUserTemp: InfosAccount = new InfosAccount()
     private mode: string = "normal"
     public  error: string[] = []
     private authService: AuthService = getAuthService()
@@ -99,6 +100,7 @@ export default class InformationsMyProfil extends Vue {
 
     async created(){
        this.infosUser = await getAccountInfos(this.idZone)
+       this.infosUserTemp = await getAccountInfos(this.idZone)
     }
 
     async ChangeInformation(){
@@ -110,17 +112,24 @@ export default class InformationsMyProfil extends Vue {
                     message: "Information changer",
                     type: "success"
                 })
+                this.infosUserTemp = await getAccountInfos(this.idZone)
                 this.ChangeMode('normal')
              }catch(e){
                  this.error.push(e.response.data)
              }
-         }else{
-             console.log("nope")
          }
     }
     ChangeMode(mode: string){
         this.error =[]
         this.mode = mode;
+    }
+
+     Cancel(mode: string){
+        this.infosUser.userData.firstName = this.infosUserTemp.userData.firstName
+        this.infosUser.userData.lastName = this.infosUserTemp.userData.lastName
+        this.infosUser.userData.email = this.infosUserTemp.userData.email
+        this.infosUser.userData.emailSecondary = this.infosUserTemp.userData.emailSecondary
+        this.ChangeMode(mode)
     }
     CheckUserSchemes(schemes: string){
         let exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)

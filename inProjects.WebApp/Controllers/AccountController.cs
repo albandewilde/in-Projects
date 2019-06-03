@@ -18,6 +18,7 @@ using inProjects.Data.Data.Group;
 using inProjects.Data.Data.Period;
 using inProjects.Data.Data.TimedUser;
 using System.Collections.Generic;
+using inProjects.Data.Data.ProjectStudent;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -186,6 +187,23 @@ namespace inProjects.WebApp.Controllers
                 return Ok();
             }
 
+        }
+
+        [HttpGet( "getProjectsFav" )]
+        public async Task<IActionResult> GetProjectsFav()
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                UserQueries userQueries = new UserQueries( ctx, sqlDataBase );
+
+                List<UserFavProjectData> userFavProjects = await userQueries.GetProjectsFavUser( userId );
+
+                return Ok( userFavProjects );
+            }
         }
     }
 }

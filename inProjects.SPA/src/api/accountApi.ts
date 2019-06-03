@@ -3,6 +3,7 @@ import { User } from "../modules/classes/user"
 import { UserInfo } from "../modules/classes/UserInfo"
 import { PasswordChangeInfo } from "../modules/classes/PasswordChangeInfo"
 import { InfosAccount } from '@/modules/classes/InfosAccount'
+import { ProjectFav } from '@/modules/classes/ProjectFav'
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/account"
 
@@ -31,6 +32,10 @@ export async function getAccountInfos(idZone: number): Promise<any> {
     return response.data
 }
 
+export async function getProjectsFav(): Promise<ProjectFav[]> {
+    const response = await getAsync(`${endpoint}/getProjectsFav`)
+    return response.data
+}
 
 export async function changeAccountInfos(data: InfosAccount): Promise<any> {
     const response = await postAsync(`${endpoint}/changeInfosAccount`, data)
