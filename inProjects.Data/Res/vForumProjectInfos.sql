@@ -8,10 +8,12 @@ SELECT g.GroupName as ProjectName,
        p.Pitch,
        p.[Type],
        p.TraitId,
-       g.ZoneId as SchoolId,
+       g.ZoneId as ForumId,
        fi.ClassRoom,
        fi.CoordinatesX,
-       fi.CoordinatesY
+       fi.CoordinatesY,
+       fi.Width,
+       fi.Height
        
 FROM IPR.tProjectStudent p
 JOIN CK.tGroup g on p.ProjectStudentId = g.GroupId

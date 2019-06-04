@@ -2,12 +2,14 @@ using CK.Core;
 using inProjects.Data.Data.Period;
 using inProjects.Data.Data.ProjectStudent;
 using inProjects.Data.Queries;
-using inProjects.WebApp.ForumsPlan;
+using inProjects.Data.ForumsPlan;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using CK.SqlServer;
+using CK.SqlServer.Setup;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -37,7 +39,7 @@ namespace inProjects.WebApp.Controllers
             var timedPeriodQueries = _stObjMap.StObjs.Obtain<TimedPeriodQueries>();
 
             PeriodData forumData = await timedPeriodQueries.GetLastPeriodBySchool( idSchool );
-            IEnumerable<ProjectData> projects = await projectQueries.GetAllProjectByForum( forumData.ChildId );
+            IEnumerable<ProjectData> projects = await projectQueries.GetAllProjectByForum( forumData.ZoneId );
             List<Project> projectList = new List<Project>();
 
             foreach( ProjectData project in projects )
@@ -50,9 +52,14 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpPost("SavePlan")]
-        public void SavePlan([FromBody] Project[] plan)
+        public async Task SavePlan([FromBody] Project[] plan)
         {
-
+            var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ForumQueries forumQueries = new ForumQueries( ctx, sqlDatabase );
+                int result = await forumQueries.SavePlan( plan );
+            }
         }
     }
 }

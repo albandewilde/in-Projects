@@ -69,8 +69,8 @@ namespace inProjects.Data.Queries
             IEnumerable<ProjectData> result = await _controller.QueryAsync<ProjectData>(
                 "SELECT *" +
                 "FROM IPR.vForumProjectInfos" +
-                "WHERE SchoolId = @SchoolId",
-                new { SchoolId = forumId } );
+                "WHERE ForumId = @ForumId",
+                new { ForumId = forumId } );
 
             return result;
         }

@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace inProjects.WebApp.ForumsPlan
+namespace inProjects.Data.ForumsPlan
 {
     public class Plan
     {
