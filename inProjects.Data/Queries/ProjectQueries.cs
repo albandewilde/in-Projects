@@ -58,6 +58,12 @@ namespace inProjects.Data.Queries
             return result;
         }
 
+        public async Task<IEnumerable<AllProjectInfoData>> GetAllProject()
+        {
+            IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>( "SELECT ps.ProjectStudentId, ps.Logo, ps.Slogan, ps.Pitch, ps.LeaderId, ps.Type, t.TraitName, g.GroupName, g.ZoneId FROM  IPR.tProjectStudent ps JOIN CK.tCKTrait t ON t.CKTraitId = ps.TraitId JOIN CK.tGroup g ON g.GroupId = ps.ProjectStudentId;" );
+            return result;
+        }
+
         public async Task<IEnumerable<ProjectData>> GetAllProjectByForum( int forumId )
         {
             IEnumerable<ProjectData> result = await _controller.QueryAsync<ProjectData>(

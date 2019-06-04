@@ -18,8 +18,6 @@ namespace inProjects.Data
         }
 
         [SqlProcedure( "sCreateProjectStudent" )]
-        public abstract Task<ProjectStudentStruct> CreateProjectStudent( ISqlCallContext context, int actorId, int zoneId, int CKTraitContextId, string traitName, string logo, string slogan, string pitch, int leaderId, string type );
-
-
+         public abstract Task<ProjectStudentStruct> CreateProjectStudent( ISqlCallContext context, int actorId, int zoneId, string name, int CKTraitContextId, string traitName, string logo, string slogan, string pitch, int leaderId, string type );
     }
 }

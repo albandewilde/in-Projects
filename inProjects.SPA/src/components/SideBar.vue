@@ -24,7 +24,7 @@
             <div v-if="this.isCollapse">
                 <br>
             </div>
-            <el-button type="info" size="small" circle>
+            <el-button @click="redirect(`/MyProfil`)" type="info" size="small" circle>
                 <font-awesome-icon icon="cog" size="lg" />
             </el-button>
             <div v-if="this.isCollapse">
@@ -60,7 +60,7 @@
                 <span> Projets</span>
             </template>
         <el-menu-item-group>
-            <el-menu-item index="4-1">Liste des projets</el-menu-item>
+            <el-menu-item index="4-1" @click="redirect(`/projectList`)">Liste des projets</el-menu-item>
             <el-menu-item index="4-2">Trouver un projet</el-menu-item>
         </el-menu-item-group>
         </el-submenu>
@@ -94,6 +94,10 @@
             </div>
         </div>
 
+        <el-menu-item index="6" @click="redirect(`/submit_project`)">
+            <font-awesome-icon icon="plus-square" size="lg" />
+            <span> Deposer un Projet</span>
+        </el-menu-item>
     </el-menu>
 </template>
 
@@ -108,6 +112,8 @@ import StudentPanel from "./StudentPanel.vue"
 import { AuthService } from "@signature/webfrontauth"
 import { getGroupUserAccessPanel } from "../api/groupApi"
 import { getAuthService } from "../modules/authService"
+import * as SignalR from "@aspnet/signalr"
+import { SignalRGestion } from "../modules/classes/SignalR"
 
 @Component({
   components: {
@@ -119,22 +125,27 @@ import { getAuthService } from "../modules/authService"
     StudentPanel
   },
 })
+
 export default class SideBar extends Vue {
     isCollapse: boolean = true
     whatTimed: string[] = []
     ZoneId: number = 4
     authService: AuthService = getAuthService()
+    private co!: SignalR.HubConnection
+    private signalr: SignalRGestion = new SignalRGestion()
 
 @Watch("authService.authenticationInfo.level", { immediate: true, deep: true })
   async onLevelChange() {
-      await this.getAuthorizedAccess()
+        await this.getAuthorizedAccess()
+
     }
 
-/*      async mounted() {
-       const vm = this
-       await this.getAuthorizedAccess()
-     } */
-
+    async mounted() {
+        this.co = this.$store.state.connectionStaffMember
+        if ( this.co.state == undefined ) {
+            await this.signalr.connect()
+        }
+    }
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
     }

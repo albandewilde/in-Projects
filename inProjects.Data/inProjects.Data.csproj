@@ -15,6 +15,8 @@
     <None Remove="Res\Model\CK.TraitContextTable.Settle.1.0.0.sql" />
     <None Remove="Res\Model\IPR.EvaluatesTable.Install.1.0.0.sql" />
     <None Remove="Res\Model\IPR.SchoolTable.Settle.1.0.0.sql" />
+    <None Remove="Res\Model\sUpdateUserInfos.sql" />
+    <None Remove="Res\Model\vUser.tql" />
     <None Remove="Res\sCreateOrUpdateProjectUrl.sql" />
     <None Remove="Res\sCreateTimedUser.sql" />
     <None Remove="Res\Model\sAddNote.sql" />
@@ -34,7 +36,7 @@
     <PackageReference Include="CK.DB.HZone" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.DependencyInjection" Version="10.0.1--0013-develop" />
     <PackageReference Include="CK.DB.SqlCKTrait" Version="0.6.1--0011-develop" />
-    <PackageReference Include="CK.DB.Zone.SimpleNaming" Version="5.0.1--0010-develop" />
+    <PackageReference Include="CK.DB.Zone.SimpleNaming" Version="5.0.0" />
     <PackageReference Include="CK.SqlServer.Setup.Model" Version="10.0.1--0013-develop" />
     <PackageReference Include="CK.DB.Auth" Version="5.0.1--0010-develop" />
     <PackageReference Include="CK.DB.User.UserPassword" Version="5.0.1--0010-develop" />

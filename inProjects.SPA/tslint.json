@@ -19,6 +19,7 @@
     "indent": [true, "spaces", 4],
     "member-access": false,
     "max-classes-per-file": false,
+    "max-line-length": false,
 
 
     "no-consecutive-blank-lines": false,
@@ -30,6 +31,7 @@
     "no-var-keyword": true,
     "no-var-requires": false,
 
+    "object-literal-shorthand": false,
     "object-literal-sort-keys": false,
     "one-variable-per-declaration": [true, "ignore-for-loop"],
     "ordered-imports": false,
