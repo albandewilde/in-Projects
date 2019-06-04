@@ -1,47 +1,52 @@
 ﻿using MimeKit;
 using MailKit.Net.Smtp;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace inProjects.EmailJury
 {
     public class Emailer
     {
-        string email;
-        string username;
-        string password;
-        string smtpServerAddress;
-        int port;
+        EmailerOptions _options;
 
-        public Emailer(string email, string username, string password, string smtpServerAddress, int port)
+        public Emailer(IOptionsMonitor<EmailerOptions> options)
         {
-            this.email = email;
-            this.username = username;
-            this.password = password;
-            this.smtpServerAddress = smtpServerAddress;
-            this.port = port;
+            _options = options.CurrentValue;
+            options.OnChange(opts => 
+            {
+                _options = opts;
+            });
+
         }
 
-        public MimeMessage CreateMessage(string to, string subject, string content)
+        private void ConfigChanged(EmailerOptions options)
+        {
+            _options = options;
+        }
+
+        private MimeMessage CreateMessage(string to, string subject, string content)
         {
             // make the e-mail message
             MimeMessage message = new MimeMessage();
             message.To.Add(new MailboxAddress(to));
-            message.From.Add(new MailboxAddress(this.email));
+            message.From.Add(new MailboxAddress(_options.address));
             message.Subject = subject;
             message.Body = new TextPart("plain"){Text = content};
 
             return message;
         }
 
-        public async Task SendMessage(MimeMessage msg)
+        public async Task SendMessage(string to, string subject, string content)
         {
+            MimeMessage msg = CreateMessage(to, subject, content);
+
             using (SmtpClient client = new SmtpClient())
             {
                 // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
                 client.ServerCertificateValidationCallback = (s,c,h,e) => true;
 
-				client.Connect(this.smtpServerAddress, this.port, false);    // Never use Ssl
-				client.Authenticate(this.username, this.password);
+				client.Connect(_options.smtp_server, _options.smtp_server_port, false);    // Never use Ssl
+				client.Authenticate(_options.username, _options.password);
 
 				await client.SendAsync(msg);
 

@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using CK.DB.User.UserOidc;
 using inProjects.WebApp.Services;
 using inProjects.Data;
+using inProjects.EmailJury;
 
 namespace WebApp
 {
@@ -24,7 +25,7 @@ namespace WebApp
     {
         readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env )
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
             _env = env;
@@ -35,7 +36,6 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)            
         {
-           
             services.AddCors();
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
             services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
@@ -87,6 +87,19 @@ namespace WebApp
 
             services.AddCKDatabase( "CK.StObj.AutoAssembly" );
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSingleton<Emailer>();
+            services.Configure<EmailerOptions>(Configuration.GetSection("gmail"));
+            //services.Configure<EmailerOptions>(opt =>
+            //{
+                //opt.email = Configuration["gmail:address"];
+                //opt.username = Configuration["gmail:username"];
+                //opt.password = Configuration["gmail:password"];
+                //opt.smtpServerAddress = Configuration["gmail:smtp_server"];
+                //opt.port = int.Parse(Configuration["gmail:smtp_server_port"]);
+            //});
+
+            services.AddOptions();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
