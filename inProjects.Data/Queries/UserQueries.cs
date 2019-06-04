@@ -71,5 +71,11 @@ namespace inProjects.Data.Queries
             return usersFav.AsList();
         }
 
+        public async Task<IEnumerable<UserByProjectData>> GetUserByProject(int projectId )
+        {
+            IEnumerable<UserByProjectData> userByProjects = await _controller.QueryAsync<UserByProjectData>( "SELECT u.UserId, u.FirstName, u.LastName, tu.TimedUserId, tp.BegDate, tp.EndDate FROM CK.tGroup g JOIN CK.tActorProfile ap ON ap.GroupId = g.GroupId JOIN CK.tUser u ON u.UserId = ap.ActorId AND g.GroupId = @ProjectId JOIN IPR.tTimedUser tu ON tu.UserId = u.UserId AND g.ZoneId = tu.TimePeriodId JOIN IPR.tTimePeriod tp ON tp.TimePeriodId = tu.TimePeriodId", new { ProjectId = projectId } );
+            return userByProjects;
+        }
+
     }
 }

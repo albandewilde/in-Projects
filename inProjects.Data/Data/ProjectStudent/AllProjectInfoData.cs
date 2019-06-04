@@ -4,7 +4,7 @@ using System.Text;
 
 namespace inProjects.Data.Data.ProjectStudent
 {
-    public class ProjectData
+    public class AllProjectInfoData
     {
         public int ProjectStudentId { get; set; }
         public string Logo { get; set; }
@@ -17,5 +17,14 @@ namespace inProjects.Data.Data.ProjectStudent
         public string TraitName { get; set; }
         public string GroupName { get; set; }
         public int ZoneId { get; set; }
+
+        public List<string> FirstName = new List<string>();
+        public List<string> LastName = new List<string>();
+        public List<int> TimedUserId = new List<int>();
+        public List<int> UserId = new List<int>();
+        public DateTime BegDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+
     }
 }
