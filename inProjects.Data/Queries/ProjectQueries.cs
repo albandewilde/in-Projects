@@ -57,5 +57,16 @@ namespace inProjects.Data.Queries
 
             return result;
         }
+
+        public async Task<List<ProjectData>> GetProjectsUser( int userId )
+        {
+            IEnumerable<ProjectData> result = await _controller.QueryAsync<ProjectData>(
+                "select ps.ProjectStudentId, g.GroupName as [Name], ps.Logo from CK.tActorProfile ap" +
+                " join IPR.tProjectStudent ps on ap.GroupId = ps.ProjectStudentId" +
+                " join CK.tGroup g on g.GroupId = ps.ProjectStudentId where ap.ActorId = @UserId; ",
+                new { UserId = userId } );
+
+            return result.AsList();
+        }
     }
 }

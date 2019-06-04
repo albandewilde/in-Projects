@@ -13,5 +13,6 @@ namespace inProjects.Data.Data.ProjectStudent
         public int LeaderId { get; set; }
         public string Type { get; set; }
         public int TraitId { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-import { User } from './User'
+import { User } from "./User"
 
 class InfosAccount {
     public userData: User = new User()

@@ -79,8 +79,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { getAccountInfos,changeAccountInfos} from "../api/accountApi"
-import { InfosAccount } from '@/modules/classes/InfosAccount'
+import { getAccountInfos, changeAccountInfos} from "../api/accountApi"
+import { InfosAccount } from "@/modules/classes/InfosAccount"
 import { getAuthService, AuthService } from "../modules/authService"
 import Error from "./Erreur.vue"
 
@@ -90,50 +90,50 @@ import Error from "./Erreur.vue"
     }
 })
 export default class InformationsMyProfil extends Vue {
+    public  error: string[] = []
     private idZone: number = 4
     private infosUser: InfosAccount = new InfosAccount()
     private infosUserTemp: InfosAccount = new InfosAccount()
     private mode: string = "normal"
-    public  error: string[] = []
     private authService: AuthService = getAuthService()
 
 
-    async created(){
+    async created() {
        this.infosUser = await getAccountInfos(this.idZone)
        this.infosUserTemp = await getAccountInfos(this.idZone)
     }
 
-    async ChangeInformation(){
+    async ChangeInformation() {
          if (await this.$validator.validateAll()) {
-             try{
-                 this.error =[]
+             try {
+                this.error = []
                 await changeAccountInfos(this.infosUser)
                 this.$message({
                     message: "Information changer",
                     type: "success"
                 })
                 this.infosUserTemp = await getAccountInfos(this.idZone)
-                this.ChangeMode('normal')
-             }catch(e){
-                 this.error.push(e.response.data)
+                this.ChangeMode("normal")
+              } catch (e) {
+                this.error.push(e.response.data)
              }
          }
     }
-    ChangeMode(mode: string){
-        this.error =[]
-        this.mode = mode;
+    ChangeMode(mode: string) {
+        this.error = []
+        this.mode = mode
     }
 
-     Cancel(mode: string){
+     Cancel(mode: string) {
         this.infosUser.userData.firstName = this.infosUserTemp.userData.firstName
         this.infosUser.userData.lastName = this.infosUserTemp.userData.lastName
         this.infosUser.userData.email = this.infosUserTemp.userData.email
         this.infosUser.userData.emailSecondary = this.infosUserTemp.userData.emailSecondary
         this.ChangeMode(mode)
     }
-    CheckUserSchemes(schemes: string){
-        let exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)
-        if(exist == undefined) return false
+    CheckUserSchemes(schemes: string) {
+        const exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)
+        if (exist == undefined) return false
         return true
     }
 }

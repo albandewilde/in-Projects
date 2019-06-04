@@ -1,15 +1,15 @@
 <template>
     <div>
-        <div v-if="usersFav.length == 0">
-            Vous n'aimez aucun projet 
+        <div v-if="ownProjects.length == 0">
+            Vous n'avez aucun projet 
             <br/>
             <img class="image-grumpy" src="../assets/grumpyCat.jpg">
         </div>
         <div v-else>
-            <el-carousel  class="carousel-fav" trigger="click" :interval="4000" type="card">
-                <el-carousel-item class="carousel-item-fav" v-for="(o, idx) in usersFav" :key="idx">
-                    <span class="text-fav">{{o.groupName}}</span>
-                    <img @click="redirect(o.projectStudentId)" class="image-fav" :src="o.logo"/>
+            <el-carousel class="carousel-proj" trigger="click" :interval="4000" type="card" >
+                <el-carousel-item  class="carousel-item-proj" v-for="(o, idx) in ownProjects" :key="idx">
+                        <span class="text-project">{{o.name}}</span>
+                        <img @click="redirect(o.projectStudentId)" class="image-proj" :src="o.logo"/>
                 </el-carousel-item>
             </el-carousel>
         </div>
@@ -19,16 +19,15 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { ProjectFav } from "@/modules/classes/ProjectFav"
-import { getProjectsFav} from "../api/accountApi"
+import { OwnProject } from "@/modules/classes/OwnProject"
+import { getOwnProjects} from "../api/accountApi"
 
 @Component
-export default class ProjectUserFav extends Vue {
-    usersFav: ProjectFav[] = []
+export default class ProjectStudentOwn extends Vue {
+      ownProjects: OwnProject[] = []
 
     async created() {
-        this.usersFav = await getProjectsFav()
-        console.log(this.usersFav)
+        this.ownProjects = await getOwnProjects()
     }
 
     redirect(idProject: string) {
@@ -37,30 +36,33 @@ export default class ProjectUserFav extends Vue {
 }
 </script>
 
-
 <style>
-.image-fav{
+.image-proj{
     height: auto;
     width: 10vw;
     padding-top:10%;
+    padding-bottom: 100%;
     margin-left :10%;
 }
-.image-grumpy{
+
+.image-proj-grumpy{
     height: 20vh;
     width: 30vw;
 
 }
-.carousel-fav{
+
+.carousel-proj{
       height:100%; 
       width:100%;
 }
-  .carousel-item-fav {
+
+.carousel-item-proj {
     background-color: transparent;
     width:20vw;
     margin-left: 10%
-  }
+}
  
-.text-fav{
+.text-project{
     background :#cccccc;
     color: black;
     position: absolute;
