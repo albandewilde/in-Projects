@@ -27,9 +27,20 @@ export async function changePassword(data: PasswordChangeInfo): Promise<any> {
 }
 
 
-export async function getAccountInfos(idZone: number): Promise<any> {
+export async function getAccountInfos(idZone: number): Promise<InfosAccount> {
     const response = await getAsync(`${endpoint}/getInfosAccount?idZone=${idZone}`)
-    return response.data
+    console.log(response)
+    return new InfosAccount(
+        new User(
+            response.data.userData.firstName,
+            response.data.userData.lastName,
+            response.data.usreData.email,
+            /*password*/,
+            /*group*/,
+            response.data.userData.emailSecondary),
+        response.data.group,
+        response.data.isActual
+    )
 }
 
 export async function getProjectsFav(): Promise<ProjectFav[]> {
