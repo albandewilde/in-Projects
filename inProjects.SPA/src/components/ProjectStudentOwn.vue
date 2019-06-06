@@ -31,7 +31,7 @@ export default class ProjectStudentOwn extends Vue {
     }
 
     redirect(idProject: string) {
-        this.$router.replace("/project/" + idProject)
+        this.$router.replace("/Project/" + idProject)
     }
 }
 </script>

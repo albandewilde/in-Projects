@@ -14,9 +14,11 @@
         <hr>
              <font size=5><b>Les Projets que vous aimez :</b></font> 
              <ProjectsUserFav></ProjectsUserFav>
-        <hr>
-        <font size=5><b>Vos Projets :</b></font> 
-        <ProjectStudentOwn></ProjectStudentOwn>
+        <div v-if="this.whatTimed.find(x => x == 'Student')">
+            <hr>
+            <font size=5><b>Vos Projets :</b></font> 
+            <ProjectStudentOwn></ProjectStudentOwn>
+        </div>
     </div>
 </template>
 
@@ -26,7 +28,7 @@ import PasswordChange from "@/components/PasswordChange.vue"
 import InformationsMyProfil from "@/components/InformationsMyProfil.vue"
 import ProjectsUserFav from "@/components/ProjectsUserFav.vue"
 import ProjectStudentOwn from "@/components/ProjectStudentOwn.vue"
-
+import { getGroupUserAccessPanel } from "../api/groupApi"
 
 @Component({
     components: {
@@ -37,6 +39,12 @@ import ProjectStudentOwn from "@/components/ProjectStudentOwn.vue"
     },
 })
 export default class MyProfil extends Vue {
+    private ZoneId: number = 4;
+    private whatTimed: string[] = []
+
+    async created(){
+        this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
+    }
 }
 </script>
 
