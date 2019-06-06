@@ -200,7 +200,7 @@ namespace inProjects.WebApp.Controllers
             {
                 UserQueries userQueries = new UserQueries( ctx, sqlDataBase );
 
-                List<UserFavProjectData> userFavProjects = await userQueries.GetProjectsFavUser( userId );
+                List<ProjectUserFavData> userFavProjects = await userQueries.GetProjectsFavUser( userId );
 
 
                 //UserFavProjectData test = userFavProjects[0];
@@ -235,5 +235,6 @@ namespace inProjects.WebApp.Controllers
                 return Ok( userProjects );
             }
         }
+
     }
 }

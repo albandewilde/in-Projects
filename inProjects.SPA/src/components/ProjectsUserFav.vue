@@ -9,7 +9,7 @@
             <el-carousel  class="carousel-fav" trigger="click" :interval="4000" type="card">
                 <el-carousel-item class="carousel-item-fav" v-for="(o, idx) in usersFav" :key="idx">
                     <span class="text-fav">{{o.groupName}}</span>
-                    <img @click="redirect(o.projectStudentId)" class="image-fav" :src="o.logo"/>
+                    <img @click="redirect(o.projectId)" class="image-fav" :src="o.logo"/>
                 </el-carousel-item>
             </el-carousel>
         </div>
@@ -28,11 +28,10 @@ export default class ProjectUserFav extends Vue {
 
     async created() {
         this.usersFav = await getProjectsFav()
-        console.log(this.usersFav)
     }
 
     redirect(idProject: string) {
-        this.$router.replace("/project/" + idProject)
+        this.$router.replace("/Project/" + idProject)
     }
 }
 </script>
