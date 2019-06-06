@@ -7,6 +7,7 @@
                 </template>
                 <el-menu-item-group>
                     <el-menu-item index="10-1" @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
+                    <el-menu-item index="10-2" @click="redirect('/listPeriod')" >List Periode </el-menu-item>
                 </el-menu-item-group>
 
         </el-submenu>
@@ -31,11 +32,24 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator"
+import * as SignalR from "@aspnet/signalr"
+import { SignalRGestion } from "../modules/classes/SignalR"
 
 @Component
 export default class AdminPanel extends Vue {
 @Prop()
 isCollapse!: boolean
+private connection!: SignalR.HubConnection
+private idZone: number = 4
+private signalr: SignalRGestion = new SignalRGestion()
+
+async created() {
+    await this.signalr.connect()
+    console.log("co")
+    console.log(this.$store.state.connectionStaffMember)
+
+    //this.$store.state.connectionStaffMember = this.connection
+}
 
  redirect(destination: string) {
         this.$router.replace(destination)

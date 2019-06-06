@@ -1,65 +1,72 @@
 <template>
     <div>
-        <Error :error="error"/>
-        Dates pour la nouvelle période : 
-        <br>
-     <el-date-picker
-      v-model="date"
-      type="daterange"
-      align="right"
-      start-placeholder="Date de début"
-      end-placeholder="Date de fin">
-    </el-date-picker>
-    <br>
-    <br>
-    <br>
-    <br>
-    <el-input class="el-input-groupe" placeholder="Ajouter un groupe" v-model="groupName"></el-input>
-    &nbsp;
-    <el-button @click="Add()">Ajouter</el-button>
-    <br>
-    <br>
-    Choissisez les groupes de la nouvelle période :
-        
-        <div class="square-container">
+        <div v-if="isInPeriod == false">
+                <Error :error="error"/>
+                Dates pour la nouvelle période : 
+                <br>
+            <el-date-picker
+            v-model="date"
+            type="daterange"
+            align="right"
+            start-placeholder="Date de début"
+            end-placeholder="Date de fin">
+            </el-date-picker>
+            <br>
+            <br>
+            <br>
+            <br>
+            <el-input class="el-input-groupe" placeholder="Ajouter un groupe" v-model="groupName"></el-input>
+            &nbsp;
+            <el-button @click="Add()">Ajouter</el-button>
+            <br>
+            <br>
+            Choissisez les groupes de la nouvelle période :
+                
+                <div class="square-container">
 
-            <div class="card-container">Groupes à ajouter : 
-                <el-card class="square">
-                    <el-table :data="listGroup" class="list-groups-period">
-                         <el-table-column label="Name" prop="name" ></el-table-column>
-                         <el-table-column label="Supprimer" width="90">
-                            <template slot-scope="scope">
-                                <el-button @click="Delete(scope.$index)" type="danger" class="el-icon-remove" circle></el-button> 
-                            </template>
-                         </el-table-column>
-                         <el-table-column label="Operations">
-                            <template slot-scope="scope">
-                                <div v-if="listGroup[scope.$index].isAlreadyPermanent == false" class="switch-container">
-                                    <el-switch :value="getState(scope.$index)" @change="setState(scope.$index)" active-text="Permanent" inactive-text="Temporaire" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
-                                </div>
-                            </template>
-                         </el-table-column>
-                    </el-table>
-                </el-card>
-            </div>
+                    <div class="card-container">Groupes à ajouter : 
+                        <el-card class="square">
+                            <el-table :data="listGroup" class="list-groups-period">
+                                <el-table-column label="Name" prop="name" ></el-table-column>
+                                <el-table-column label="Supprimer" width="90">
+                                    <template slot-scope="scope">
+                                        <el-button @click="Delete(scope.$index)" type="danger" class="el-icon-remove" circle></el-button> 
+                                    </template>
+                                </el-table-column>
+                                <el-table-column label="Operations">
+                                    <template slot-scope="scope">
+                                        <div v-if="listGroup[scope.$index].isAlreadyPermanent == false" class="switch-container">
+                                            <el-switch :value="getState(scope.$index)" @change="setState(scope.$index)" active-text="Permanent" inactive-text="Temporaire" active-color="#13ce66" inactive-color="#ff4949"></el-switch>
+                                        </div>
+                                    </template>
+                                </el-table-column>
+                            </el-table>
+                        </el-card>
+                    </div>
 
-            <div class="card-container">Groupes supprimés: 
-                <el-card class="square">
-                 <el-table :data="listRemove" class="list-groups-period">
-                         <el-table-column label="Name" prop="name" ></el-table-column>
-                         <el-table-column label="Ajouter">
-                            <template slot-scope="scope">
-                                <el-button @click="AddToGroup(scope.$index)" type="success" class="el-icon-circle-plus" circle></el-button> 
-                            </template>
-                         </el-table-column>
+                    <div class="card-container">Groupes supprimés: 
+                        <el-card class="square">
+                        <el-table :data="listRemove" class="list-groups-period">
+                                <el-table-column label="Name" prop="name" ></el-table-column>
+                                <el-table-column label="Ajouter">
+                                    <template slot-scope="scope">
+                                        <el-button @click="AddToGroup(scope.$index)" type="success" class="el-icon-circle-plus" circle></el-button> 
+                                    </template>
+                                </el-table-column>
 
-                    </el-table>
-                </el-card>
-            </div>
+                            </el-table>
+                        </el-card>
+                    </div>
+                </div>
+            <br>
+            <br>
+            <el-button type="primary" @click="CreatePeriod()">Créer Période</el-button>
         </div>
-     <br>
-     <br>
-    <el-button type="primary" @click="CreatePeriod()">Créer Période</el-button>
+        <div v-else>
+            Periode en cours vous ne pouvez pas creer de Periode
+            <br>
+            <img src="../assets/notpass.gif">
+        </div>
     </div>
 
 </template>
@@ -69,7 +76,7 @@ import { Component, Vue, Prop } from "vue-property-decorator"
 import { DatePickerType } from "element-ui/types/date-picker"
 import { PeriodCreate } from "@/modules/classes/Periode/PeriodCreate"
 import { GroupPeriod } from "@/modules/classes/Periode/GroupPeriod"
-import { createPeriodAsync } from "../api/periodApi"
+import { createPeriodAsync, verifyActualPeriod} from "../api/periodApi"
 import { getTemplateGroupsAsync } from "../api/groupApi"
 import Error from "./Erreur.vue"
 
@@ -85,9 +92,13 @@ export default class CreatePeriod extends Vue {
     private listGroup: GroupPeriod[] = []
     private groupName: string = ""
     private listRemove: GroupPeriod[] = []
+    private isInPeriod: boolean = false
+    private idZone!: number
 
     async created() {
+        this.idZone = 4
         this.listGroup = await getTemplateGroupsAsync()
+        this.isInPeriod = await verifyActualPeriod(this.idZone)
     }
 
     async CreatePeriod() {

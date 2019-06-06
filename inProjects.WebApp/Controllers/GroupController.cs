@@ -71,8 +71,21 @@ namespace inProjects.WebApp.Controllers
                 TimedUserQueries timedUser = new TimedUserQueries( ctx, sqlDataBase );
                 GroupQueries groupsQueries = new GroupQueries( ctx, sqlDataBase );
                 UserQueries userQueries = new UserQueries( ctx, sqlDataBase );
+                DateTime dateNow = DateTime.UtcNow;
+                List<PeriodData> periods = await timedPeriod.GetNumberWishPeriodBySchool( idZone, 2 );
+                PeriodData period = null;
 
-                PeriodData period = await timedPeriod.GetLastPeriodBySchool( idZone );
+
+                for( int i = 0; i < periods.Count; i++ )
+                {
+                    if(periods[i].BegDate.DayOfYear <= dateNow.DayOfYear && periods[i].EndDate.DayOfYear >= dateNow.DayOfYear )
+                    {
+                        period = periods[i];
+                        break;
+                    }
+                }
+
+                if( period == null ) period = periods[0];
                 TimedUserData timedUserData = await timedUser.GetTimedUser( userId, period.ChildId );
 
                 if(timedUserData == null )

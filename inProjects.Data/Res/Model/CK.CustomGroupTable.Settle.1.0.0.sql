@@ -3,31 +3,31 @@ DECLARE @GroupIdResult INT,
 
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S1';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S01';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S2';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S02';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S3';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S03';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S4';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S04';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S5';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S05';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S6';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S06';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S7';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S07';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S8';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S08';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
-EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S9';
+EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S09';
 
 EXEC CK.sGroupCreate 1, @GroupIdResult OUTPUT;
 EXEC CK.sGroupGroupNameSet 1, @GroupIdResult, 'S10';
