@@ -1,4 +1,4 @@
-﻿using CK.SqlServer;
+using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data;
 using inProjects.Data.Data.Group;
@@ -76,7 +76,7 @@ namespace inProjects.TomlHelpers
                 school.ZoneId,
                 project.name.project_name,
                 traitContextId,
-                string.Join( ";", project.technologies ),
+                string.Join( ";", project.technologies.technologies ),
                 project.logo.url,
                 project.slogan.slogan,
                 project.pitch.pitch,
