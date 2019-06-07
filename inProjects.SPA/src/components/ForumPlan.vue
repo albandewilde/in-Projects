@@ -1,6 +1,8 @@
 <template>
     <div id="plan">
-        <!-- <center><el-button style="width: 50%;" @click="this.SavePlan()" type="success">Sauvegarder</el-button></center><br> -->
+        <center>
+            <el-button id="saveButton" @click="SavePlan" type="success">Sauvegarder</el-button>
+        </center>
         <chacheli-designer v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" />
     </div>
 </template>
@@ -51,8 +53,8 @@ export default {
         this.layout.rows = this.plan.height
 
         for (let i = 0; i < this.projects.length; i += 1) {
-            const c = new Chacheli(i + 1, this.projects[i].posX, this.projects[i].posY, basicWidth,
-                basicHeight, this.projects[i].name, true, "dummy-green")
+            const c = new Chacheli(i + 1, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
+                this.basicHeight, this.projects[i].name, true, "dummy-green")
             this.chachelis.push(c)
         }
     },
@@ -65,9 +67,9 @@ export default {
                         if (chacheli.x >= classroom.originX && chacheli.x <= classroom.endPositionX) {
                             if (chacheli.y >= classroom.originY && chacheli.y <= classroom.endPositionY) {
                                 chacheli.classRoom = classroom.name
-                                const item = this.savedPlan.find(project => project.name === chacheli.text)
+                                const item = this.savedPlan.find(project => project.id + " - " + project.name === chacheli.text)
                                 if (!item) {
-                                    const project = this.projects.find(projectItem => projectItem.name === chacheli.text)
+                                    const project = this.projects.find(projectItem => projectItem.id + " - " + projectItem.name === chacheli.text)
                                     const p = new Project(chacheli.text, chacheli.x, chacheli.y,
                                         chacheli.w, chacheli.h, project.semester, chacheli.classRoom)
                                     this.savedPlan.push(p)
@@ -101,13 +103,20 @@ export default {
 	display: flex;
     flex-direction: column;
 }
+
+#saveButton {
+    width: 50%;
+}
+
 body {
 	margin: 0;
 	padding: 0;
 }
+
 * {
 	box-sizing: border-box;
 }
+
 .chacheli-designer-layout {
     background-image: url("/plan.jpg");
     background-size: 100% 100%;
@@ -118,6 +127,11 @@ body {
 }
 
 .chacheli-designer-layout .chacheli .content {
-    background-color: hsla(0, 0%, 94%, 0.7);
+    background-color: transparent;
+    /* opacity: 0; */
+    color: #bd10e0;
+    font-weight: 900;
+    font-size: 22px;
+    border: none;
 }
 </style>
