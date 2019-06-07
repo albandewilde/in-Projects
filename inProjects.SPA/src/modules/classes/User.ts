@@ -6,9 +6,9 @@ class User {
     public groupName: string 
     public emailSecondary: string
 
-    constructor();
-    constructor(firstName:string, lastName:string);
-    constructor(first: string, last: string, email: string, passwd: string, grp: string, sndemail: string);
+    constructor()
+    constructor(firstName:string, lastName:string)
+    constructor(first: string, last: string, email: string, passwd: string, grp: string, sndemail: string)
     constructor(first: string = "", last: string = "", email: string = "", passwd: string = "", grp: string = "", sndemail: string = "") {
         this.firstName = first
         this.lastName = last
