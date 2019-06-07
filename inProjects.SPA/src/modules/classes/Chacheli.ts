@@ -16,7 +16,7 @@ class Chacheli {
         this.y =  y
         this.w =  w
         this.h =  h
-        this.text = text
+        this.text = id + " - " + text
         this.available = a
         this.comp = comp
         this.projectId = projectId

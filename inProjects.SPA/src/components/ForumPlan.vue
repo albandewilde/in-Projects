@@ -30,6 +30,8 @@ export default {
                 cols: 0,
                 rows: 0
             },
+            basicHeight: 2,
+            basicWidth: 3,
             projects: new Array(),
             savedPlan: new Array()
         }
@@ -45,26 +47,20 @@ export default {
         this.plan = await getPlan()
         this.projects = await getProjects()
         
-
         this.layout.cols = this.plan.width
         this.layout.rows = this.plan.height
 
         for (let i = 0; i < this.projects.length; i += 1) {
-            const c = new Chacheli(i + 1, this.projects[i].posX, this.projects[i].posY, this.projects[i].width,
-                this.projects[i].height, this.projects[i].name, true, "dummy-green")
+            const c = new Chacheli(i + 1, this.projects[i].posX, this.projects[i].posY, basicWidth,
+                basicHeight, this.projects[i].name, true, "dummy-green")
             this.chachelis.push(c)
         }
-        // setInterval(this.SavePlan, 10000)
     },
 
     methods: {
         async SavePlan() {
-            // for (let i = 0; i < this.chachelis.length; i += 1) {
-            console.debug(this.chachelis)
-
             for (let chacheli of this.chachelis) {
                 if (!chacheli.available) {
-                    // for (let j = 0; j < this.plan.classRooms.length; j += 1) {
                     for (let classroom of this.plan.classRooms) {
                         if (chacheli.x >= classroom.originX && chacheli.x <= classroom.endPositionX) {
                             if (chacheli.y >= classroom.originY && chacheli.y <= classroom.endPositionY) {
