@@ -31,8 +31,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import Vue from "vue"
+import { Component } from "vue-property-decorator"
 import { GetAllProject } from "../api/projectApi"
 import {Project} from "../modules/classes/Project"
 
@@ -40,30 +40,30 @@ import {Project} from "../modules/classes/Project"
 export default class ProjectList extends Vue {
     private projectList: Project[] = []
     private projectListToDisplay: Project[] = []
-    async mounted(){
+    async mounted() {
         this.projectList  = await GetAllProject()
         console.log(this.projectList)
-        for(const project of this.projectList){
-            this.projectListToDisplay.push(project);
+        for (const project of this.projectList) {
+            this.projectListToDisplay.push(project)
         }
     }
 
-    getLeader(specificProject: Project){
-        for(var i = 0; i < specificProject.userId.length; i++){
-            if(specificProject.userId[i] == specificProject.leaderId){
+    getLeader(specificProject: Project) {
+        for (let i = 0; i < specificProject.userId.length; i += 1) {
+            if (specificProject.userId[i] == specificProject.leaderId) {
                 return specificProject.firstName[i] + " " + specificProject.lastName[i]
             }
         }
     }
 
-    formatDate(date: Date){
-        var newDate = date.toString()
-        return newDate.substr(0,10)
+    formatDate(date: Date) {
+        const newDate = date.toString()
+        return newDate.substr(0, 10)
     }
 
-    getType(specificProject: Project){
-        if(specificProject.type == "I") return "yellow"
-        else if( specificProject.type == "H" ) return  "blue"
+    getType(specificProject: Project) {
+        if (specificProject.type == "I") return "yellow"
+        if ( specificProject.type == "H" ) return  "blue"
     }
 }
 </script>

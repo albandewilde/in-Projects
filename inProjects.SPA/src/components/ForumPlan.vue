@@ -58,16 +58,16 @@ export default {
 
     methods: {
         async SavePlan() {
-            for(let i = 0; i < this.chachelis.length; i += 1) {
-                if(!this.chachelis[i].available) {
-                    for(let j = 0; j < this.plan.classRooms.length; j += 1) {
-                        if(this.chachelis[i].x >= this.plan.classRooms[j].originX && this.chachelis[i].x <= this.plan.classRooms[j].endPositionX) {
-                            if(this.chachelis[i].y >= this.plan.classRooms[j].originY && this.chachelis[i].y <= this.plan.classRooms[j].endPositionY) {
+            for (let i = 0; i < this.chachelis.length; i += 1) {
+                if (!this.chachelis[i].available) {
+                    for (let j = 0; j < this.plan.classRooms.length; j += 1) {
+                        if (this.chachelis[i].x >= this.plan.classRooms[j].originX && this.chachelis[i].x <= this.plan.classRooms[j].endPositionX) {
+                            if (this.chachelis[i].y >= this.plan.classRooms[j].originY && this.chachelis[i].y <= this.plan.classRooms[j].endPositionY) {
                                 this.chachelis[i].classRoom = this.plan.classRooms[j].name
                                 const item = this.savedPlan.find(project => project.name === this.chachelis[i].text)
-                                if(!item) {
-                                    const project = this.projects.find(project => project.name === this.chachelis[i].text)
-                                    const p = new Project(this.chachelis[i].text, this.chachelis[i].x, this.chachelis[i].y, 
+                                if (!item) {
+                                    const project = this.projects.find(projectItem => projectItem.name === this.chachelis[i].text)
+                                    const p = new Project(this.chachelis[i].text, this.chachelis[i].x, this.chachelis[i].y,
                                         this.chachelis[i].w, this.chachelis[i].h, project.semester, this.chachelis[i].classRoom)
                                     this.savedPlan.push(p)
                                     break
@@ -84,7 +84,7 @@ export default {
                     }
                 } else {
                     const idxProject = this.savedPlan.indexOf(this.chachelis[i])
-                    if(idxProject >= 0) {
+                    if (idxProject >= 0) {
                         this.savedPlan.splice(idxProject, 1)
                     }
                 }

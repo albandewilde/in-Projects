@@ -2,8 +2,8 @@ import { postAsync, getAsync } from "../helpers/apiHelper"
 import { User } from "../modules/classes/user"
 import { UserInfo } from "../modules/classes/UserInfo"
 import { PasswordChangeInfo } from "../modules/classes/PasswordChangeInfo"
-import { InfosAccount } from '@/modules/classes/InfosAccount'
-import { ProjectFav } from '@/modules/classes/ProjectFav'
+import { InfosAccount } from "@/modules/classes/InfosAccount"
+import { ProjectFav } from "@/modules/classes/ProjectFav"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/account"
 

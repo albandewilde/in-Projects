@@ -12,14 +12,14 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { ProjectFav } from '@/modules/classes/ProjectFav'
+import { ProjectFav } from "@/modules/classes/ProjectFav"
 import { getProjectsFav} from "../api/accountApi"
 
 @Component
 export default class ProjectUserFav extends Vue {
-    usersFav : ProjectFav[] = []
+    usersFav: ProjectFav[] = []
 
-    async created(){
+    async created() {
         this.usersFav = await getProjectsFav()
         console.log(this.usersFav)
     }

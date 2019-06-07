@@ -45,11 +45,9 @@ export default class CsvImport extends Vue {
         try {
          this.test = await sendCsv(this.formData)
          this.$refs.file.files[0] = ""
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e)
-        }
-        finally {
+        } finally {
             console.log(this.test)
             this.dialogVisible = false
             const co = this.$store.state.connectionStaffMember

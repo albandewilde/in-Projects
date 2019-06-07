@@ -42,12 +42,12 @@ import Error from "./Erreur.vue"
     }
 })
 export default class PasswordChange extends Vue {
-    private password: PasswordChangeInfo = new PasswordChangeInfo()
     public error: string[] = []
+    private password: PasswordChangeInfo = new PasswordChangeInfo()
 
-    async ChangePassword(){
+    async ChangePassword() {
         if (await this.$validator.validateAll()) {
-            this.error =[]
+            this.error = []
             const passwordHashed = new PasswordChangeInfo()
 
             passwordHashed.oldPassword = sha256(this.password.oldPassword)
@@ -55,11 +55,11 @@ export default class PasswordChange extends Vue {
 
             try {
                 const changepassword = await changePassword(passwordHashed)
-                 this.$message({
+                this.$message({
                     message: "mot de passe changer avec succés",
                     type: "success"
                 })
-            } catch(e) {
+            } catch (e) {
                 this.error.push(e.response.data)
             }
         }
