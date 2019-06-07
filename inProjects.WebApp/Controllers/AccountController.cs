@@ -200,10 +200,41 @@ namespace inProjects.WebApp.Controllers
             {
                 UserQueries userQueries = new UserQueries( ctx, sqlDataBase );
 
-                List<UserFavProjectData> userFavProjects = await userQueries.GetProjectsFavUser( userId );
+                List<ProjectUserFavData> userFavProjects = await userQueries.GetProjectsFavUser( userId );
+
+
+                //UserFavProjectData test = userFavProjects[0];
+
+                //userFavProjects.Add( test );
+                //userFavProjects.Add( test );
+                //userFavProjects.Add( test );
 
                 return Ok( userFavProjects );
             }
         }
+
+        [HttpGet( "getProjects" )]
+        public async Task<IActionResult> GetProjects()
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, sqlDataBase );
+
+                List<ProjectData> userProjects = await projectQueries.GetProjectsUser( userId );
+
+                //ProjectData test = userProjects[0];
+
+                //userProjects.Add( test );
+                //userProjects.Add( test );
+                //userProjects.Add( test );
+
+                return Ok( userProjects );
+            }
+        }
+
     }
 }

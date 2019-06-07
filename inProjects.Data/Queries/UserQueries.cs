@@ -48,15 +48,19 @@ namespace inProjects.Data.Queries
                 " join CK.tActorEMail am on u.UserId = am.ActorId" +
                 " where u.UserId = @UserId and am.IsPrimary = 1; ", new {UserId = idUser } );
         }
-        public async Task<List<UserFavProjectData>> GetProjectsFavUser( int idUser )
+
+        public async Task<List<ProjectUserFavData>> GetProjectsFavUser( int idUser )
         {
-            IEnumerable< UserFavProjectData> usersFav = await _controller.QueryAsync<UserFavProjectData>(" select g.GroupName, ps.Logo from IPR.tUserFavProject ufp " +
+            IEnumerable<ProjectUserFavData> usersFav = await _controller.QueryAsync<ProjectUserFavData>
+                (" select g.GroupName, ps.Logo,ps.ProjectStudentId as ProjectId from IPR.tUserFavProject ufp " +
                 " join IPR.tProjectStudent ps on ufp.ProjectId = ps.ProjectStudentId" +
                 " join CK.tGroup g on g.GroupId = ps.ProjectStudentId" +
                 " where ufp.UserId = @UserId", new { UserId = idUser } );
 
             return usersFav.AsList();
         }
+
+
 
     }
 }

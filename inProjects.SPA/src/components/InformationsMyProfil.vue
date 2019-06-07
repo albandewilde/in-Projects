@@ -79,8 +79,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import {getAccountInfos,changeAccountInfos} from "../api/accountApi"
-import { InfosAccount } from '@/modules/classes/InfosAccount'
+import { getAccountInfos, changeAccountInfos} from "../api/accountApi"
+import { InfosAccount } from "@/modules/classes/InfosAccount"
 import { getAuthService, AuthService } from "../modules/authService"
 import Error from "./Erreur.vue"
 
@@ -90,18 +90,18 @@ import Error from "./Erreur.vue"
     }
 })
 export default class InformationsMyProfil extends Vue {
+    public  error: string[] = []
     private idZone: number = 4
     private infosUser: InfosAccount = new InfosAccount()
     private infosUserTemp: InfosAccount = new InfosAccount()
     private mode: string = "normal"
-    public  error: string[] = []
     private authService: AuthService = getAuthService()
 
     async created(){
        this.infosUser = await getAccountInfos(this.idZone)
     }
 
-    async ChangeInformation(){
+    async ChangeInformation() {
          if (await this.$validator.validateAll()) {
              try{
                 this.error = []
