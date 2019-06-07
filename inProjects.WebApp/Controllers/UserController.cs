@@ -13,6 +13,7 @@ using CK.SqlServer.Setup;
 using inProjects.WebApp.Services.CSV;
 using inProjects.Data;
 using inProjects.WebApp.Services;
+using inProjects.EmailJury;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -21,11 +22,12 @@ namespace inProjects.WebApp.Controllers
     {
         readonly IStObjMap _stObjMap;
         readonly IAuthenticationInfo _authenticationInfo;
-
-        public UserController(IStObjMap stObjMap, IAuthenticationInfo authenticationInfo )
+        private readonly Emailer _emailer;
+        public UserController(IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, Emailer emailer )
         {
             _stObjMap = stObjMap;
             _authenticationInfo = authenticationInfo;
+            _emailer = emailer;
         }
 
         [HttpPost( "getUserList" )]
@@ -93,7 +95,7 @@ namespace inProjects.WebApp.Controllers
         [HttpPost, DisableRequestSizeLimit]
         public async Task<IActionResult> AddStudentListCsv( string type )
         {
-            CsvStudentMapping csvStudentMapping = new CsvStudentMapping();
+            CsvStudentMapping csvStudentMapping = new CsvStudentMapping(_emailer);
             var file = Request.Form.Files[0];
 
             int userId = _authenticationInfo.ActualUser.UserId;
@@ -122,7 +124,7 @@ namespace inProjects.WebApp.Controllers
                     Result result = new Result( Status.Unauthorized, "A la date d'aujourd'hui votre etablissement n'est dans une aucune periode" );
                     return this.CreateResult( result );
                 }
-                await csvStudentMapping.StudentParser( studentResult, _stObjMap, _authenticationInfo, type );
+                await csvStudentMapping.StudentParser( studentResult, _stObjMap, _authenticationInfo, type);
             }
 
             return Ok();
