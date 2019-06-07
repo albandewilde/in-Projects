@@ -23,10 +23,15 @@
                     <el-menu-item index="11-2" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
                 </el-menu-item-group>
         </el-submenu>
-        <el-menu-item index="12" @click="redirect('/plan')">
-            <font-awesome-icon icon="clipboard" size="lg" />
-            <span v-if="isCollapse == false"> Forum PI</span>
-        </el-menu-item>
+        <el-submenu index="12">
+            <template slot="title">
+                <font-awesome-icon icon="clipboard" size="lg" />
+                <span v-if="isCollapse == false">Gestion ForumPI</span>
+            </template>
+            <el-menu-item index="12-1" @click="redirect('/plan')">Plan</el-menu-item>
+            <el-menu-item index="12-2" @click="redirect('/addJury')">Ajouter la liste des jurys</el-menu-item>
+        </el-submenu>
+
 </div>
 </template>
 
