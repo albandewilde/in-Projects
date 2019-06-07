@@ -27,5 +27,6 @@ class User {
         this.email = ""
         this.password = ""
     }
+
 }
 export { User }

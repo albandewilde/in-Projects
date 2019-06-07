@@ -4,14 +4,13 @@ class Project {
     constructor(name: string,logo: string,slogan: string,pitch: string, leaderId: number,semester: string,technologies: string[]);
     
     constructor(name?: string,logo?: string,slogan?: string,pitch?: string,leaderId?: number,semester?: string,technologies?: string[]) {
-        this.name = name;
-        this.logo = logo;
-        this.slogan = slogan;
-        this.pitch = pitch;
-        this.leaderId = leaderId;
-        this.semester = semester;
-        this.technologies = technologies;
-        
+        this.name = name || "";
+        this.logo = logo || "";
+        this.slogan = slogan || "";
+        this.pitch = pitch || "";
+        this.leaderId = leaderId || 0;
+        this.semester = semester || "";
+        this.technologies = technologies ||[];
     }
 
     public projectStudentId!: number
