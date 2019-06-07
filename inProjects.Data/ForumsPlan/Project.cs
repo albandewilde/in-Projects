@@ -14,8 +14,9 @@ namespace inProjects.Data.ForumsPlan
         string _classRoom;
         int _height;
         int _width;
+        int _forumNumber;
 
-        public Project( int projectId, string name, string semester, int posX, int posY, string classRoom, int height, int width )
+        public Project( int projectId, string name, string semester, int posX, int posY, string classRoom, int height, int width, int forumNumber )
         {
             _projectId = projectId;
             _projectName = name;
@@ -25,6 +26,7 @@ namespace inProjects.Data.ForumsPlan
             _classRoom = classRoom;
             _height = height;
             _width = width;
+            _forumNumber = forumNumber;
         }
 
         public int ProjectId => _projectId;
@@ -35,5 +37,6 @@ namespace inProjects.Data.ForumsPlan
         public string ClassRoom => _classRoom;
         public int Height => _height;
         public int Width => _width;
+        public int ForumNumber => _forumNumber;
     }
 }

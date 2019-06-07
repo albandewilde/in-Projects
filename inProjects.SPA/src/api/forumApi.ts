@@ -5,6 +5,7 @@ import { Project } from "@/modules/classes/Project"
 import { Chacheli } from "../modules/classes/Chacheli"
 import * as jsonPlan from "../../plan.json"
 import * as jsonProjects from "../../projects.json"
+import { NOTIMP } from 'dns';
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/forum"
 
@@ -43,6 +44,7 @@ export async function getProjects(): Promise<Project[]> {
         np.width = project.Width
         np.semester = project.Semester
         np.classroom = project.ClassRoom
+        np.projectId = project.ProjectId
         projects.push(np)
     })
 

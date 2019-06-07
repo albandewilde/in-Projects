@@ -3,6 +3,7 @@
         <center>
             <el-button id="saveButton" @click="SavePlan" type="success">Sauvegarder</el-button>
         </center>
+        <br>
         <chacheli-designer v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" />
     </div>
 </template>
@@ -54,24 +55,24 @@ export default {
 
         for (let i = 0; i < this.projects.length; i += 1) {
             const c = new Chacheli(i + 1, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
-                this.basicHeight, this.projects[i].name, true, "dummy-green")
+                this.basicHeight, this.projects[i].name, true, "dummy-green", this.projects[i].projectId)
             this.chachelis.push(c)
         }
     },
 
     methods: {
         async SavePlan() {
-            for (let chacheli of this.chachelis) {
+            for (let [i, chacheli] of this.chachelis.entries()) {
                 if (!chacheli.available) {
                     for (let classroom of this.plan.classRooms) {
                         if (chacheli.x >= classroom.originX && chacheli.x <= classroom.endPositionX) {
                             if (chacheli.y >= classroom.originY && chacheli.y <= classroom.endPositionY) {
                                 chacheli.classRoom = classroom.name
-                                const item = this.savedPlan.find(project => project.id + " - " + project.name === chacheli.text)
+                                const item = this.savedPlan.find(project => project.projectId === chacheli.projectId)
                                 if (!item) {
-                                    const project = this.projects.find(projectItem => projectItem.id + " - " + projectItem.name === chacheli.text)
+                                    const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
                                     const p = new Project(chacheli.text, chacheli.x, chacheli.y,
-                                        chacheli.w, chacheli.h, project.semester, chacheli.classRoom)
+                                        chacheli.w, chacheli.h, project.semester, chacheli.classRoom, i+1, chacheli.projectId)
                                     this.savedPlan.push(p)
                                     break
                                 } else {
@@ -118,7 +119,7 @@ body {
 }
 
 .chacheli-designer-layout {
-    background-image: url("/plan.jpg");
+    background-image: url("/plan_ecole.jpg");
     background-size: 100% 100%;
 }
 

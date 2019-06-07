@@ -35,18 +35,22 @@ namespace inProjects.WebApp.Controllers
         [HttpGet]
         public async Task<List<Project>> GetAllProjects( int idSchool )
         {
-            var projectQueries = _stObjMap.StObjs.Obtain<ProjectQueries>();
-            var timedPeriodQueries = _stObjMap.StObjs.Obtain<TimedPeriodQueries>();
-
-            PeriodData forumData = await timedPeriodQueries.GetLastPeriodBySchool( idSchool );
-            IEnumerable<ProjectData> projects = await projectQueries.GetAllProjectByForum( forumData.ZoneId );
+            var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             List<Project> projectList = new List<Project>();
 
-            foreach( ProjectData project in projects )
+            using( var ctx = new SqlStandardCallContext() )
             {
-                Project p = new Project( project.ProjectStudentId, project.Name,
-                    project.Semester, project.PosX, project.PosY, project.ClassRoom, project.Height, project.Width );
-                projectList.Add( p );
+                ProjectQueries projectQueries = new ProjectQueries( ctx, sqlDatabase );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDatabase );
+                PeriodData forumData = await timedPeriodQueries.GetLastPeriodBySchool( idSchool );
+                IEnumerable<ProjectData> projects = await projectQueries.GetAllProjectByForum( forumData.ZoneId );
+
+                foreach( ProjectData project in projects )
+                {
+                    Project p = new Project( project.ProjectStudentId, project.Name,
+                        project.Semester, project.PosX, project.PosY, project.ClassRoom, project.Height, project.Width, project.ForumNumber );
+                    projectList.Add( p );
+                }
             }
             return projectList;
         }

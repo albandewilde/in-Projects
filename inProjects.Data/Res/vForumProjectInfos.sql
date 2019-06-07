@@ -13,7 +13,8 @@ SELECT g.GroupName as ProjectName,
        fi.CoordinatesX,
        fi.CoordinatesY,
        fi.Width,
-       fi.Height
+       fi.Height,
+       fi.ForumNumber
        
 FROM IPR.tProjectStudent p
 JOIN CK.tGroup g on p.ProjectStudentId = g.GroupId

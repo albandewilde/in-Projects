@@ -20,6 +20,7 @@ namespace inProjects.Data.Data.ProjectStudent
         public int Height { get; set; }
         public int Width { get; set; }
         public string ClassRoom { get; set; }
+        public int ForumNumber { get; set; }
 
         public string TraitName { get; set; }
         public string GroupName { get; set; }

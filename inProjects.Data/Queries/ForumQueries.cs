@@ -30,11 +30,13 @@ namespace inProjects.Data.Queries
                 + plan[i].PosX + ", "
                 + plan[i].PosY + ", "
                 + plan[i].Width + ", "
-                + plan[i].Height + ")" + end;
+                + plan[i].Height + ", "
+                + plan[i].ForumNumber
+                + ")" + end;
             }
 
             int result = await _controller.ExecuteAsync(
-                "insert into IPR.tForumInfos(ProjectId, ClassRoom, CoordinatesX, CoordinatesY, Width, Height) " +
+                "insert into IPR.tForumInfos(ProjectId, ClassRoom, CoordinatesX, CoordinatesY, Width, Height, ForumNumber) " +
                 "values " + sql );
             return result;
         }
