@@ -51,5 +51,11 @@ namespace inProjects.Data.Queries
             return result;
         }
 
+        public async Task<PeriodData> GetCurrentPeriod(int zoneId )
+        {
+            PeriodData result = await _controller.QuerySingleOrDefaultAsync<PeriodData>( "SELECT * FROM IPR.tTimePeriod WHERE TimePeriodId = @ZoneId;", new { ZoneId = zoneId } );
+            return result;
+        }
+
     }
 }

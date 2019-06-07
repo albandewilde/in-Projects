@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.IO;
 using CK.Auth;
@@ -14,9 +13,11 @@ using System.Text;
 using System.Security.Claims;
 using inProjects.WebApp.Controllers;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
-using CK.DB.User.UserOidc;
 using inProjects.WebApp.Services;
+using Microsoft.Extensions.DependencyInjection;
 using inProjects.Data;
+using inProjects.EmailJury;
+using inProjects.WebApp.Hubs;
 
 namespace WebApp
 {
@@ -24,7 +25,7 @@ namespace WebApp
     {
         readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env )
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
             _env = env;
@@ -35,7 +36,6 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)            
         {
-           
             services.AddCors();
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
             services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
@@ -87,6 +87,12 @@ namespace WebApp
 
             services.AddCKDatabase( "CK.StObj.AutoAssembly" );
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSingleton<Emailer>();
+            services.Configure<EmailerOptions>(Configuration.GetSection("gmail"));
+
+            services.AddOptions();
+            services.AddSignalR();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -99,6 +105,11 @@ namespace WebApp
                     .AllowCredentials());
 
             app.UseAuthentication();
+
+            app.UseSignalR( routes =>
+             {
+                 routes.MapHub<StaffMemberHub>( "/StaffMemberHub" );
+             } );
 
             app.UseMvc(routes =>
             {

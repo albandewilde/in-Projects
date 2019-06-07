@@ -42,7 +42,7 @@
 
                             <i v-show="errors.has('Nom')" class="fa fa-warning" style="color:orange;"></i>
                             <span v-show="errors.has('Nom')" class="errorStyle">{{ errors.first('Nom') }}</span>
-                    <el-form-item>
+                    <el-form-item v-if="CheckUserSchemes('Basic')">
                         Nom :
                             <el-input class="text-input-my-profil" name="Nom" v-validate="'required|alpha'" v-model="infosUser.userData.firstName"></el-input>
                     </el-form-item>
@@ -50,7 +50,7 @@
 
                             <i v-show="errors.has('Prenom')" class="fa fa-warning" style="color:orange;"></i>
                             <span v-show="errors.has('Prenom')" class="errorStyle">{{ errors.first('Prenom') }}</span>
-                    <el-form-item>
+                    <el-form-item v-if="CheckUserSchemes('Basic')">
                         Prénom :
                             <el-input class="text-input-my-profil" name="Prenom" v-validate="'required|alpha'" v-model="infosUser.userData.lastName"></el-input>
                         </el-form-item>

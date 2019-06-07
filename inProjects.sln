@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.TomlHelpers.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "inProjects.CokeCakeBuilder", "inProjects.CokeCakeBuilder\inProjects.CokeCakeBuilder.csproj", "{EFD4A8CA-E27D-4233-BD11-E459F45FFC85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProjects.ExcelHelper", "inProjects.ExcelHelper\inProjects.ExcelHelper.csproj", "{21750181-699D-4B86-AFFA-6CF98279BFFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "inProjects.EmailJury", "inProjects.EmailJury\inProjects.EmailJury.csproj", "{6F8EB0E3-9F94-470F-90A3-19754F1BEF2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -69,6 +69,10 @@ Global
 		{21750181-699D-4B86-AFFA-6CF98279BFFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21750181-699D-4B86-AFFA-6CF98279BFFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21750181-699D-4B86-AFFA-6CF98279BFFB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F8EB0E3-9F94-470F-90A3-19754F1BEF2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F8EB0E3-9F94-470F-90A3-19754F1BEF2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F8EB0E3-9F94-470F-90A3-19754F1BEF2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F8EB0E3-9F94-470F-90A3-19754F1BEF2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

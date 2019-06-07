@@ -51,7 +51,7 @@ namespace inProjects.Data.Queries
 
         public async Task<GroupData> GetIdSchoolByConnectUser(int userId)
         {
-            GroupData result = await _controller.QuerySingleOrDefaultAsync<GroupData>( "SELECT TOP(1) * FROM CK.tActor a JOIN CK.tActorProfile ap ON a.ActorId = ap.ActorId AND a.ActorId = @UserId JOIN CK.vGroup g ON g.GroupId = ap.GroupId AND g.IsZone = 0 ORDER BY g.ZoneId DESC;", new { UserId = userId } );
+            GroupData result = await _controller.QuerySingleOrDefaultAsync<GroupData>( "SELECT TOP(1) * FROM CK.tActor a JOIN CK.tActorProfile ap ON a.ActorId = ap.ActorId AND a.ActorId = @UserId JOIN CK.vGroup g ON g.GroupId = ap.GroupId AND g.IsZone = 0 JOIN CK.vZone z ON z.ZoneId = g.ZoneId ORDER BY g.ZoneId DESC;", new { UserId = userId } );
             return result;
         }
 
@@ -61,5 +61,19 @@ namespace inProjects.Data.Queries
             IEnumerable<string> result = await _controller.QueryAsync<string>( "select g.GroupName from CK.tGroup g join CK.tActorProfile ac on ac.GroupId = g.GroupId AND g.ZoneId = @TimePeriodId join IPR.tTimedUser tu on tu.UserId = ac.ActorId AND tu.TimedUserId = @TimedUserId ", new { TimePeriodId = periodId, TimedUserId = timedUserID } );
             return result.AsList();
         }
+
+        public async Task<int> GetIdGroupByNameAndPeriod(string groupName, int periodId )
+        {
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "SELECT GroupId FROM CK.tGroup WHERE GroupName = @GroupName AND ZoneId = @ZoneId;", new { GroupName = groupName, ZoneId = periodId } );
+            return result;
+        }
+
+        public async Task<int> GetGroupByNamePeriodUser(string groupName, int actorId, int zoneId )
+        {
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "SELECT * FROM CK.vGroup g JOIN CK.tActorProfile ap ON ap.GroupId = g.GroupId AND g.GroupName = @GroupName AND ap.ActorId = @UserId AND g.ZoneId = @ZoneId", new { GroupName = groupName, @UserId = actorId, @ZoneId = zoneId } );
+            return result;
+        }
+            
+       
     }
 }
