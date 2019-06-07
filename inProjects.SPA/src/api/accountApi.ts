@@ -1,5 +1,5 @@
 import { postAsync, getAsync } from "../helpers/apiHelper"
-import { User } from "../modules/classes/user"
+import { User } from "../modules/classes/User"
 import { UserInfo } from "../modules/classes/UserInfo"
 import { PasswordChangeInfo } from "../modules/classes/PasswordChangeInfo"
 import { InfosAccount } from '@/modules/classes/InfosAccount'
@@ -34,9 +34,9 @@ export async function getAccountInfos(idZone: number): Promise<InfosAccount> {
         new User(
             response.data.userData.firstName,
             response.data.userData.lastName,
-            response.data.usreData.email,
-            /*password*/,
-            /*group*/,
+            response.data.userData.email,
+            "",    // the password
+            response.data.group,
             response.data.userData.emailSecondary),
         response.data.group,
         response.data.isActual
