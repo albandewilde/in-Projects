@@ -44,6 +44,7 @@ export default {
     async mounted() {
         this.plan = await getPlan()
         this.projects = await getProjects()
+        
 
         this.layout.cols = this.plan.width
         this.layout.rows = this.plan.height
@@ -53,37 +54,41 @@ export default {
                 this.projects[i].height, this.projects[i].name, true, "dummy-green")
             this.chachelis.push(c)
         }
-        setInterval(this.SavePlan, 10000)
+        // setInterval(this.SavePlan, 10000)
     },
 
     methods: {
         async SavePlan() {
-            for (let i = 0; i < this.chachelis.length; i += 1) {
-                if (!this.chachelis[i].available) {
-                    for (let j = 0; j < this.plan.classRooms.length; j += 1) {
-                        if (this.chachelis[i].x >= this.plan.classRooms[j].originX && this.chachelis[i].x <= this.plan.classRooms[j].endPositionX) {
-                            if (this.chachelis[i].y >= this.plan.classRooms[j].originY && this.chachelis[i].y <= this.plan.classRooms[j].endPositionY) {
-                                this.chachelis[i].classRoom = this.plan.classRooms[j].name
-                                const item = this.savedPlan.find(project => project.name === this.chachelis[i].text)
+            // for (let i = 0; i < this.chachelis.length; i += 1) {
+            console.debug(this.chachelis)
+
+            for (let chacheli of this.chachelis) {
+                if (!chacheli.available) {
+                    // for (let j = 0; j < this.plan.classRooms.length; j += 1) {
+                    for (let classroom of this.plan.classRooms) {
+                        if (chacheli.x >= classroom.originX && chacheli.x <= classroom.endPositionX) {
+                            if (chacheli.y >= classroom.originY && chacheli.y <= classroom.endPositionY) {
+                                chacheli.classRoom = classroom.name
+                                const item = this.savedPlan.find(project => project.name === chacheli.text)
                                 if (!item) {
-                                    const project = this.projects.find(projectItem => projectItem.name === this.chachelis[i].text)
-                                    const p = new Project(this.chachelis[i].text, this.chachelis[i].x, this.chachelis[i].y,
-                                        this.chachelis[i].w, this.chachelis[i].h, project.semester, this.chachelis[i].classRoom)
+                                    const project = this.projects.find(projectItem => projectItem.name === chacheli.text)
+                                    const p = new Project(chacheli.text, chacheli.x, chacheli.y,
+                                        chacheli.w, chacheli.h, project.semester, chacheli.classRoom)
                                     this.savedPlan.push(p)
                                     break
                                 } else {
-                                    item.classRoom = this.plan.classRooms[j].name
-                                    item.posX = this.chachelis[i].x
-                                    item.posY = this.chachelis[i].y
-                                    item.height = this.chachelis[i].h
-                                    item.width = this.chachelis[i].w
+                                    item.classRoom = classroom.name
+                                    item.posX = chacheli.x
+                                    item.posY = chacheli.y
+                                    item.height = chacheli.h
+                                    item.width = chacheli.w
                                     await saveForumPlan(this.savedPlan)
                                 }
                             }
                         }
                     }
                 } else {
-                    const idxProject = this.savedPlan.indexOf(this.chachelis[i])
+                    const idxProject = this.savedPlan.indexOf(chacheli)
                     if (idxProject >= 0) {
                         this.savedPlan.splice(idxProject, 1)
                     }

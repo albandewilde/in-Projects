@@ -31,7 +31,7 @@ export async function getPlan() {
     // return response.data
 }
 
-export async function getProjects() {
+export async function getProjects(): Promise<Project[]> {
     const projects: Project[] = []
 
     jsonProjects.Projects.forEach(project => {
@@ -39,6 +39,8 @@ export async function getProjects() {
         np.name = project.Name
         np.posX = project.PosX
         np.posY = project.PosY
+        np.height = project.Height
+        np.width = project.Width
         np.semester = project.Semester
         np.classroom = project.ClassRoom
         projects.push(np)

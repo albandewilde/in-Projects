@@ -20,7 +20,7 @@ class Project {
     public classRoom!: string
 
     constructor(name: string, posX: number, posY: number, width: number, height: number, semester: string, classroom: string) {
-        this.name = name
+        this.groupName = name
         this.posX = posX
         this.posY = posY
         this.width = width
