@@ -39,10 +39,10 @@ import { getGroupUserAccessPanel } from "../api/groupApi"
     },
 })
 export default class MyProfil extends Vue {
-    private ZoneId: number = 4;
+    private ZoneId: number = 4
     private whatTimed: string[] = []
 
-    async created(){
+    async created() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
     }
 }

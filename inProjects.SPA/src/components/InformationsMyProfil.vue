@@ -97,13 +97,13 @@ export default class InformationsMyProfil extends Vue {
     private mode: string = "normal"
     private authService: AuthService = getAuthService()
 
-    async created(){
+    async created() {
        this.infosUser = await getAccountInfos(this.idZone)
     }
 
     async ChangeInformation() {
          if (await this.$validator.validateAll()) {
-             try{
+             try {
                 this.error = []
 
                 await changeAccountInfos(this.infosUser)
@@ -113,28 +113,28 @@ export default class InformationsMyProfil extends Vue {
                     type: "success"
                 })
 
-                this.ChangeMode('normal')
-             } catch(e){
+                this.ChangeMode("normal")
+             } catch (e) {
                  this.error.push(e.response.data)
              }
          }
     }
 
-    ChangeMode(mode: string){
-        this.error =[]
-        this.mode = mode;
-        console.log(this.infosUser.clone);
-        if (this.mode == "edit"){this.infosUserTemp = this.infosUser.clone()}
+    ChangeMode(mode: string) {
+        this.error = []
+        this.mode = mode
+        console.log(this.infosUser.clone)
+        if (this.mode == "edit") {this.infosUserTemp = this.infosUser.clone()}
     }
 
-    Cancel(mode: string){
+    Cancel(mode: string) {
         this.infosUser = this.infosUserTemp.clone()
         this.ChangeMode(mode)
     }
 
-    CheckUserSchemes(schemes: string){
-        let exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)
-        if(exist == undefined) return false
+    CheckUserSchemes(schemes: string) {
+        const exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)
+        if ( exist == undefined) return false
         return true
     }
 }

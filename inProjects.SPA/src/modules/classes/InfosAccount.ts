@@ -12,8 +12,6 @@ class InfosAccount {
     }
 
     public clone() {
-        console.log('clone()')
-        debugger
         const e: InfosAccount = new InfosAccount(this.userData.clone(), this.group, this.isActual)
         console.log(e)
         return e

@@ -1,7 +1,7 @@
 import { postAsync, getAsync } from "../helpers/apiHelper"
-import { ProjectDetails } from '@/modules/classes/ProjectDetails';
-import { Project } from '@/modules/classes/Project';
-import { User } from '@/modules/classes/User';
+import { ProjectDetails } from "@/modules/classes/ProjectDetails"
+import { Project } from "@/modules/classes/Project"
+import { User } from "@/modules/classes/User"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/Project"
 
@@ -11,24 +11,24 @@ export async function SubmitProject(link: string, projectType: number, userId: n
     return [resp.data.item1, resp.data.item2]
 }
 
-export async function getInfosProject(idProject: number,idZone: number): Promise<ProjectDetails> {
+export async function getInfosProject(idProject: number, idZone: number): Promise<ProjectDetails> {
     const response = await getAsync(`${endpoint}/getInfosProject?idProject=${idProject}&idZone=${idZone}`)
     console.log(response)
     const projectDetails: ProjectDetails = new ProjectDetails()
 
-    const project = new Project(response.data.project.name, response.data.project.logo, response.data.project.slogan, 
-                                response.data.project.pitch,response.data.project.leaderId,response.data.project.semester
-                                ,response.data.project.technologies)
+    const project = new Project(response.data.project.name, response.data.project.logo, response.data.project.slogan,
+                                response.data.project.pitch, response.data.project.leaderId, response.data.project.semester
+                                , response.data.project.technologies)
 
     projectDetails.project = project
 
     const students: User[] = []
-    for (let index = 0; index < response.data.students.length; index++) {
-        const student = new User(response.data.students[index].firstName,response.data.students[index].lastName)
+    for (let index = 0; index < response.data.students.length; index += 1 ) {
+        const student = new User(response.data.students[index].firstName, response.data.students[index].lastName)
         students.push(student)
     }
 
-    projectDetails.students = students;
+    projectDetails.students = students
     return projectDetails
 }
 
