@@ -59,7 +59,7 @@ namespace inProjects.WebApp.Services.CSV
 
         }
 
-        public async Task<bool> StudentParser(List<UserList> studentList, IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string type)
+        public async Task<bool> UserParser(List<UserList> studentList, IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string type)
         {
             using(var ctx = new SqlStandardCallContext() )
             {
