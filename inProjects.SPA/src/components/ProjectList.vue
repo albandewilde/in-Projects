@@ -3,7 +3,6 @@
         <el-row>
             <el-col :span="6" v-for="(o, index) in projectListToDisplay.length" :key="o" :offset="index > 0 ? projectListToDisplay.length : 0">            
                 <el-card v-bind:body-style="{ padding: '0px', border:getType(projectListToDisplay[index]) }">
-                    {{projectListToDisplay[index]}}
                     <img :src="projectListToDisplay[index].logo" class="image">
                     <div style="padding: 14px;">
                         <span>{{projectListToDisplay[index].groupName}}</span><br>
