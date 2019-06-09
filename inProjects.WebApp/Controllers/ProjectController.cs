@@ -66,7 +66,7 @@ namespace inProjects.WebApp.Controllers
                     Students = await projectQueries.GetAllUsersOfProject(idProject)
                 };
 
-                List<string> listGroups = await projectQueries.GetGroupsOfProjectWithTimedUser( idProject, idZone );
+                List<string> listGroups = await projectQueries.GetGroupsOfProjectWithTimedUser( idProject);
                 string groups = listGroups[0];
 
                 if( listGroups.Count >= 2 )
@@ -126,14 +126,15 @@ namespace inProjects.WebApp.Controllers
         public async Task<IEnumerable<AllProjectInfoData>> GetAllProjects()
         {
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            int userId = _authenticationInfo.ActualUser.UserId;
 
-            using (var ctx = new SqlStandardCallContext() )
+            using( var ctx = new SqlStandardCallContext() )
             {
                 ProjectQueries projectQueries = new ProjectQueries( ctx, db );
                 UserQueries userQueries = new UserQueries( ctx, db );
                 GroupQueries groupQueries = new GroupQueries( ctx, db );
 
-                IEnumerable<AllProjectInfoData> projectData = await projectQueries.GetAllProject();
+                IEnumerable<AllProjectInfoData> projectData = await projectQueries.GetAllProject(userId);
                 for( var i = 0; i < projectData.Count(); i++ )
                 {
                     IEnumerable<UserByProjectData> userByProject = await userQueries.GetUserByProject( projectData.ElementAt( i ).ProjectStudentId );

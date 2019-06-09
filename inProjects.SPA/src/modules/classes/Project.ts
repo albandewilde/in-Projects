@@ -13,7 +13,11 @@ class Project {
     public begDate !: Date
     public endDate !: Date
     public userId !: number[]
+    public traitId!: number
+    public semester!: string
+    public technologies: string[]
     public leaderId !: number
+    public isFav !: number
     constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[])
     constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], projectId: number, type: string, traitId: number)
     constructor(
