@@ -1,6 +1,6 @@
 <template>
     <div>
-           <Error :error="error"/>
+        <Error :error="error"/>
         <div v-if="mode=='normal'">
             <div class="panel panel-info">
                 <center>
@@ -12,16 +12,16 @@
                                         <tbody>
                                             <tr>
                                                 <td><b>Nom : </b></td>
-                                                <td>{{infosUser.userData.firstName}}</td>
+                                                <td>{{this.infosUser.userData.firstName}}</td>
                                             <tr>
                                                 <td><b>Prénom: </b></td>
-                                                <td>{{infosUser.userData.lastName}}</td>
+                                                <td>{{this.infosUser.userData.lastName}}</td>
                                             <tr>
                                                 <td><b>Email : </b></td>
-                                                <td>{{infosUser.userData.email}}</td>
+                                                <td>{{this.infosUser.userData.email}}</td>
                                             <tr>
                                                 <td><b>Email Secondaire : </b></td>
-                                                <td>{{infosUser.userData.emailSecondary}}<span v-if="this.infosUser.userData.emailSecondary == null"> Auncun email secondaire</span></td>
+                                                <td>{{this.infosUser.userData.emailSecondary}}<span v-if="this.infosUser.userData.emailSecondary == null"> Auncun email secondaire</span></td>
                                              <tr>
                                                 <td><b>Groupe : </b></td>
                                                 <td>{{this.infosUser.group}} <span v-if="this.infosUser.isActual == false">(Anciennement)</span></td>
@@ -34,23 +34,23 @@
                     </div>
                 </center>
             </div>
-            <el-button type="primary" @click="ChangeMode('edit')">Editer Profile</el-button>
+        <el-button type="primary" @click="ChangeMode('edit')">Editer Profile</el-button>
         </div>
         <!-- Mode edit -->
         <div v-else>
-            <el-form ref="infosUser" label-suffix=" :" size="medium">
+            <el-form ref="infosUserTemp" label-suffix=" :" size="medium">
 
                             <i v-show="errors.has('Nom')" class="fa fa-warning" style="color:orange;"></i>
                             <span v-show="errors.has('Nom')" class="errorStyle">{{ errors.first('Nom') }}</span>
-                    <el-form-item>
+                    <el-form-item v-if="CheckUserSchemes('Basic')">
                         Nom :
                             <el-input class="text-input-my-profil" name="Nom" v-validate="'required|alpha'" v-model="infosUser.userData.firstName"></el-input>
-                        </el-form-item>
+                    </el-form-item>
 
 
                             <i v-show="errors.has('Prenom')" class="fa fa-warning" style="color:orange;"></i>
                             <span v-show="errors.has('Prenom')" class="errorStyle">{{ errors.first('Prenom') }}</span>
-                    <el-form-item>
+                    <el-form-item v-if="CheckUserSchemes('Basic')">
                         Prénom :
                             <el-input class="text-input-my-profil" name="Prenom" v-validate="'required|alpha'" v-model="infosUser.userData.lastName"></el-input>
                         </el-form-item>
@@ -58,7 +58,7 @@
                             <i v-show="errors.has('Email')" class="fa fa-warning" style="color:orange;"></i>
                             <span v-show="errors.has('Email')" class="errorStyle">{{ errors.first('Email') }}</span>
                         <el-form-item v-if="CheckUserSchemes('Basic')">
-                        Email :
+                            Email :
                             <el-input class="text-input-my-profil" name="Email" v-validate="'required|email'" v-model="infosUser.userData.email"></el-input>
                         </el-form-item>
 
@@ -79,8 +79,8 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { getAccountInfos,changeAccountInfos} from "../api/accountApi"
-import { InfosAccount } from '@/modules/classes/InfosAccount'
+import { getAccountInfos, changeAccountInfos} from "../api/accountApi"
+import { InfosAccount } from "@/modules/classes/InfosAccount"
 import { getAuthService, AuthService } from "../modules/authService"
 import Error from "./Erreur.vue"
 
@@ -90,50 +90,51 @@ import Error from "./Erreur.vue"
     }
 })
 export default class InformationsMyProfil extends Vue {
+    public  error: string[] = []
     private idZone: number = 4
     private infosUser: InfosAccount = new InfosAccount()
     private infosUserTemp: InfosAccount = new InfosAccount()
     private mode: string = "normal"
-    public  error: string[] = []
     private authService: AuthService = getAuthService()
 
-
-    async created(){
+    async created() {
        this.infosUser = await getAccountInfos(this.idZone)
-       this.infosUserTemp = await getAccountInfos(this.idZone)
     }
 
-    async ChangeInformation(){
+    async ChangeInformation() {
          if (await this.$validator.validateAll()) {
-             try{
-                 this.error =[]
+             try {
+                this.error = []
+
                 await changeAccountInfos(this.infosUser)
+
                 this.$message({
                     message: "Information changer",
                     type: "success"
                 })
-                this.infosUserTemp = await getAccountInfos(this.idZone)
-                this.ChangeMode('normal')
-             }catch(e){
+
+                this.ChangeMode("normal")
+             } catch (e) {
                  this.error.push(e.response.data)
              }
          }
     }
-    ChangeMode(mode: string){
-        this.error =[]
-        this.mode = mode;
+
+    ChangeMode(mode: string) {
+        this.error = []
+        this.mode = mode
+        console.log(this.infosUser.clone)
+        if (this.mode == "edit") {this.infosUserTemp = this.infosUser.clone()}
     }
 
-     Cancel(mode: string){
-        this.infosUser.userData.firstName = this.infosUserTemp.userData.firstName
-        this.infosUser.userData.lastName = this.infosUserTemp.userData.lastName
-        this.infosUser.userData.email = this.infosUserTemp.userData.email
-        this.infosUser.userData.emailSecondary = this.infosUserTemp.userData.emailSecondary
+    Cancel(mode: string) {
+        this.infosUser = this.infosUserTemp.clone()
         this.ChangeMode(mode)
     }
-    CheckUserSchemes(schemes: string){
-        let exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)
-        if(exist == undefined) return false
+
+    CheckUserSchemes(schemes: string) {
+        const exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)
+        if ( exist == undefined) return false
         return true
     }
 }

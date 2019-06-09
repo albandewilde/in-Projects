@@ -48,6 +48,79 @@ namespace inProjects.WebApp.Controllers
             ));
         }
 
+        [HttpGet( "getInfosProject" )]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetInfosProject( int idProject, int idZone )
+        {
+            ProjectStudentTable projectTable = _stObjMap.StObjs.Obtain<ProjectStudentTable>();
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, db );
+
+                ProjectDetailsData projectDetails = new ProjectDetailsData
+                {
+                    Project = await projectQueries.GetDetailProject( idProject ),
+
+                    Students = await projectQueries.GetAllUsersOfProject(idProject)
+                };
+
+                List<string> listGroups = await projectQueries.GetGroupsOfProjectWithTimedUser( idProject, idZone );
+                string groups = listGroups[0];
+
+                if( listGroups.Count >= 2 )
+                {
+                    for( int i = 1; i < listGroups.Count; i++ )
+                    {
+                        groups += "-" + listGroups[i];
+                    }
+                }
+               
+
+                projectDetails.Project.Semester = groups;
+
+                return Ok( projectDetails );
+
+            }
+
+        }
+
+        [HttpGet( "verifyProjectFav" )]
+        public async Task<IActionResult> VerifyProjectFav( int idProject )
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, sqlDataBase );
+
+                bool exist = await projectQueries.IsProjectFav( idProject, userId );
+
+                return Ok( exist );
+            }
+        }
+
+        [HttpGet( "favProject" )]
+        [AllowAnonymous]
+        public async Task<IActionResult> FavProject( int idProject)
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            UserFavProjectTable favTable = _stObjMap.StObjs.Obtain<UserFavProjectTable>();
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+               await favTable.FavOrUnfavProject( ctx, userId, idProject );
+
+               return Ok( );
+
+            }
+
+        }
+
         [HttpGet("getAllProjects")]
 
         public async Task<IEnumerable<AllProjectInfoData>> GetAllProjects()

@@ -17,19 +17,28 @@ using CK.DB.Actor.ActorEMail;
 using System.Text;
 using CK.DB.Auth;
 using inProjects.Data.Data.TimedUser;
+using inProjects.EmailJury;
 
 namespace inProjects.WebApp.Services.CSV
 {
     class CsvStudentMapping
     {
         readonly IStObjMap _stObjMap;
-   
+        private readonly Emailer _emailSender;
         private List<UserList> _studentLists = new List<UserList>();
+
         public CsvStudentMapping()
             :base()
         {
 
         }
+
+        public CsvStudentMapping( Emailer emailer)
+        {
+            _emailSender = emailer;
+        }
+
+
 
         public async Task<List<UserList>> CSVReader(IFormFile path )
         {
@@ -50,7 +59,7 @@ namespace inProjects.WebApp.Services.CSV
 
         }
 
-        public async Task<bool> StudentParser(List<UserList> studentList, IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string type )
+        public async Task<bool> StudentParser(List<UserList> studentList, IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string type)
         {
             using(var ctx = new SqlStandardCallContext() )
             {
@@ -127,7 +136,7 @@ namespace inProjects.WebApp.Services.CSV
 
         }
 
-        public async Task<int> CheckIfUserExists( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string mail, string userName, string firstName, string lastName )
+        public async Task<int> CheckIfUserExists( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string mail, string userName, string firstName, string lastName)
         {
             using( var ctx = new SqlStandardCallContext() )
             {
@@ -149,10 +158,12 @@ namespace inProjects.WebApp.Services.CSV
                 else
                 {
                     string tempPwd = RandomPassword();
-
+                    string subject = "Vous êtes invité à rejoindre la plateforme InProject";
+                    string mailContent = "Afin de vous connectez a la plateforme InProject voici votre mot de passe provisoire: " + tempPwd + " il est conseillé de modifier ce mot de passe lors de votre première connection";
                     int newUserId = await userTable.CreateUserAsync( ctx, currentIdUser, userName, firstName, lastName );
                     await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
                     await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
+                    await _emailSender.SendMessage( mail, subject, mailContent );
                     return newUserId;
 
                 }
