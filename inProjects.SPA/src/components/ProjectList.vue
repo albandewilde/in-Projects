@@ -1,16 +1,8 @@
 <template>
-    <div>{{projectList}}
-        <el-table
-            :data="projectListToDisplay"
-            stripe
-            style="width: 100%">
-        <el-table-column
-            prop="groupName"
-            label="nom"
-        ></el-table-column>        </el-table>
+    <div>
         <el-row>
             <el-col :span="6" v-for="(o, index) in projectListToDisplay.length" :key="o" :offset="index > 0 ? projectListToDisplay.length : 0">
-                <el-card v-bind="{ padding: '0px', border:'1px solid' }">
+                <el-card v-bind:body-style="{ padding: '0px', border:getType(projectListToDisplay[index]) }">
                     <img :src="projectListToDisplay[index].logo" class="image">
                     <div style="padding: 14px;">
                         <span>{{projectListToDisplay[index].groupName}}</span><br>
@@ -20,7 +12,7 @@
                         <span>{{formatDate(projectListToDisplay[index].begDate)}} - {{formatDate(projectListToDisplay[index].endDate)}} </span>
                         <div class="bottom clearfix">
                         <time class="time">{{ currentDate }}</time>
-                        <el-button type="text" class="button">Operating</el-button>
+                          <el-button icon="el-icon-star-off" circle @click="favProject(projectListToDisplay[index].pr)"></el-button>
                         </div>
                     </div>
                 </el-card>
@@ -33,13 +25,14 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Component } from 'vue-property-decorator'
-import { GetAllProject } from "../api/projectApi"
+import { GetAllProject, UserFavProject } from "../api/projectApi"
 import {Project} from "../modules/classes/Project"
 
 @Component
 export default class ProjectList extends Vue {
     private projectList: Project[] = []
     private projectListToDisplay: Project[] = []
+    private border !: string
     async mounted(){
         this.projectList  = await GetAllProject()
         console.log(this.projectList)
@@ -62,8 +55,13 @@ export default class ProjectList extends Vue {
     }
 
     getType(specificProject: Project){
-        if(specificProject.type == "I") return "yellow"
-        else if( specificProject.type == "H" ) return  "blue"
+        if(specificProject.type == "I") return this.border = "red 1px solid"
+        else if( specificProject.type == "H" ) return this.border =  "blue 1px solid"
+        else return this.border = "white 1px solid"
+    }
+
+    async favProject(index: number){
+        await UserFavProject(index)
     }
 }
 </script>

@@ -1,4 +1,4 @@
-import { getAsync } from "../helpers/apiHelper"
+import { getAsync, postAsync } from "../helpers/apiHelper"
 import { Project } from '@/modules/classes/Project';
 const endpoint = process.env.VUE_APP_BACKEND + "/api/Project"
 

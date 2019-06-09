@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CK.Auth;
 using CK.Core;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data;
+using inProjects.Data.Data.Group;
 using inProjects.Data.Data.ProjectStudent;
 using inProjects.Data.Data.User;
 using inProjects.Data.Queries;
@@ -19,9 +21,12 @@ namespace inProjects.WebApp.Controllers
     public class ProjectController: Controller
     {
         readonly IStObjMap _stObjMap;
-        public ProjectController(IStObjMap stObjMap)
+        readonly IAuthenticationInfo _authenticationInfo;
+
+        public ProjectController(IStObjMap stObjMap, IAuthenticationInfo authenticationInfo)
         {
             _stObjMap = stObjMap;
+            _authenticationInfo = authenticationInfo;
         }
 
 
@@ -53,6 +58,7 @@ namespace inProjects.WebApp.Controllers
             {
                 ProjectQueries projectQueries = new ProjectQueries( ctx, db );
                 UserQueries userQueries = new UserQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
 
                 IEnumerable<AllProjectInfoData> projectData = await projectQueries.GetAllProject();
                 for( var i = 0; i < projectData.Count(); i++ )
@@ -63,6 +69,7 @@ namespace inProjects.WebApp.Controllers
 
                     foreach( var e in userByProject )
                     {
+                        IEnumerable<GroupData> groupDatas = await groupQueries.GetAllGroupByTimedUser( e.TimedUserId );
                         projectData.ElementAt( i ).FirstName.Add( e.FirstName );
                         projectData.ElementAt( i ).LastName.Add( e.LastName );
                         projectData.ElementAt( i ).TimedUserId.Add( e.TimedUserId );
@@ -72,5 +79,6 @@ namespace inProjects.WebApp.Controllers
                 return projectData;
             }
         }
+
     }
 }
