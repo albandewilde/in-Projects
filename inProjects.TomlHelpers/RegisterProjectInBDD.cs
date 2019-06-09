@@ -67,8 +67,15 @@ namespace inProjects.TomlHelpers
             int traitContextId = await traitContext.GetTraitContextId(type);
 
             string email = project.team.leader;
-            UserData user = await userQueries.GetUserByEmail(email);
-            TimedUserData timedLeader = await timedUserQueries.GetTimedUser(user.UserId, school.ZoneId);
+            int leaderId;
+            if( email == "None" ) leaderId = 0;
+            else
+            {
+                UserData user = await userQueries.GetUserByEmail( email );
+                TimedUserData timedLeader = await timedUserQueries.GetTimedUser( user.UserId, school.ZoneId );
+                leaderId = timedLeader.UserId;
+            }
+
 
             ProjectStudentStruct ProjectCreate = await projectTable.CreateProjectStudent(
                 ctx,
@@ -80,7 +87,7 @@ namespace inProjects.TomlHelpers
                 project.logo.url,
                 project.slogan.slogan,
                 project.pitch.pitch,
-                timedLeader.UserId,
+                leaderId,
                 type
             );
 
