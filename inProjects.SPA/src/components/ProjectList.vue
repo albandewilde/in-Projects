@@ -26,8 +26,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import { Component } from 'vue-property-decorator'
+import Vue from "vue"
+import { Component } from "vue-property-decorator"
 import { GetAllProject } from "../api/projectApi"
 import {Project} from "../modules/classes/Project"
 import {verifyProjectFav, favProject } from "../api/submitProjectApi"
@@ -38,29 +38,29 @@ export default class ProjectList extends Vue {
     private border !: string
     private isFav!: boolean
     private starColor!: string
-    async mounted(){
+    async mounted() {
         this.projectList  = await GetAllProject()
         console.log(this.projectList)
-        for(const project of this.projectList){
-            this.projectListToDisplay.push(project);
+        for (const project of this.projectList) {
+            this.projectListToDisplay.push(project)
         }
 
     }
 
-    getLeader(specificProject: Project){
-        for(var i = 0; i < specificProject.userId.length; i++){
-            if(specificProject.userId[i] == specificProject.leaderId){
+    getLeader(specificProject: Project) {
+        for (let i = 0; i < specificProject.userId.length; i += 1) {
+            if (specificProject.userId[i] == specificProject.leaderId) {
                 return specificProject.firstName[i] + " " + specificProject.lastName[i]
             }
         }
     }
 
-    formatDate(date: Date){
-        var newDate = date.toString()
-        return newDate.substr(0,10)
+    formatDate(date: Date) {
+        const newDate = date.toString()
+        return newDate.substr(0, 10)
     }
 
-    getType(specificProject: Project){
+    getType(specificProject: Project) {
         if(specificProject.type == "I") return this.border = "red 1px solid"
         else if( specificProject.type == "H" ) return this.border =  "blue 1px solid"
         else return this.border = "white 1px solid"

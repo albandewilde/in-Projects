@@ -53,7 +53,7 @@ async created() {
     console.log("co")
     console.log(this.$store.state.connectionStaffMember)
 
-    //this.$store.state.connectionStaffMember = this.connection
+    // this.$store.state.connectionStaffMember = this.connection
 }
 
  redirect(destination: string) {

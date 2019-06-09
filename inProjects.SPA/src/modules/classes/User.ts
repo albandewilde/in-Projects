@@ -4,7 +4,7 @@ class User {
     public email: string
     public password: string
     public groupName: string
-    public emailSecondary: string
+    public emailSecondary: string = ""
 
     constructor()
     constructor(firstName: string, lastName: string)
