@@ -1,6 +1,5 @@
 class Project {
     public name!: string
-    public name!: string
     public projectStudentId: number
     public logo!: string
     public pitch !: string
@@ -45,9 +44,5 @@ class Project {
         this.semester = semester
         this.technologies = technologies
     }
-
-
-    
-
 }
 export { Project }

@@ -62,16 +62,8 @@ namespace inProjects.WebApp.Controllers
                 List<GroupData> groupFinal = groupList.ToList();
                 for( int i = 0; i < groupFinal.Count; i++ )
                 {
-                    if( groupFinal[i].GroupName.StartsWith( "S0" )
-                        || groupFinal[i].GroupName.StartsWith( "S1" )
-                        || groupFinal[i].GroupName == "Teacher"
-                        || groupFinal[i].GroupName == "Administration"
-                        || groupFinal[i].GroupName == "IL"
-                        || groupFinal[i].GroupName == "SR" )
-                    {
                         studentList = await timedUserQueries.GetAllStudentInfosByGroup( groupFinal[i].GroupId, model.TableName, model.TableId );
                         timedStudentDatas.AddRange( studentList );
-                    }
                 }
 
             }
@@ -91,7 +83,14 @@ namespace inProjects.WebApp.Controllers
             for( var i = 0; i < duplicates.Count(); i++ )
             {
                 var a = duplicates.ElementAt( i );
-                a.ElementAt(0).GroupName = a.ElementAt( 1 ).GroupName + " - " + a.ElementAt( 0 ).GroupName;
+
+                if(a.ElementAt( 0 ).GroupName == "S01"  || a.ElementAt(0).GroupName == "S02")
+                {
+                    a.ElementAt( 0 ).GroupName = a.ElementAt( 0 ).GroupName;
+                }else
+                {
+                    a.ElementAt( 0 ).GroupName = a.ElementAt( 1 ).GroupName + " - " + a.ElementAt( 0 ).GroupName;
+                }
                 timedStudentDatasClean.Add( a.ElementAt( 0 ));
             }
 ;

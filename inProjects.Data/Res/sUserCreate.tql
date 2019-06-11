@@ -3,8 +3,8 @@
 CREATE TRANSFORMER ON CK.sUserCreate
 AS
 BEGIN
-    ADD PARAMETER @Firstname NVARCHAR(255) = '' BEFORE @UserIdResult;
-    ADD PARAMETER @Lastname NVARCHAR(255) = '' BEFORE @UserIdResult;
+    ADD PARAMETER @FirstName NVARCHAR(255) = '' BEFORE @UserIdResult;
+    ADD PARAMETER @LastName NVARCHAR(255) = '' BEFORE @UserIdResult;
 
     IN SINGLE PART {insert into CK.tUser}
     BEGIN

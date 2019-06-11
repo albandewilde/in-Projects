@@ -55,14 +55,13 @@ export default class ProjectList extends Vue {
         return newDate.substr(0, 10)
     }
     getType(specificProject: Project) {
-        if(specificProject.type == "I") return this.border = "red 1px solid"
-        else if( specificProject.type == "H" ) return this.border =  "blue 1px solid"
-        else return this.border = "white 1px solid"
+        if ( specificProject.type == "I" ) return this.border = "red 1px solid"
+        if ( specificProject.type == "H" ) return this.border =  "blue 1px solid"
+        return this.border = "white 1px solid"
     }
     async FavOrUnfav(specificProject: Project, index: number) {
         try {
-            var div  = document.getElementsByClassName("test")[index];
-            console.log(div)
+            const div  = document.getElementsByClassName("test")[index]
             this.isFav = await verifyProjectFav(specificProject.projectStudentId)
             await favProject(specificProject.projectStudentId)
             this.isFav = !this.isFav
@@ -71,17 +70,16 @@ export default class ProjectList extends Vue {
                 div.setAttribute("style", "background: #F5CC27 !important;")
             } else {
                 div.setAttribute("style", "background: #fffcfc !important;")
-            }        
+            }
         } catch (e) {
             console.error(e)
         }
     }
-    isStarColored(i: number){
+    isStarColored(i: number) {
         if (i != 0) {
             return this.starColor = "#F5CC27 !important"
-        } else {
-            return this.starColor = "#000000 !important;"
-        }   
+        }
+        return this.starColor = "#000000 !important;"
     }
 }
 </script>

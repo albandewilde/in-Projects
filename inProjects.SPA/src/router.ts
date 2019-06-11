@@ -68,8 +68,8 @@ export default new Router({
       component: ProjectList
      },
      {
-       path:"/addJury",
-       name:"addJury",
+       path: "/addJury",
+       name: "addJury",
        component: AddJury
      },
      {

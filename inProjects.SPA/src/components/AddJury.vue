@@ -21,7 +21,7 @@ import CsvImport from "@/components/CsvImport.vue"
      CsvImport
     }
 })
-export default class AddJury extends Vue{
+export default class AddJury extends Vue {
 
 }
 </script>

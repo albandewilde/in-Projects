@@ -5,7 +5,6 @@ import { Project } from "@/modules/classes/Project"
 import { Chacheli } from "../modules/classes/Chacheli"
 import * as jsonPlan from "../../plan.json"
 import * as jsonProjects from "../../projects.json"
-import { NOTIMP } from 'dns';
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/forum"
 
