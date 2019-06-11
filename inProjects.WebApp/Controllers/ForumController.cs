@@ -49,7 +49,7 @@ namespace inProjects.WebApp.Controllers
                 foreach( ProjectData project in projects )
                 {
                     Project p = new Project( project.ProjectStudentId, project.Name,
-                        project.Semester, project.PosX, project.PosY, project.ClassRoom, project.Height, project.Width, project.ForumNumber );
+                        project.Semester, project.CoordinatesX, project.CoordinatesY, project.ClassRoom, project.Height, project.Width, project.ForumNumber );
                     projectList.Add( p );
                 }
             }

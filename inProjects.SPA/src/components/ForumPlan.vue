@@ -4,7 +4,7 @@
             <el-button id="saveButton" @click="SavePlan" type="success">Sauvegarder</el-button>
         </center>
         <br>
-        <chacheli-designer v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" />
+        <chacheli-designer @chacheli-moved="chacheliMoved" v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" />
     </div>
 </template>
 
@@ -51,17 +51,23 @@ export default {
 
     async mounted() {
         this.authService = getAuthService()
-        console.debug(this.authService)
         this.plan = await getPlan()
         this.projects = await getProjects(this.authService.authenticationInfo.user.userId)
-        debugger
         this.layout.cols = this.plan.width
         this.layout.rows = this.plan.height
 
         for (let i = 0; i < this.projects.length; i += 1) {
-            let displayedName = this.projects[i].forumNumber + " - " + this.projects[i].name
+            const displayedName = this.projects[i].forumNumber + " - " + this.projects[i].name
+            let isAvailable = false
+            console.debug(this.projects[i])
+            if (this.projects[i].posX == -1) {
+                isAvailable = true
+            }
+            // const isAvailable = (this.projects[i].posX != -1) ? false : true
+            console.debug(i +" is "+ isAvailable)
+
             const c = new Chacheli(this.projects[i].forumNumber, this.projects[i].name, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
-                this.basicHeight, displayedName, true, "dummy-green", this.projects[i].projectId)
+                this.basicHeight, displayedName, isAvailable, "dummy-green", this.projects[i].projectId)
             this.chachelis.push(c)
         }
     },
@@ -99,6 +105,10 @@ export default {
                     }
                 }
             }
+        },
+
+        chacheliMoved(chacheli) {
+            console.debug(chacheli)
         }
     }
 }
