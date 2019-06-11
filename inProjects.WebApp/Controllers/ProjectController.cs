@@ -6,7 +6,9 @@ using CK.Core;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data;
+using inProjects.Data.Data.Group;
 using inProjects.Data.Data.ProjectStudent;
+using inProjects.Data.Data.User;
 using inProjects.Data.Queries;
 using inProjects.Data.Res.Model;
 using inProjects.ViewModels;
@@ -21,7 +23,7 @@ namespace inProjects.WebApp.Controllers
         readonly IStObjMap _stObjMap;
         readonly IAuthenticationInfo _authenticationInfo;
 
-        public ProjectController( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo )
+        public ProjectController(IStObjMap stObjMap, IAuthenticationInfo authenticationInfo)
         {
             _stObjMap = stObjMap;
             _authenticationInfo = authenticationInfo;
@@ -35,6 +37,7 @@ namespace inProjects.WebApp.Controllers
             ProjectStudentTable projectTable = _stObjMap.StObjs.Obtain<ProjectStudentTable>();           
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             CustomGroupTable groupTable = _stObjMap.StObjs.Obtain<CustomGroupTable>();
+            ProjectUrlTable projectUrl = _stObjMap.StObjs.Obtain<ProjectUrlTable>();
 
            return Ok(await TomlHelpers.TomlHelpers.RegisterProject(
                 project.Link,
@@ -42,7 +45,9 @@ namespace inProjects.WebApp.Controllers
                 projectTable,
                 project.UserId,
                 db,
-                groupTable
+                groupTable,
+                _stObjMap,
+                projectUrl
             ));
         }
 
@@ -64,7 +69,7 @@ namespace inProjects.WebApp.Controllers
                     Students = await projectQueries.GetAllUsersOfProject(idProject)
                 };
 
-                List<string> listGroups = await projectQueries.GetGroupsOfProjectWithTimedUser( idProject, idZone );
+                List<string> listGroups = await projectQueries.GetGroupsOfProjectWithTimedUser( idProject);
                 string groups = listGroups[0];
 
                 if( listGroups.Count >= 2 )
@@ -118,5 +123,39 @@ namespace inProjects.WebApp.Controllers
             }
 
         }
+
+        [HttpGet("getAllProjects")]
+
+        public async Task<IEnumerable<AllProjectInfoData>> GetAllProjects()
+        {
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            int userId = _authenticationInfo.ActualUser.UserId;
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, db );
+                UserQueries userQueries = new UserQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
+
+                IEnumerable<AllProjectInfoData> projectData = await projectQueries.GetAllProject(userId);
+                for( var i = 0; i < projectData.Count(); i++ )
+                {
+                    IEnumerable<UserByProjectData> userByProject = await userQueries.GetUserByProject( projectData.ElementAt( i ).ProjectStudentId );
+                    projectData.ElementAt( i ).BegDate = userByProject.ElementAt( 0 ).BegDate;
+                    projectData.ElementAt( i ).EndDate = userByProject.ElementAt( 0 ).EndDate;
+
+                    foreach( var e in userByProject )
+                    {
+                        IEnumerable<GroupData> groupDatas = await groupQueries.GetAllGroupByTimedUser( e.TimedUserId );
+                        projectData.ElementAt( i ).FirstName.Add( e.FirstName );
+                        projectData.ElementAt( i ).LastName.Add( e.LastName );
+                        projectData.ElementAt( i ).TimedUserId.Add( e.TimedUserId );
+                        projectData.ElementAt( i ).UserId.Add( e.UserId );
+                    }
+                }
+                return projectData;
+            }
+        }
+
     }
 }

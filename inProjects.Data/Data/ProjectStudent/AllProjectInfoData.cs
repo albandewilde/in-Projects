@@ -1,0 +1,32 @@
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace inProjects.Data.Data.ProjectStudent
+{
+    public class AllProjectInfoData
+    {
+        public int ProjectStudentId { get; set; }
+        public string Logo { get; set; }
+        public string Slogan { get; set; }
+        public string Pitch { get; set; }
+        public int LeaderId { get; set; }
+        public string Type { get; set; }
+        public int TraitId { get; set; }
+
+        public string TraitName { get; set; }
+        public string GroupName { get; set; }
+        public int ZoneId { get; set; }
+
+        public List<string> FirstName = new List<string>();
+        public List<string> LastName = new List<string>();
+        public List<int> TimedUserId = new List<int>();
+        public List<int> UserId = new List<int>();
+        public DateTime BegDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        public int IsFav { get; set; }
+
+
+    }
+}

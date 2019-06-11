@@ -59,7 +59,7 @@
                 <span> Projets</span>
             </template>
         <el-menu-item-group>
-            <el-menu-item index="4-1">Liste des projets</el-menu-item>
+            <el-menu-item index="4-1" @click="redirect(`/projectList`)">Liste des projets</el-menu-item>
             <el-menu-item index="4-2">Trouver un projet</el-menu-item>
         </el-menu-item-group>
         </el-submenu>
@@ -132,12 +132,11 @@ export default class SideBar extends Vue {
 
     }
 
-    async mounted (){
+    async mounted() {
         this.co = this.$store.state.connectionStaffMember
         if ( this.co.state == undefined ) {
-            console.log("c'est undefined")
             await this.signalr.connect()
-        } 
+        }
     }
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)

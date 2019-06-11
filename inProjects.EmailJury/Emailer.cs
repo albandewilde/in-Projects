@@ -1,4 +1,5 @@
-﻿using MimeKit;
+using System;
+using MimeKit;
 using MailKit.Net.Smtp;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;

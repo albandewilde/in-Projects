@@ -62,8 +62,8 @@ namespace inProjects.WebApp.Controllers
                 List<GroupData> groupFinal = groupList.ToList();
                 for( int i = 0; i < groupFinal.Count; i++ )
                 {
-                    studentList = await timedUserQueries.GetAllStudentInfosByGroup( groupFinal[i].GroupId, model.TableName, model.TableId );
-                    timedStudentDatas.AddRange( studentList );
+                        studentList = await timedUserQueries.GetAllStudentInfosByGroup( groupFinal[i].GroupId, model.TableName, model.TableId );
+                        timedStudentDatas.AddRange( studentList );
                 }
 
             }
@@ -83,7 +83,14 @@ namespace inProjects.WebApp.Controllers
             for( var i = 0; i < duplicates.Count(); i++ )
             {
                 var a = duplicates.ElementAt( i );
-                a.ElementAt(0).GroupName = a.ElementAt( 1 ).GroupName + " - " + a.ElementAt( 0 ).GroupName;
+
+                if(a.ElementAt( 0 ).GroupName == "S01"  || a.ElementAt(0).GroupName == "S02")
+                {
+                    a.ElementAt( 0 ).GroupName = a.ElementAt( 0 ).GroupName;
+                }else
+                {
+                    a.ElementAt( 0 ).GroupName = a.ElementAt( 1 ).GroupName + " - " + a.ElementAt( 0 ).GroupName;
+                }
                 timedStudentDatasClean.Add( a.ElementAt( 0 ));
             }
 ;
@@ -124,7 +131,7 @@ namespace inProjects.WebApp.Controllers
                     Result result = new Result( Status.Unauthorized, "A la date d'aujourd'hui votre etablissement n'est dans une aucune periode" );
                     return this.CreateResult( result );
                 }
-                await csvStudentMapping.StudentParser( studentResult, _stObjMap, _authenticationInfo, type);
+                await csvStudentMapping.UserParser( studentResult, _stObjMap, _authenticationInfo, type);
             }
 
             return Ok();

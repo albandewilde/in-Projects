@@ -127,8 +127,12 @@ export default class InformationsMyProfil extends Vue {
         if (this.mode == "edit") {this.infosUserTemp = this.infosUser.clone()}
     }
 
-    Cancel(mode: string) {
+     Cancel(mode: string) {
         this.infosUser = this.infosUserTemp.clone()
+        this.infosUser.userData.firstName = this.infosUserTemp.userData.firstName
+        this.infosUser.userData.lastName = this.infosUserTemp.userData.lastName
+        this.infosUser.userData.email = this.infosUserTemp.userData.email
+        this.infosUser.userData.emailSecondary = this.infosUserTemp.userData.emailSecondary
         this.ChangeMode(mode)
     }
 

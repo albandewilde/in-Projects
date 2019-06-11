@@ -1,17 +1,24 @@
 class Project {
-
+    public name!: string
     public projectStudentId: number
-    public name: string
-    public logo: string
-    public slogan: string
-    public pitch: string
-    public leaderId: number
-    public type: string
-    public traitId: number
-    public semester: string
+    public logo!: string
+    public pitch !: string
+    public slogan !: string
+    public traitName !: string
+    public type !: string
+    public firstName !: string[]
+    public lastName !: string[]
+    public timedUserId !: number[]
+    public begDate !: Date
+    public endDate !: Date
+    public userId !: number[]
+    public traitId!: number
+    public semester!: string
     public technologies: string[]
-
-    constructor()
+    public leaderId !: number
+    public isFav !: number
+    public classRoom!: string
+    public projectId!: number
     constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[])
     constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], projectId: number, type: string, traitId: number)
     constructor(
@@ -37,7 +44,5 @@ class Project {
         this.semester = semester
         this.technologies = technologies
     }
-
-
 }
 export { Project }

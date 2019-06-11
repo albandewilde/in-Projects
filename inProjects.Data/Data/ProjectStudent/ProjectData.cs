@@ -16,5 +16,15 @@ namespace inProjects.Data.Data.ProjectStudent
         public string Name { get; set; }
         public string Semester { get; set; }
         public List<string> Technologies { get; set; }
+        public int PosX { get; set; }
+        public int PosY { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
+        public string ClassRoom { get; set; }
+        public int ForumNumber { get; set; }
+
+        public string TraitName { get; set; }
+        public string GroupName { get; set; }
+        public int ZoneId { get; set; }
     }
 }
