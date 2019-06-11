@@ -348,3 +348,4 @@ inProjects\.WebApp/WebAppLogs/Textual/
 
 # don't commit logs
 inProjects.WebApp/WebAppLogs
+appsettings.json

@@ -7,9 +7,11 @@ import Student from "./views/Student.vue"
 import CreatePeriod from "./components/CreatePeriod.vue"
 import ListPeriod from "./components/ListPeriod.vue"
 import StaffMember from "./views/StaffMember.vue"
+import Project from "./views/Project.vue"
 import MyProfil from "./views/MyProfil.vue"
 import Plan from "./components/Plan.vue"
 import ProjectList from "./components/ProjectList.vue"
+import AddJury from "./components/AddJury.vue"
 import ForumPlan from "./components/ForumPlan.vue"
 Vue.use(Router)
 
@@ -66,10 +68,21 @@ export default new Router({
       component: ProjectList
      },
      {
+       path: "/addJury",
+       name: "addJury",
+       component: AddJury
+     },
+     {
       path: "/MyProfil",
       name: "MyProfil",
       component: MyProfil
+     },
+     {
+      path: "/Project/:projectId",
+      name: "Project",
+      component: Project
     }
+
   ],
   mode: "history"
 })

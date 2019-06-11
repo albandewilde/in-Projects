@@ -15,6 +15,7 @@ namespace inProjects.Data.Data.ProjectStudent
         public int TraitId { get; set; }
         public string Name { get; set; }
         public string Semester { get; set; }
+        public List<string> Technologies { get; set; }
         public int CoordinatesX { get; set; }
         public int CoordinatesY { get; set; }
         public int Height { get; set; }

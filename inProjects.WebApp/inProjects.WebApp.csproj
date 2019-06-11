@@ -43,6 +43,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\inProjects.Data\inProjects.Data.csproj" />
+    <ProjectReference Include="..\inProjects.EmailJury\inProjects.EmailJury.csproj" />
     <ProjectReference Include="..\inProjects.TomlHelpers\inProjects.TomlHelpers.csproj" />
     <ProjectReference Include="..\inProjects.ViewModels\inProjects.ViewModels.csproj" />
   </ItemGroup>

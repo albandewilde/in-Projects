@@ -25,6 +25,8 @@ namespace inProjects.Data.Data.ProjectStudent
         public DateTime BegDate { get; set; }
         public DateTime EndDate { get; set; }
 
+        public int IsFav { get; set; }
+
 
     }
 }

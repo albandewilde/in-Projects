@@ -16,6 +16,7 @@ using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using inProjects.WebApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using inProjects.Data;
+using inProjects.EmailJury;
 using inProjects.WebApp.Hubs;
 
 namespace WebApp
@@ -24,7 +25,7 @@ namespace WebApp
     {
         readonly IHostingEnvironment _env;
 
-        public Startup(IConfiguration configuration, IHostingEnvironment env )
+        public Startup(IConfiguration configuration, IHostingEnvironment env)
         {
             Configuration = configuration;
             _env = env;
@@ -35,7 +36,6 @@ namespace WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)            
         {
-           
             services.AddCors();
             services.AddSingleton<IWebFrontAuthLoginService, SqlWebFrontAuthLoginService>();
             services.AddSingleton<IAuthenticationTypeSystem, StdAuthenticationTypeSystem>();
@@ -87,6 +87,11 @@ namespace WebApp
 
             services.AddCKDatabase( "CK.StObj.AutoAssembly" );
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.AddSingleton<Emailer>();
+            services.Configure<EmailerOptions>(Configuration.GetSection("gmail"));
+
+            services.AddOptions();
             services.AddSignalR();
         }
 

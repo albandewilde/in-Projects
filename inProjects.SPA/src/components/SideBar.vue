@@ -53,7 +53,6 @@
             <span> Accueil</span>
         </el-menu-item>
 
-           
         <el-submenu index="4">
             <template slot="title">
                 <font-awesome-icon icon="file-alt" size="lg" />
@@ -64,8 +63,6 @@
             <el-menu-item index="4-2">Trouver un projet</el-menu-item>
         </el-menu-item-group>
         </el-submenu>
-
-        
 
         <div v-for="(o,idx) in whatTimed" :key="idx">
             <!-- index Admin 10 to 30 -->
@@ -93,11 +90,6 @@
                 <StudentPanel :isCollapse="isCollapse"></StudentPanel>
             </div>
         </div>
-
-        <el-menu-item index="6" @click="redirect(`/submit_project`)">
-            <font-awesome-icon icon="plus-square" size="lg" />
-            <span> Deposer un Projet</span>
-        </el-menu-item>
     </el-menu>
 </template>
 

@@ -108,7 +108,7 @@ namespace inProjects.WebApp.Controllers
 
                 List<string> listGroupsOfTimedUser = new List<string>();
 
-                listGroupsOfTimedUser = await groupsQueries.GetAllGroupOfTimedUser( period.ChildId, timedUserData.TimedUserId );
+                listGroupsOfTimedUser = await groupsQueries.GetAllGroupOfTimedUserByPeriod( period.ChildId, timedUserData.TimedUserId );
 
                 for( int i = 0; i < listGroupsOfTimedUser.Count; i++ )
                 {

@@ -14,15 +14,15 @@ namespace WebApp
                             .UseContentRoot( Directory.GetCurrentDirectory() )
                             .UseMonitoring()
                             .UseScopedHttpContext()
-                             .ConfigureAppConfiguration( ( hostBuilderContext, confBuilder ) =>
-                             {
-                                 confBuilder
-                                     .AddJsonFile( "appsettings.json", optional: false, reloadOnChange: true )
-                                     .AddJsonFile( $"appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true )
-                                     .AddEnvironmentVariables();
-                                     
+                            .ConfigureAppConfiguration( ( hostBuilderContext, confBuilder ) =>
+                            {
+                             confBuilder
+                                 .AddJsonFile( "appsettings.json", optional: false, reloadOnChange: true )
+                                 .AddJsonFile( $"appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true )
+                                 .AddEnvironmentVariables();
+                                 
 
-                             } )
+                            } )
                             .UseKestrel()
                             .UseStartup<Startup>();
 
