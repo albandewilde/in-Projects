@@ -10,30 +10,21 @@ import { NOTIMP } from 'dns';
 const endpoint = process.env.VUE_APP_BACKEND + "/api/forum"
 
 export async function getPlan() {
-    // const response = await getAsync(`${endpoint}/getPlan`)
+    const response = await getAsync(`${endpoint}/getPlan`)
 
-    // For testing purpose
     const plan = new Plan()
-    plan.classRooms = []
-    jsonPlan.Classrooms.forEach(room => {
-        const newroom: ClassRoom = new ClassRoom()
-        newroom.endPositionX = room.EndPositionX
-        newroom.endPositionY = room.EndPositionY
-        newroom.name = room.Name
-        newroom.originX = room.OriginX
-        newroom.originY = room.OriginY
-
-        plan.classRooms.push(newroom)
-    })
-    plan.height = jsonPlan.height
-    plan.width = jsonPlan.width
+    plan.height = response.data.height
+    plan.width = response.data.width
+    plan.classRooms = response.data.classRooms
+    
     return plan
-
-    // return response.data
 }
 
 export async function getProjects(): Promise<Project[]> {
-    const projects: Project[] = []
+    let projects: Project[] = []
+    // const response = await getAsync(`${endpoint}/getProjects`)
+
+    // projects = response.data
 
     jsonProjects.Projects.forEach(project => {
         const np = new Project()

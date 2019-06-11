@@ -33,8 +33,8 @@ export default {
                 cols: 0,
                 rows: 0
             },
-            basicHeight: 2,
-            basicWidth: 3,
+            basicHeight: 3,
+            basicWidth: 4,
             projects: new Array(),
             savedPlan: new Array()
         }
@@ -54,7 +54,7 @@ export default {
         this.layout.rows = this.plan.height
 
         for (let i = 0; i < this.projects.length; i += 1) {
-            const c = new Chacheli(i + 1, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
+            const c = new Chacheli(this.projects[i].forumNumber, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
                 this.basicHeight, this.projects[i].name, true, "dummy-green", this.projects[i].projectId)
             this.chachelis.push(c)
         }
@@ -72,7 +72,7 @@ export default {
                                 if (!item) {
                                     const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
                                     const p = new Project(chacheli.text, chacheli.x, chacheli.y,
-                                        chacheli.w, chacheli.h, project.semester, chacheli.classRoom, i+1, chacheli.projectId)
+                                        chacheli.w, chacheli.h, project.semester, chacheli.classRoom, chacheli.forumNumber, chacheli.projectId)
                                     this.savedPlan.push(p)
                                     break
                                 } else {
@@ -128,11 +128,11 @@ body {
 }
 
 .chacheli-designer-layout .chacheli .content {
-    background-color: transparent;
+    /* background-color: transparent; */
     /* opacity: 0; */
-    color: #bd10e0;
-    font-weight: 900;
-    font-size: 22px;
+    color: #000000;
+    font-weight: 700;
+    font-size: 15px;
     border: none;
 }
 </style>

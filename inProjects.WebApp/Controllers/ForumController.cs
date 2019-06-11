@@ -26,13 +26,13 @@ namespace inProjects.WebApp.Controllers
         [HttpGet("GetPlan")]
         public async Task<Plan> InitPlan()
         {
-            Plan plan = new Plan( 28, 24 );
+            Plan plan = new Plan( 50, 30 );
             await plan.PopulateWithClassRooms();
 
             return plan;
         }
 
-        [HttpGet]
+        [HttpGet("GetProjects")]
         public async Task<List<Project>> GetAllProjects( int idSchool )
         {
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
@@ -56,13 +56,14 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpPost("SavePlan")]
-        public async Task SavePlan([FromBody] Project[] plan)
+        public async Task<List<int>> SavePlan([FromBody] Project[] plan)
         {
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             using( var ctx = new SqlStandardCallContext() )
             {
                 ForumQueries forumQueries = new ForumQueries( ctx, sqlDatabase );
-                int result = await forumQueries.SavePlan( plan );
+                List<int> results = await forumQueries.SavePlan( plan );
+                return results;
             }
         }
     }

@@ -1,5 +1,5 @@
 class Chacheli {
-    public id!: number
+    public forumNumber!: number
     public x!: number
     public y!: number
     public w!: number
@@ -11,7 +11,7 @@ class Chacheli {
     public classRoom!: string
 
     constructor(id: number, x: number, y: number, w: number, h: number, text: string, a: boolean, comp: string, projectId: number, classRoom: string) {
-        this.id = id
+        this.forumNumber = id
         this.x = x
         this.y =  y
         this.w =  w
