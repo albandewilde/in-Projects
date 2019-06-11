@@ -144,7 +144,7 @@ namespace inProjects.Data.Queries
         public async Task<IEnumerable<ProjectData>> GetAllProjectByForum( int forumId )
         {
             IEnumerable<ProjectData> result = await _controller.QueryAsync<ProjectData>(
-                "SELECT * FROM IPR.vForumProjectInfos WHERE ForumId = @ForumId;",
+                "SELECT * FROM IPR.vForumProjectInfos WHERE ForumId = @ForumId ORDER BY ForumNumber;",
                 new { ForumId = forumId } );
 
             return result;
