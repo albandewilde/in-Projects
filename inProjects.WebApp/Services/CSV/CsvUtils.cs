@@ -47,7 +47,7 @@ namespace inProjects.WebApp.Services.CSV
             using( var reader = new StreamReader( streamResult ) )
             using( var csv = new CsvReader( reader ) )
             {
-                csv.Configuration.Delimiter = ",";
+                csv.Configuration.Delimiter = ";";
                 var records = csv.GetRecords<UserList>();
                 var studentInfo = records.ToList();
                 foreach(var e in studentInfo )
@@ -57,6 +57,20 @@ namespace inProjects.WebApp.Services.CSV
                 return studentInfo;
             }
 
+        }
+
+        public async Task<List<ProjectNumbers>> CSVReaderProjectNumber(IFormFile path )
+        {
+            var streamResult = path.OpenReadStream();
+
+            using( var reader = new StreamReader( streamResult ) )
+            using( var csv = new CsvReader( reader ) )
+            {
+                csv.Configuration.Delimiter = ";";
+                var records = csv.GetRecords<ProjectNumbers>();
+                var projectInfo = records.ToList();
+                return projectInfo;
+            }
         }
 
         public async Task<bool> UserParser(List<UserList> studentList, IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string type)

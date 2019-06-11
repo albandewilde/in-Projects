@@ -122,7 +122,6 @@ namespace inProjects.WebApp.Controllers
                     return this.CreateResult( result );
                 }
 
-                List<UserList> studentResult = await csvStudentMapping.CSVReader( file );
                 bool isInPeriod = await periodServices.CheckInPeriod( _stObjMap, _authenticationInfo );
 
                 // The school in wich the user is need to be in a period when the action is done
@@ -131,7 +130,17 @@ namespace inProjects.WebApp.Controllers
                     Result result = new Result( Status.Unauthorized, "A la date d'aujourd'hui votre etablissement n'est dans une aucune periode" );
                     return this.CreateResult( result );
                 }
-                await csvStudentMapping.UserParser( studentResult, _stObjMap, _authenticationInfo, type);
+
+                if(type =="student" || type == "staffMember" )
+                {
+                    List<UserList> studentResult = await csvStudentMapping.CSVReader( file );
+                    await csvStudentMapping.UserParser( studentResult, _stObjMap, _authenticationInfo, type );
+                }
+                else if (type == "projectNumber" )
+                {
+                    List<ProjectNumbers> projectNumbers = await csvStudentMapping.CSVReaderProjectNumber( file );
+                }
+
             }
 
             return Ok();
