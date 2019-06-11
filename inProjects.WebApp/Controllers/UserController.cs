@@ -62,8 +62,16 @@ namespace inProjects.WebApp.Controllers
                 List<GroupData> groupFinal = groupList.ToList();
                 for( int i = 0; i < groupFinal.Count; i++ )
                 {
-                    studentList = await timedUserQueries.GetAllStudentInfosByGroup( groupFinal[i].GroupId, model.TableName, model.TableId );
-                    timedStudentDatas.AddRange( studentList );
+                    if( groupFinal[i].GroupName.StartsWith( "S0" )
+                        || groupFinal[i].GroupName.StartsWith( "S1" )
+                        || groupFinal[i].GroupName == "Teacher"
+                        || groupFinal[i].GroupName == "Administration"
+                        || groupFinal[i].GroupName == "IL"
+                        || groupFinal[i].GroupName == "SR" )
+                    {
+                        studentList = await timedUserQueries.GetAllStudentInfosByGroup( groupFinal[i].GroupId, model.TableName, model.TableId );
+                        timedStudentDatas.AddRange( studentList );
+                    }
                 }
 
             }

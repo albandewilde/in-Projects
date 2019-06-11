@@ -87,7 +87,7 @@ namespace inProjects.Tests
                 var userCreate = await userTable.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString());
                 await userFavTable.FavOrUnfavProject(ctx, userCreate, ProjectCreate.ProjectStudentId);
 
-                UserFavProjectData userFavProjectData = await projectQueries.GetSPecificFavOfUser( userCreate, ProjectCreate.ProjectStudentId );
+                ProjectUserFavData userFavProjectData = await projectQueries.GetSPecificFavOfUser( userCreate, ProjectCreate.ProjectStudentId );
                 Assert.That( userFavProjectData != null );
 
 
@@ -112,7 +112,7 @@ namespace inProjects.Tests
                 await userFavTable.FavOrUnfavProject( ctx, userCreate, ProjectCreate.ProjectStudentId );
                 await userFavTable.FavOrUnfavProject( ctx, userCreate, ProjectCreate.ProjectStudentId );
 
-                UserFavProjectData userFavProjectData = await projectQueries.GetSPecificFavOfUser( userCreate, ProjectCreate.ProjectStudentId );
+                ProjectUserFavData userFavProjectData = await projectQueries.GetSPecificFavOfUser( userCreate, ProjectCreate.ProjectStudentId );
                 Assert.That( userFavProjectData == null );
 
 
