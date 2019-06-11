@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
+using inProjects.Data.Data.Group;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -33,7 +34,7 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet("GetProjects")]
-        public async Task<List<Project>> GetAllProjects( int idSchool )
+        public async Task<List<Project>> GetAllProjects( [FromQuery] int userId )
         {
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             List<Project> projectList = new List<Project>();
@@ -41,9 +42,9 @@ namespace inProjects.WebApp.Controllers
             using( var ctx = new SqlStandardCallContext() )
             {
                 ProjectQueries projectQueries = new ProjectQueries( ctx, sqlDatabase );
-                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDatabase );
-                PeriodData forumData = await timedPeriodQueries.GetLastPeriodBySchool( idSchool );
-                IEnumerable<ProjectData> projects = await projectQueries.GetAllProjectByForum( forumData.ZoneId );
+                GroupQueries groupQueries = new GroupQueries( ctx, sqlDatabase );
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+                IEnumerable<ProjectData> projects = await projectQueries.GetAllProjectByForum( groupData.ZoneId );
 
                 foreach( ProjectData project in projects )
                 {

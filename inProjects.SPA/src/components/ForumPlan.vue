@@ -16,6 +16,8 @@ import { getPlan, getProjects, savePlan as saveForumPlan } from "../api/forumApi
 import { Plan } from "../modules/classes/Plan"
 import { Layout } from "../modules/classes/Layout"
 import { Chacheli } from "../modules/classes/Chacheli"
+import { AuthService } from "@signature/webfrontauth"
+import { getAuthService } from "../modules/authService"
 
 import ChacheliDesigner from "@shellybits/v-chacheli/dist/ChacheliDesigner"
 import "@shellybits/v-chacheli/dist/ChacheliDesigner.css"
@@ -36,7 +38,8 @@ export default {
             basicHeight: 3,
             basicWidth: 4,
             projects: new Array(),
-            savedPlan: new Array()
+            savedPlan: new Array(),
+            authService: null
         }
     },
 
@@ -47,15 +50,18 @@ export default {
     },
 
     async mounted() {
+        this.authService = getAuthService()
+        console.debug(this.authService)
         this.plan = await getPlan()
-        this.projects = await getProjects()
-        
+        this.projects = await getProjects(this.authService.authenticationInfo.user.userId)
+        debugger
         this.layout.cols = this.plan.width
         this.layout.rows = this.plan.height
 
         for (let i = 0; i < this.projects.length; i += 1) {
-            const c = new Chacheli(this.projects[i].forumNumber, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
-                this.basicHeight, this.projects[i].name, true, "dummy-green", this.projects[i].projectId)
+            let displayedName = this.projects[i].forumNumber + " - " + this.projects[i].name
+            const c = new Chacheli(this.projects[i].forumNumber, this.projects[i].name, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
+                this.basicHeight, displayedName, true, "dummy-green", this.projects[i].projectId)
             this.chachelis.push(c)
         }
     },

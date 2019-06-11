@@ -36,7 +36,8 @@ namespace inProjects.Data.Queries
                         X = plan[i].PosX,
                         Y = plan[i].PosY,
                         W = plan[i].Width,
-                        H = plan[i].Height
+                        H = plan[i].Height,
+                        ForumNumber = plan[i].ForumNumber
                     }
                 );
                 results.Add( res );

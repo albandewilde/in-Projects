@@ -9,8 +9,9 @@ class Chacheli {
     public comp!: string
     public projectId!: number
     public classRoom!: string
+    public name!: string
 
-    constructor(id: number, x: number, y: number, w: number, h: number, text: string, a: boolean, comp: string, projectId: number, classRoom: string) {
+    constructor(id: number, name: string, x: number, y: number, w: number, h: number, text: string, a: boolean, comp: string, projectId: number, classRoom: string) {
         this.forumNumber = id
         this.x = x
         this.y =  y
@@ -21,6 +22,7 @@ class Chacheli {
         this.comp = comp
         this.projectId = projectId
         this.classRoom = classRoom
+        this.name = name
     }
 }
 
