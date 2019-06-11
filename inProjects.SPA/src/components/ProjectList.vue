@@ -3,7 +3,7 @@
         <el-row>
             <el-col :span="5" v-for="(o, index) in projectListToDisplay.length" :key="o" :offset="index > 0 ? 1 : 1" >            
                 <el-card v-bind:body-style="{ padding: '0px', border:getType(projectListToDisplay[index]) }">
-                    <img :src="projectListToDisplay[index].logo" class="image">
+                    <img :src="projectListToDisplay[index].logo" class="image"  @click="redirect(projectListToDisplay[index].projectStudentId)">
                     <div class="my-card-row">
                         <span>{{projectListToDisplay[index].groupName}}</span><br>
                         <span>Slogan : {{projectListToDisplay[index].slogan}}</span><br>
@@ -81,6 +81,9 @@ export default class ProjectList extends Vue {
         }
         return this.starColor = "#000000 !important;"
     }
+     redirect(idProject: number) {
+         this.$router.replace("/Project/" + idProject)
+    }
 }
 </script>
 
@@ -89,6 +92,7 @@ export default class ProjectList extends Vue {
     width: 100%;
     display: inline-block; 
     height: 300px; 
+    cursor: pointer;
 }
 
 .el-card{
