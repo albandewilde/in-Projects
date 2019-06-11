@@ -1,7 +1,13 @@
 <template>
     <div>
-        <span><h3>Ajouter la liste des jurys</h3></span>
-        <CsvImport type="jury"></CsvImport>
+        <div>  
+            <span><h3>Attribuer un n° au projets</h3></span>
+            <CsvImport type="jury"></CsvImport>
+        </div>
+        <div>  
+            <span><h3>Attribuer un n° au proje</h3></span>
+            <CsvImport type="jury">t</CsvImport>
+        </div>
     </div>
 </template>
 
