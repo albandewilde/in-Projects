@@ -2,7 +2,6 @@ using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data;
 using inProjects.Data.Data.Group;
-using inProjects.Data.Data.Period;
 using inProjects.Data.Data.ProjectStudent;
 using inProjects.Data.Data.TimedUser;
 using inProjects.Data.Data.User;
@@ -21,7 +20,8 @@ namespace inProjects.TomlHelpers
             int userId,
             SqlDefaultDatabase db,
             ProjectStudentTable projectTable,
-            CustomGroupTable groupTable
+            CustomGroupTable groupTable,
+            ProjectUrlTable projectUrl
         )
         {
 
@@ -38,7 +38,7 @@ namespace inProjects.TomlHelpers
                     ProjectPi project = toml as ProjectPi;
 
                     // register the project
-                    (UserQueries userQueries, TimedUserQueries timedUserQueries, ProjectStudentStruct ProjectCreate, TimedUserData timedUser) = await SaveProjectPi(project, projectTable, userId, db, ctx, type);
+                    (UserQueries userQueries, TimedUserQueries timedUserQueries, ProjectStudentStruct ProjectCreate, TimedUserData timedUser) = await SaveProjectPi(project, projectTable, userId, db, ctx, type, projectUrl);
 
                     // link members to the project
                     if (toml.team.members.Length > 0) await LinkMembersToProject(project, userQueries, timedUserQueries, ProjectCreate, timedUser, groupTable, ctx);
@@ -52,7 +52,8 @@ namespace inProjects.TomlHelpers
             int userId,
             SqlDefaultDatabase db,
             SqlStandardCallContext ctx,
-            string type
+            string type,
+            ProjectUrlTable projectUrlTable
         )
         {
             GroupQueries groupQueries = new GroupQueries(ctx, db);
@@ -90,6 +91,8 @@ namespace inProjects.TomlHelpers
                 leaderId,
                 type
             );
+
+            if(project.git.url != "None")await projectUrlTable.CreateOrUpdateProjectUrl( ctx, ProjectCreate.ProjectStudentId, project.git.url, "Git" );
 
             return (userQueries, timedUserQueries, ProjectCreate, timedUser);
         }

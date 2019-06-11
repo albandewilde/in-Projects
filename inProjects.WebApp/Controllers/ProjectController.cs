@@ -37,6 +37,7 @@ namespace inProjects.WebApp.Controllers
             ProjectStudentTable projectTable = _stObjMap.StObjs.Obtain<ProjectStudentTable>();           
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             CustomGroupTable groupTable = _stObjMap.StObjs.Obtain<CustomGroupTable>();
+            ProjectUrlTable projectUrl = _stObjMap.StObjs.Obtain<ProjectUrlTable>();
 
            return Ok(await TomlHelpers.TomlHelpers.RegisterProject(
                 project.Link,
@@ -45,7 +46,8 @@ namespace inProjects.WebApp.Controllers
                 project.UserId,
                 db,
                 groupTable,
-                _stObjMap
+                _stObjMap,
+                projectUrl
             ));
         }
 

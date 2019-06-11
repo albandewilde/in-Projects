@@ -33,7 +33,8 @@ namespace inProjects.TomlHelpers
             int userId,
             SqlDefaultDatabase db,
             CustomGroupTable groupTable,
-            IStObjMap stObjMap
+            IStObjMap stObjMap,
+            ProjectUrlTable projectUrlTable
         )
         // given url, we register the project if he can be downloaded and parsed
         {
@@ -79,7 +80,7 @@ namespace inProjects.TomlHelpers
             foreach(string mail in toml.team.members ) { if( !await toml.team.isMailExisting( mail, stObjMap ) ) return (false, "one of the members mail is wrong"); };
             try    // register the project in the bdd
             {
-                await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable);
+                await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable, projectUrlTable);
             }
             catch 
             {
@@ -99,6 +100,7 @@ namespace inProjects.TomlHelpers
         public Slogan slogan {get; set;}
         public Pitch pitch {get; set;}
         public Team team {get; set;}
+        public Git git { get; set; }
         public OthersDocuments othersDocuments {get; set;}
 
         public bool isValid()
@@ -237,6 +239,17 @@ namespace inProjects.TomlHelpers
             {
                 return false;
             }
+        }
+    }
+
+    public class Git: IProjectField
+    {
+        public string url { get; set; }
+
+        public bool isValid()
+        {
+            if( this.url == null || this.url == "") return false;
+            return true;
         }
     }
 
