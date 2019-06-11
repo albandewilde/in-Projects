@@ -44,7 +44,8 @@ namespace inProjects.WebApp.Controllers
                 projectTable,
                 project.UserId,
                 db,
-                groupTable
+                groupTable,
+                _stObjMap
             ));
         }
 
