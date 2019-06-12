@@ -75,6 +75,7 @@ export default {
             await saveForumPlan(this.projects)
             this.hasChanged = false   
         },
+
         checkClassroom(chacheli) {
             this.chacheliMoved(chacheli)
             const middleX = chacheli.x + (chacheli.w/2)
@@ -87,6 +88,7 @@ export default {
                     }
                 }
             }
+            this.projects[chacheli.forumNumber - 1].classRoom = ""
         },
 
         closeChacheli(chacheli) {
@@ -119,8 +121,9 @@ export default {
     flex-direction: column;
 }
 
-.saveButton {
-    width: 50%;
+#saveButton {
+    margin: 0 0 0 90%;
+    position: sticky;
 }
 
 body {
@@ -142,8 +145,6 @@ body {
 }
 
 .chacheli-designer-layout .chacheli .content {
-    /* background-color: transparent; */
-    /* opacity: 0; */
     color: #000000;
     font-weight: 700;
     font-size: 15px;
