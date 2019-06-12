@@ -73,7 +73,11 @@ export default {
     methods: {
         async SavePlan() {
             await saveForumPlan(this.projects)
-            this.hasChanged = false   
+            this.hasChanged = false
+            this.$message({
+                message: 'Sauvegardé !.',
+                type: 'success'
+            });
         },
 
         checkClassroom(chacheli) {
@@ -97,6 +101,7 @@ export default {
             project.posY = -1
             project.width = this.basicWidth
             project.height = this.basicHeight
+            project.classRoom = ""
             
             this.hasChanged = true
         },
