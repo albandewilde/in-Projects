@@ -4,7 +4,12 @@
             <el-button id="saveButton" @click="SavePlan" type="success">Sauvegarder</el-button>
         </center>
         <br>
-        <chacheli-designer @chacheli-moved="checkClassroom" v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" />
+        <chacheli-designer 
+            @chacheli-closed="closeChacheli"
+            @chacheli-resize="resizeChacheli"
+            @chacheli-moved="checkClassroom"
+            v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" 
+        />
     </div>
 </template>
 
@@ -65,21 +70,6 @@ export default {
 
     methods: {
         async SavePlan() {
-            for (let [i, chacheli] of this.chachelis.entries()) {
-                const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
-                if (!chacheli.available) {
-                    project.name = chacheli.text
-                    project.posX = chacheli.x
-                    project.posY = chacheli.y
-                    project.width = chacheli.w
-                    project.height = chacheli.h                        
-                } else {
-                    project.posX = -1
-                    project.posY = -1
-                    project.width = this.basicWidth
-                    project.height = this.basicHeight
-                }
-            }
             await saveForumPlan(this.projects)        
         },
         checkClassroom(chacheli) {
@@ -92,8 +82,19 @@ export default {
                 }
             }            
         },
+        closeChacheli(chacheli) {
+            const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
+            project.posX = -1
+            project.posY = -1
+            project.width = this.basicWidth
+            project.height = this.basicHeight
+        }
         chacheliMoved(chacheli) {
-            console.debug(chacheli)
+            const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
+            project.posX = chacheli.x
+            project.posY = chacheli.y
+            project.width = chacheli.w
+            project.height = chacheli.h
         }
     }
 }
