@@ -56,7 +56,7 @@ namespace inProjects.Data.Queries
         }
 
         //Recupere la liste de nom de tous les groupe de l'utilisateur par sa periodId et son timePeriodId
-        public async Task<List<string>> GetAllGroupOfTimedUser( int periodId, int timedUserID )
+        public async Task<List<string>> GetAllGroupOfTimedUserByPeriod( int periodId, int timedUserID )
         {
             IEnumerable<string> result = await _controller.QueryAsync<string>( "select g.GroupName from CK.tGroup g join CK.tActorProfile ac on ac.GroupId = g.GroupId AND g.ZoneId = @TimePeriodId join IPR.tTimedUser tu on tu.UserId = ac.ActorId AND tu.TimedUserId = @TimedUserId ", new { TimePeriodId = periodId, TimedUserId = timedUserID } );
             return result.AsList();
@@ -74,6 +74,10 @@ namespace inProjects.Data.Queries
             return result;
         }
             
-       
+       public async Task<IEnumerable<GroupData>>GetAllGroupByTimedUser(int timedUserId )
+        {
+            IEnumerable<GroupData> result = await _controller.QueryAsync<GroupData>( "SELECT g.GroupId, g.GroupName FROM IPR.tTimedUser tu JOIN CK.tUser u ON u.UserId = tu.UserId AND tu.TimedUserId = @TimedUserId JOIN CK.tActorProfile ap ON ap.ActorId = u.UserId JOIN CK.tGroup g ON g.GroupId = ap.GroupId ", new { TimedUserId = timedUserId } );
+            return result;
+        }
     }
 }

@@ -1,17 +1,5 @@
 <template>
 <div>
-    <el-submenu index="31">
-            <template slot="title">
-                <font-awesome-icon icon="user-tie" size="lg" />
-                <span v-if="isCollapse == false"> TeacherPanel </span>
-            </template>
-            <el-menu-item-group>
-                <el-menu-item index="2-1" @click="redirect('/student')">Liste des étudiants</el-menu-item>
-            </el-menu-item-group>
-            <el-menu-item-group>
-                <el-menu-item index="2-1" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
-            </el-menu-item-group>
-    </el-submenu>
     <el-submenu index="32">
         <template slot="title">
             <font-awesome-icon icon="user-tie" size="lg"/>
@@ -23,6 +11,13 @@
             <el-menu-item-group>
                 <el-menu-item index="11-2" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
             </el-menu-item-group>
+
+    </el-submenu>
+    <el-submenu index = "33">
+                            <el-menu-item index="33-1" @click="redirect(`/submit_project`)">
+             <font-awesome-icon icon="plus-square" size="lg" />
+            <span> Deposer un Projet</span>
+        </el-menu-item>
     </el-submenu>
 </div>
 </template>

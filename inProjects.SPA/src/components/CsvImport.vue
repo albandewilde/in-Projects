@@ -18,7 +18,7 @@
 
 <script lang="ts">
 import Vue from "vue"
-import { Component, Prop } from "vue-property-decorator"
+import { Component, Prop, Watch } from "vue-property-decorator"
 import { getUserList } from "../api/UserApi"
 import axios from "axios"
 import { sendCsv } from "../api/csvApi"
@@ -45,11 +45,9 @@ export default class CsvImport extends Vue {
         try {
          this.test = await sendCsv(this.formData)
          this.$refs.file.files[0] = ""
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e)
-        }
-        finally {
+        } finally {
             console.log(this.test)
             this.dialogVisible = false
             const co = this.$store.state.connectionStaffMember

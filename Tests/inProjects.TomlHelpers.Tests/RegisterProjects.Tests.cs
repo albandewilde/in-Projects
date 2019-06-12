@@ -16,7 +16,7 @@ namespace inProjects.TomlHelpers.Tests
     [TestFixture]
     public class RegisterProjects
     {
-        //[Test]
+        [Test]
         public async Task a__make_somes_inserts_or_tests()
         {
             ProjectStudentTable projectStudent = TestHelper.StObjMap.StObjs.Obtain<ProjectStudentTable>();

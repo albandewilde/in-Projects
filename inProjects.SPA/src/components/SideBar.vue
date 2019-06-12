@@ -24,7 +24,7 @@
             <div v-if="this.isCollapse">
                 <br>
             </div>
-            <el-button type="info" size="small" circle>
+            <el-button @click="redirect(`/MyProfil`)" type="info" size="small" circle>
                 <font-awesome-icon icon="cog" size="lg" />
             </el-button>
             <div v-if="this.isCollapse">
@@ -53,19 +53,16 @@
             <span> Accueil</span>
         </el-menu-item>
 
-           
         <el-submenu index="4">
             <template slot="title">
                 <font-awesome-icon icon="file-alt" size="lg" />
                 <span> Projets</span>
             </template>
         <el-menu-item-group>
-            <el-menu-item index="4-1">Liste des projets</el-menu-item>
+            <el-menu-item index="4-1" @click="redirect(`/projectList`)">Liste des projets</el-menu-item>
             <el-menu-item index="4-2">Trouver un projet</el-menu-item>
         </el-menu-item-group>
         </el-submenu>
-
-        
 
         <div v-for="(o,idx) in whatTimed" :key="idx">
             <!-- index Admin 10 to 30 -->
@@ -93,11 +90,6 @@
                 <StudentPanel :isCollapse="isCollapse"></StudentPanel>
             </div>
         </div>
-
-        <el-menu-item index="6" @click="redirect(`/submit_project`)">
-            <font-awesome-icon icon="plus-square" size="lg" />
-            <span> Deposer un Projet</span>
-        </el-menu-item>
     </el-menu>
 </template>
 
@@ -140,12 +132,11 @@ export default class SideBar extends Vue {
 
     }
 
-    async mounted (){
+    async mounted() {
         this.co = this.$store.state.connectionStaffMember
         if ( this.co.state == undefined ) {
-            console.log("c'est undefined")
             await this.signalr.connect()
-        } 
+        }
     }
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)

@@ -108,7 +108,7 @@ namespace inProjects.WebApp.Controllers
 
                 List<string> listGroupsOfTimedUser = new List<string>();
 
-                listGroupsOfTimedUser = await groupsQueries.GetAllGroupOfTimedUser( period.ChildId, timedUserData.TimedUserId );
+                listGroupsOfTimedUser = await groupsQueries.GetAllGroupOfTimedUserByPeriod( period.ChildId, timedUserData.TimedUserId );
 
                 for( int i = 0; i < listGroupsOfTimedUser.Count; i++ )
                 {
@@ -124,7 +124,16 @@ namespace inProjects.WebApp.Controllers
 
                 }
 
-             
+                if( !listGroupToReturn.Contains( "Administration" ) )
+                {
+                    int adminIdZoneSchool = await groupsQueries.GetSpecificIdGroupByZoneIdAndGroupName( idZone, "Administration" );
+
+                    if( await userQueries.VerifyGroupUser( userId, adminIdZoneSchool ) != 0 )
+                    {
+                        listGroupToReturn.Add( "Administration" );
+                    }
+                }
+                
 
                 return listGroupToReturn;
             }

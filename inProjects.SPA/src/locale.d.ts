@@ -1,5 +1,8 @@
 declare module 'element-ui/lib/locale/lang/fr' {
 }
 
-declare module 'vue-drag-drop'{
+declare module '@shellybits/v-chacheli/dist/ChacheliDesigner'{
+}
+
+declare module '@shellybits/v-chacheli/dist/ChacheliLayout'{
 }

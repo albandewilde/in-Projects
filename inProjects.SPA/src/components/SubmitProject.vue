@@ -6,6 +6,7 @@
         Les fiches de présentation de vos projets PI et PFH doivent être disponible en public sur au moins l'une des plateformes suivantes: Google Drive.<br>
         Leur niveau d'accessibilité doit être public. Cela signifie que tout utilisateur d'internet peut y avoir accès sans inscription à la plateforme avec le lien que vous nous donnerez.<br> 
         Il en est de même pour toutes les ressources que vous nous joindrez sous forme de liens tels que votre logo et votre image de fond en PFH. Le lien doit mener directement à votre image, non à un site sur lequel votre image est.<br>
+        Votre logo doit avoir une taille de 800 px par 800 px.<br>
         <br>
         Ces fiches doivent-être nommées ficheprojet.toml et placé à la racine de votre répertoire en ligne.<br>
         Pour plus d'informations sur les fichiers en toml <a target="_blank" href="https://github.com/toml-lang/toml">cliquez ici</a>.<br>
