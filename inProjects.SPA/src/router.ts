@@ -50,7 +50,7 @@ export default new Router({
     {
       path: "/plan",
       name: "plan",
-      component: Plan
+      component: ForumPlan
     },
     {
       path: "/test",
