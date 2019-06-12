@@ -81,9 +81,10 @@ namespace inProjects.Data.Queries
             //             new { ProjectId = idProject } );
 
             ProjectData project = await _controller.QueryFirstOrDefaultAsync<ProjectData>(
-                        "  SELECT ps.Logo, ps.Slogan, ps.Pitch, g.GroupName as [Name]" +
+                        "  SELECT ps.Logo, ps.Slogan, ps.Pitch, g.GroupName as [Name], pu.[Url]" +
                         " from IPR.tProjectStudent ps" +
                         " join CK.tGroup g on g.GroupId = ps.ProjectStudentId" +
+                        " left outer join IPR.tProjectUrl pu on pu.ProjectId = ps.ProjectStudentId" +
                         " where ProjectStudentId =  @ProjectId",
                         new { ProjectId = idProject } );
 
@@ -112,9 +113,9 @@ namespace inProjects.Data.Queries
             return result.AsList();
         }
 
-        public async Task<List<string>> GetGroupsOfProjectWithTimedUser ( int idProject)
+        public async Task<List<string>> GetGroupsOfProject ( int idProject)
         {
-            IEnumerable<string> result = await _controller.QueryAsync<string>("SELECT g1.GroupName FROM IPR.tProjectStudent ps JOIN CK.vGroup g ON g.GroupId = ps.ProjectStudentId JOIN CK.tActorProfile ap ON ap.GroupId = g.GroupId JOIN CK.tUser u ON u.UserId = ap.ActorId LEFT OUTER JOIN CK.tActorProfile ap1 ON u.UserId = ap1.ActorId LEFT OUTER JOIN CK.vGroup g1 ON ap1.GroupId =  g1.GroupId WHERE g.IsZone = 0 AND g1.IsZone = 0 AND g.GroupName <> g1.GroupName AND g.GroupId = @ProjectId GROUP BY g1.GroupName", new { ProjectId = idProject} );
+            IEnumerable<string> result = await _controller.QueryAsync<string>( "SELECT g1.GroupName FROM IPR.tProjectStudent ps JOIN CK.vGroup g ON g.GroupId = ps.ProjectStudentId JOIN CK.tActorProfile ap ON ap.GroupId = g.GroupId JOIN CK.tUser u ON u.UserId = ap.ActorId LEFT OUTER JOIN CK.tActorProfile ap1 ON u.UserId = ap1.ActorId LEFT OUTER JOIN CK.vGroup g1 ON ap1.GroupId =  g1.GroupId WHERE g.IsZone = 0 AND g1.IsZone = 0 AND g.GroupName <> g1.GroupName AND g.GroupId = @ProjectId and ap1.ActorId <>0 GROUP BY g1.GroupName", new { ProjectId = idProject} );
 
             return result.AsList();
         }

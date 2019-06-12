@@ -2,7 +2,7 @@
     <div>
        <span class="text-project-name"> {{projectDetail.project.name}}  </span> 
 		<br/>
-		   <span class="text-project-name"> Semestre : {{projectDetail.project.semester}}</span>
+       <span class="text-project-name"> Semestre : {{projectDetail.project.semester}}</span>
 
         <div class="star" @click="FavOrUnfav()">
             <span class="fa fa-star"></span>
@@ -23,12 +23,19 @@
             <div v-for="(o, idx) in projectDetail.students" :key="idx">
                 {{o.firstName}} {{o.lastName}}
             </div>
-		<br/>
-           	
+        <br/>
             <div class="title"> Technologies Utilisées : </div>
             <div v-for="(o, idx) in projectDetail.project.technologies" :key="idx">
                 {{o}}
             </div>
+            
+        <br/>
+        <div v-if="projectDetail.project.url != null" class="title">
+        <img class="image-github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1024px-Octicons-mark-github.svg.png">
+         &nbsp;
+        <a :href="projectDetail.project.url">GitHub</a>
+        </div>
+
     </div>
 </template>
 
@@ -121,7 +128,11 @@ export default class ProjectDetail extends Vue {
 
 .fa-star{
 font-size: 200%;
+}
 
+.image-github{
+    height: auto;
+    width: 1vw;
 }
 
 

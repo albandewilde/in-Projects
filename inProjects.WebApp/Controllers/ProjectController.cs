@@ -69,7 +69,9 @@ namespace inProjects.WebApp.Controllers
                     Students = await projectQueries.GetAllUsersOfProject(idProject)
                 };
 
-                List<string> listGroups = await projectQueries.GetGroupsOfProjectWithTimedUser( idProject);
+                List<string> listGroups = await projectQueries.GetGroupsOfProject( idProject);
+
+                listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) || x == "IL" || x == "SR" );
                 string groups = listGroups[0];
 
                 if( listGroups.Count >= 2 )
