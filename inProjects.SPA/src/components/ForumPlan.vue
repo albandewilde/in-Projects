@@ -61,8 +61,8 @@ export default {
                 isAvailable = true
             }
 
-            const c = new Chacheli(this.projects[i].forumNumber, this.projects[i].name, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
-                this.basicHeight, displayedName, isAvailable, "dummy-green", this.projects[i].projectId)
+            const c = new Chacheli(this.projects[i].forumNumber, this.projects[i].name, this.projects[i].posX, this.projects[i].posY, this.projects[i].width,
+                this.projects[i].height, displayedName, isAvailable, "dummy-green", this.projects[i].projectId, this.projects[i].classRoom)
             this.chachelis.push(c)
         }
     },
@@ -72,18 +72,22 @@ export default {
             await saveForumPlan(this.projects)        
         },
         checkClassroom(chacheli) {
-            chacheliMoved(chacheli)
+            this.chacheliMoved(chacheli)
+            const middleX = chacheli.x + (chacheli.w/2)
+            const middleY = chacheli.y + (chacheli.h/2)
             for (let classroom of this.plan.classRooms) {
-                if (chacheli.x >= classroom.originX && chacheli.x <= classroom.endPositionX) {
-                    if (chacheli.y >= classroom.originY && chacheli.y <= classroom.endPositionY) {
-                        this.projects[chacheli.forumNumber - 1] = classRoom.name
+                if (middleX >= classroom.originX && middleX <= classroom.endPositionX) {
+                    if (middleY >= classroom.originY && middleY <= classroom.endPositionY) {
+                        this.projects[chacheli.forumNumber - 1].classRoom = classroom.name
+                        break
                     }
                 }
+
             }            
         },
 
         closeChacheli(chacheli) {
-            const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
+            const project = this.projects[chacheli.forumNumber - 1]
             project.posX = -1
             project.posY = -1
             project.width = this.basicWidth
@@ -91,7 +95,7 @@ export default {
         },
 
         chacheliMoved(chacheli) {
-            const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
+            const project = this.projects[chacheli.forumNumber - 1]
             project.posX = chacheli.x
             project.posY = chacheli.y
             project.width = chacheli.w
