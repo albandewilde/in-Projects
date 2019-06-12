@@ -25,7 +25,6 @@ export async function getProjects(userId: number): Promise<Project[]> {
 }
 
 export async function savePlan(plan: Chacheli[]): Promise<any> {
-    debugger
     const response = await postAsync(`${endpoint}/savePlan`, plan)
     return response
 }

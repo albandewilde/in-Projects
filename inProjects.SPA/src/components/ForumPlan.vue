@@ -81,13 +81,15 @@ export default {
                 }
             }            
         },
+
         closeChacheli(chacheli) {
             const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
             project.posX = -1
             project.posY = -1
             project.width = this.basicWidth
             project.height = this.basicHeight
-        }
+        },
+
         chacheliMoved(chacheli) {
             const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
             project.posX = chacheli.x
