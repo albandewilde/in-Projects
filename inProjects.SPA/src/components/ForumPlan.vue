@@ -4,7 +4,7 @@
             <el-button id="saveButton" @click="SavePlan" type="success">Sauvegarder</el-button>
         </center>
         <br>
-        <chacheli-designer @chacheli-moved="chacheliMoved" v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" />
+        <chacheli-designer @chacheli-moved="checkClassroom" v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" />
     </div>
 </template>
 
@@ -38,14 +38,7 @@ export default {
             basicHeight: 3,
             basicWidth: 4,
             projects: new Array(),
-            savedPlan: new Array(),
             authService: null
-        }
-    },
-
-    watch: {
-        async savedPlan() {
-            const response = await saveForumPlan(this.savedPlan)
         }
     },
 
@@ -53,19 +46,16 @@ export default {
         this.authService = getAuthService()
         this.plan = await getPlan()
         this.projects = await getProjects(this.authService.authenticationInfo.user.userId)
-        debugger
         this.layout.cols = this.plan.width
         this.layout.rows = this.plan.height
 
         for (let i = 0; i < this.projects.length; i += 1) {
             const displayedName = this.projects[i].forumNumber + " - " + this.projects[i].name
             let isAvailable = false
-            console.debug(this.projects[i])
+
             if (this.projects[i].posX == -1) {
                 isAvailable = true
             }
-            // const isAvailable = (this.projects[i].posX != -1) ? false : true
-            console.debug(i +" is "+ isAvailable)
 
             const c = new Chacheli(this.projects[i].forumNumber, this.projects[i].name, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
                 this.basicHeight, displayedName, isAvailable, "dummy-green", this.projects[i].projectId)
@@ -76,38 +66,32 @@ export default {
     methods: {
         async SavePlan() {
             for (let [i, chacheli] of this.chachelis.entries()) {
+                const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
                 if (!chacheli.available) {
-                    for (let classroom of this.plan.classRooms) {
-                        if (chacheli.x >= classroom.originX && chacheli.x <= classroom.endPositionX) {
-                            if (chacheli.y >= classroom.originY && chacheli.y <= classroom.endPositionY) {
-                                chacheli.classRoom = classroom.name
-                                const item = this.savedPlan.find(project => project.projectId === chacheli.projectId)
-                                if (!item) {
-                                    const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
-                                    const p = new ForumProject(chacheli.text, chacheli.x, chacheli.y,
-                                        chacheli.w, chacheli.h, project.semester, chacheli.classRoom, chacheli.forumNumber, chacheli.projectId)
-                                    this.savedPlan.push(p)
-                                    break
-                                } else {
-                                    item.classRoom = classroom.name
-                                    item.posX = chacheli.x
-                                    item.posY = chacheli.y
-                                    item.height = chacheli.h
-                                    item.width = chacheli.w
-                                    await saveForumPlan(this.savedPlan)
-                                }
-                            }
-                        }
-                    }
+                    project.name = chacheli.text
+                    project.posX = chacheli.x
+                    project.posY = chacheli.y
+                    project.width = chacheli.w
+                    project.height = chacheli.h                        
                 } else {
-                    const idxProject = this.savedPlan.indexOf(chacheli)
-                    if (idxProject >= 0) {
-                        this.savedPlan.splice(idxProject, 1)
-                    }
+                    project.posX = -1
+                    project.posY = -1
+                    project.width = this.basicWidth
+                    project.height = this.basicHeight
                 }
             }
+            await saveForumPlan(this.projects)        
         },
-
+        checkClassroom(chacheli) {
+            debugger
+            for (let classroom of this.plan.classRooms) {
+                if (chacheli.x >= classroom.originX && chacheli.x <= classroom.endPositionX) {
+                    if (chacheli.y >= classroom.originY && chacheli.y <= classroom.endPositionY) {
+                        this.projects[chacheli.forumNumber - 1] = classRoom.name
+                    }
+                }
+            }            
+        },
         chacheliMoved(chacheli) {
             console.debug(chacheli)
         }
