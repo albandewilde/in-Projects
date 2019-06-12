@@ -11,7 +11,7 @@
 <script lang="js">
 import Vue from "vue"
 import { Component } from "vue-property-decorator"
-import { Project } from "../modules/classes/Project"
+import { ForumProject } from "../modules/classes/ForumProject"
 import { getPlan, getProjects, savePlan as saveForumPlan } from "../api/forumApi"
 import { Plan } from "../modules/classes/Plan"
 import { Layout } from "../modules/classes/Layout"
@@ -53,6 +53,7 @@ export default {
         this.authService = getAuthService()
         this.plan = await getPlan()
         this.projects = await getProjects(this.authService.authenticationInfo.user.userId)
+        debugger
         this.layout.cols = this.plan.width
         this.layout.rows = this.plan.height
 
@@ -83,7 +84,7 @@ export default {
                                 const item = this.savedPlan.find(project => project.projectId === chacheli.projectId)
                                 if (!item) {
                                     const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
-                                    const p = new Project(chacheli.text, chacheli.x, chacheli.y,
+                                    const p = new ForumProject(chacheli.text, chacheli.x, chacheli.y,
                                         chacheli.w, chacheli.h, project.semester, chacheli.classRoom, chacheli.forumNumber, chacheli.projectId)
                                     this.savedPlan.push(p)
                                     break
