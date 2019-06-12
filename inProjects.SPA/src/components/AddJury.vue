@@ -2,7 +2,7 @@
     <div>
         <div>  
             <span><h3>Attribuer un n° au projets</h3></span>
-            <CsvImport type="jury"></CsvImport>
+            <CsvImport type="projectNumber"></CsvImport>
         </div>
         <div>  
             <span><h3>Attribuer un n° au proje</h3></span>

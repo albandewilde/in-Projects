@@ -59,20 +59,6 @@ namespace inProjects.WebApp.Services.CSV
 
         }
 
-        public async Task<List<ProjectNumbers>> CSVReaderProjectNumber(IFormFile path )
-        {
-            var streamResult = path.OpenReadStream();
-
-            using( var reader = new StreamReader( streamResult ) )
-            using( var csv = new CsvReader( reader ) )
-            {
-                csv.Configuration.Delimiter = ";";
-                var records = csv.GetRecords<ProjectNumbers>();
-                var projectInfo = records.ToList();
-                return projectInfo;
-            }
-        }
-
         public async Task<bool> UserParser(List<UserList> studentList, IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string type)
         {
             using(var ctx = new SqlStandardCallContext() )
@@ -185,7 +171,7 @@ namespace inProjects.WebApp.Services.CSV
 
             }
         }
-
+      
         public string RandomPassword(int size = 8)
         {
             StringBuilder builder = new StringBuilder();
@@ -200,11 +186,38 @@ namespace inProjects.WebApp.Services.CSV
             return builder.ToString();
 
         }
+        public async Task<List<ProjectNumbers>> CSVReaderProjectNumber( IFormFile path )
+        {
+            var streamResult = path.OpenReadStream();
 
+            using( var reader = new StreamReader( streamResult ) )
+            using( var csv = new CsvReader( reader ) )
+            {
+                csv.Configuration.Delimiter = ";";
+                var records = csv.GetRecords<ProjectNumbers>();
+                var projectInfo = records.ToList();
+                return projectInfo;
+            }
+        }
 
+        public async Task ForumNumberParser( IStObjMap stObjMap, List<ProjectNumbers> projectNumbers, IAuthenticationInfo authenticationInfo )
+        {
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                var sqlDatabase = stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+                GroupQueries projectQueries = new GroupQueries( ctx, sqlDatabase );
+                ForumInfosTable forumInfosTable = stObjMap.StObjs.Obtain<ForumInfosTable>();
+                int userId = authenticationInfo.ActualUser.UserId;
+                GroupData groupData = await projectQueries.GetIdSchoolByConnectUser( userId );
+
+                foreach( ProjectNumbers projectNumber in projectNumbers )
+                {
+                    int projectId = await projectQueries.GetSpecificIdGroupByZoneIdAndGroupName( groupData.ZoneId, projectNumber.ProjectName );
+                    await forumInfosTable.CreateForumInfo( ctx, projectId, "", -1, -1, 4, 3, projectNumber.ProjectNumber );
+                }
+            }
+
+        }
     }
 
-
-
-   
 }

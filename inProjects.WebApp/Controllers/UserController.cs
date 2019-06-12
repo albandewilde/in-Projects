@@ -139,6 +139,7 @@ namespace inProjects.WebApp.Controllers
                 else if (type == "projectNumber" )
                 {
                     List<ProjectNumbers> projectNumbers = await csvStudentMapping.CSVReaderProjectNumber( file );
+                    await csvStudentMapping.ForumNumberParser( _stObjMap, projectNumbers, _authenticationInfo );
                 }
 
             }
