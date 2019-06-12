@@ -36,5 +36,12 @@ namespace inProjects.WebApp.Controllers
                 groupTable
             ));
         }
+
+        [HttpGet("getProject")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetProject([FromBody] int projectId)
+        {
+            return Ok(await 
+        }
     }
 }
