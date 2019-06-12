@@ -1,14 +1,16 @@
 <template>
-    <div id="plan">
-        <center>
-            <el-button id="saveButton" @click="SavePlan" type="success">Sauvegarder</el-button>
-        </center>
-        <br>
+    <div id="plan">    
         <chacheli-designer 
             @chacheli-closed="closeChacheli"
             @chacheli-moved="checkClassroom"
             v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" 
         />
+        <div class="saveButton" v-if="hasChanged">
+            <el-button id="saveButton" @click="SavePlan" type="success">Sauvegarder</el-button>
+        </div>
+        <div class="saveButton" v-else>
+            <el-button id="saveButton" @click="SavePlan" type="success" disabled>Sauvegarder</el-button>
+        </div>
     </div>
 </template>
 
@@ -42,7 +44,8 @@ export default {
             basicHeight: 3,
             basicWidth: 4,
             projects: new Array(),
-            authService: null
+            authService: null,
+            hasChanged: false
         }
     },
 
@@ -69,7 +72,8 @@ export default {
 
     methods: {
         async SavePlan() {
-            await saveForumPlan(this.projects)        
+            await saveForumPlan(this.projects)
+            this.hasChanged = false   
         },
         checkClassroom(chacheli) {
             this.chacheliMoved(chacheli)
@@ -82,8 +86,7 @@ export default {
                         break
                     }
                 }
-
-            }            
+            }
         },
 
         closeChacheli(chacheli) {
@@ -92,6 +95,8 @@ export default {
             project.posY = -1
             project.width = this.basicWidth
             project.height = this.basicHeight
+            
+            this.hasChanged = true
         },
 
         chacheliMoved(chacheli) {
@@ -100,6 +105,8 @@ export default {
             project.posY = chacheli.y
             project.width = chacheli.w
             project.height = chacheli.h
+            
+            this.hasChanged = true
         }
     }
 }
@@ -107,12 +114,12 @@ export default {
 
 <style>
 #plan {
-	height: 100%;
+	height: 100vh;
 	display: flex;
     flex-direction: column;
 }
 
-#saveButton {
+.saveButton {
     width: 50%;
 }
 
