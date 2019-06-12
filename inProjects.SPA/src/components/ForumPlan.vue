@@ -6,7 +6,6 @@
         <br>
         <chacheli-designer 
             @chacheli-closed="closeChacheli"
-            @chacheli-resize="resizeChacheli"
             @chacheli-moved="checkClassroom"
             v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" 
         />
@@ -73,7 +72,7 @@ export default {
             await saveForumPlan(this.projects)        
         },
         checkClassroom(chacheli) {
-            debugger
+            chacheliMoved(chacheli)
             for (let classroom of this.plan.classRooms) {
                 if (chacheli.x >= classroom.originX && chacheli.x <= classroom.endPositionX) {
                     if (chacheli.y >= classroom.originY && chacheli.y <= classroom.endPositionY) {
