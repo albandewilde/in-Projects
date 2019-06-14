@@ -45,9 +45,10 @@ namespace inProjects.WebApp.Controllers
                 GroupQueries groupQueries = new GroupQueries( ctx, sqlDatabase );
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
                 IEnumerable<ProjectData> projects = await projectQueries.GetAllProjectByForum( groupData.ZoneId );
-
                 foreach( ProjectData project in projects )
                 {
+                    List<string> listGroups = await projectQueries.GetGroupsOfProject( project.ProjectStudentId );
+                    project.Semester = listGroups[0] + " - " + listGroups[1];
                     Project p = new Project( project.ProjectStudentId, project.Name,
                         project.Semester, project.CoordinatesX, project.CoordinatesY, project.ClassRoom, project.Height, project.Width, project.ForumNumber );
                     projectList.Add( p );
