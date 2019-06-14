@@ -72,13 +72,6 @@ namespace inProjects.Data.Queries
 
         public async Task<ProjectData> GetDetailProject( int idProject )
         {
-            //return await _controller.QueryFirstOrDefaultAsync<ProjectData>(
-            //             "  SELECT ps.Logo, ps.Slogan, ps.Pitch, g.GroupName as [Name], ckt.TraitName as Technologies" +
-            //             " from IPR.tProjectStudent ps" +
-            //             " join CK.tGroup g on g.GroupId = ps.ProjectStudentId" +
-            //             " join CK.tCKTrait ckt on ps.TraitId = ckt.CKTraitId" +
-            //             " where ProjectStudentId =  @ProjectId",
-            //             new { ProjectId = idProject } );
 
             ProjectData project = await _controller.QueryFirstOrDefaultAsync<ProjectData>(
                         "  SELECT ps.Logo, ps.Slogan, ps.Pitch, g.GroupName as [Name], pu.[Url]" +

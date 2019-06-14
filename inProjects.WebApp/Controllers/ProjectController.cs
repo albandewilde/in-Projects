@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
 using System.Threading.Tasks;
 using CK.Auth;
 using CK.Core;
@@ -11,9 +12,11 @@ using inProjects.Data.Data.ProjectStudent;
 using inProjects.Data.Data.User;
 using inProjects.Data.Queries;
 using inProjects.Data.Res.Model;
+using inProjects.TomlHelpers;
 using inProjects.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -127,7 +130,6 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet("getAllProjects")]
-
         public async Task<IEnumerable<AllProjectInfoData>> GetAllProjects()
         {
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
@@ -157,6 +159,60 @@ namespace inProjects.WebApp.Controllers
                 }
                 return projectData;
             }
+        }
+
+        [HttpGet("getProjectSheet")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetProjectSheet(int idx)
+        {
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            int userId = _authenticationInfo.ActualUser.UserId;
+
+            ProjectData pd;
+            List<UserData> lst_usr_data;
+            List<string> lst_grp;
+
+            using(SqlStandardCallContext ctx = new SqlStandardCallContext())
+            {
+                ProjectQueries projectQueries = new ProjectQueries(ctx, db);
+
+                pd = await projectQueries.GetDetailProject(idx);
+                lst_usr_data = await projectQueries.GetAllUsersOfProject(idx);
+                lst_grp = await projectQueries.GetGroupsOfProject(idx);
+
+            }
+            
+            string name = pd.Name;
+            // semesters of the project
+            List<int> semesters = new List<int>();
+            foreach (string elem in lst_grp) if (elem[0] == 'S') semesters.Add(int.Parse(elem.Substring(1, elem.Length-1)));
+            semesters.Sort();
+            string semester = String.Join(", ", semesters);
+
+            // sector of the project
+            string sector = lst_grp.Contains("SR") && lst_grp.Contains("IL") ? "IL - SR" : lst_grp.Contains("SR") ? "SR" : lst_grp.Contains("IL") ? "IL" : "";
+
+
+            // download and encode the image in base64
+            string logo = Convert.ToBase64String(new WebClient().DownloadData(pd.Logo));
+
+            string slogan = pd.Slogan;
+            string pitch = pd.Pitch;
+
+            // check who is the leader
+            string[] members = new string[lst_usr_data.Count-1];
+            string leader = "";
+            foreach(UserData usr in lst_usr_data)
+            {
+                if (usr.UserId == pd.LeaderId){leader = usr.FirstName + " " + usr.LastName;}
+                else {members.Append(usr.FirstName + " " + usr.LastName);}
+                
+            }
+            (string, string[]) team = (leader, members);
+
+            string[] technos = pd.Technologies.ToArray();
+
+            return Ok(new ProjectPiSheet(name, semester, sector, logo, slogan, pitch, team, technos));
         }
     }
 }

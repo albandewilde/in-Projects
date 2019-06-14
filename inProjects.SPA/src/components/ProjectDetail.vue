@@ -1,14 +1,31 @@
 <template>
     <div>
-       <span class="text-project-name"> {{projectDetail.project.name}}  </span> 
-		<br/>
-       <span class="text-project-name"> Semestre : {{projectDetail.project.semester}}</span>
+        <div>
+            <span class="text-project-name"> {{projectDetail.project.name}}  </span> 
 
-        <div class="star" @click="FavOrUnfav()">
-            <span class="fa fa-star"></span>
+            <br>
+
+            <span class="text-project-name">
+                Semestre : {{projectDetail.project.semester}}
+            </span>
+
+            <br>
+
+            <span class="star" @click="FavOrUnfav()">
+                <span class="fa fa-star"></span>
+            </span>
         </div>
 
+        <div class="sheet">
+            <el-button type="primary" class="generate_sheet" @click="CreateSheet(idProject)">
+                Fiche du projet
+            </el-button>
+        </div>
+
+        <br>
+
         <hr>
+
         <br/>
             <img class="image-detail-project" :src="projectDetail.project.logo"/>
         <br/>
@@ -31,9 +48,9 @@
             
         <br/>
         <div v-if="projectDetail.project.url != null" class="title">
-        <img class="image-github" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Octicons-mark-github.svg/1024px-Octicons-mark-github.svg.png">
+        <img class="image-github" src="https://github.githubassets.com/images/modules/logos_page/Octocat.png">
          &nbsp;
-        <a :href="projectDetail.project.url">GitHub</a>
+        <a :href="projectDetail.project.url" target="_blank">GitHub</a>
         </div>
 
     </div>
@@ -43,6 +60,10 @@
 import { Component, Vue } from "vue-property-decorator"
 import { ProjectDetails } from "../modules/classes/ProjectDetails"
 import { getInfosProject, verifyProjectFav, favProject } from "../api/submitProjectApi"
+import {GetProject} from "../api/getProject"
+import pdfMake from "pdfmake/build/pdfmake"
+import pdfFonts from "pdfmake/build/vfs_fonts"
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 @Component
 export default class ProjectDetail extends Vue {
@@ -77,6 +98,162 @@ export default class ProjectDetail extends Vue {
             console.error(e)
         }
     }
+
+
+    GenerateSheet(
+        place: Array<string> = ["E07", "26"],
+        project_name: string = "ITI'Humain",
+
+        semester: string = "Semestre 1",
+        sector: string = "SR",
+        technos: Array<string> = ["Rust", "Kotlin", "Python", "Bottle"],
+        logo: string = "",
+        slogan: string = "Parce qu'on aurait aimé en profiter nous aussi.",
+        pitch: string = "Le chat commence par une tête et se termine par une queue qui suis son corps. Elle s'arrête au bout d'un moment.\nLe chat est un animal entouré de poils noir, qui sont parfois gris ou blanc. S'il était rayés, ce serait un petit zèbre.\nIl a deux pattes devant et deux derrière. Il a aussi deux pattes de chaque côté. Les pattes de devant servent a courir, avec les pattes de derrière il freine.\nDe temps en temps le char se dit: \"Tien, je vais faire des petit.\" Quand il les a faits, on dit que c'est une chatte. Les petit s'appellent des chatelots.\nQuand il est dans le jardin, il miaule pour attirer les oiseaux. S'ils ne viennent pas, il grimpe dans les arbres et enlève les œufs dont il nourrit ses petit.",
+        team: [string, Array<string>] = ["Julie Agopian",  ["Arthur Cheng", "Dan Chiche", "Melvin Delpierre", "Alban De Wilde"]]
+    ) {
+        console.log(typeof(place))
+        const sheet = {
+            content: [
+                {
+                    text: place.join("\n"),
+                    style: "place"
+                },
+            
+                {
+                    text: project_name,
+                    style: "project_name"
+                },
+            
+                {
+                    text: [
+                        semester,
+                        sector
+                    ].join(" - "),
+                    style: "semester"
+                },
+            
+                {
+                    text: "Technologies",
+                    style: "techno"
+                },
+                
+                {
+                    text: technos.join("\n"),
+                    style: "techno_list"
+                },
+
+                {
+                    image: logo,
+                    width: 250,
+                    height: 250,
+                    style: "logo"
+                },
+                
+                {
+                    text: slogan,
+                    style: "slogan"
+                },
+                
+                {
+                    text: pitch,
+                    style: "pitch"
+                },
+                
+                {
+                    text: [
+                        {
+                            text: team[0] + ", ",
+                            style: "leader"
+                        },
+                        
+                        {
+                            text: team[1].join(", "),
+                            style: "members"
+                        }
+                    ],
+                    style: "team"
+                }
+            ],
+        
+            styles: {
+                place: {
+                    alignment: "right",
+                    fontSize: 20,
+                    color: "blue",
+                    margin: [0, -10, -10, 0]
+                },
+                
+                project_name: {
+                    alignment: "center",
+                    fontSize: 70
+                },
+                
+                semester: {
+                    fontSize: 18,
+                    margin: [0, 30, 20, 0],
+                    alignment: "right"
+                },
+                
+                techno: {
+                    alignment: "right",
+                    bolt: true,
+                    decoration: "underline",
+                    fontSize: 18,
+                    margin: [0, 20, 20, 0]
+                },
+                
+                techno_list: {
+                    alignment: "right",
+                    margin: [0, 10, 20, 0],
+                    fontSize: 14
+                },
+                
+                logo: {
+                    margin: [60, -110, 0, 0]
+                },
+                
+                slogan: {
+                    alignment: "center",
+                    color: "blue",
+                    fontSize: 20,
+                    margin: [0, 50, 0, 0]
+                },
+                
+                pitch: {
+                    margin: [0, 50, 0, 0]
+                },
+                
+                leader: {
+                    bold: true
+                },
+                
+                team: {
+                    alignment: "center",
+                    italics: true,
+                    margin: [0, 30, 0, 0]
+                }
+            }
+        }
+        pdfMake.createPdf(sheet).open()
+    }
+
+    async CreateSheet(id: number) {
+        // fetch to the server all information we need and formated
+        let project = await GetProject(id)
+
+        this.GenerateSheet(
+            ["None", "None"],
+            project.name,
+            "Semester " + project.semester,
+            project.sector,
+            project.technos,
+            "data:image/jpeg;base64," + project.logo,
+            project.slogan,
+            project.pitch,
+            project.team,
+        );
+    }
 }
 </script>
 
@@ -92,7 +269,7 @@ export default class ProjectDetail extends Vue {
     text-align: start;
     font-size: 200%;
     font-style: italic;
-    margin-right: 80%
+    margin-right: 80%;
 
 }
 
@@ -127,15 +304,16 @@ export default class ProjectDetail extends Vue {
 }
 
 .fa-star{
-font-size: 200%;
+    font-size: 200%;
 }
 
 .image-github{
     height: auto;
-    width: 1vw;
+    width: 2vw;
 }
 
-
-
-
+.sheet {
+    float: right;
+    margin-top: -4vw
+}
 </style>

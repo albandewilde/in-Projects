@@ -10,7 +10,6 @@ import StaffMember from "./views/StaffMember.vue"
 import Project from "./views/Project.vue"
 import MyProfil from "./views/MyProfil.vue"
 import Plan from "./components/Plan.vue"
-import ProjectSheet from "./components/ProjectSheet.vue"
 import ProjectList from "./components/ProjectList.vue"
 import AddJury from "./components/AddJury.vue"
 import ForumPlan from "./components/ForumPlan.vue"
@@ -54,19 +53,9 @@ export default new Router({
             component: Plan
         },
         {
-            path: "/test",
-            name: "test",
-            component: ForumPlan
-        },
-        {
             path: "/listPeriod",
             name: "listPeriod",
             component: ListPeriod
-        },
-        {
-            path: "/test",
-            name: "test",
-            component: ProjectSheet
         },
         {
             path: "/projectList",
