@@ -88,7 +88,7 @@ export default {
                 if (middleX >= classroom.originX && middleX <= classroom.endPositionX) {
                     if (middleY >= classroom.originY && middleY <= classroom.endPositionY) {
                         this.projects[chacheli.forumNumber - 1].classRoom = classroom.name
-                        break
+                        return
                     }
                 }
             }
