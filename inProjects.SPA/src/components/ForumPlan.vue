@@ -1,5 +1,6 @@
 <template>
-    <div id="plan">    
+<div>
+    <div id="plan">
         <chacheli-designer 
             @chacheli-closed="closeChacheli"
             @chacheli-moved="checkClassroom"
@@ -11,7 +12,15 @@
         <div class="saveButton" v-else>
             <el-button id="saveButton" @click="SavePlan" type="success" disabled>Sauvegarder</el-button>
         </div>
+        <div>
+            <el-table :data="projects" :row-class-name="tableRowClassName">
+                <el-table-column prop="forumNumber" label="#" width="180"/>
+                <el-table-column prop="name" label="Name" width="180"/>
+                <el-table-column prop="classRoom" label="Classroom" width="180"/>
+            </el-table>
+        </div>
     </div>
+</div>
 </template>
 
 <script lang="js">
@@ -87,6 +96,7 @@ export default {
             for (let classroom of this.plan.classRooms) {
                 if (middleX >= classroom.originX && middleX <= classroom.endPositionX) {
                     if (middleY >= classroom.originY && middleY <= classroom.endPositionY) {
+                        chacheli.classRoom = classroom.name
                         this.projects[chacheli.forumNumber - 1].classRoom = classroom.name
                         return
                     }
@@ -102,7 +112,10 @@ export default {
             project.width = this.basicWidth
             project.height = this.basicHeight
             project.classRoom = ""
-            
+
+            chacheli.w = this.basicWidth
+            chacheli.h = this.basicHeight
+            chacheli.classRoom = ""
             this.hasChanged = true
         },
 
@@ -114,6 +127,13 @@ export default {
             project.height = chacheli.h
             
             this.hasChanged = true
+        },
+        tableRowClassName({ row }) {
+            if (row.classRoom === "") {
+                    return 'empty-row'
+            } else {
+                return row.classRoom + '-row'
+            }            
         }
     }
 }
@@ -121,7 +141,7 @@ export default {
 
 <style>
 #plan {
-	height: 100vh;
+	height: 140vh;
 	display: flex;
     flex-direction: column;
 }
@@ -154,5 +174,42 @@ body {
     font-weight: 700;
     font-size: 15px;
     border: none;
+}
+.el-table {
+    color: #000000;
+    font-weight: 700;
+}
+.el-table .empty-row td:last-child {
+    background: white;
+}
+.el-table .E01-row td:last-child {
+    background: #867180;
+}
+.el-table .E02-row td:last-child {
+    background: #fc8d84;
+}
+.el-table .E03-row td:last-child {
+    background: #fbbd84;
+}
+.el-table .E05-row td:last-child {
+    background: #ea2843;
+}
+.el-table .E06-row td:last-child {
+    background: #4c83ac;
+}
+.el-table .E07-row td:last-child {
+    background: #74bcf6;
+}
+.el-table .E08-row td:last-child {
+    background: white;
+}
+.el-table .E09-row td:last-child {
+    background: #a0a0a0;
+}
+.el-table .I16-row td:last-child {
+    background: #3cb0c7;
+}
+.el-table .E0S-row td:last-child {
+    background: #84bd5a;
 }
 </style>
