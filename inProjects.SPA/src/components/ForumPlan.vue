@@ -14,9 +14,10 @@
         </div>
         <div>
             <el-table :data="projects" :row-class-name="tableRowClassName">
-                <el-table-column prop="forumNumber" label="#" width="180"/>
-                <el-table-column prop="name" label="Name" width="180"/>
-                <el-table-column prop="classRoom" label="Classroom" width="180"/>
+                <el-table-column prop="forumNumber" label="#" sortable width="180"/>
+                <el-table-column prop="name" label="Nom du projet" width="180"/>
+                <el-table-column prop="semester" label="Semestre" sortable width="180"/>
+                <el-table-column prop="classRoom" label="Salle" sortable width="180"/>
             </el-table>
         </div>
     </div>
