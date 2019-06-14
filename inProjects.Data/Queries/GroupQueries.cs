@@ -28,7 +28,8 @@ namespace inProjects.Data.Queries
 
         public async Task<int> GetSpecificIdGroupByZoneIdAndGroupName(int zoneId,string groupName )
         {
-         return await _controller.QueryFirstOrDefaultAsync<int>( "SELECT GroupId FROM CK.tGroup where GroupName = @GroupName AND ZoneId =@ZoneId;", new { ZoneId = zoneId, GroupName = groupName } );
+            int result =  await _controller.QuerySingleOrDefaultAsync<int>( "SELECT GroupId FROM CK.tGroup where GroupName = @GroupName AND ZoneId =@ZoneId;", new { ZoneId = zoneId, GroupName = groupName } );
+            return result;
         }
 
         public async Task<List<string>> GetAllGroupByZoneId(int zoneID )

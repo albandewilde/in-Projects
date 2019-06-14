@@ -5,8 +5,8 @@
             <CsvImport type="projectNumber"></CsvImport>
         </div>
         <div>  
-            <span><h3>Attribuer un n° au proje</h3></span>
-            <CsvImport type="jury">t</CsvImport>
+            <span><h3>Attribuer les projets au jury</h3></span>
+            <CsvImport type="jury"></CsvImport>
         </div>
     </div>
 </template>
