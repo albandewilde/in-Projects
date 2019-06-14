@@ -100,7 +100,6 @@ namespace inProjects.TomlHelpers
         public Slogan slogan {get; set;}
         public Pitch pitch {get; set;}
         public Team team {get; set;}
-        public Git git { get; set; }
         public OthersDocuments othersDocuments {get; set;}
 
         public bool isValid()
@@ -131,6 +130,7 @@ namespace inProjects.TomlHelpers
     public class ProjectPi : Project
     {
         public Technologies technologies {get; set;}
+        public Git git {get; set;}
     }
 
     public class ProjectPfh : Project
