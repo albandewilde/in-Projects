@@ -141,7 +141,7 @@ body {
 }
 
 .chacheli-designer-layout {
-    background-image: url("/plan_ecole.jpg");
+    background-image: url("/plan_ecole.png");
     background-size: 100% 100%;
 }
 
