@@ -1,0 +1,11 @@
+version: 1.0.{build}
+branches:
+  only:
+  - develop
+environment:
+  SqlServer/MasterConnectionString: Server=(local)\SQLEXPRESS;Database=master;Trusted_Connection=True
+skip_non_tags: true
+image: Visual Studio 2017
+services: mssql2017
+build:
+  - dotnet run --project CodeCakeBuilder -nointeraction
