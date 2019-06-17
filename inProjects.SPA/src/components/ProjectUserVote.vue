@@ -14,7 +14,7 @@
                         <div class="my-card-row">
                             <span>{{projectList[index].groupName}}</span><br>
                             <div class="block">
-                                <el-rate @change="test(projectList[index].grade,projectList[index].projectStudentId)" v-model="projectList[index].grade"></el-rate>
+                                <el-rate @change="note(projectList[index].grade,projectList[index].projectStudentId)" v-model="projectList[index].grade"></el-rate>
                             </div>
                         </div>
                     </el-card>
@@ -22,7 +22,7 @@
                 </el-col>
             </el-row>
         </div>
-
+        
     </div>
 </template>
 
@@ -32,6 +32,7 @@ import { GetAllProject, GetAllTypeProjectsOfSchool, noteProject } from "../api/p
 import { getSchools } from "../api/schoolApi"
 import {Project} from "../modules/classes/Project"
 import {School} from "../modules/classes/School"
+import { TypeTimedUser } from "@/modules/classes/TimedUserEnum"
 
 @Component
 export default class ProjectUserVote extends Vue {
@@ -69,11 +70,11 @@ export default class ProjectUserVote extends Vue {
         return idx
     }
 
-   async test(newGrade: number, id:number){
+   async note(newGrade: number, id:number){
         try{
             const grade = newGrade * this.numberMax
             console.log(grade)
-            await noteProject(id, grade,this.schoolId)
+            await noteProject(id, grade,this.schoolId,TypeTimedUser.Anon)
         } catch (e) {
             console.log(e)
         }

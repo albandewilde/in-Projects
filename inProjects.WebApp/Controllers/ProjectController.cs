@@ -111,7 +111,6 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet( "favProject" )]
-        [AllowAnonymous]
         public async Task<IActionResult> FavProject( int idProject)
         {
             int userId = _authenticationInfo.ActualUser.UserId;
@@ -156,6 +155,27 @@ namespace inProjects.WebApp.Controllers
                         projectData.ElementAt( i ).UserId.Add( e.UserId );
                     }
                 }
+                return projectData;
+            }
+        }
+        [HttpGet( "getProjectEval" )]
+        public async Task<IEnumerable<AllProjectInfoData>> GetProjectsEvaluate(int idSchool)
+        {
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            int userId = _authenticationInfo.ActualUser.UserId;
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, db );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
+                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+                UserQueries userQueries = new UserQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
+
+                PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( idSchool );
+                //Implementer check date period
+
+                IEnumerable<AllProjectInfoData> projectData = await projectQueries.GetAllProjectTimedByJuryId( userId, periodData.ChildId );
                 return projectData;
             }
         }
@@ -207,18 +227,19 @@ namespace inProjects.WebApp.Controllers
             }
         }
         [HttpPost( "noteProject" )]
-        [AllowAnonymous]
         public async Task<IActionResult> NoteProject([FromBody] NoteProjectViewModel model )
         {
             int userId = _authenticationInfo.ActualUser.UserId;
             TimedUserNoteProjectTable timedUserNoteProjectTable = _stObjMap.StObjs.Obtain<TimedUserNoteProjectTable>();
             TimedUserTable timedUserTable = _stObjMap.StObjs.Obtain<TimedUserTable>();
+            EvaluatesTable evaluatesTable = _stObjMap.StObjs.Obtain<EvaluatesTable>();
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
 
             using( var ctx = new SqlStandardCallContext() )
             {
                 ProjectQueries projectQueries = new ProjectQueries( ctx, db );
                 TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
+                UserQueries userQueries = new UserQueries( ctx, db );
                 TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
                 GroupQueries groupQueries = new GroupQueries( ctx, db );
 
@@ -228,14 +249,25 @@ namespace inProjects.WebApp.Controllers
 
                 if(timedUserData == null )
                 {
-                    TimedUserStruct timedUser = await timedUserTable.CreateOrUpdateTimedUserAsyncWithType( ctx, TypeTimedUser.Anon, periodData.ChildId, userId );
+                    TimedUserStruct timedUser = await timedUserTable.CreateOrUpdateTimedUserAsyncWithType( ctx, Data.TypeTimedUser.Anon, periodData.ChildId, userId );
                     timedUserData = new TimedUserData
                     {
                         TimedUserId = timedUser.TimedUserId
                     };
+                    await timedUserNoteProjectTable.AddOrUpdateNote( ctx, timedUserData.TimedUserId, model.ProjectId, model.Grade );
+                    return Ok();
                 }
-                                           
-                await timedUserNoteProjectTable.AddOrUpdateNote( ctx, timedUserData.TimedUserId, model.ProjectId, model.Grade );
+
+                if( model.User == ViewModels.TypeTimedUser.Jury )
+                {
+                    int id = await userQueries.GetJuryId( userId );
+                    await evaluatesTable.EvaluateProject( ctx, id, model.ProjectId, model.Grade );
+                }
+                else
+                {
+                    await timedUserNoteProjectTable.AddOrUpdateNote( ctx, timedUserData.TimedUserId, model.ProjectId, model.Grade );
+                }
+
                 return Ok();
 
             }

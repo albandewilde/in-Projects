@@ -9,5 +9,15 @@ namespace inProjects.ViewModels
         public int ProjectId {get; set;}
         public int Grade {get; set;}
         public int SchoolId { get; set; }
+        public TypeTimedUser User { get; set; }
+    }
+
+    public enum TypeTimedUser
+    {
+        Anon,
+        Student,
+        StaffMember,
+        Jury,
+
     }
 }

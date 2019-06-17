@@ -167,5 +167,19 @@ namespace inProjects.Data.Queries
 
             return result;
         }
+
+        public async Task<IEnumerable<AllProjectInfoData>> GetAllProjectTimedByJuryId( int userId, int periodId )
+        {
+            IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
+                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo" +
+                " FROM IPR.tEvaluates e" +
+                " JOIN CK.tActorProfile ap on ap.GroupId = e.JuryId" +
+                " JOIN CK.tGroup g on g.GroupId = e.ProjectId" +
+                " JOIN IPR.tProjectStudent ps on ps.ProjectStudentId = e.ProjectId" +
+                " where ap.ActorId = @UserId and g.ZoneId = @ZoneId",
+                new { UserId = userId ,ZoneId = periodId} );
+
+            return result;
+        }
     }
 }
