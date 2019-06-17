@@ -2,7 +2,7 @@
 <div>
         <el-menu-item index="94" @click="redirect(`/submit_project`)">
              <font-awesome-icon icon="plus-square" size="lg" />
-            <span> Deposer un Projet</span>
+            <span v-if="isCollapse == false"> Deposer un Projet</span>
         </el-menu-item>
 </div>
 </template>

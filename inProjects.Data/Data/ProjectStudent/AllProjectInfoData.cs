@@ -27,6 +27,8 @@ namespace inProjects.Data.Data.ProjectStudent
 
         public int IsFav { get; set; }
 
+        public int Grade { get; set; }
+
 
     }
 }
