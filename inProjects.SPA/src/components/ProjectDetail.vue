@@ -101,30 +101,36 @@ export default class ProjectDetail extends Vue {
 
 
     GenerateSheet(
-        place: Array<string> = ["E07", "26"],
+        plc: Array<string> = ["E07", "26"],
         project_name: string = "ITI'Humain",
 
-        semester: string = "Semestre 1",
+        sem: string = "Semestre 1",
         sector: string = "SR",
-        technos: Array<string> = ["Rust", "Kotlin", "Python", "Bottle"],
+        tec: Array<string> = ["Rust", "Kotlin", "Python", "Bottle"],
         logo: string = "",
         slogan: string = "Parce qu'on aurait aimé en profiter nous aussi.",
         pitch: string = "Le chat commence par une tête et se termine par une queue qui suis son corps. Elle s'arrête au bout d'un moment.\nLe chat est un animal entouré de poils noir, qui sont parfois gris ou blanc. S'il était rayés, ce serait un petit zèbre.\nIl a deux pattes devant et deux derrière. Il a aussi deux pattes de chaque côté. Les pattes de devant servent a courir, avec les pattes de derrière il freine.\nDe temps en temps le char se dit: \"Tien, je vais faire des petit.\" Quand il les a faits, on dit que c'est une chatte. Les petit s'appellent des chatelots.\nQuand il est dans le jardin, il miaule pour attirer les oiseaux. S'ils ne viennent pas, il grimpe dans les arbres et enlève les œufs dont il nourrit ses petit.",
         team: [string, Array<string>] = ["Julie Agopian",  ["Arthur Cheng", "Dan Chiche", "Melvin Delpierre", "Alban De Wilde"]]
     ) {
         // format data
-        team[1] = this.removeNonString(team[1])
+        const place: string = plc.join("\n")
+        const semester: string = sem + (sector ? " - " + sector : "")
 
-        technos.length > 9 ? technos[9] = "..." : null
-        technos = technos.slice(0, 10)
-        let missing = 11 - technos.length
-        for (let idx = 0; idx < missing; idx += 1) {technos.push("")}
+        team[1] = this.removeNonString(team[1])
+        const leader = team[0] + (team[1].length > 0 && !["", " ", undefined, null].includes(team[0])  ? ", " : "")
+        const members = team[1].join(", ")
+
+        tec.length > 9 ? tec[9] = "..." : null
+        tec = tec.slice(0, 10)
+        let missing = 11 - tec.length
+        for (let idx = 0; idx < missing; idx += 1) {tec.push("")}
+        const technos: string = tec.join("\n")
 
         // create the pdf
         const sheet = {
             content: [
                 {
-                    text: place.join("\n"),
+                    text: place,
                     style: "place"
                 },
             
@@ -134,7 +140,7 @@ export default class ProjectDetail extends Vue {
                 },
             
                 {
-                    text: semester + (sector ? " - " + sector : ""),
+                    text: semester,
                     style: "semester"
                 },
             
@@ -151,7 +157,7 @@ export default class ProjectDetail extends Vue {
                 },
                 
                 {
-                    text: technos.join("\n"),
+                    text: technos,
                     style: "techno_list"
                 },
 
@@ -168,12 +174,12 @@ export default class ProjectDetail extends Vue {
                 {
                     text: [
                         {
-                            text: team[0] + (team[1].length > 0 && !["", " ", undefined, null].includes(team[0])  ? ", " : ""),
+                            text: leader,
                             style: "leader"
                         },
                         
                         {
-                            text: team[1].join(", "),
+                            text: members,
                             style: "members"
                         }
                     ],
@@ -271,6 +277,7 @@ export default class ProjectDetail extends Vue {
         return new_array
     }
 }
+
 </script>
 
 <style>
