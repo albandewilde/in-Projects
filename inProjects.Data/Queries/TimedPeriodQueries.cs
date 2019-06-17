@@ -57,5 +57,11 @@ namespace inProjects.Data.Queries
             return result;
         }
 
+        public async Task<string> GetGroupNameActualPeriod( int timePeriodId, int zoneId )
+        {
+            return await _controller.QuerySingleOrDefaultAsync<string>(
+                  "select GroupName from CK.tGroup where GroupId = @TimePeriodId and ZoneId = @ZoneId ", new { TimePeriodId = timePeriodId,ZoneId = zoneId  } );
+
+        }
     }
 }
