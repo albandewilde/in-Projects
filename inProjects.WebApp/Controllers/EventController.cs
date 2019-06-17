@@ -8,9 +8,14 @@ using inProjects.Data.Data.Group;
 using inProjects.Data.Data.TimedUser;
 using inProjects.Data.Queries;
 using inProjects.ViewModels;
+using inProjects.WebApp.Services;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,11 +26,14 @@ namespace inProjects.WebApp.Controllers
     {
         readonly IStObjMap _stObjMap;
         readonly IAuthenticationInfo _authenticationInfo;
+        readonly List<string> _typeEvents;
 
         public EventController( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo )
         {
             _stObjMap = stObjMap;
             _authenticationInfo = authenticationInfo;
+            _typeEvents = GetEventType();
+
         }
 
         [HttpGet]
@@ -55,6 +63,34 @@ namespace inProjects.WebApp.Controllers
 
 
             }
+        }
+
+        internal List<string> GetEventType()
+        {
+            using( StreamReader stream = new StreamReader( "eventsSelect.json" ) )
+            {
+                using( JsonTextReader jsonReader = new JsonTextReader( stream ) )
+                {
+                    JToken json = JToken.Load( jsonReader );
+
+                    IEnumerable<string> authorizeString =
+                     from p in json["Events"]
+                     select (string)p;
+
+                    List<string> List = authorizeString.ToList();
+
+
+                    return List;
+
+                }
+            }
+
+        }
+
+        [HttpGet("GetTypeEvents")]
+        public async Task<IActionResult> GetTypeEvents()
+        {
+            return Ok( _typeEvents );
         }
 
         [HttpPost("UpdateEvents")]
@@ -97,9 +133,16 @@ namespace inProjects.WebApp.Controllers
 
             using( var ctx = new SqlStandardCallContext() )
             {
+                PeriodServices periodServices = new PeriodServices();
                 GroupQueries groupQueries = new GroupQueries( ctx, sqlDataBase );
                 TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDataBase );
                 EventQueries eventQueries = new EventQueries( ctx, sqlDataBase );
+
+                if(!await periodServices.CheckPeriodGivenDate( _stObjMap,_authenticationInfo,model.BegDate,model.EndDate ) )
+                {
+                    Result result = new Result( Status.BadRequest, "Ces Dates ne sont pas comprises dans la periode actuel" );
+                    return this.CreateResult( result );
+                }
 
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
 
@@ -117,7 +160,13 @@ namespace inProjects.WebApp.Controllers
                     model.Name += "-" + await timedPeriodQueries.GetGroupNameActualPeriod( groupData.ZoneId, groupData.ParentZoneId );
                 }
 
-                await eventTable.CreateEvent( ctx, model.Name, model.BegDate, model.EndDate, groupData.ZoneId, userId );
+                EventStruct eventResult = await eventTable.CreateEvent( ctx, model.Name, model.BegDate, model.EndDate, groupData.ZoneId, userId );
+
+                if(eventResult.Status == 1 )
+                {
+                    Result result = new Result( Status.Unauthorized, "Cette evenement existe deja dans votre école !" );
+                    return this.CreateResult( result );
+                }
                 List<EventData> events = await eventQueries.GetAllEventsByIdSchool( groupData.ParentZoneId );
 
                 return Ok( events );

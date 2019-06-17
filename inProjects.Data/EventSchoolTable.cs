@@ -1,6 +1,7 @@
 using CK.Setup;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
+using inProjects.Data.Data.Event;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace inProjects.Data
         }
 
         [SqlProcedure( "sCreateEventSchool" )]
-        public abstract Task CreateEvent( ISqlCallContext ctx, string name, DateTime begDate, DateTime endDate, int schoolId, int actorId);
+        public abstract Task<EventStruct> CreateEvent( ISqlCallContext ctx, string name, DateTime begDate, DateTime endDate, int timePeriodId, int actorId);
 
 
     }

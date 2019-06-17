@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import {GetEventsSchool, UpdateEvents, CreateEvents} from "../api/eventApi"
+import {GetEventsSchool, UpdateEvents, CreateEvents, GetEventsType} from "../api/eventApi"
 import {Event} from "../modules/classes/EventSchool"
 import Error from "./Erreur.vue"
 
@@ -70,31 +70,19 @@ export default class EventSchool extends Vue {
     async created(){
         this.events = await GetEventsSchool()
 
-        this.select.push("ForumPI")
-        this.select.push("Projet Sur Scene")
-        this.select.push("JPO")
-        this.select.push("Autre")
+        this.select = await GetEventsType()
     }
     
 
      async changeDate(idx: number) {
-        let begDate!: Date
-        let endDate!: Date
-
-        begDate = new Date(this.events[idx].begDate)
-        endDate = new Date(this.events[idx].endDate)
-
+    
         this.error = []
 
-        if (begDate >= endDate) {
+        if (this.checkDate()) {
             this.error.push("Date de debut superieur ou egale à celle de fin")
         } else {
             try {
-            begDate.setHours(begDate.getHours() + 2)
-            endDate.setHours(endDate.getHours() + 2)
 
-             this.events[idx].begDate = begDate
-             this.events[idx].endDate = endDate
              this.events = await UpdateEvents(this.events[idx])
              this.$message({
                     message: "L'évènement " + this.events[idx].name + " a bien été changé",
@@ -108,38 +96,38 @@ export default class EventSchool extends Vue {
     }
 
     async onSubmit(){
-        let begDate!: Date
-        let endDate!: Date
-
-        begDate = new Date(this.event.begDate)
-        endDate = new Date(this.event.endDate)
-
         this.error = []
-
-        if (begDate >= endDate) {
+        if (!this.checkDate()) {
             this.error.push("Date de debut superieur ou egale à celle de fin")
         }else{
             try {
-                
                 if (await this.$validator.validateAll()) {
                     if(this.value != "Autre"){
                         this.event.name = this.value
                     }else{
                         this.event.isOther = true;
                     }
-
-                    begDate.setHours(begDate.getHours() + 2)
-                    endDate.setHours(endDate.getHours() + 2)
-
-                    this.event.begDate = begDate
-                    this.event.endDate = endDate
                     this.events = await CreateEvents(this.event)
-
                 }
     
             } catch (e) {
                 this.error.push(e.message)
             }
+        }
+    }
+
+     checkDate() : boolean{
+        let begDate!: Date
+        let endDate!: Date
+
+        begDate = new Date(this.event.begDate)
+        endDate = new Date(this.event.endDate)
+
+        if (begDate >= endDate) {
+            console.log(false)
+            return false
+        }else{
+            return true
         }
     }
 }

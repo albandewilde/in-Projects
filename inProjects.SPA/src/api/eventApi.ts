@@ -1,6 +1,5 @@
 import { postAsync, getAsync } from "../helpers/apiHelper"
 import {Event} from "../modules/classes/EventSchool"
-import axios from "axios"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/Event"
 
@@ -17,7 +16,12 @@ export async function GetEventsSchool() : Promise<Event[]> {
 }
 
 export async function UpdateEvents(event :Event) : Promise<Event[]> {
-    const resp = await postAsync(`${endpoint}/UpdateEvents`, event)
+    let send : Event = new Event(event.eventId,event.name,event.begDate,event.endDate)
+    
+    send.begDate.setHours(send.begDate.getHours() + 2)
+    send.endDate.setHours(send.endDate.getHours() + 2)
+
+    const resp = await postAsync(`${endpoint}/UpdateEvents`, send)
     
     let events: Event[] = []
 
@@ -30,7 +34,12 @@ export async function UpdateEvents(event :Event) : Promise<Event[]> {
 
 
 export async function CreateEvents(event :Event) : Promise<Event[]> {
-    const resp = await postAsync(`${endpoint}/CreateEvents`, event)
+    let send : Event = event.clone()
+
+    send.begDate.setHours(send.begDate.getHours() + 2)
+    send.endDate.setHours(send.endDate.getHours() + 2)
+    
+    const resp = await postAsync(`${endpoint}/CreateEvents`, send)
     
     let events: Event[] = []
 
@@ -39,4 +48,9 @@ export async function CreateEvents(event :Event) : Promise<Event[]> {
     }
 
     return events
+}
+
+export async function GetEventsType() : Promise<string[]> {
+    const resp = await getAsync(`${endpoint}/GetTypeEvents`)
+    return resp.data
 }
