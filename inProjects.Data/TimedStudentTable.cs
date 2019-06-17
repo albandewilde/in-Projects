@@ -8,6 +8,7 @@ namespace inProjects.Data
 {
     [SqlTable( "tTimedStudent", Package = typeof( Package ) )]
     [Versions( "1.0.0" )]
+
     public abstract class TimedStudentTable : SqlTable
     {
         void StObjConstruct(TimedUserTable timedUserTable)

@@ -1,12 +1,12 @@
 import {getAxios} from "../modules/authService"
 
-export  async function postAsync(url: string, data: any) {
+export  async function postAsync(url: string, data: any, ) {
   return getAxios().post(url, data)
       .then((response) => {
         return response
       })
       .catch((error) => {
-        return error
+        throw error
       })
 }
 
@@ -16,7 +16,7 @@ export async function putAsync(url: string, data: any) {
         return response
       })
       .catch((error) => {
-        return error
+        throw error
       })
 }
 
@@ -26,7 +26,7 @@ export async function getAsync(url: string) {
         return response
       })
       .catch((error) => {
-        return error
+        throw error
       })
 }
 
@@ -36,6 +36,6 @@ export async function deleteAsync(url: string) {
         return response
       })
       .catch((error) => {
-        return error
+        throw error
       })
 }
