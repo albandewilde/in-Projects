@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="projectList">
         <el-row>
             <el-col :span="5" v-for="(o, index) in projectListToDisplay.length" :key="o" :offset="index > 0 ? 1 : 1" >            
                 <el-card v-bind:body-style="{ padding: '0px', border:getType(projectListToDisplay[index]) }">
@@ -102,5 +102,9 @@ export default class ProjectList extends Vue {
 
 .my-card-row{
     height: 480 !important;
+}
+
+.projectList{
+    position: relative;
 }
 </style>

@@ -13,6 +13,8 @@ import Plan from "./components/Plan.vue"
 import ProjectList from "./components/ProjectList.vue"
 import AddJury from "./components/AddJury.vue"
 import ForumPlan from "./components/ForumPlan.vue"
+import NewSideBar from "./components/NewSideBar.vue"
+
 Vue.use(Router)
 
 export default new Router({
@@ -55,7 +57,7 @@ export default new Router({
     {
       path: "/test",
       name: "test",
-      component: ForumPlan
+      component: NewSideBar
     },
     {
       path: "/listPeriod",

@@ -1,96 +1,10 @@
 <template>
-    <el-menu 
-        class="el-menu-vertical" 
-        background-color=#545c64
-        default-active="1"
-        text-color="white"
-        active-text-color=#ffd04b
-        @open="handleOpen"
-        @close="handleClose"
-        :collapse="isCollapse"
-        :unique-opened="true"     
-        width="200px"       
-        style="height: 100%;">
+<div>
+    <div class="left-navigation">
+        <h1 class="title-text">IN'TECH</h1>
+    </div>
 
-        <el-button class="collapseBtn" type="info" circle @click="changeCollapse()">
-            <font-awesome-icon icon="bars" />
-        </el-button>
-        <br><br>
-                
-        <div v-if="authService.authenticationInfo.level != 0">
-            <el-button type="warning" size="small" circle>
-                <font-awesome-icon icon="bell" size="lg" />
-            </el-button>
-            <div v-if="this.isCollapse">
-                <br>
-            </div>
-            <el-button @click="redirect(`/MyProfil`)" type="info" size="small" circle>
-                <font-awesome-icon icon="cog" size="lg" />
-            </el-button>
-            <div v-if="this.isCollapse">
-                <br>
-            </div>
-            <el-button type="info" size="small" circle>
-                <font-awesome-icon icon="search" size="lg" />
-            </el-button>
-            <div v-if="this.isCollapse">
-                <br>
-            </div>
-            <el-menu-item index="6" @click="logout()">
-                <font-awesome-icon icon="sign-out-alt" size="lg" />
-                <span v-if="!isCollapse"> Se déconnecter</span>
-            </el-menu-item>
-        </div>
-        <div v-else>
-            <el-menu-item index="7" @click="redirect(`/connection`)">
-                <font-awesome-icon icon="sign-in-alt" size="lg" />
-                <span v-if="!isCollapse"> Se connecter</span>
-            </el-menu-item>
-        </div>
-
-        <el-menu-item index="1" @click="redirect(`/`)">
-            <font-awesome-icon icon="home" size="lg" />
-            <span> Accueil</span>
-        </el-menu-item>
-
-        <el-submenu index="4">
-            <template slot="title">
-                <font-awesome-icon icon="file-alt" size="lg" />
-                <span> Projets</span>
-            </template>
-        <el-menu-item-group>
-            <el-menu-item index="4-1" @click="redirect(`/projectList`)">Liste des projets</el-menu-item>
-            <el-menu-item index="4-2">Trouver un projet</el-menu-item>
-        </el-menu-item-group>
-        </el-submenu>
-
-        <div v-for="(o,idx) in whatTimed" :key="idx">
-            <!-- index Admin 10 to 30 -->
-            <div v-if="o == 'Administration'">
-                <AdminPanel :isCollapse="isCollapse"></AdminPanel>
-            </div>
-
-            <!-- index Teacher 31 to 51 -->
-             <div v-if="o == 'Teacher'">
-                <TeacherPanel :isCollapse="isCollapse"></TeacherPanel>
-            </div>
-
-            <!-- index User 52 to 72 -->
-            <div v-if="o == 'User'">
-                <UserPanel :isCollapse="isCollapse"></UserPanel>
-            </div>
-
-            <!-- index Jury 73 to 93 -->
-            <div v-if="o == 'Jury'">
-                <JuryPanel :isCollapse="isCollapse"></JuryPanel>
-            </div>
-
-            <!-- index Student 94 to 114 -->
-            <div v-if="o == 'Student'">
-                <StudentPanel :isCollapse="isCollapse"></StudentPanel>
-            </div>
-        </div>
-    </el-menu>
+</div>
 </template>
 
 <script lang="ts">
@@ -119,7 +33,7 @@ import { SignalRGestion } from "../modules/classes/SignalR"
 })
 
 export default class SideBar extends Vue {
-    isCollapse: boolean = true
+    isCollapse: boolean = false
     whatTimed: string[] = []
     ZoneId: number = 4
     authService: AuthService = getAuthService()
@@ -173,5 +87,14 @@ export default class SideBar extends Vue {
     width: 80px;
     min-height: 400px;
     z-index: 10
+}
+.left-navigation {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 329px;
+    height: 100%;
+    background-color: #2d3e4f;
 }
 </style>
