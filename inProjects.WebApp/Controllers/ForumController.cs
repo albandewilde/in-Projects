@@ -48,7 +48,8 @@ namespace inProjects.WebApp.Controllers
                 foreach( ProjectData project in projects )
                 {
                     List<string> listGroups = await projectQueries.GetGroupsOfProject( project.ProjectStudentId );
-                    project.Semester = listGroups[0] + " - " + listGroups[1];
+                    listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) || x == "IL" || x == "SR" );
+                    project.Semester = listGroups[1] + " - " + listGroups[0];
                     Project p = new Project( project.ProjectStudentId, project.Name,
                         project.Semester, project.CoordinatesX, project.CoordinatesY, project.ClassRoom, project.Height, project.Width, project.ForumNumber );
                     projectList.Add( p );
