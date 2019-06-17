@@ -74,7 +74,7 @@ namespace inProjects.Data.Queries
         {
 
             ProjectData project = await _controller.QueryFirstOrDefaultAsync<ProjectData>(
-                        "  SELECT ps.Logo, ps.Slogan, ps.Pitch, g.GroupName as [Name], pu.[Url]" +
+                        "  SELECT ps.Logo, ps.Slogan, ps.Pitch, g.GroupName as [Name], pu.[Url], ps.LeaderId" +
                         " from IPR.tProjectStudent ps" +
                         " join CK.tGroup g on g.GroupId = ps.ProjectStudentId" +
                         " left outer join IPR.tProjectUrl pu on pu.ProjectId = ps.ProjectStudentId" +
@@ -97,7 +97,7 @@ namespace inProjects.Data.Queries
         public async Task<List<UserData>> GetAllUsersOfProject( int idProject )
         {
              IEnumerable<UserData> result = await _controller.QueryAsync<UserData>(
-                         "SELECT u.FirstName, u.LastName" +
+                         "SELECT u.FirstName, u.LastName, u.UserId" +
                          " from CK.tGroup g join CK.tActorProfile ap on g.GroupId = ap.GroupId" +
                          " join CK.tUser u on u.UserId = ap.ActorId" +
                          " where g.GroupId = @ProjectId and ap.ActorId <> @ProjectId ",

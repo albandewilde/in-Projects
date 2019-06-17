@@ -112,7 +112,15 @@ export default class ProjectDetail extends Vue {
         pitch: string = "Le chat commence par une tête et se termine par une queue qui suis son corps. Elle s'arrête au bout d'un moment.\nLe chat est un animal entouré de poils noir, qui sont parfois gris ou blanc. S'il était rayés, ce serait un petit zèbre.\nIl a deux pattes devant et deux derrière. Il a aussi deux pattes de chaque côté. Les pattes de devant servent a courir, avec les pattes de derrière il freine.\nDe temps en temps le char se dit: \"Tien, je vais faire des petit.\" Quand il les a faits, on dit que c'est une chatte. Les petit s'appellent des chatelots.\nQuand il est dans le jardin, il miaule pour attirer les oiseaux. S'ils ne viennent pas, il grimpe dans les arbres et enlève les œufs dont il nourrit ses petit.",
         team: [string, Array<string>] = ["Julie Agopian",  ["Arthur Cheng", "Dan Chiche", "Melvin Delpierre", "Alban De Wilde"]]
     ) {
-        console.log(typeof(place))
+        // format data
+        team[1] = this.removeNonString(team[1])
+
+        technos.length > 9 ? technos[9] = "..." : null
+        technos = technos.slice(0, 10)
+        let missing = 11 - technos.length
+        for (let idx = 0; idx < missing; idx += 1) {technos.push("")}
+
+        // create the pdf
         const sheet = {
             content: [
                 {
@@ -126,10 +134,7 @@ export default class ProjectDetail extends Vue {
                 },
             
                 {
-                    text: [
-                        semester,
-                        sector
-                    ].join(" - "),
+                    text: semester + (sector ? " - " + sector : ""),
                     style: "semester"
                 },
             
@@ -139,17 +144,17 @@ export default class ProjectDetail extends Vue {
                 },
                 
                 {
-                    text: technos.join("\n"),
-                    style: "techno_list"
-                },
-
-                {
                     image: logo,
                     width: 250,
                     height: 250,
                     style: "logo"
                 },
                 
+                {
+                    text: technos.join("\n"),
+                    style: "techno_list"
+                },
+
                 {
                     text: slogan,
                     style: "slogan"
@@ -163,7 +168,7 @@ export default class ProjectDetail extends Vue {
                 {
                     text: [
                         {
-                            text: team[0] + ", ",
+                            text: team[0] + (team[1].length > 0 && !["", " ", undefined, null].includes(team[0])  ? ", " : ""),
                             style: "leader"
                         },
                         
@@ -203,14 +208,14 @@ export default class ProjectDetail extends Vue {
                     margin: [0, 20, 20, 0]
                 },
                 
-                techno_list: {
-                    alignment: "right",
-                    margin: [0, 10, 20, 0],
-                    fontSize: 14
+                logo: {
+                    margin: [60, -50, 0, 0]
                 },
                 
-                logo: {
-                    margin: [60, -110, 0, 0]
+                techno_list: {
+                    alignment: "right",
+                    margin: [0, -190, 20, 0],
+                    fontSize: 14
                 },
                 
                 slogan: {
@@ -242,10 +247,11 @@ export default class ProjectDetail extends Vue {
         // fetch to the server all information we need and formated
         let project = await GetProject(id)
 
+        // generate the pdf
         this.GenerateSheet(
             ["None", "None"],
             project.name,
-            "Semester " + project.semester,
+            "Semestre " + project.semester,
             project.sector,
             project.technos,
             "data:image/jpeg;base64," + project.logo,
@@ -254,6 +260,16 @@ export default class ProjectDetail extends Vue {
             project.team,
         );
     }
+
+    removeNonString(array: Array<any>) {
+        let new_array: Array<string> = []
+        for (let idx = 0; idx < array.length; idx += 1) {
+            if (typeof(array[idx]) === typeof("string")) {
+                new_array.push(array[idx])
+            }
+        }
+        return new_array
+    }
 }
 </script>
 
@@ -261,8 +277,6 @@ export default class ProjectDetail extends Vue {
 .image-detail-project{
     height: auto;
     width: 20vw;
-    /* border: 1px black solid;
-    border-radius: 50%; */
 }
 
 .text-project-name{

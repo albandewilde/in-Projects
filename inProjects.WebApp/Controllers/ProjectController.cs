@@ -205,7 +205,7 @@ namespace inProjects.WebApp.Controllers
             foreach(UserData usr in lst_usr_data)
             {
                 if (usr.UserId == pd.LeaderId){leader = usr.FirstName + " " + usr.LastName;}
-                else {members.Append(usr.FirstName + " " + usr.LastName);}
+                else {members[Array.IndexOf(members, null)] = usr.FirstName + " " + usr.LastName;}
                 
             }
             (string, string[]) team = (leader, members);
