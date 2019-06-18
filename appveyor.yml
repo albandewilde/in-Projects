@@ -8,4 +8,4 @@ skip_non_tags: true
 image: Visual Studio 2017
 services: mssql2017
 build_script:
-  - dotnet run --project inProjects.CokeCakeBuilder -nointeraction
+  - dotnet run --project inProjects.CokeCakeBuilder -autointeraction -PublishDirtyRepo=Y
