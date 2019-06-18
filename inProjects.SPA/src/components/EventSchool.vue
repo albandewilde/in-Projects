@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Error :error="error"/>
         <span style="font-size:200%">Créer un évenement</span>
            <br/>
 
@@ -29,9 +28,8 @@
 
         <br/>
         <br/>
-
         <span style="font-size:200%">Liste des évenements</span>
-        <el-table :data="events">
+        <!-- <el-table :data="events">
              <el-table-column label="Nom de l'evenement" prop="name" ></el-table-column>
              <el-table-column label="Date de debut">
                   <template slot-scope="scope">
@@ -45,7 +43,10 @@
                     </el-date-picker>
                  </template>
              </el-table-column>
-        </el-table>
+        </el-table> -->
+        
+
+         <calendar></calendar>
     </div>
 </template>
 
@@ -54,10 +55,12 @@ import { Component, Vue } from "vue-property-decorator"
 import {GetEventsSchool, UpdateEvents, CreateEvents, GetEventsType} from "../api/eventApi"
 import {Event} from "../modules/classes/EventSchool"
 import Error from "./Erreur.vue"
+import Calendar from "./Calendar.vue"
 
 @Component({
     components: {
-        Error
+        Error,
+        Calendar
     }
 })
 export default class EventSchool extends Vue {
@@ -66,10 +69,10 @@ export default class EventSchool extends Vue {
     private event: Event = new Event()
     private value: string = ""
     private select: string[] = []
+    private showDate: Date = new Date()
 
     async created(){
         this.events = await GetEventsSchool()
-
         this.select = await GetEventsType()
     }
     
@@ -89,7 +92,12 @@ export default class EventSchool extends Vue {
                     type: "success"
                 })
             } catch (e) {
-                this.error.push(e.message)
+                this.$message({
+                    showClose: true,
+                    duration: 5000,
+                    message: e.message,
+                    type: 'error'
+                 });
             }
 
         }
@@ -111,7 +119,12 @@ export default class EventSchool extends Vue {
                 }
     
             } catch (e) {
-                this.error.push(e.message)
+                this.$message({
+                    showClose: true,
+                    duration: 5000,
+                    message: e.message,
+                    type: 'error'
+                 });
             }
         }
     }

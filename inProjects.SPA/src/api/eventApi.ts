@@ -16,7 +16,7 @@ export async function GetEventsSchool() : Promise<Event[]> {
 }
 
 export async function UpdateEvents(event :Event) : Promise<Event[]> {
-    let send : Event = new Event(event.eventId,event.name,event.begDate,event.endDate)
+    let send : Event = new Event(event.eventId,event.name,event.begDate,event.endDate,event.isOther)
     
     send.begDate.setHours(send.begDate.getHours() + 2)
     send.endDate.setHours(send.endDate.getHours() + 2)

@@ -101,8 +101,15 @@ namespace inProjects.WebApp.Controllers
 
             using( var ctx = new SqlStandardCallContext() )
             {
+                PeriodServices periodServices = new PeriodServices();
                 GroupQueries groupQueries = new GroupQueries( ctx, sqlDataBase );
                 EventQueries eventQueries = new EventQueries( ctx, sqlDataBase );
+
+                if( !await periodServices.CheckPeriodGivenDate( _stObjMap, _authenticationInfo, model.BegDate, model.EndDate ) )
+                {
+                    Result result = new Result( Status.BadRequest, "Ces Dates ne sont pas comprises dans la periode actuel" );
+                    return this.CreateResult( result );
+                }
 
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
 
