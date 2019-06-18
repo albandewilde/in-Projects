@@ -1,14 +1,14 @@
-﻿using System;
-using NUnitLite;
 using NUnit.Common;
+using NUnitLite;
+using System;
 
 namespace inProjects.TomlHelpers.Tests
 {
-    class Program
+    public class Program
     {
-        static int Main(string[] args)
+        public static int Main(string[] args)
         {
-            return new AutoRun(typeof(Program).Assembly).Execute(args, new ExtendedTextWrapper(Console.Out), Console.In);
+            return new AutoRun( typeof( Program ).Assembly ).Execute( args, new ExtendedTextWrapper( Console.Out ), Console.In );
         }
     }
 }

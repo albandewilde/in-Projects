@@ -79,12 +79,14 @@ namespace inProjects.TomlHelpers.Tests
             (bool, string) retour;
             using(SqlStandardCallContext ctx = new SqlStandardCallContext())
             {
+                IStObjMap stObjMap = TestHelper.StObjMap;
                 ProjectStudentTable projectStudent = TestHelper.StObjMap.StObjs.Obtain<ProjectStudentTable>();
+                ProjectUrlTable projectUrlTable = TestHelper.StObjMap.StObjs.Obtain<ProjectUrlTable>();
                 SqlDefaultDatabase db = TestHelper.StObjMap.StObjs.Obtain<SqlDefaultDatabase>();
                 CustomGroupTable groupTable = TestHelper.StObjMap.StObjs.Obtain<CustomGroupTable>();
                 int memberId = new UserQueries(ctx, db).GetUserByEmail("agopian@intechinfo.fr").Result.UserId;
 
-                retour = TomlHelpers.RegisterProject(url, projectType, projectStudent, memberId, db, groupTable).Result;
+                retour = TomlHelpers.RegisterProject(url, projectType, projectStudent, memberId, db, groupTable, stObjMap, projectUrlTable).Result;
             }
 
             Console.WriteLine(retour.Item2);

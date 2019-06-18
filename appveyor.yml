@@ -8,4 +8,4 @@ skip_non_tags: true
 image: Visual Studio 2017
 services: mssql2017
 build:
-  - dotnet run --project CodeCakeBuilder -nointeraction
+  - dotnet run --project CokeCakeBuilder -nointeraction
