@@ -1,6 +1,6 @@
 <template>
     <div>
-            <font size=5><b>Mon Profile :</b></font> 
+            <font size=5><b>Mon Profil :</b></font> 
         <br/>
         <br/>
             <InformationsMyProfil></InformationsMyProfil>
