@@ -25,7 +25,7 @@
 
                 <el-dialog width="30%" title=" Etes-vous sur de vouloir supprimer ?" :visible.sync="innerVisible" append-to-body>
                     <el-button @click="innerVisible = false">Non</el-button>
-                    <el-button type="danger" @click="innerVisible = true">Oui</el-button>
+                    <el-button type="danger" @click="DeleteEvent">Oui</el-button>
                 </el-dialog>
 
             </el-dialog>
@@ -34,7 +34,7 @@
 
 <script lang="js">
 import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
-import {GetEventsSchool, UpdateEvents, CreateEvents, GetEventsType} from "../api/eventApi"
+import {GetEventsSchool, UpdateEvents, CreateEvents, GetEventsType,DeleteEvent} from "../api/eventApi"
 import {Event} from "../modules/classes/EventSchool"
 
 	require("vue-simple-calendar/static/css/default.css")
@@ -70,14 +70,12 @@ import {Event} from "../modules/classes/EventSchool"
             },
             
             async CreateEvents(){
-                    this.eventsInfo.forEach(element => {
-                    var list = {};
+                this.$root.$on('AddEvent', (event) =>{
+                    this.AddEvent(event)
+                })
 
-                    list.startDate = element.begDate
-                    list.endDate = element.endDate
-                    list.id = element.eventId
-                    list.title = element.name
-                    this.events.push(list)
+                    this.eventsInfo.forEach(element => {
+                    this.AddEvent(element)
                 });
             },
 
@@ -120,6 +118,36 @@ import {Event} from "../modules/classes/EventSchool"
 
                 }
             },
+
+            AddEvent(event){
+                var list = {};
+
+                list.startDate = event.begDate
+                list.endDate = event.endDate
+                list.id = event.eventId
+                list.title = event.name
+                this.events.push(list)
+            },
+
+           async DeleteEvent(){
+                try {
+                    await DeleteEvent(this.eventClicked.eventId)
+                    
+                    let idx = this.events.findIndex(x=> x.id === this.eventClicked.eventId)
+                    this.events.splice(idx,1)
+                    this.innerVisible = false
+                    this.outerVisible = false
+
+                } catch (e) {
+                    this.$message({
+                        showClose: true,
+                        duration: 5000,
+                        message: e.message,
+                        type: 'error'
+                    });
+                }
+            },
+
             checkDate(){
                 let begDate = new Date(this.eventClicked.begDate)
                 let endDate = new Date(this.eventClicked.endDate)

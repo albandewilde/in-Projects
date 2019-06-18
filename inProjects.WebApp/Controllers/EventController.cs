@@ -182,6 +182,42 @@ namespace inProjects.WebApp.Controllers
             }
         }
 
+        [HttpDelete( "DeleteEvent" )]
+        public async Task<IActionResult> DeleteEvent(int EventId)
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            var eventTable = _stObjMap.StObjs.Obtain<EventSchoolTable>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                AclQueries aclQueries = new AclQueries( ctx, sqlDataBase );
+                GroupQueries groupQueries = new GroupQueries( ctx, sqlDataBase );
+
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+
+                if( !await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) )
+                {
+                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                    return this.CreateResult( result );
+                }
+
+               EventStruct eventResult = await eventTable.DeleteEvent( ctx, userId, EventId );
+
+               if(eventResult.Status == 1 )
+                {
+                    Result result = new Result( Status.BadRequest, "Cette évenement n'existe plus ou n'a jamais existé ! " );
+                    return this.CreateResult( result );
+                }
+
+                return Ok();
+               
+
+            }
+        }
+
+
+
         //public async Task<bool> IsUserHasRight( SqlStandardCallContext ctx, SqlDefaultDatabase sqlDataBase,int userId  )
         //{
         //    GroupQueries groupQueries = new GroupQueries( ctx, sqlDataBase );

@@ -28,7 +28,7 @@
 
         <br/>
         <br/>
-        <span style="font-size:200%">Liste des évenements</span>
+        <span style="font-size:200%">Calendrier des évenements</span>
         <!-- <el-table :data="events">
              <el-table-column label="Nom de l'evenement" prop="name" ></el-table-column>
              <el-table-column label="Date de debut">
@@ -46,7 +46,7 @@
         </el-table> -->
         
 
-         <calendar></calendar>
+         <calendar ></calendar>
     </div>
 </template>
 
@@ -75,38 +75,11 @@ export default class EventSchool extends Vue {
         this.events = await GetEventsSchool()
         this.select = await GetEventsType()
     }
-    
-
-     async changeDate(idx: number) {
-    
-        this.error = []
-
-        if (this.checkDate()) {
-            this.error.push("Date de debut superieur ou egale à celle de fin")
-        } else {
-            try {
-
-             this.events = await UpdateEvents(this.events[idx])
-             this.$message({
-                    message: "L'évènement " + this.events[idx].name + " a bien été changé",
-                    type: "success"
-                })
-            } catch (e) {
-                this.$message({
-                    showClose: true,
-                    duration: 5000,
-                    message: e.message,
-                    type: 'error'
-                 });
-            }
-
-        }
-    }
 
     async onSubmit(){
         this.error = []
         if (!this.checkDate()) {
-            this.error.push("Date de debut superieur ou egale à celle de fin")
+             this.$message({showClose: true,duration: 5000, message: "Date de debut superieur ou egale à celle de fin",type: 'error'});
         }else{
             try {
                 if (await this.$validator.validateAll()) {
@@ -116,8 +89,13 @@ export default class EventSchool extends Vue {
                         this.event.isOther = true;
                     }
                     this.events = await CreateEvents(this.event)
+                    console.log(this.events[this.events.length - 1])
+                    this.$message({message: "L'évènement " + this.events[this.events.length - 1].name + " a bien été rajouté au calendrier",type: "success" })
                 }
-    
+
+                this.$root.$emit('AddEvent',this.events[this.events.length - 1])
+                this.event = new Event()
+                this.value = ""
             } catch (e) {
                 this.$message({
                     showClose: true,

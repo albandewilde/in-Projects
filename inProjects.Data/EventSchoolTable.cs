@@ -20,6 +20,10 @@ namespace inProjects.Data
         [SqlProcedure( "sCreateEventSchool" )]
         public abstract Task<EventStruct> CreateEvent( ISqlCallContext ctx, string name, DateTime begDate, DateTime endDate, int timePeriodId, int actorId);
 
+        [SqlProcedure( "sDeleteEventSchool" )]
+        public abstract Task<EventStruct> DeleteEvent( ISqlCallContext ctx, int actorId, int eventId, bool forceDestroy = true );
+
+
 
     }
 }

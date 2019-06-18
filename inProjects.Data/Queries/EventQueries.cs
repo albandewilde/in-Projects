@@ -26,7 +26,8 @@ namespace inProjects.Data.Queries
                "SELECT es.EventId,g.GroupName as Name,es.BegDate,es.EndDate" +
                " FROM IPR.tEventSchool es" +
                " JOIN CK.tGroup g on g.GroupId = es.EventId" +
-               " JOIN CK.vZoneDirectChildren zdc on zdc.ChildId = g.ZoneId and zdc.ZoneId = @ZoneID", new { ZoneID = idSchool } );
+               " JOIN CK.vZoneDirectChildren zdc on zdc.ChildId = g.ZoneId and zdc.ZoneId = @ZoneID" +
+               " ORDER BY es.EventId ASC", new { ZoneID = idSchool } );
 
             return result.AsList();
         }

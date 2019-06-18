@@ -1,4 +1,4 @@
-import { postAsync, getAsync } from "../helpers/apiHelper"
+import { postAsync, getAsync, deleteAsync } from "../helpers/apiHelper"
 import {Event} from "../modules/classes/EventSchool"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/Event"
@@ -48,6 +48,11 @@ export async function CreateEvents(event :Event) : Promise<Event[]> {
     }
 
     return events
+}
+
+export async function DeleteEvent(EventId :number)  {
+    const resp = await deleteAsync(`${endpoint}/DeleteEvent?EventId=${EventId}`)
+    return resp
 }
 
 export async function GetEventsType() : Promise<string[]> {
