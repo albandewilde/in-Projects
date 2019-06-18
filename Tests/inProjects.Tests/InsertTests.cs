@@ -42,7 +42,7 @@ namespace inProjects.Tests
                 List<TimedUserStruct> timedStudents = new List<TimedUserStruct>();
                 List<TimedUserStruct> timedStaffMembers = new List<TimedUserStruct>();
                 List<TimedUserStruct> timedJurys = new List<TimedUserStruct>();
-                await create_zone();
+                //await create_zone();
 
                 for( int i = 0; i < 100; i++ )
                 {
@@ -104,39 +104,39 @@ namespace inProjects.Tests
 
         }
 
-        public async Task create_zone()
-        {
-            var period = TestHelper.StObjMap.StObjs.Obtain<TimePeriodTable>();
-            var group = TestHelper.StObjMap.StObjs.Obtain <CustomGroupTable>();
+        //public async Task create_zone()
+        //{
+        //    var period = TestHelper.StObjMap.StObjs.Obtain<TimePeriodTable>();
+        //    var group = TestHelper.StObjMap.StObjs.Obtain <CustomGroupTable>();
 
-            using( var ctx = new SqlStandardCallContext() )
-            {
-                DateTime begdate = new DateTime(2019, 03, 01);
-                DateTime enddate = new DateTime( 2019, 07, 31 );
-                await period.CreateTimePeriodAsync( ctx, 1, begdate, enddate, "S", 4 );
+        //    using( var ctx = new SqlStandardCallContext() )
+        //    {
+        //        DateTime begdate = new DateTime(2019, 03, 01);
+        //        DateTime enddate = new DateTime( 2019, 07, 31 );
+        //        await period.CreateTimePeriodAsync( ctx, 1, begdate, enddate, "S", 4 );
 
-                begdate = begdate.AddMonths( 6 );
-                enddate = begdate.AddMonths( 6 );
-                await period.CreateTimePeriodAsync( ctx, 1, begdate, enddate, "S", 4 );
+        //        begdate = begdate.AddMonths( 6 );
+        //        enddate = begdate.AddMonths( 6 );
+        //        await period.CreateTimePeriodAsync( ctx, 1, begdate, enddate, "S", 4 );
 
-                begdate = begdate.AddMonths( 6 );
-                enddate = begdate.AddMonths( 6 );
-                await period.CreateTimePeriodAsync( ctx, 1, begdate, enddate, "S", 4 );
+        //        begdate = begdate.AddMonths( 6 );
+        //        enddate = begdate.AddMonths( 6 );
+        //        await period.CreateTimePeriodAsync( ctx, 1, begdate, enddate, "S", 4 );
 
-                await group.MoveGroupAsync( ctx, 1, 5, 22, GroupMoveOption.AutoUserRegistration);
-                await group.MoveGroupAsync( ctx, 1, 6, 22, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 7, 22, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 8, 22, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 9, 22, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 10, 22, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 11, 22, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 12, 22, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 13, 22, GroupMoveOption.AutoUserRegistration );
-                await group.MoveGroupAsync( ctx, 1, 14, 22, GroupMoveOption.AutoUserRegistration );
+        //        await group.MoveGroupAsync( ctx, 1, 5, 22, GroupMoveOption.AutoUserRegistration);
+        //        await group.MoveGroupAsync( ctx, 1, 6, 22, GroupMoveOption.AutoUserRegistration );
+        //        await group.MoveGroupAsync( ctx, 1, 7, 22, GroupMoveOption.AutoUserRegistration );
+        //        await group.MoveGroupAsync( ctx, 1, 8, 22, GroupMoveOption.AutoUserRegistration );
+        //        await group.MoveGroupAsync( ctx, 1, 9, 22, GroupMoveOption.AutoUserRegistration );
+        //        await group.MoveGroupAsync( ctx, 1, 10, 22, GroupMoveOption.AutoUserRegistration );
+        //        await group.MoveGroupAsync( ctx, 1, 11, 22, GroupMoveOption.AutoUserRegistration );
+        //        await group.MoveGroupAsync( ctx, 1, 12, 22, GroupMoveOption.AutoUserRegistration );
+        //        await group.MoveGroupAsync( ctx, 1, 13, 22, GroupMoveOption.AutoUserRegistration );
+        //        await group.MoveGroupAsync( ctx, 1, 14, 22, GroupMoveOption.AutoUserRegistration );
 
 
-            }
+        //    }
 
-        }
+        //}
     }
 }
