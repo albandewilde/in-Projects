@@ -2,11 +2,11 @@
 <div>
     <div class="masonry-layout">
         <div class="masonry-layout-panel masonry-layout-flip--md masonry-layout-flip" v-for="(o, index) in projectListToDisplay.length" :key="o">
-            <div class="masonry-layout-panel__content masonry-layout-flip__content" @click="redirect('/Project/' + projectListToDisplay[index].projectStudentId )">
+            <div class="masonry-layout-panel__content masonry-layout-flip__content">
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--front">
                     <h2>{{projectListToDisplay[index].groupName}}</h2>
                     <h3>{{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}} </h3>
-                    <img :src="projectListToDisplay[index].logo" class="image">
+                    <img :src="projectListToDisplay[index].logo" class="image"  @click="redirect('/Project/' + projectListToDisplay[index].projectStudentId )">
                 </div>
                 <br>
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--back">
