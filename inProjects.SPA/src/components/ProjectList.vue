@@ -95,6 +95,7 @@ export default class ProjectList extends Vue {
 .image{
       width: 100%; 
       height: 300px;
+    cursor: pointer;
 }
 
 .projectList{
