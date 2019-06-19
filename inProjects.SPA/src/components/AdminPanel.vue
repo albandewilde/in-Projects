@@ -27,6 +27,11 @@
                 </div>        
             </li>
         </div>
+
+    <el-menu-item index="13" @click="redirect(`/Events`)">
+        <font-awesome-icon icon="thumbs-up" />
+        <span v-if="isCollapse == false"> Evenements de l'ecole!</span>
+    </el-menu-item>
     </div>
 </template>
 

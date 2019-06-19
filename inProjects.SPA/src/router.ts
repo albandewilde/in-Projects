@@ -15,6 +15,7 @@ import AddJury from "./components/AddJury.vue"
 import ForumPlan from "./components/ForumPlan.vue"
 import ProjectUserVote from "./components/ProjectUserVote.vue"
 import ProjectJuryVote from "./components/ProjectJuryVote.vue"
+import EventSchool from "./components/EventSchool.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -88,6 +89,11 @@ export default new Router({
       path: "/ProjectJuryVote",
       name: "ProjectJuryVote",
       component: ProjectJuryVote
+     },
+     {
+      path: "/Events",
+      name: "Events",
+      component: EventSchool
      }
 
   ],

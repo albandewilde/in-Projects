@@ -79,6 +79,10 @@ export default class ProjectUserVote extends Vue {
             console.log(e)
         }
     }
+
+     redirect(idProject: string) {
+        this.$router.replace("/Project/" + idProject)
+    }
 }
 </script>
 
