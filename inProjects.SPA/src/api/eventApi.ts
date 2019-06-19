@@ -1,4 +1,4 @@
-import { postAsync, getAsync } from "../helpers/apiHelper"
+import { postAsync, getAsync, deleteAsync } from "../helpers/apiHelper"
 import {Event} from "../modules/classes/EventSchool"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/Event"
@@ -16,7 +16,7 @@ export async function GetEventsSchool() : Promise<Event[]> {
 }
 
 export async function UpdateEvents(event :Event) : Promise<Event[]> {
-    let send : Event = new Event(event.eventId,event.name,event.begDate,event.endDate)
+    let send : Event = new Event(event.eventId,event.name,event.begDate,event.endDate,event.isOther)
     
     send.begDate.setHours(send.begDate.getHours() + 2)
     send.endDate.setHours(send.endDate.getHours() + 2)
@@ -48,6 +48,11 @@ export async function CreateEvents(event :Event) : Promise<Event[]> {
     }
 
     return events
+}
+
+export async function DeleteEvent(EventId :number)  {
+    const resp = await deleteAsync(`${endpoint}/DeleteEvent?EventId=${EventId}`)
+    return resp
 }
 
 export async function GetEventsType() : Promise<string[]> {

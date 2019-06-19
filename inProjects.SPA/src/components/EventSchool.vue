@@ -1,6 +1,5 @@
 <template>
     <div>
-        <Error :error="error"/>
         <span style="font-size:200%">Créer un évenement</span>
            <br/>
 
@@ -29,9 +28,8 @@
 
         <br/>
         <br/>
-
-        <span style="font-size:200%">Liste des évenements</span>
-        <el-table :data="events">
+        <span style="font-size:200%">Calendrier des évenements</span>
+        <!-- <el-table :data="events">
              <el-table-column label="Nom de l'evenement" prop="name" ></el-table-column>
              <el-table-column label="Date de debut">
                   <template slot-scope="scope">
@@ -45,7 +43,11 @@
                     </el-date-picker>
                  </template>
              </el-table-column>
-        </el-table>
+        </el-table> -->
+
+         <calendar ></calendar>
+         <br/>
+         <br/>
     </div>
 </template>
 
@@ -54,10 +56,12 @@ import { Component, Vue } from "vue-property-decorator"
 import {GetEventsSchool, UpdateEvents, CreateEvents, GetEventsType} from "../api/eventApi"
 import {Event} from "../modules/classes/EventSchool"
 import Error from "./Erreur.vue"
+import Calendar from "./Calendar.vue"
 
 @Component({
     components: {
-        Error
+        Error,
+        Calendar
     }
 })
 export default class EventSchool extends Vue {
@@ -66,39 +70,21 @@ export default class EventSchool extends Vue {
     private event: Event = new Event()
     private value: string = ""
     private select: string[] = []
+    private dateNow: Date = new Date()
 
     async created(){
+        this.dateNow.setHours(0,0,0,0)
         this.events = await GetEventsSchool()
-
         this.select = await GetEventsType()
-    }
-    
-
-     async changeDate(idx: number) {
-    
-        this.error = []
-
-        if (this.checkDate()) {
-            this.error.push("Date de debut superieur ou egale à celle de fin")
-        } else {
-            try {
-
-             this.events = await UpdateEvents(this.events[idx])
-             this.$message({
-                    message: "L'évènement " + this.events[idx].name + " a bien été changé",
-                    type: "success"
-                })
-            } catch (e) {
-                this.error.push(e.message)
-            }
-
-        }
     }
 
     async onSubmit(){
         this.error = []
+
         if (!this.checkDate()) {
-            this.error.push("Date de debut superieur ou egale à celle de fin")
+             this.$message({showClose: true,duration: 5000, message: "Date de debut superieur ou egale à celle de fin",type: 'error'});
+        }else if(this.event.endDate < this.dateNow){
+            this.$message({showClose: true,duration: 5000, message: "Date de fin inférieur à celle d'aujourd'hui",type: 'error'});
         }else{
             try {
                 if (await this.$validator.validateAll()) {
@@ -108,10 +94,20 @@ export default class EventSchool extends Vue {
                         this.event.isOther = true;
                     }
                     this.events = await CreateEvents(this.event)
+                    console.log(this.events[this.events.length - 1])
+                    this.$message({message: "L'évènement " + this.events[this.events.length - 1].name + " a bien été rajouté au calendrier",type: "success" })
                 }
-    
+
+                this.$root.$emit('AddEvent',this.events[this.events.length - 1])
+                this.event = new Event()
+                this.value = ""
             } catch (e) {
-                this.error.push(e.message)
+                this.$message({
+                    showClose: true,
+                    duration: 5000,
+                    message: e.message,
+                    type: 'error'
+                 });
             }
         }
     }
@@ -119,7 +115,6 @@ export default class EventSchool extends Vue {
      checkDate() : boolean{
         let begDate!: Date
         let endDate!: Date
-
         begDate = new Date(this.event.begDate)
         endDate = new Date(this.event.endDate)
 
