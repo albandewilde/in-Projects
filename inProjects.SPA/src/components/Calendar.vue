@@ -4,6 +4,8 @@
             <calendar-view
                 :events="events"
                 :show-date="showDate"
+                :enable-drag-drop="true"
+                @drop-on-date="onDrop"
                 @click-event="onClickEvent"
                 class="theme-default holiday-us-traditional holiday-us-official">
                 <calendar-view-header
@@ -60,6 +62,8 @@ import {Event} from "../modules/classes/EventSchool"
         },
 
         async created(){
+            //setHours to compare date with endDate drag and drop
+            this.showDate.setHours(0,0,0,0)
             this.eventsInfo = await GetEventsSchool()
             await this.CreateEvents()
         },
@@ -147,6 +151,39 @@ import {Event} from "../modules/classes/EventSchool"
                     });
                 }
             },
+            async onDrop(event, date) {
+               
+                const eLength = Math.floor((date.getTime() - event.startDate.getTime() ) / (1000*60*60*24)) + 1
+         
+                var begDate = new Date(event.startDate)
+                var endDate = new Date(event.endDate)
+                begDate.setDate(begDate.getDate() + eLength);
+                endDate.setDate(endDate.getDate() + eLength);
+                if(endDate < this.showDate){
+                   this.$message({ message: "L'évènement " + event.title + " a une date de fin inférieur à celle d'aujourd'hui",type: "error"})
+                }else{
+
+                    let eventSend = new Event(event.originalEvent.id,  event.originalEvent.title,  begDate, endDate,false)
+                    
+                    try {
+                        await UpdateEvents(eventSend)
+                        this.$message({
+                                message: "L'évènement " + eventSend.name + " a bien été changé",
+                                type: "success"
+                        })
+                        event.originalEvent.startDate = begDate
+                        event.originalEvent.endDate = endDate
+                    } catch (e) {
+                        this.$message({
+                            showClose: true,
+                            duration: 5000,
+                            message: e.message,
+                            type: 'error'
+                        });
+                    }
+                }
+			},
+
 
             checkDate(){
                 let begDate = new Date(this.eventClicked.begDate)
@@ -178,6 +215,6 @@ import {Event} from "../modules/classes/EventSchool"
 	min-width: 30rem;
 	max-width: 100rem;
 	min-height: 50rem;
-    margin-left: 10%
+    margin-left: 5%
 }
 </style>
