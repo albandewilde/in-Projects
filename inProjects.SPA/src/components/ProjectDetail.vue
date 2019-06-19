@@ -106,10 +106,10 @@ export default class ProjectDetail extends Vue {
         const sheet = GenerateSheet(
             ["None", "None"],
             project.name,
-            "Semestre " + project.semester,
+            project.semester,
             project.sector,
             project.technos,
-            "data:image/jpeg;base64," + project.logo,
+            project.logo,
             project.slogan,
             project.pitch,
             project.team,

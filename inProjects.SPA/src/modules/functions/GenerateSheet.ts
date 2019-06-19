@@ -3,9 +3,8 @@ import pdfFonts from "pdfmake/build/vfs_fonts"
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 export default function GenerateSheet(
-    plc: Array < string > =["E07", "26"],
+    plc: Array<string> =["E07", "26"],
     project_name: string = "ITI'Humain",
-
     sem: string = "Semestre 1",
     sector: string = "SR",
     tec: Array < string > =["Rust", "Kotlin", "Python", "Bottle"],
@@ -16,7 +15,7 @@ export default function GenerateSheet(
 ) {
     // format data
     const place: string = plc.join("\n")
-    const semester: string = sem + (sector ? " - " + sector : "")
+    const semester: string = "Semestre " + sem + (sector ? " - " + sector : "")
 
     team[1] = removeNonString(team[1])
     const leader = team[0] + (team[1].length > 0 && !["", " ", undefined, null].includes(team[0]) ? ", " : "")
@@ -27,6 +26,8 @@ export default function GenerateSheet(
     let missing = 11 - tec.length
     for (let idx = 0; idx < missing; idx += 1) { tec.push("") }
     const technos: string = tec.join("\n")
+
+    logo = "data:image/jpeg;base64," + logo
 
     // create the pdf
     const sheet = {

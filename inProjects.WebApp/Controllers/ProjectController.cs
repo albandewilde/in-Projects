@@ -17,6 +17,7 @@ using inProjects.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Linq;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -161,9 +162,7 @@ namespace inProjects.WebApp.Controllers
             }
         }
 
-        [HttpGet("getProjectSheet")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetProjectSheet(int idx)
+        public async Task<ProjectPiSheet> GetProjectPiSheet(int idx)
         {
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             int userId = _authenticationInfo.ActualUser.UserId;
@@ -185,7 +184,7 @@ namespace inProjects.WebApp.Controllers
             string name = pd.Name;
             // semesters of the project
             List<int> semesters = new List<int>();
-            foreach (string elem in lst_grp) if (elem[0] == 'S') semesters.Add(int.Parse(elem.Substring(1, elem.Length-1)));
+            foreach (string elem in lst_grp) if (elem[0] == 'S' && (elem[1] == '0' || elem[1] == '1')) semesters.Add(int.Parse(elem.Substring(1, elem.Length-1)));
             semesters.Sort();
             string semester = String.Join(", ", semesters);
 
@@ -211,8 +210,27 @@ namespace inProjects.WebApp.Controllers
             (string, string[]) team = (leader, members);
 
             string[] technos = pd.Technologies.ToArray();
+            
+            return new ProjectPiSheet(name, semester, sector, logo, slogan, pitch, team, technos);
+        }
 
-            return Ok(new ProjectPiSheet(name, semester, sector, logo, slogan, pitch, team, technos));
+        [HttpGet("getProjectSheet")]
+        [AllowAnonymous]
+        public async Task<IActionResult> SendProjectSheet(int idx)
+        {
+            return Ok(await GetProjectPiSheet(idx));
+        }
+
+        [HttpGet("GetAllPiSheet")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetAllPiSheet()
+        {
+            List<AllProjectInfoData> projects = GetAllProjects().Result.ToList();
+            List<ProjectSheet> projectsSheet = new List<ProjectSheet>();
+
+            foreach (AllProjectInfoData projet in projects) projectsSheet.Add(await GetProjectPiSheet(projet.ProjectStudentId));
+            
+            return Ok(projectsSheet);
         }
     }
 }

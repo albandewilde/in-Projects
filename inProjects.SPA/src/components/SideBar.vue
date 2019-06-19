@@ -61,6 +61,7 @@
         <el-menu-item-group>
             <el-menu-item index="4-1" @click="redirect(`/projectList`)">Liste des projets</el-menu-item>
             <el-menu-item index="4-2">Trouver un projet</el-menu-item>
+            <el-menu-item index="4-3" @click="GetAllProjectSheet()">Generer toutes les fiches projet</el-menu-item>
         </el-menu-item-group>
         </el-submenu>
 
@@ -106,6 +107,13 @@ import { getGroupUserAccessPanel } from "../api/groupApi"
 import { getAuthService } from "../modules/authService"
 import * as SignalR from "@aspnet/signalr"
 import { SignalRGestion } from "../modules/classes/SignalR"
+import {GetAllProject} from '../api/projectApi'
+import {GenerateSheet} from "../modules/functions/GenerateSheet"
+import {ProjectSheet} from "../modules/classes/ProjectSheet"
+import {GetAllSheet} from "../api/projectApi"
+import pdfMake from "pdfmake/build/pdfmake"
+import JSZip from "jszip"
+
 
 @Component({
   components: {
@@ -126,8 +134,8 @@ export default class SideBar extends Vue {
     private co!: SignalR.HubConnection
     private signalr: SignalRGestion = new SignalRGestion()
 
-@Watch("authService.authenticationInfo.level", { immediate: true, deep: true })
-  async onLevelChange() {
+    @Watch("authService.authenticationInfo.level", { immediate: true, deep: true })
+    async onLevelChange() {
         await this.getAuthorizedAccess()
 
     }
@@ -138,28 +146,77 @@ export default class SideBar extends Vue {
             await this.signalr.connect()
         }
     }
+
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
+
     handleClose(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
+
     changeCollapse() {
         this.isCollapse = !this.isCollapse
     }
+
     redirect(destination: string) {
         this.$router.replace(destination)
     }
+
     async logout() {
         await this.authService.logout(true)
         this.$router.replace("/")
     }
+
     async getAuthorizedAccess() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
         console.log("ok" + this.whatTimed)
         this.$store.state.currentUserType = this.whatTimed
         console.log("store :")
         console.log(this.$store.state)
+    }
+
+    async GetAllProjectSheet() {
+        // get all project
+        const projects: Array<ProjectSheet> = await GetAllSheet()
+        const projectsSheets: Array<object> = []
+
+        // create ou archive
+        let zip = new JSZip().folder("fiches")
+
+
+        for (const project of projects) {
+            const sheet = pdfMake.createPdf(
+                    GenerateSheet(
+                        [
+                            "None",
+                            "None"
+                        ],
+                        project.name,
+                        project.semester,
+                        project.sector,
+                        project.technos,
+                        project.logo,
+                        project.slogan,
+                        project.pitch,
+                        project.team
+                    )
+                )
+            projectsSheets.push(sheet)
+            zip.file(sheet)
+            
+        }
+        console.log(zip)
+        const foo = await zip.generateAsync({type: "blob"})
+
+        // make the download
+        let blob = new Blob([foo], {type: "application/zip"})
+        let link = document.createElement("a")
+        link.href = window.URL.createObjectURL(blob)
+        link.download = "Fiches.zip"
+        link.click()
+
+        console.log(projectsSheets)
     }
 }
 </script>
