@@ -1,15 +1,13 @@
 <template>
     <div id="app">
 
-        <el-container style="height: 100vh">
-            <SideBar></SideBar>
+      <SideBar></SideBar>
+      <div class="content">
+        <el-main class="vue">
+            <router-view></router-view>
+        </el-main>
+      </div>
 
-            <el-main class="vue">
-                <router-view></router-view>
-            </el-main>
-
-        </el-container>
-      
     </div>
 </template>
 
@@ -33,5 +31,11 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+
+}
+.content{
+  margin-left: 25%;
+  padding: 1px 16px;
+  height: 1000px;
 }
 </style>
