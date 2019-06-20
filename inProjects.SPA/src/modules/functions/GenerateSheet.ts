@@ -3,7 +3,7 @@ import pdfFonts from "pdfmake/build/vfs_fonts"
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 export default function GenerateSheet(
-    plc: Array<string> =["E07", "26"],
+    plc: Array<string> = ["E07", "26"],
     project_name: string = "ITI'Humain",
     sem: string = "Semestre 1",
     sector: string = "SR",
@@ -31,6 +31,23 @@ export default function GenerateSheet(
 
     // create the pdf
     const sheet = {
+        footer: {
+            columns: [
+                { text : [
+                    {
+                        text: leader,
+                        style: "leader"
+                    },
+
+                    {
+                        text: members,
+                        style: "members"
+                    }
+                ],
+                alignment:"center"
+                }
+            ]
+          },
         content: [
             {
                 text: place,
@@ -72,21 +89,6 @@ export default function GenerateSheet(
             {
                 text: pitch,
                 style: "pitch"
-            },
-
-            {
-                text: [
-                    {
-                        text: leader,
-                        style: "leader"
-                    },
-
-                    {
-                        text: members,
-                        style: "members"
-                    }
-                ],
-                style: "team"
             }
         ],
 

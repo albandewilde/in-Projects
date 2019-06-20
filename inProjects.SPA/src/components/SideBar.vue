@@ -61,7 +61,6 @@
         <el-menu-item-group>
             <el-menu-item index="4-1" @click="redirect(`/projectList`)">Liste des projets</el-menu-item>
             <el-menu-item index="4-2">Trouver un projet</el-menu-item>
-            <el-menu-item index="4-3" @click="download()">Generer toutes les fiches projet</el-menu-item>
         </el-menu-item-group>
         </el-submenu>
 
@@ -178,46 +177,6 @@ export default class SideBar extends Vue {
         console.log("store :")
         console.log(this.$store.state)
     }
-
-    async GetAllProjectSheet(index : number) {
-            const sheet =  pdfMake.createPdf(
-                    GenerateSheet(
-                        [
-                            "None",
-                            "None"
-                        ],
-                        this.projects[index].name,
-                        this.projects[index].semester,
-                        this.projects[index].sector,
-                        this.projects[index].technos,
-                        this.projects[index].logo,
-                        this.projects[index].slogan,
-                        this.projects[index].pitch,
-                        this.projects[index].team
-                    )
-                )
-                sheet.getBlob(async (blob :Blob) => {
-                    this.zip.file("fiches/"+this.projects[index].name + ".pdf",blob)
-                    if(this.projects.length -1 != index){
-                        await this.GetAllProjectSheet(++index)
-                    }else{
-                     this.zip.generateAsync({type:"blob"})
-                        .then(function(content) {
-                        saveAs(content, "fiches.zip");
-                    });
-                    }
-                 });
-    }
-
-   async download(){
-       let index = 0 
-       this.zip = new JSZip()
-       this.zip.folder("fiches")
-       this.projects = await GetAllSheet()
-       await this.GetAllProjectSheet(index)
-
-    }
-
 }
 </script>
 

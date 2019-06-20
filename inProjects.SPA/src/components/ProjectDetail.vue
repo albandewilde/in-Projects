@@ -16,7 +16,7 @@
             </span>
         </div>
 
-        <div class="sheet">
+        <div v-if="CheckedAuthorize('Administration')" class="sheet">
             <el-button type="primary" class="generate_sheet" @click="CreateSheet(idProject)">
                 Fiche du projet
             </el-button>
@@ -60,6 +60,7 @@
 import { Component, Vue } from "vue-property-decorator"
 import { ProjectDetails } from "../modules/classes/ProjectDetails"
 import { getInfosProject, verifyProjectFav, favProject } from "../api/submitProjectApi"
+import { getGroupUserAccessPanel } from "../api/groupApi"
 import {GetProject} from "../api/getProject"
 import {GenerateSheet} from "../modules/functions/GenerateSheet"
 import pdfMake from "pdfmake/build/pdfmake"
@@ -72,7 +73,7 @@ export default class ProjectDetail extends Vue {
     private idZone: number = 4
 
     async mounted() {
-
+    
         this.idProject = Number(this.$route.params.projectId)
         this.projectDetail = await getInfosProject(this.idProject, this.idZone)
         this.isFav = await verifyProjectFav(this.idProject)
@@ -114,7 +115,10 @@ export default class ProjectDetail extends Vue {
             project.pitch,
             project.team,
         );
-        pdfMake.createPdf(sheet).open()
+        pdfMake.createPdf(sheet).download()
+    }
+    CheckedAuthorize(needToBe: string){
+        return this.$store.state.currentUserType.find(x => x == needToBe) != null ? true : false
     }
 
     
