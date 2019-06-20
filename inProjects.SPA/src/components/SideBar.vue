@@ -61,7 +61,7 @@
         <el-menu-item-group>
             <el-menu-item index="4-1" @click="redirect(`/projectList`)">Liste des projets</el-menu-item>
             <el-menu-item index="4-2">Trouver un projet</el-menu-item>
-            <el-menu-item index="4-3" @click="GetAllProjectSheet()">Generer toutes les fiches projet</el-menu-item>
+            <el-menu-item index="4-3" @click="download()">Generer toutes les fiches projet</el-menu-item>
         </el-menu-item-group>
         </el-submenu>
 
@@ -112,6 +112,7 @@ import {GenerateSheet} from "../modules/functions/GenerateSheet"
 import {ProjectSheet} from "../modules/classes/ProjectSheet"
 import {GetAllSheet} from "../api/projectApi"
 import pdfMake from "pdfmake/build/pdfmake"
+import { saveAs } from "file-saver"
 import JSZip from "jszip"
 
 
@@ -131,6 +132,8 @@ export default class SideBar extends Vue {
     whatTimed: string[] = []
     ZoneId: number = 4
     authService: AuthService = getAuthService()
+    private projects : Array<ProjectSheet> = []
+    private zip : JSZip = new JSZip()
     private co!: SignalR.HubConnection
     private signalr: SignalRGestion = new SignalRGestion()
 
@@ -176,48 +179,45 @@ export default class SideBar extends Vue {
         console.log(this.$store.state)
     }
 
-    async GetAllProjectSheet() {
-        // get all project
-        const projects: Array<ProjectSheet> = await GetAllSheet()
-        const projectsSheets: Array<object> = []
-
-        // create ou archive
-        let zip = new JSZip().folder("fiches")
-
-
-        for (const project of projects) {
-            const sheet = pdfMake.createPdf(
+    async GetAllProjectSheet(index : number) {
+            const sheet =  pdfMake.createPdf(
                     GenerateSheet(
                         [
                             "None",
                             "None"
                         ],
-                        project.name,
-                        project.semester,
-                        project.sector,
-                        project.technos,
-                        project.logo,
-                        project.slogan,
-                        project.pitch,
-                        project.team
+                        this.projects[index].name,
+                        this.projects[index].semester,
+                        this.projects[index].sector,
+                        this.projects[index].technos,
+                        this.projects[index].logo,
+                        this.projects[index].slogan,
+                        this.projects[index].pitch,
+                        this.projects[index].team
                     )
                 )
-            projectsSheets.push(sheet)
-            zip.file(sheet)
-            
-        }
-        console.log(zip)
-        const foo = await zip.generateAsync({type: "blob"})
-
-        // make the download
-        let blob = new Blob([foo], {type: "application/zip"})
-        let link = document.createElement("a")
-        link.href = window.URL.createObjectURL(blob)
-        link.download = "Fiches.zip"
-        link.click()
-
-        console.log(projectsSheets)
+                sheet.getBlob(async (blob :Blob) => {
+                    this.zip.file("fiches/"+this.projects[index].name + ".pdf",blob)
+                    if(this.projects.length -1 != index){
+                        await this.GetAllProjectSheet(++index)
+                    }else{
+                     this.zip.generateAsync({type:"blob"})
+                        .then(function(content) {
+                        saveAs(content, "fiches.zip");
+                    });
+                    }
+                 });
     }
+
+   async download(){
+       let index = 0 
+       this.zip = new JSZip()
+       this.zip.folder("fiches")
+       this.projects = await GetAllSheet()
+       await this.GetAllProjectSheet(index)
+
+    }
+
 }
 </script>
 
