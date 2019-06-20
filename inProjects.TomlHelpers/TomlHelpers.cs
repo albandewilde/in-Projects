@@ -66,10 +66,13 @@ namespace inProjects.TomlHelpers
                 return (false, "Failed to parse the toml file, is the file a correct toml format ?");
             }
 
-            if(!toml.isValid())    // check if we got fild we want
+            (bool isValid, string message) = toml.isValid();
+            if(!isValid)    // check if we got fild we want
             {
-                return (false, "There is missing or bad field in the toml file");
+                return (false, message);    // "There is missing or bad field in the toml file");
             }
+
+            toml.logo.url = GetTomlFromGoogleDrive.GetUrlRessource(toml.logo.url);
 
             try    // register the project in the bdd
             {
@@ -95,7 +98,7 @@ namespace inProjects.TomlHelpers
         public Team team {get; set;}
         public OthersDocuments othersDocuments {get; set;}
 
-        public bool isValid()
+        public (bool, string) isValid()
         {
             // properties that are optional, they can be null
             string[] optionalProperties = new string[]{"othersDocuments"};
@@ -104,19 +107,12 @@ namespace inProjects.TomlHelpers
             {
                 object propertieValue = propertie.GetValue(this, null);
 
-                if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return false;
-                if (
-                    propertieValue is IProjectField //&&
-                    /*(
-                        // an optional propertie can be null, we check it here
-                        propertieValue != null &&
-                        optionalProperties.Contains(propertie.Name)
-                    )*/
-                ) if (!(propertieValue as IProjectField).isValid()) {
-                    return false;
+                if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return (false, "The propertie " + propertie.ToString() + " is missing");
+                if (propertieValue is IProjectField && !(propertieValue as IProjectField).isValid()) {
+                    return (false, "The propertie " + propertie.ToString() + "isn't valid.");
                 }
             }
-            return true;
+            return (true, "All good");
         }
     }
 
