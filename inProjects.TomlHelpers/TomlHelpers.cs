@@ -66,9 +66,9 @@ namespace inProjects.TomlHelpers
                 method = method.MakeGenericMethod(projectType);
                 toml = (Project)method.Invoke(null, new object[] { tomlString }); 
             }
-            catch
+            catch(Exception e)
             {
-                return (false, "Failed to parse the toml file, is the file a correct toml format ?");
+                return (false, "Failed to parse the toml file, is the file a correct toml format ?\n" + e);
             }
 
             (bool isValid, string message) = toml.isValid();
