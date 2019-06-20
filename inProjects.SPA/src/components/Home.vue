@@ -16,12 +16,12 @@
         <div class="masonry-layout-panel">
             <div class="masonry-layout-panel__content">
                 <h3>IN'TECH, c'est quoi ? </h3>
-                <br>
-                IN’TECH est une École Supérieure d’Ingénierie Informatique créée en 2002. Association à but non lucratif (loi 1901), IN'TECH est rattachée au Groupe d'enseignement supérieur et de recherche ESIEA.
-                <br>
-                Présente sur six campus : Paris, Agen, Dax, Montauban, Pamiers, Nîmes et Béziers, l’école s’adresse aux passionnés d’informatique qui, grâce à sa pédagogie par projets et son contact permanent avec le monde de l’entreprise, s’installe comme un acteur majeur de l’économie du territoire. Elle délivre en 5 ans une certification reconnue par l’État : un titre d’Expert en Ingénierie du Logiciel et un titre d’Expert en Systèmes et Réseaux.
-                IN’TECH ouvre sa formation à des profils très variés et fonde sa pédagogie innovante sur l’accompagnement de chaque élève, ainsi que leur professionnalisation dès leur rentrée dans l’école.
-                IN’TECH est un établissement d’enseignement supérieur technique privé en informatique.
+                <p style="text-align: justify;">
+                    IN’TECH est une École Supérieure d’Ingénierie Informatique créée en 2002. Association à but non lucratif (loi 1901), IN'TECH est rattachée au Groupe d'enseignement supérieur et de recherche ESIEA.
+                    Présente sur six campus : Paris, Agen, Dax, Montauban, Pamiers, Nîmes et Béziers, l’école s’adresse aux passionnés d’informatique qui, grâce à sa pédagogie par projets et son contact permanent avec le monde de l’entreprise, s’installe comme un acteur majeur de l’économie du territoire. Elle délivre en 5 ans une certification reconnue par l’État : un titre d’Expert en Ingénierie du Logiciel et un titre d’Expert en Systèmes et Réseaux.
+                    IN’TECH ouvre sa formation à des profils très variés et fonde sa pédagogie innovante sur l’accompagnement de chaque élève, ainsi que leur professionnalisation dès leur rentrée dans l’école.
+                    IN’TECH est un établissement d’enseignement supérieur technique privé en informatique.
+                </p>
             </div>
         </div>
         <div class="mansonry-layout-panel">
