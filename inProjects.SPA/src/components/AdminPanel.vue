@@ -2,28 +2,28 @@
     <div>
         <div class="okok">
             <li class="dropdown">
-                <a class="dropbtn">Periode</a>
+                <el-button id="buttons" class="dropbtn">Periode</el-button>
                 <div class="dropdown-content">
-                    <a @click="redirect('/createPeriod')">Créer une période</a>
-                    <a @click="redirect('/listPeriod')">Voir toutes les periodes</a>
+                    <el-button id="buttons" @click="redirect('/createPeriod')">Créer une période</el-button>
+                    <el-button id="buttons" @click="redirect('/listPeriod')">Voir toutes les periodes</el-button>
                 </div>        
             </li>
         </div>
         <div class="okok">
             <li class="dropdown">
-                <a class="dropbtn">Liste</a>
+                <el-button id="buttons" class="dropbtn">Liste</el-button>
                 <div class="dropdown-content">
-                    <a @click="redirect('/student')">Liste des étudiants</a>
-                    <a  @click="redirect('/staffMember')">Liste des professeurs</a>
+                    <el-button id="buttons" @click="redirect('/student')">Liste des étudiants</el-button>
+                    <el-button id="buttons"  @click="redirect('/staffMember')">Liste des professeurs</el-button>
                 </div>        
             </li>
         </div>
         <div class="okok">
             <li class="dropdown">
-                <a class="dropbtn">Forum</a>
+                <el-button id="buttons" class="dropbtn">Forum</el-button>
                 <div class="dropdown-content">
-                    <a @click="redirect('/plan')">Plan</a>
-                    <a  @click="redirect('/addJury')">Gestion forum</a>
+                    <el-button id="buttons" @click="redirect('/plan')">Plan</el-button>
+                    <el-button id="buttons"  @click="redirect('/addJury')">Gestion forum</el-button>
                 </div>        
             </li>
         </div>
@@ -86,6 +86,15 @@ async created() {
   text-decoration: none;
   display: block;
   text-align: left;
+}
+#buttons {
+  display: block;
+  color: white;
+  /* padding: 8px 16px; */
+  text-decoration: none;
+  background-color: #2d3e4f;
+  border: none;
+  width: 100%;
 }
 
 .dropdown-content a:hover {background-color: red;}

@@ -2,18 +2,18 @@
 <div>
     <ul class="sidenav">
         <div class="in-menu">
-            <li><a class="active" @click="redirect('/')">IN'TECH</a></li>
+            <li><center><el-button id="intech" class="active" @click="redirect('/')">IN'TECH</el-button></center></li>
             <div v-if="authService.authenticationInfo.level != 0">
                 <li>
-                    <a><img src="../assets/deco.png" height="30px" @click="logout()">&nbsp
-                    <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/></a>
+                    <el-button id="buttons"><img src="../assets/deco.png" height="30px" @click="logout()">&nbsp
+                    <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/></el-button>
                 </li>
             </div>
             
             <div v-else>
-                <li><a><img src="../assets/co.png" @click="redirect('/connection')"></a></li>
+                <li><center><el-button id="buttons"><img src="../assets/co.png" @click="redirect('/connection')"></el-button></center></li>
             </div>
-            <li><a @click="redirect('/projectList')">Liste des projets</a></li>
+            <li><center><el-button id="buttons" @click="redirect('/projectList')">Liste des projets</el-button></center></li>
             <div v-for="(o, idx) in whatTimed" :key="idx">
                 <div v-if="o == 'Administration'">
                     <AdminPanel></AdminPanel>
@@ -127,6 +127,21 @@ ul.sidenav {
   position: fixed;
   height: 100%;
   overflow: auto;
+}
+#intech {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  width: 100%;
+}
+#buttons {
+  display: block;
+  color: white;
+  /* padding: 8px 16px; */
+  text-decoration: none;
+  background-color: #2d3e4f;
+  border: none;
+  width: 100%;
 }
 
 ul.sidenav li a {
