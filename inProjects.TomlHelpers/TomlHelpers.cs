@@ -117,7 +117,7 @@ namespace inProjects.TomlHelpers
 
                 if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return (false, "The propertie " + propertie.ToString() + " is missing");
                 if (propertieValue is IProjectField && !(propertieValue as IProjectField).isValid()) {
-                    return (false, "The propertie " + propertie.ToString() + "isn't valid.");
+                    return (false, "The propertie " + propertie.ToString() + " isn't valid.");
                 }
             }
             return (true, "All good");
