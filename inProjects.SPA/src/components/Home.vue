@@ -63,8 +63,8 @@
         </div>
         <div class="masonry-layout-panel">
             <div class="masonry-layout-panel__content">
+                <img src="../assets/contactCard.png" height="75" width="85">
                 <h3>Contact</h3>
-                <br>
                 Campus IN'TECH Paris
                 <br>
                 Par mail: contact@intechinfo.fr
