@@ -69,6 +69,7 @@ async created() {
 
 .dropdown {
   display: inline-block;
+  width: 100%
 }
 
 .dropdown-content {
@@ -82,7 +83,7 @@ async created() {
 
 .dropdown-content a {
   color: black;
-  padding: 12px 16px;
+//   padding: 12px 16px;
   text-decoration: none;
   display: block;
   text-align: left;
@@ -94,7 +95,6 @@ async created() {
   text-decoration: none;
   background-color: #2d3e4f;
   border: none;
-  width: 100%;
 }
 
 .dropdown-content a:hover {background-color: red;}
@@ -104,6 +104,6 @@ async created() {
 }
 
 .okok{
-    display: block  
+    display: block;
 }
 </style>
