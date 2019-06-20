@@ -1,5 +1,6 @@
 <template>
     <el-form ref="user" :label-position="labelPosition" :model="user" label-width="100px">
+    <form v-on:submit.prevent.stop="Register">
         <center>
             <b>
                 <el-form-item label="Nom" style="width:60%;" prop="lastName">
@@ -33,6 +34,8 @@
                 </el-form-item>
             </b>
         </center>
+        <input type="submit" hidden/>
+    </form>
     </el-form>
 </template>
 
