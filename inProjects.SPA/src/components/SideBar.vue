@@ -134,6 +134,7 @@ ul.sidenav li a {
   color: white;
   padding: 8px 16px;
   text-decoration: none;
+  cursor: pointer;
 }
  
 ul.sidenav li a.active {

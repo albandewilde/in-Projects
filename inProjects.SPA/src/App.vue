@@ -34,8 +34,8 @@ export default class App extends Vue {}
 
 }
 .content{
-  margin-left: 25%;
-  padding: 1px 16px;
-  height: 1000px;
+  margin-left: 15%;
+  // padding: 1px 16px;
+  height: 100vh;
 }
 </style>
