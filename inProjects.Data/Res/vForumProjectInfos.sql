@@ -1,7 +1,7 @@
 CREATE VIEW IPR.vForumProjectInfos
 AS
 
-SELECT g.GroupName as ProjectName,
+SELECT g.GroupName as [Name],
        p.ProjectStudentId,
        p.Logo,
        p.Slogan,
