@@ -1,14 +1,12 @@
 using CK.Core;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
-using Dapper;
 using FluentAssertions;
 using inProjects.Data;
 using inProjects.Data.Data.TimedUser;
 using inProjects.Data.Queries;
 using NUnit.Framework;
 using System;
-using System.Data;
 using System.Threading.Tasks;
 using static CK.Testing.DBSetupTestHelper;
 
@@ -105,17 +103,21 @@ namespace inProjects.Tests
                 var id = await timePeriod.CreateTimePeriodAsync( ctx, 1, dateTime, dateTime2, "S", idSchool );
                 // 0 = Anon Create TimedUser
                 TimedUserStruct result = await userTimed.CreateOrUpdateTimedUserAsync( ctx, 0, id, userId );
-                var ProjectCreate = await projectStudent.CreateProjectStudent( ctx, 1, 2, "name", 1, "a;b;c", "aaa", "okok", "wwww", result.TimedUserId, 1, "I" );
+                var ProjectCreate = await projectStudent.CreateProjectStudent( ctx, 1, 2, "name", 1, "a;b;c", "aaa", "okok", "wwww", 1, "I" );
 
                 await noteTable.AddOrUpdateNote( ctx, result.TimedUserId, ProjectCreate.ProjectStudentId, grade );
 
                 Assert.That( await timedUserQueries.GetProjectGradeSpecificTimedUser( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
+             Assert.That( await timedUserQueries.GetProjectGradeSpecificTimedUser( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
+             //Assert.That( await timedUserQueries.GetProjectGradeSpecJury( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
 
                 grade = 15;
 
                 await noteTable.AddOrUpdateNote( ctx, result.TimedUserId, ProjectCreate.ProjectStudentId, grade );
 
                 Assert.That( await timedUserQueries.GetProjectGradeSpecificTimedUser( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
+           //     Assert.That( await timedUserQueries.GetProjectGradeSpecificTimedUser( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
+           //     Assert.That( await timedUserQueries.GetProjectGradeSpecJury( ProjectCreate.ProjectStudentId, result.TimedUserId ) == grade );
 
             }
         }

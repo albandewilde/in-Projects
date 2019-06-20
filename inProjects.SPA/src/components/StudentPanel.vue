@@ -1,12 +1,9 @@
 <template>
 <div>
-    <el-submenu index="94">
-            <template slot="title">
-                <font-awesome-icon icon="user-tie" size="lg" />
-                <span v-if="isCollapse == false"> StudentPanel </span>
-            </template>
-    </el-submenu>
-
+        <el-menu-item index="94" @click="redirect(`/submit_project`)">
+             <font-awesome-icon icon="plus-square" size="lg" />
+            <span v-if="isCollapse == false"> Deposer un Projet</span>
+        </el-menu-item>
 </div>
 </template>
 

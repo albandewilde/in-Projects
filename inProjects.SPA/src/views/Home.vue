@@ -3,6 +3,8 @@
     <img src="../assets/intechLogo.png" width="300em;"><br>
     
     <Countdown></Countdown>
+    <b><u>NOUS PENDANT CE PROJET :</u></b><br><br>
+    <img src="/nous.gif">
 
   </div>
 </template>

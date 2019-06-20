@@ -7,6 +7,9 @@ using inProjects.Data;
 using CK.SqlServer.Setup;
 using System.Threading.Tasks;
 using System.Net.Mail;
+using inProjects.Data.Queries;
+using CK.Core;
+using CK.SqlServer;
 
 namespace inProjects.TomlHelpers
 {
@@ -29,7 +32,9 @@ namespace inProjects.TomlHelpers
             ProjectStudentTable projectTable,
             int userId,
             SqlDefaultDatabase db,
-            CustomGroupTable groupTable
+            CustomGroupTable groupTable,
+            IStObjMap stObjMap,
+            ProjectUrlTable projectUrlTable
         )
         // given url, we register the project if he can be downloaded and parsed
         {
@@ -74,9 +79,11 @@ namespace inProjects.TomlHelpers
 
             toml.logo.url = GetTomlFromGoogleDrive.GetUrlRessource(toml.logo.url);
 
+            if(toml.team.leader!= "None" && !await toml.team.isMailExisting( toml.team.leader, stObjMap ) ) return (false, "The leader email is wrong or does not exists in our db");
+            foreach(string mail in toml.team.members ) { if( !await toml.team.isMailExisting( mail, stObjMap ) ) return (false, "one of the members mail is wrong"); };
             try    // register the project in the bdd
             {
-                await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable);
+                await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable, projectUrlTable);
             }
             catch 
             {
@@ -96,6 +103,7 @@ namespace inProjects.TomlHelpers
         public Slogan slogan {get; set;}
         public Pitch pitch {get; set;}
         public Team team {get; set;}
+        public Git git { get; set; }
         public OthersDocuments othersDocuments {get; set;}
 
         public (bool, string) isValid()
@@ -189,6 +197,7 @@ namespace inProjects.TomlHelpers
             else    // there is a leader
             {
                 if (!Team.isValidEmail(leader)) return false;
+                //check the leader mail if there is a leader
                 foreach (string member in members){if (member == null || member == "" || !Team.isValidEmail(member)) return false;}
                 return true;
             }
@@ -206,6 +215,37 @@ namespace inProjects.TomlHelpers
             {
                 return false;
             }
+        }
+
+        public async Task<bool> isMailExisting(string email, IStObjMap stObjMap )
+        {
+            try
+            {
+                SqlDefaultDatabase db = stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+                using( var ctx = new SqlStandardCallContext() )
+                {
+                    UserQueries groupQueries = new UserQueries( ctx, db );
+                    int exists = await groupQueries.CheckEmail( email );
+                    if( exists != 0 ) return true;
+                    else return false;
+                    
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
+
+    public class Git: IProjectField
+    {
+        public string url { get; set; }
+
+        public bool isValid()
+        {
+            if( this.url == null || this.url == "") return false;
+            return true;
         }
     }
 

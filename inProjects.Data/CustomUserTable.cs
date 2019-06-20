@@ -22,6 +22,9 @@ namespace inProjects.Data
         [SqlProcedure( "transform:sUserCreate" )]
         public abstract Task<int> CreateUserAsync( ISqlCallContext context, int actorId, string userName, string firstName, string lastName );
 
+        [SqlProcedure( "sUpdateUserInfos" )]
+        public abstract Task<int> UpdateUserInfos( ISqlCallContext ctx, string firstName, string lastName, string primaryEmail, string secondaryEmail, int userId );
+
         public async Task<UserInfosModel> GetUserName ( ISqlCallContext ctx, string email )
         {
             return await ctx[Database].Connection.QueryFirstAsync<UserInfosModel>(

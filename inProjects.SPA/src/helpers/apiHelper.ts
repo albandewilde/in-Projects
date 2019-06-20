@@ -1,6 +1,6 @@
 import {getAxios} from "../modules/authService"
 
-export  async function postAsync(url: string, data: any) {
+export  async function postAsync(url: string, data: any, ) {
   return getAxios().post(url, data)
       .then((response) => {
         return response

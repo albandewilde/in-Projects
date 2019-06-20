@@ -5,7 +5,8 @@
   ],
   "linterOptions": {
     "exclude": [
-      "node_modules/**"
+      "node_modules/**",
+      "*.json"
     ]
   },
   "rules": {
@@ -18,6 +19,7 @@
     "indent": [true, "spaces", 4],
     "member-access": false,
     "max-classes-per-file": false,
+    "max-line-length": false,
 
 
     "no-consecutive-blank-lines": false,

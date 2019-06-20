@@ -3,6 +3,7 @@ using CK.Core;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data;
+using inProjects.Data.Data.Period;
 using inProjects.Data.Data.TimePeriod;
 using inProjects.Data.Queries;
 using inProjects.ViewModels;
@@ -44,12 +45,18 @@ namespace inProjects.WebApp.Controllers
                     return this.CreateResult( result );
                 }
 
-                var idZone = await timePeriod.CreateTimePeriodAsync( ctx, 1, createPeriodModel.begDate, createPeriodModel.endDate, createPeriodModel.Kind, createPeriodModel.idZone );
-                if(idZone == 0 )
+                createPeriodModel.begDate =  createPeriodModel.begDate.AddDays( 1 );
+                createPeriodModel.endDate = createPeriodModel.endDate.AddDays( 1 );
+
+                var idPeriod = await timePeriod.CreateTimePeriodAsync( ctx, 1, createPeriodModel.begDate, createPeriodModel.endDate, createPeriodModel.Kind, createPeriodModel.idZone );
+                if(idPeriod == 0 )
                 {
                     Result result = new Result( Status.BadRequest, "Quelques choses s'est mal passé durant la création de periode." );
                     return this.CreateResult( result );
                 }
+                string groupName = createPeriodModel.begDate.Year +  "-0"  + createPeriodModel.begDate.Month ;
+
+                await group.Naming.GroupRenameAsync( ctx, userId, idPeriod, groupName );
 
                 for( int i = 0; i < createPeriodModel.Groups.Count; i++ )
                 {
@@ -61,13 +68,78 @@ namespace inProjects.WebApp.Controllers
                         await group.Naming.GroupRenameAsync( ctx, 17, idGroup, createPeriodModel.Groups[i].Name );
                     }
 
-                    idGroup = await group.CreateGroupAsync( ctx, userId, idZone );
+                    idGroup = await group.CreateGroupAsync( ctx, userId, idPeriod );
                     await group.Naming.GroupRenameAsync( ctx, 17, idGroup, createPeriodModel.Groups[i].Name );
                 }
 
                 return this.CreateResult( Result.Success() );
 
             }
+        }
+        [HttpGet("verifyActualPeriod")]
+        public async Task<IActionResult> verifyActualPeriod( int idZone )
+        {
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                TimedPeriodQueries timedPeriod = new TimedPeriodQueries( ctx, sqlDataBase );
+                DateTime dateNow = DateTime.UtcNow;
+                PeriodData period = await timedPeriod.GetLastPeriodBySchool(idZone);
+
+                if(period.BegDate.DayOfYear <= dateNow.DayOfYear && period.EndDate.DayOfYear >= dateNow.DayOfYear )
+                {
+                    return Ok( true );
+                }
+                else
+                {
+                    return Ok( false );
+                }
+                
+            }
+
+        }
+
+        [HttpGet( "getAllPeriod" )]
+        public async Task<IActionResult> getAllPeriod( int idZone )
+        {
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                TimedPeriodQueries timedPeriod = new TimedPeriodQueries( ctx, sqlDataBase );
+                DateTime dateNow = DateTime.UtcNow;
+                List<PeriodData> period = await timedPeriod.GetAllPeriodsBySchool( idZone );
+                return Ok( period );
+            }
+
+        }
+
+        [HttpPost( "changeDateOfPeriod" )]
+        public async Task<IActionResult> ChangeDateOfPeriod([FromBody] PeriodChangeDateModel periodChangeDateModel )
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            var group = _stObjMap.StObjs.Obtain<CustomGroupTable>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                TimedPeriodQueries timedPeriod = new TimedPeriodQueries( ctx, sqlDataBase );
+
+                PeriodData period = await timedPeriod.GetPeriodById( periodChangeDateModel.idPeriod );
+
+                await timedPeriod.UpdatePeriodDate( periodChangeDateModel.idPeriod, periodChangeDateModel.begDate, periodChangeDateModel.endDate );
+
+                if( periodChangeDateModel.begDate.Year > period.BegDate.Year || periodChangeDateModel.begDate.Year < period.BegDate.Year )
+                {
+                    string groupName = periodChangeDateModel.begDate.Year + "-0" + periodChangeDateModel.begDate.Month;
+
+                    await group.Naming.GroupRenameAsync( ctx, userId, periodChangeDateModel.idPeriod, groupName );
+
+                }
+                return Ok();
+            }
+
         }
 
     }
