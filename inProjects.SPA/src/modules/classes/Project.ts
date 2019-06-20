@@ -15,12 +15,13 @@ class Project {
     public traitId!: number
     public semester!: string
     public technologies: string[]
+    public url!: string
     public leaderId !: number
     public isFav !: number
     public classRoom!: string
     public projectId!: number
-    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[])
-    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], projectId: number, type: string, traitId: number)
+    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[],url:string)
+    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[],url :string, projectId: number, type: string, traitId: number)
     constructor(
         name: string = "",
         logo: string = "",
@@ -29,6 +30,7 @@ class Project {
         leaderId: number = 0,
         semester: string = "",
         technologies: string[] = [],
+        url: string = "",
         projectStudentId: number = 0,
         type: string = "",
         traitId: number = 0,
@@ -43,6 +45,7 @@ class Project {
         this.traitId = traitId
         this.semester = semester
         this.technologies = technologies
+        this.url = url
     }
 }
 export { Project }
