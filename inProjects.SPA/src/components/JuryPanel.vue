@@ -19,7 +19,7 @@ export default class JuryPanel extends Vue {
 isCollapse!: boolean
 
  redirect(destination: string) {
-        this.$router.replace(destination)
+        this.$router.push(destination)
     }
 }
 </script>

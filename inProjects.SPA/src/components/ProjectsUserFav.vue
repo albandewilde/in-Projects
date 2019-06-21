@@ -39,7 +39,7 @@ export default class ProjectUserFav extends Vue {
     }
 
     redirect(idProject: string) {
-        this.$router.replace("/Project/" + idProject)
+        this.$router.push("/Project/" + idProject)
     }
 }
 </script>

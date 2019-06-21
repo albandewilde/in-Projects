@@ -93,11 +93,11 @@ export default class SideBar extends Vue {
         this.isCollapse = !this.isCollapse
     }
     redirect(destination: string) {
-        this.$router.replace(destination)
+        this.$router.push(destination)
     }
     async logout() {
         await this.authService.logout(true)
-        this.$router.replace("/")
+        this.$router.push("/")
     }
     async getAuthorizedAccess() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)

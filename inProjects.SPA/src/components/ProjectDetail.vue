@@ -77,6 +77,10 @@ export default class ProjectDetail extends Vue {
             console.error(e)
         }
     }
+
+    async Back() {
+        this.$router.go(-1)
+    }
 }
 </script>
 

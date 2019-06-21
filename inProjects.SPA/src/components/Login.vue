@@ -1,7 +1,8 @@
 <template>
     <div>
         <br>
-        <el-form ref="user" :model="user" :label-position="labelPosition" label-width="100px">
+        <el-form ref="user" :model="user" :label-position="labelPosition" label-width="100px" >
+        <form v-on:submit.prevent.stop="Login" >
             <center>
                 <b>
                     <u style="color: red;">{{error}}</u>
@@ -10,17 +11,20 @@
                         <i v-show="errors.has('email')" class="fa fa-warning" style="color:orange;"></i>
                         <span v-show="errors.has('email')" class="errorStyle">{{ errors.first('email') }}</span>
                     </el-form-item>
-                    <el-form-item label="Mot de passe" style="width:60%">
-                        <el-input name="password" v-validate="'required'" placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
+                    <el-form-item label="Mot de passe" style="width:60%" >
+                        <el-input name="password" v-validate="'required'" placeholder="Insérez votre mot de passe"
+                            v-model="user.password" show-password ></el-input>
                         <i v-show="errors.has('password')" class="fa fa-warning" style="color:orange;"></i>
                         <span v-show="errors.has('password')" class="errorStyle">{{ errors.first('password') }}</span>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="success" @click="Login()">Valider</el-button>
+                        <el-button type="success" @click="Login">Valider</el-button>
                         <el-button type="info" @click="resetForm()">Réinitialiser</el-button>
                     </el-form-item>
                 </b>
             </center>
+            <input type="submit" hidden/>
+        </form>
         </el-form>
         <div>
             <el-button type="primary" @click="Outlook()">Connexion avec Outlook</el-button>
