@@ -49,7 +49,7 @@ namespace inProjects.TomlHelpers
             }
             catch
             {
-                return (false, "The number for the projet type is wrong");
+                return (false, "Le numéro pour le type de projet n'est pas bon.");
             }
 
             try    // to get the ressource
@@ -58,7 +58,7 @@ namespace inProjects.TomlHelpers
             }
             catch
             {
-                return (false, "Ressource not found, may the link is wrong.");
+                return (false, "La ressource n'est pas trouvée, peut-être que le liens n'est pas le bon.");
             }
 
             try    // parse the toml
@@ -72,7 +72,7 @@ namespace inProjects.TomlHelpers
                 List<string> foo = e.ToString().Split("-->")[1].Split(":").Skip(1).Take(2).ToList();
                 foo[1] = foo[1].Split(".")[0];
 
-                return (false, "Failed to parse the toml file, is the file a correct toml format ?\n" + String.Join(": ", foo));
+                return (false, "Impossible de parser le fichier toml, est-ce que le fichier est correctement formaté ?\n" + String.Join(": ", foo));
             }
 
             (bool isValid, string message) = toml.isValid();
@@ -83,18 +83,18 @@ namespace inProjects.TomlHelpers
 
             toml.logo.url = GetTomlFromGoogleDrive.GetUrlRessource(toml.logo.url);
 
-            if(toml.team.leader!= "None" && !await toml.team.isMailExisting( toml.team.leader, stObjMap ) ) return (false, "The leader email is wrong or does not exists in our db");
-            foreach(string mail in toml.team.members ) { if( !await toml.team.isMailExisting( mail, stObjMap ) ) return (false, "one of the members mail is wrong"); };
+            if(toml.team.leader!= "None" && !await toml.team.isMailExisting( toml.team.leader, stObjMap ) ) return (false, "L'e-mail du chef de projet est invalide.");
+            foreach(string mail in toml.team.members ) { if( !await toml.team.isMailExisting( mail, stObjMap ) ) return (false, "L'un des e-mails des membres est invalide."); };
             try    // register the project in the bdd
             {
                 await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable, projectUrlTable);
             }
             catch 
             {
-                return (false, "Failed to save the project in the BDD");
+                return (false, "Impossible de sauvegarder le projet dans la BDD.");
             }
 
-            return (true, "The project was succefully register");
+            return (true, "Le projet a été sauvegarde avec succès.");
         }
     }
 
