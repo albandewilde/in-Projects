@@ -22,7 +22,7 @@ namespace CodeCake
 
             var projects = Cake.ParseSolution( solutionFileName )
                 .Projects
-                .Where( p => !(p is SolutionFolder) && p.Name != solutionName + ".CokeCakeBuilder" );
+                .Where( p => !(p is SolutionFolder) && p.Name != "CodeCakeBuilder" );
 
             SimpleRepositoryInfo gitInfo = Cake.GetSimpleRepositoryInfo();
             CheckRepositoryInfo globalInfo = new CheckRepositoryInfo( Cake, gitInfo );
@@ -36,8 +36,8 @@ namespace CodeCake
             Task( "Clean" )
                 .Does( () =>
                 {
-                    Cake.CleanDirectories( "**/bin/" + configuration, d => !d.Path.Segments.Contains( solutionName + ".CokeCakeBuilder" ) );
-                    Cake.CleanDirectories( "**/obj/" + configuration, d => !d.Path.Segments.Contains( solutionName + ".CokeCakeBuilder" ) );
+                    Cake.CleanDirectories( "**/bin/" + configuration, d => !d.Path.Segments.Contains( "CodeCakeBuilder" ) );
+                    Cake.CleanDirectories( "**/obj/" + configuration, d => !d.Path.Segments.Contains( "CodeCakeBuilder" ) );
                 } );
 
             Task( "Build" )
@@ -47,7 +47,7 @@ namespace CodeCake
                 {
                     using( var tempSln = Cake.CreateTemporarySolutionFile( solutionFileName ) )
                     {
-                        tempSln.ExcludeProjectsFromBuild( solutionName + ".CokeCakeBuilder" );
+                        tempSln.ExcludeProjectsFromBuild( "CodeCakeBuilder" );
                         Cake.DotNetCoreBuild( tempSln.FullPath.FullPath, new DotNetCoreBuildSettings()
                         {
                             Configuration = configuration,

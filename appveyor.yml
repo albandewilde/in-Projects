@@ -10,4 +10,4 @@ skip_non_tags: true
 install:
   - ps: ./CodeCakeBuilder/InstallCredentialProvider.ps1
 build_script:
-  - dotnet run --project inProjects.CokeCakeBuilder -autointeraction -PublishDirtyRepo=Y
+  - dotnet run --project CodeCakeBuilder -nointeraction
