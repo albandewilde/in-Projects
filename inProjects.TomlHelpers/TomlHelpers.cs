@@ -10,6 +10,7 @@ using System.Net.Mail;
 using inProjects.Data.Queries;
 using CK.Core;
 using CK.SqlServer;
+using System.Collections.Generic;
 
 namespace inProjects.TomlHelpers
 {
@@ -68,7 +69,10 @@ namespace inProjects.TomlHelpers
             }
             catch(Exception e)
             {
-                return (false, "Failed to parse the toml file, is the file a correct toml format ?\n" + e);
+                List<string> foo = e.ToString().Split("-->")[1].Split(":").Skip(1).Take(2).ToList();
+                foo[1] = foo[1].Split(".")[0];
+
+                return (false, "Failed to parse the toml file, is the file a correct toml format ?\n" + String.Join(": ", foo));
             }
 
             (bool isValid, string message) = toml.isValid();
@@ -115,9 +119,9 @@ namespace inProjects.TomlHelpers
             {
                 object propertieValue = propertie.GetValue(this, null);
 
-                if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return (false, "The propertie " + propertie.ToString() + " is missing");
+                if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return (false, "The propertie \"" + propertie.Name.ToString() + "\" is missing");
                 if (propertieValue is IProjectField && !(propertieValue as IProjectField).isValid()) {
-                    return (false, "The propertie " + propertie.ToString() + " isn't valid.");
+                    return (false, "The propertie \"" + propertie.Name.ToString() + "\" isn't valid.");
                 }
             }
             return (true, "All good");
