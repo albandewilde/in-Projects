@@ -14,4 +14,4 @@ install:
   - cmd: appveyor-tools\secure-file -decrypt C:\projects\in-Projects\inProjects.WebApp\appsettings.json.enc -secret %secret%
   - cmd: appveyor-tools\secure-file -decrypt C:\projects\in-Projects\inProjects.WebApp\appsettings.Development.json.enc -secret %secret%
 build_script:
-  - dotnet run --project CodeCakeBuilder -autointeraction -PublishDirtyRepo=Y
+  - dotnet run --project CodeCakeBuilder -autointeraction -PublishDirtyRepo=Y -RunUnitTests=Y
