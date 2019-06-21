@@ -13,6 +13,11 @@ export async function GetAllTypeProjectsOfSchool(idSchool: number, type:string):
     return resp.data
 }
 
+export async function GetSelectorGrade(): Promise<number[]> {
+    const resp = await getAsync(`${endpoint}/getSelectorGrade`)
+    return resp.data
+}
+
 export async function GetEvaluateProject(idSchool: number): Promise<Project[]> {
     const resp = await getAsync(`${endpoint}/getProjectEval?idSchool=${idSchool}`)
     return resp.data

@@ -2,7 +2,7 @@ CREATE TABLE IPR.tEvaluates
 (
     JuryId INT,
     ProjectId INT,
-    Grade INT,
+    Grade float,
     [Date] DATETIME2 NOT NULL,
 
     CONSTRAINT PK_tEvaluates_JuryId_ProjectId PRIMARY KEY(JuryId, ProjectId),

@@ -5,7 +5,7 @@ CREATE PROCEDURE sEvaluateProject
 (
     @JuryId INT,
     @ProjectId INT,
-	@Grade INT = null,
+	@Grade float = null,
 	@BegDate DATETIME2 = null
 )
 AS

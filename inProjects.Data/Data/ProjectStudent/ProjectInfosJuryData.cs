@@ -9,6 +9,6 @@ namespace inProjects.Data.Data.ProjectStudent
         public int ProjectStudentId { get; set; }
         public string ProjectName { get; set; }
         public string JuryName { get; set; }
-        public int Grade { get; set; }
+        public double Grade { get; set; }
     }
 }

@@ -18,9 +18,9 @@ namespace inProjects.Data
         }
 
         [SqlProcedure( "sEvaluateProject" )]
-        public abstract Task EvaluateProject( ISqlCallContext context, int juryId, int projectId, int grade, DateTime begDate );
+        public abstract Task EvaluateProject( ISqlCallContext context, int juryId, int projectId, double grade, DateTime begDate );
 
         [SqlProcedure( "sEvaluateProject" )]
-        public abstract Task EvaluateProject( ISqlCallContext context, int juryId, int projectId, int grade);
+        public abstract Task EvaluateProject( ISqlCallContext context, int juryId, int projectId, double grade);
     }
 }

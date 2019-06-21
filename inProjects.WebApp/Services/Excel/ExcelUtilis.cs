@@ -78,8 +78,9 @@ namespace inProjects.WebApp.Services.Excel
                 worksheet.Cells["A2:G" + (allProjectsForumResult.Count + 2)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells["A2:G" + (allProjectsForumResult.Count + 2)].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
+                string formula = "=ROUND(MOYENNE(G3:G" + (allProjectsForumResult.Count + 2) + "),2)";
                 //Set Math formule
-                worksheet.Cells["G" + (allProjectsForumResult.Count + 3)].Formula = "=MOYENNE(" + column7 + ")";
+                worksheet.Cells["G" + (allProjectsForumResult.Count + 3)].Formula = formula;
 
 
                 List<object[]> cellData = new List<object[]>();
@@ -114,7 +115,8 @@ namespace inProjects.WebApp.Services.Excel
                     project[7] = idx;
                     cellData.Add( project );
 
-                    worksheet.Cells["G" + formulaIdx].Formula = "=(D" + formulaIdx + "+E" + formulaIdx + "+F" + formulaIdx + ")/" + numberJury;
+                    formula = "=ROUND(((D" + formulaIdx + "+E" + formulaIdx + "+F" + formulaIdx + ")/" + numberJury + "),2)";
+                    worksheet.Cells["G" + formulaIdx].Formula = formula;
                     formulaIdx++;
 
                 }

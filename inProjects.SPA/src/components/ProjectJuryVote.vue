@@ -13,7 +13,7 @@
                         <img :src="projectList[index].logo" class="image"  @click="redirect(projectList[index].projectStudentId)">
                         <div class="my-card-row">
                             <el-select  @change="gradeChange(index,projectList[index].projectStudentId)" class="select-grade" v-model="projectList[index].grade" placeholder="Select">
-                                <el-option v-for="(item,index) in 21" :key="index" :value="index"></el-option>
+                                <el-option v-for="(item,index) in selector" :key="index" :value="item"></el-option>
                             </el-select><span class="grade-max">/20</span>
                         </div>
                     </el-card>
@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { GetAllProject, GetAllTypeProjectsOfSchool, noteProject, GetEvaluateProject } from "../api/projectApi"
+import { GetAllProject, GetAllTypeProjectsOfSchool, noteProject, GetEvaluateProject, GetSelectorGrade } from "../api/projectApi"
 import { getSchools } from "../api/schoolApi"
 import {Project} from "../modules/classes/Project"
 import {School} from "../modules/classes/School"
@@ -42,12 +42,14 @@ export default class ProjectJuryVote extends Vue {
     private options: string = ""
     private type: string = "I"
     private schoolId: number = 0
+    private selector: number[] = []
     private grade: number = 0
     private gradeOrigins: number[] = []
 
 
     async created() {
       this.schoolOptions = await getSchools()
+      this.selector = await GetSelectorGrade()
     }
 
     async change() {
@@ -91,7 +93,7 @@ export default class ProjectJuryVote extends Vue {
 
 <style>
 .select-grade{
-    width: 20%;
+    width: 30%;
 }
 
 .card-jury-grade{

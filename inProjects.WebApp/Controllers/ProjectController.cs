@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -24,13 +25,34 @@ namespace inProjects.WebApp.Controllers
     {
         readonly IStObjMap _stObjMap;
         readonly IAuthenticationInfo _authenticationInfo;
+        readonly List<double> _selectorInt;
 
         public ProjectController(IStObjMap stObjMap, IAuthenticationInfo authenticationInfo)
         {
             _stObjMap = stObjMap;
             _authenticationInfo = authenticationInfo;
+            _selectorInt = getSelectorInt();
         }
 
+        private List<double> getSelectorInt()
+        {
+            double x = 0;
+            List<double> list = new List<double>();
+            while(x <= 20)
+            {
+                list.Add( x );
+                x += 0.25;
+            }
+
+            return list;
+        }
+
+
+        [HttpGet( "getSelectorGrade" )]
+        public async Task<List<double>> GetSelectorGrade( )
+        {
+            return _selectorInt;
+        }
 
         [HttpPost("submitProject")]
         [AllowAnonymous]

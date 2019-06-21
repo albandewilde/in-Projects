@@ -8,7 +8,7 @@ namespace inProjects.Data.Data.ProjectStudent
     {
         public string Name { get; set; }
         public double Average { get; set; }
-        public Dictionary<string,int> IndividualGrade { get; set; }
+        public Dictionary<string,double> IndividualGrade { get; set; }
 
     }
 }

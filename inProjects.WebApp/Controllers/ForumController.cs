@@ -147,10 +147,10 @@ namespace inProjects.WebApp.Controllers
             int diviseur = 0;
             int count = 0;
             ProjectInfosJuryData oldProject = new ProjectInfosJuryData();
-            List<int> gradeOfProject = new List<int>();
+            List<double> gradeOfProject = new List<double>();
             List<ProjectForumResultData> forumsResult = new List<ProjectForumResultData>();
             ProjectForumResultData project = new ProjectForumResultData();
-            Dictionary<string, int> IndividualGrade = new Dictionary<string, int>();
+            Dictionary<string, double> IndividualGrade = new Dictionary<string, double>();
 
             foreach( var item in projects )
             {
@@ -158,14 +158,14 @@ namespace inProjects.WebApp.Controllers
                 if( item.ProjectStudentId != oldProject.ProjectStudentId )
                 {
                     double moyenne = 0;
-                    int total = 0;
+                    double total = 0;
                     total = gradeOfProject.Take( gradeOfProject.Count ).Sum();
-                    if( diviseur > 0 ) moyenne = total / diviseur;
+                    if( diviseur > 0 ) moyenne = Math.Round( total / diviseur, 2 );
                     project.Average = moyenne;
                     diviseur = 0;
                     project.IndividualGrade = IndividualGrade;
-                    IndividualGrade = new Dictionary<string, int>();
-                    gradeOfProject = new List<int>();
+                    IndividualGrade = new Dictionary<string, double>();
+                    gradeOfProject = new List<double>();
                     forumsResult.Add( project );
                     project = new ProjectForumResultData
                     {
@@ -186,13 +186,13 @@ namespace inProjects.WebApp.Controllers
                 if( count == projects.Count )
                 {
                     double moyenne = 0;
-                    int total = 0;
+                    double total = 0;
                     total = gradeOfProject.Take( gradeOfProject.Count ).Sum();
-                    if( diviseur > 0 ) moyenne = total / diviseur;
+                    if( diviseur > 0 ) moyenne = Math.Round(total / diviseur,2);
                     project.Average = moyenne;
                     diviseur = 0;
                     project.IndividualGrade = IndividualGrade;
-                    IndividualGrade = new Dictionary<string, int>();
+                    IndividualGrade = new Dictionary<string, double>();
                     forumsResult.Add( project );
                     project = new ProjectForumResultData
                     {
