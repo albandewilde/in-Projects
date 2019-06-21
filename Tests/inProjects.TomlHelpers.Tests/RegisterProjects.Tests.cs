@@ -84,11 +84,11 @@ namespace inProjects.TomlHelpers.Tests
         //        CustomGroupTable groupTable = TestHelper.StObjMap.StObjs.Obtain<CustomGroupTable>();
         //        int memberId = new UserQueries(ctx, db).GetUserByEmail("agopian@intechinfo.fr").Result.UserId;
 
-        //        //retour = TomlHelpers.RegisterProject(url, projectType, projectStudent, memberId, db, groupTable).Result;
+                //retour = TomlHelpers.RegisterProject(url, projectType, projectStudent, memberId, db, groupTable).Result;
         //    }
 
-        //    Console.WriteLine(retour.Item2);
-        //    Assert.That(retour.Item1, Is.EqualTo(succefyllySaved));
+            //Console.WriteLine(retour.Item2);
+            //Assert.That(retour.Item1, Is.EqualTo(succefyllySaved));
         //}
     }
 }

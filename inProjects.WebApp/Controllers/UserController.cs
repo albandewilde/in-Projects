@@ -115,11 +115,11 @@ namespace inProjects.WebApp.Controllers
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
 
                 // User must have the rights to do this action
-                if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) == false )
-                {
-                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
-                    return this.CreateResult( result );
-                }
+                //if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) == false )
+                //{
+                //    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                //    return this.CreateResult( result );
+                //}
 
                 bool isInPeriod = await periodServices.CheckInPeriod( _stObjMap, _authenticationInfo );
 

@@ -27,6 +27,11 @@
                 </div>        
             </li>
         </div>
+        <div class="okok">
+            <li>
+                <a class="dropbtn" @click="redirect(`/Events`)">Evenements de l'ecole !</a>
+            </li>
+        </div>
     </div>
 </template>
 
@@ -52,7 +57,7 @@ async created() {
 }
 
  redirect(destination: string) {
-        this.$router.replace(destination)
+        this.$router.push(destination)
     }
 }
 </script>

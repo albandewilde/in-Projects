@@ -3,6 +3,7 @@ using CK.SqlServer.Setup;
 using inProjects.Data.ForumsPlan;
 using System.Threading.Tasks;
 using Dapper;
+using System.Collections.Generic;
 
 namespace inProjects.Data.Queries
 {
@@ -15,30 +16,33 @@ namespace inProjects.Data.Queries
             _controller = ctx.GetConnectionController( sqlDefaultDatabase );
         }
 
-        public async Task<int> SavePlan( Project[] plan )
+        public async Task<List<int>> SavePlan( Project[] plan )
         {
-            string sql = "";
-            string end = "";
+            List<int> results = new List<int>();
 
             for(int i = 0; i < plan.Length; i += 1 )
             {
-                if(i < plan.Length) end = ", ";
-                else end = ";";
 
-                sql += "(" + plan[i].ProjectId + ", "
-                + plan[i].ClassRoom + ", "
-                + plan[i].PosX + ", "
-                + plan[i].PosY + ", "
-                + plan[i].Width + ", "
-                + plan[i].Height + ", "
-                + plan[i].ForumNumber
-                + ")" + end;
+                int res = await _controller.ExecuteAsync(
+                    "update IPR.tForumInfos " +
+                    "set ClassRoom = @Class," +
+                    "CoordinatesX = @X," +
+                    "CoordinatesY = @Y," +
+                    "Width = @W," +
+                    "Height = @H " +
+                    "where ForumNumber = @ForumNumber",
+                    new {
+                        Class = plan[i].ClassRoom,
+                        X = plan[i].PosX,
+                        Y = plan[i].PosY,
+                        W = plan[i].Width,
+                        H = plan[i].Height,
+                        ForumNumber = plan[i].ForumNumber
+                    }
+                );
+                results.Add( res );
             }
-
-            int result = await _controller.ExecuteAsync(
-                "insert into IPR.tForumInfos(ProjectId, ClassRoom, CoordinatesX, CoordinatesY, Width, Height, ForumNumber) " +
-                "values " + sql );
-            return result;
+            return results;
         }
     }
 }

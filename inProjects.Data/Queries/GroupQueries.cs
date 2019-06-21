@@ -80,5 +80,6 @@ namespace inProjects.Data.Queries
             IEnumerable<GroupData> result = await _controller.QueryAsync<GroupData>( "SELECT g.GroupId, g.GroupName FROM IPR.tTimedUser tu JOIN CK.tUser u ON u.UserId = tu.UserId AND tu.TimedUserId = @TimedUserId JOIN CK.tActorProfile ap ON ap.ActorId = u.UserId JOIN CK.tGroup g ON g.GroupId = ap.GroupId ", new { TimedUserId = timedUserId } );
             return result;
         }
+
     }
 }

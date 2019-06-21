@@ -6,12 +6,12 @@
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--front">
                     <h2>{{projectListToDisplay[index].groupName}}</h2>
                     <h3>{{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}} </h3>
-                    <img :src="projectListToDisplay[index].logo" class="image"  @click="redirect('/Project/' + projectListToDisplay[index].projectStudentId )">
+                    <img :src="projectListToDisplay[index].logo" class="image">
                 </div>
                 <br>
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--back">
                     <br>
-                    <u><b>{{projectListToDisplay[index].slogan}}</b></u>
+                    <u><b @click="redirect('Project/' + projectListToDisplay[index].projectStudentId)">{{projectListToDisplay[index].slogan}}</b></u>
                     <br><br>
                     {{projectListToDisplay[index].pitch}}
                     <br><br>
@@ -83,15 +83,13 @@ export default class ProjectList extends Vue {
         }
         return this.starColor = "#000000 !important;"
     }
-
-    redirect(destination: string) {
-        this.$router.replace(destination)
+     redirect(idProject: number) {
+         this.$router.push("/Project/" + idProject)
     }
 }
 </script>
 
 <style>
-
 .image{
       width: 100%; 
       height: 300px;
@@ -116,7 +114,7 @@ export default class ProjectList extends Vue {
     overflow: hidden;
     border-color: #167BEB;
 }
-    
+
 .masonry-layout-flip {
     perspective: 1000;
 }

@@ -74,7 +74,7 @@ namespace inProjects.TomlHelpers
             {
                 UserData user = await userQueries.GetUserByEmail( email );
                 TimedUserData timedLeader = await timedUserQueries.GetTimedUser( user.UserId, school.ZoneId );
-                leaderId = timedLeader.UserId;
+                leaderId = user.UserId;
             }
 
 

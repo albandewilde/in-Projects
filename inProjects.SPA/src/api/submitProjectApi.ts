@@ -18,7 +18,7 @@ export async function getInfosProject(idProject: number, idZone: number): Promis
 
     const project = new Project(response.data.project.name, response.data.project.logo, response.data.project.slogan,
                                 response.data.project.pitch, response.data.project.leaderId, response.data.project.semester
-                                , response.data.project.technologies)
+                                , response.data.project.technologies,response.data.project.url)
 
     projectDetails.project = project
 

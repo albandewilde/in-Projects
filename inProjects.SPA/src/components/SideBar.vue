@@ -93,11 +93,11 @@ export default class SideBar extends Vue {
         this.isCollapse = !this.isCollapse
     }
     redirect(destination: string) {
-        this.$router.replace(destination)
+        this.$router.push(destination)
     }
     async logout() {
         await this.authService.logout(true)
-        this.$router.replace("/")
+        this.$router.push("/")
     }
     async getAuthorizedAccess() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
@@ -149,6 +149,7 @@ ul.sidenav li a {
   color: white;
   padding: 8px 16px;
   text-decoration: none;
+  cursor: pointer;
 }
  
 ul.sidenav li a.active {
