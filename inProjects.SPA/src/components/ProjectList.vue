@@ -82,7 +82,7 @@ export default class ProjectList extends Vue {
         return this.starColor = "#000000 !important;"
     }
      redirect(idProject: number) {
-         this.$router.replace("/Project/" + idProject)
+         this.$router.push("/Project/" + idProject)
     }
 }
 </script>
