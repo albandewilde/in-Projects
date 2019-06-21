@@ -32,6 +32,7 @@
             </template>
             <el-menu-item index="12-1" @click="redirect('/plan')">Plan</el-menu-item>
             <el-menu-item index="12-2" @click="redirect('/addJury')">Ajouter la liste des jurys</el-menu-item>
+            <el-menu-item index="12-3" @click="redirect('/ForumResult')">Resultats Forum PI </el-menu-item>
         </el-submenu>
 
     <el-menu-item index="13" @click="redirect(`/Events`)">

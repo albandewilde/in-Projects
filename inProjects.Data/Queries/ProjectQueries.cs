@@ -179,5 +179,21 @@ namespace inProjects.Data.Queries
 
             return result;
         }
+
+        public async Task<List<ProjectInfosJuryData>> getAllProjectsGrade(int timePeriodId )
+        {
+            IEnumerable<ProjectInfosJuryData> result = await _controller.QueryAsync<ProjectInfosJuryData>(
+                "SELECT g1.GroupName as ProjectName, g.GroupName as JuryName,ps.ProjectStudentId," +
+                " CASE WHEN e.Grade is null then - 1 " +
+                " ELSE e.Grade END as Grade" +
+                " FROM IPR.tEvaluates e" +
+                " JOIN CK.tGroup g on e.JuryId = g.GroupId" +
+                " JOIN IPR.tProjectStudent ps on ps.ProjectStudentId = e.ProjectId" +
+                " JOIN CK.tGroup g1 on g1.GroupId = ps.ProjectStudentId" +
+                " where g.ZoneId = @TimePeriodId" +
+                " order by ps.ProjectStudentId", new { TimePeriodId = timePeriodId } );
+
+            return result.AsList();
+        }
     }
 }

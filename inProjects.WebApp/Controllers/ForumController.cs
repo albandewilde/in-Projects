@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data.Data.Group;
+using CK.Auth;
+using System.Linq;
+using inProjects.Data;
+using inProjects.WebApp.Services.Excel;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -18,10 +22,12 @@ namespace inProjects.WebApp.Controllers
     public class ForumController : Controller
     {
         readonly IStObjMap _stObjMap;
+        readonly IAuthenticationInfo _authenticationInfo;
 
-        public ForumController( IStObjMap stObjMap )
+        public ForumController( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo )
         {
             _stObjMap = stObjMap;
+            _authenticationInfo = authenticationInfo;
         }
 
         [HttpGet("GetPlan")]
@@ -69,5 +75,140 @@ namespace inProjects.WebApp.Controllers
                 return results;
             }
         }
+
+        [HttpGet( "DownloadExcel" )]
+        public async Task<IActionResult> DownloadExcel(  )
+        {
+            var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            ExcelUtilis excel = new ExcelUtilis();
+            int userId = _authenticationInfo.ActualUser.UserId;
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                GroupQueries groupQueries = new GroupQueries( ctx, sqlDatabase );
+                ProjectQueries projectQueries = new ProjectQueries( ctx, sqlDatabase );
+
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+
+                AclQueries aclQueries = new AclQueries( ctx, sqlDatabase );
+
+                if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) == false )
+                {
+                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                    return this.CreateResult( result );
+                }
+                List<ProjectInfosJuryData> projectInfosJuries = await projectQueries.getAllProjectsGrade( groupData.ZoneId );
+
+                List<ProjectForumResultData> allProjectsForumResult = await this.getProjectsOfForum( projectInfosJuries );
+
+
+                bool test =  await excel.CreateExcel( allProjectsForumResult );
+
+                return Ok(test);
+                
+            }
+        }
+
+        [HttpGet( "getAllGradeProjects" )]
+        public async Task<IActionResult> getAllGradeProject()
+        {
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            int userId = _authenticationInfo.ActualUser.UserId;
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, db );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
+                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+                UserQueries userQueries = new UserQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
+
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+
+                AclQueries aclQueries = new AclQueries( ctx, db );
+
+                if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) == false )
+                {
+                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                    return this.CreateResult( result );
+                }
+
+                List<ProjectInfosJuryData> projects = await projectQueries.getAllProjectsGrade( groupData.ZoneId );
+
+                List<ProjectForumResultData> listToSend = await this.getProjectsOfForum( projects );
+               
+                return Ok( listToSend );
+            }
+
+        }
+
+        internal async Task<List<ProjectForumResultData>> getProjectsOfForum( List<ProjectInfosJuryData> projects )
+        {
+            int diviseur = 0;
+            int count = 0;
+            ProjectInfosJuryData oldProject = new ProjectInfosJuryData();
+            List<int> gradeOfProject = new List<int>();
+            List<ProjectForumResultData> forumsResult = new List<ProjectForumResultData>();
+            ProjectForumResultData project = new ProjectForumResultData();
+            Dictionary<string, int> IndividualGrade = new Dictionary<string, int>();
+
+            foreach( var item in projects )
+            {
+
+                if( item.ProjectStudentId != oldProject.ProjectStudentId )
+                {
+                    double moyenne = 0;
+                    int total = 0;
+                    total = gradeOfProject.Take( gradeOfProject.Count ).Sum();
+                    if( diviseur > 0 ) moyenne = total / diviseur;
+                    project.Average = moyenne;
+                    diviseur = 0;
+                    project.IndividualGrade = IndividualGrade;
+                    IndividualGrade = new Dictionary<string, int>();
+                    gradeOfProject = new List<int>();
+                    forumsResult.Add( project );
+                    project = new ProjectForumResultData
+                    {
+                        Name = item.ProjectName
+                    };
+                }
+
+                if( item.Grade > 0 )
+                {
+                    gradeOfProject.Add( item.Grade );
+                    diviseur++;
+                }
+
+                oldProject = item;
+                count++;
+                IndividualGrade.Add( item.JuryName, item.Grade );
+
+                if( count == projects.Count )
+                {
+                    double moyenne = 0;
+                    int total = 0;
+                    total = gradeOfProject.Take( gradeOfProject.Count ).Sum();
+                    if( diviseur > 0 ) moyenne = total / diviseur;
+                    project.Average = moyenne;
+                    diviseur = 0;
+                    project.IndividualGrade = IndividualGrade;
+                    IndividualGrade = new Dictionary<string, int>();
+                    forumsResult.Add( project );
+                    project = new ProjectForumResultData
+                    {
+                        Name = item.ProjectName
+                    };
+
+                }
+
+
+            }
+            forumsResult.RemoveAt( 0 );
+            List<ProjectForumResultData> listToSend = forumsResult.OrderByDescending( x => x.Average ).ToList();
+            return listToSend;
+
+        }
+
+
     }
 }
