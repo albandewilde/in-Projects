@@ -1,38 +1,33 @@
 <template>
-<div>
-        <el-submenu index="10">
-                <template slot="title">
-                <i class="fa fa-calendar-plus-o" aria-hidden="true" style="color: white; font-size: 24px" ></i>
-                    <span v-if="isCollapse == false"> Periode </span>
-                </template>
-                <el-menu-item-group>
-                    <el-menu-item index="10-1" @click="redirect('/createPeriod')" >Creer Periode </el-menu-item>
-                    <el-menu-item index="10-2" @click="redirect('/listPeriod')" >List Periode </el-menu-item>
-                </el-menu-item-group>
-
-        </el-submenu>
-        <el-submenu index="11">
-            <template slot="title">
-                <font-awesome-icon icon="user-tie" size="lg"/>
-                    <span v-if="isCollapse == false"> Listes</span>
-            </template>
-                <el-menu-item-group>
-                    <el-menu-item index="11-1" @click="redirect('/student')">Liste des étudiants</el-menu-item>
-                </el-menu-item-group>
-                <el-menu-item-group>
-                    <el-menu-item index="11-2" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
-                </el-menu-item-group>
-        </el-submenu>
-        <el-submenu index="12">
-            <template slot="title">
-                <font-awesome-icon icon="clipboard" size="lg" />
-                <span v-if="isCollapse == false">Gestion ForumPI</span>
-            </template>
-            <el-menu-item index="12-1" @click="redirect('/plan')">Plan</el-menu-item>
-            <el-menu-item index="12-2" @click="redirect('/addJury')">Ajouter la liste des jurys</el-menu-item>
-        </el-submenu>
-
-</div>
+    <div>
+        <div class="okok">
+            <li class="dropdown">
+                <a class="dropbtn">Periode</a>
+                <div class="dropdown-content">
+                    <a @click="redirect('/createPeriod')">Créer une période</a>
+                    <a @click="redirect('/listPeriod')">Voir toutes les periodes</a>
+                </div>        
+            </li>
+        </div>
+        <div class="okok">
+            <li class="dropdown">
+                <a class="dropbtn">Liste</a>
+                <div class="dropdown-content">
+                    <a @click="redirect('/student')">Liste des étudiants</a>
+                    <a  @click="redirect('/staffMember')">Liste des professeurs</a>
+                </div>        
+            </li>
+        </div>
+        <div class="okok">
+            <li class="dropdown">
+                <a class="dropbtn">Forum</a>
+                <div class="dropdown-content">
+                    <a @click="redirect('/plan')">Plan</a>
+                    <a  @click="redirect('/addJury')">Gestion forum</a>
+                </div>        
+            </li>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -62,14 +57,44 @@ async created() {
 }
 </script>
 
-<style>
-.el-menu-vertical:not(.el-menu--collapse) {
-    width: 200px;
-    min-height: 400px;
+<style lang="scss">
+
+.dropbtn {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  text-decoration: none;
+ }
+
+
+.dropdown {
+  display: inline-block;
 }
-.el-menu-vertical{
-    width: 80px;
-    min-height: 400px;
-    z-index: 10
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #2d3e4f;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {background-color: red;}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+.okok{
+    display: block  
 }
 </style>

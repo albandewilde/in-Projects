@@ -3,6 +3,10 @@
             <font size=5><b>Mon Profil :</b></font> 
         <br/>
         <br/>
+=======
+        <font size=5><b>Mon Profile :</b></font> 
+            <br/>
+            <br/>
             <InformationsMyProfil></InformationsMyProfil>
         <br/>
         <br/>
@@ -14,9 +18,10 @@
             <PasswordChange></PasswordChange>
         <hr>
         </div>
-
+        <div>
              <font size=5><b>Les Projets que vous aimez :</b></font> 
              <ProjectsUserFav></ProjectsUserFav>
+        </div>
         <div v-if="this.whatTimed.find(x => x == 'Student')">
             <hr>
             <font size=5><b>Vos Projets :</b></font> 

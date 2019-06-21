@@ -1,6 +1,6 @@
 <template>
   <div>
-	<h2>Prochain forum PI dans : {{days}}d {{hours}}h {{minutes}}m {{seconds}}s</h2>
+	<h2>Prochain forum PI dans : <br>{{days}}d {{hours}}h {{minutes}}m {{seconds}}s</h2>
   </div>
 </template>
 

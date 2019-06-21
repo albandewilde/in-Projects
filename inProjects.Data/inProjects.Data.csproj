@@ -17,6 +17,7 @@
     <None Remove="Res\Model\IPR.SchoolTable.Settle.1.0.0.sql" />
     <None Remove="Res\Model\sUpdateUserInfos.sql" />
     <None Remove="Res\Model\vUser.tql" />
+    <None Remove="Res\sCreateForumInfo.sql" />
     <None Remove="Res\sCreateOrUpdateProjectUrl.sql" />
     <None Remove="Res\sCreateTimedUser.sql" />
     <None Remove="Res\Model\sAddNote.sql" />
