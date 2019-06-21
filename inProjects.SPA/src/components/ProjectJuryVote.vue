@@ -35,54 +35,54 @@ import {School} from "../modules/classes/School"
 import { TypeTimedUser } from "@/modules/classes/TimedUserEnum"
 
 @Component
-export default class ProjectJuryVote extends Vue{
+export default class ProjectJuryVote extends Vue {
     private projectList: Project[] = []
     private projectListToDisplay: Project[] = []
     private schoolOptions: School[] = []
     private options: string = ""
-    private type: string ='I'
+    private type: string = "I"
     private schoolId: number = 0
     private grade: number = 0
     private gradeOrigins: number[] = []
-  
+
 
     async created() {
       this.schoolOptions = await getSchools()
     }
 
-    async change(){
-        try{
+    async change() {
+        try {
             let idx = this.schoolOptions.find(x => x.name == this.options)
-            if(idx == undefined){
-                idx = new School(0,"Unknow")
+            if (idx == undefined) {
+                idx = new School(0, "Unknow")
             }
             this.schoolId = idx.schoolId
             this.projectList  = await GetEvaluateProject(this.schoolId)
-             for (let index = 0; index < this.projectList.length; index++) {
+            for (let index = 0; index < this.projectList.length; index += 1 ) {
                  this.gradeOrigins.push(this.projectList[index].grade)
-           }
-        } catch(e){
-
+            }
+        } catch (e) {
+            console.log(e.mesage)
         }
     }
-   async note(newGrade: number, id:number){
-        try{
-            await noteProject(id, newGrade,this.schoolId,TypeTimedUser.Jury)
+   async note(newGrade: number, id: number) {
+        try {
+            await noteProject(id, newGrade, this.schoolId, TypeTimedUser.Jury)
         } catch (e) {
             console.log(e)
         }
 
     }
-     async  gradeChange(idx: number, idProject: number){
-        this.$confirm('Etes-vous sur de valider cette note '+ this.projectList[idx].grade + ' ? Vous ne pourrez plus la modifier apres cela. Continuez ?', 'Warning', {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Annuler',
-          type: 'warning'
+     async  gradeChange(idx: number, idProject: number) {
+        this.$confirm("Etes-vous sur de valider cette note " + this.projectList[idx].grade + " ? Vous ne pourrez plus la modifier apres cela. Continuez ?", "Warning", {
+          confirmButtonText: "OK",
+          cancelButtonText: "Annuler",
+          type: "warning"
         }).then(async () => {
-          await this.note(this.projectList[idx].grade,idProject)
+          await this.note(this.projectList[idx].grade, idProject)
         }).catch(() => {
           this.projectList[idx].grade = this.gradeOrigins[idx]
-        });
+        })
         console.log( this.projectList[idx].grade)
         console.log( this.gradeOrigins[idx])
         }

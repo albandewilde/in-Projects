@@ -9,7 +9,7 @@ import router from "./router"
 import store from "./store"
 import axios from "axios"
 import { initializeAuthService } from "./modules/authService"
-import { FontAwesomeIcon,FontAwesomeLayers, FontAwesomeLayersText } from "@fortawesome/vue-fontawesome"
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from "@fortawesome/vue-fontawesome"
 import { library } from "@fortawesome/fontawesome-svg-core"
 import {
     faHome, faUserGraduate, faUserTie,
@@ -29,8 +29,8 @@ library.add(
 
 
 Vue.component("font-awesome-icon", FontAwesomeIcon)
-Vue.component('font-awesome-layers', FontAwesomeLayers)
-Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
+Vue.component("font-awesome-layers", FontAwesomeLayers)
+Vue.component("font-awesome-layers-text", FontAwesomeLayersText)
 
 
 Vue.config.productionTip = false

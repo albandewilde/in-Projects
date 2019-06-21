@@ -22,7 +22,7 @@
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator"
-import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from "@fortawesome/vue-fontawesome"
 
 @Component
 export default class UserPanel extends Vue {

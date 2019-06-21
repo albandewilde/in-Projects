@@ -20,10 +20,10 @@ class Project {
     public isFav !: number
     public classRoom!: string
     public projectId!: number
-    public grade!:number
+    public grade!: number
 
-    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[],url:string)
-    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[],url :string, projectId: number, type: string, traitId: number, grade:number)
+    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], url: string)
+    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], url: string, projectId: number, type: string, traitId: number, grade: number)
     constructor(
         name: string = "",
         logo: string = "",
