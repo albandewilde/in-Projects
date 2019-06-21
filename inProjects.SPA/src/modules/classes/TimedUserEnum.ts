@@ -1,5 +1,4 @@
-enum TypeTimedUser
-{
+enum TypeTimedUser {
     Anon,
     Student,
     StaffMember,

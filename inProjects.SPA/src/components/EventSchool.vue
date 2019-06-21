@@ -72,33 +72,33 @@ export default class EventSchool extends Vue {
     private select: string[] = []
     private dateNow: Date = new Date()
 
-    async created(){
-        this.dateNow.setHours(0,0,0,0)
+    async created() {
+        this.dateNow.setHours(0, 0, 0, 0)
         this.events = await GetEventsSchool()
         this.select = await GetEventsType()
     }
 
-    async onSubmit(){
+    async onSubmit() {
         this.error = []
 
         if (!this.checkDate()) {
-             this.$message({showClose: true,duration: 5000, message: "Date de debut superieur ou egale à celle de fin",type: 'error'});
-        }else if(this.event.endDate < this.dateNow){
-            this.$message({showClose: true,duration: 5000, message: "Date de fin inférieur à celle d'aujourd'hui",type: 'error'});
-        }else{
+            this.$message({showClose: true, duration: 5000, message: "Date de debut superieur ou egale à celle de fin", type: "error"})
+        } else if (this.event.endDate < this.dateNow) {
+            this.$message({showClose: true, duration: 5000, message: "Date de fin inférieur à celle d'aujourd'hui", type: "error"})
+        } else {
             try {
                 if (await this.$validator.validateAll()) {
-                    if(this.value != "Autre"){
+                    if (this.value != "Autre") {
                         this.event.name = this.value
-                    }else{
-                        this.event.isOther = true;
+                    } else {
+                        this.event.isOther = true
                     }
                     this.events = await CreateEvents(this.event)
                     console.log(this.events[this.events.length - 1])
-                    this.$message({message: "L'évènement " + this.events[this.events.length - 1].name + " a bien été rajouté au calendrier",type: "success" })
+                    this.$message({message: "L'évènement " + this.events[this.events.length - 1].name + " a bien été rajouté au calendrier", type: "success" })
                 }
 
-                this.$root.$emit('AddEvent',this.events[this.events.length - 1])
+                this.$root.$emit("AddEvent", this.events[this.events.length - 1])
                 this.event = new Event()
                 this.value = ""
             } catch (e) {
@@ -106,24 +106,19 @@ export default class EventSchool extends Vue {
                     showClose: true,
                     duration: 5000,
                     message: e.message,
-                    type: 'error'
-                 });
+                    type: "error"
+                 })
             }
         }
     }
 
-     checkDate() : boolean{
+     checkDate(): boolean {
         let begDate!: Date
         let endDate!: Date
         begDate = new Date(this.event.begDate)
         endDate = new Date(this.event.endDate)
 
-        if (begDate >= endDate) {
-            console.log(false)
-            return false
-        }else{
-            return true
-        }
+        return begDate >= endDate ? true : false
     }
 }
 </script>

@@ -1,21 +1,39 @@
 <template>
+<div>
     <div id="plan">
-        <center>
+        <chacheli-designer 
+            @chacheli-closed="closeChacheli"
+            @chacheli-moved="checkClassroom"
+            v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" 
+        />
+        <div class="saveButton" v-if="hasChanged">
             <el-button id="saveButton" @click="SavePlan" type="success">Sauvegarder</el-button>
-        </center>
-        <br>
-        <chacheli-designer v-show="editMode" ref="designer" :layout="layout" :chachelis="chachelis" />
+        </div>
+        <div class="saveButton" v-else>
+            <el-button id="saveButton" @click="SavePlan" type="success" disabled>Sauvegarder</el-button>
+        </div>
+        <div>
+            <el-table :data="projects" :row-class-name="tableRowClassName">
+                <el-table-column prop="forumNumber" label="#" sortable width="180"/>
+                <el-table-column prop="name" label="Nom du projet" width="180"/>
+                <el-table-column prop="semester" label="Semestre" sortable width="180"/>
+                <el-table-column prop="classRoom" label="Salle" sortable width="180"/>
+            </el-table>
+        </div>
     </div>
+</div>
 </template>
 
 <script lang="js">
 import Vue from "vue"
 import { Component } from "vue-property-decorator"
-import { Project } from "../modules/classes/Project"
+import { ForumProject } from "../modules/classes/ForumProject"
 import { getPlan, getProjects, savePlan as saveForumPlan } from "../api/forumApi"
 import { Plan } from "../modules/classes/Plan"
 import { Layout } from "../modules/classes/Layout"
 import { Chacheli } from "../modules/classes/Chacheli"
+import { AuthService } from "@signature/webfrontauth"
+import { getAuthService } from "../modules/authService"
 
 import ChacheliDesigner from "@shellybits/v-chacheli/dist/ChacheliDesigner"
 import "@shellybits/v-chacheli/dist/ChacheliDesigner.css"
@@ -33,66 +51,91 @@ export default {
                 cols: 0,
                 rows: 0
             },
-            basicHeight: 2,
-            basicWidth: 3,
+            basicHeight: 3,
+            basicWidth: 4,
             projects: new Array(),
-            savedPlan: new Array()
-        }
-    },
-
-    watch: {
-        async savedPlan() {
-            const response = await saveForumPlan(this.savedPlan)
+            authService: null,
+            hasChanged: false
         }
     },
 
     async mounted() {
+        this.authService = getAuthService()
         this.plan = await getPlan()
-        this.projects = await getProjects()
-        
+        this.projects = await getProjects(this.authService.authenticationInfo.user.userId)
         this.layout.cols = this.plan.width
         this.layout.rows = this.plan.height
 
         for (let i = 0; i < this.projects.length; i += 1) {
-            const c = new Chacheli(i + 1, this.projects[i].posX, this.projects[i].posY, this.basicWidth,
-                this.basicHeight, this.projects[i].name, true, "dummy-green", this.projects[i].projectId)
+            const displayedName = this.projects[i].forumNumber + " - " + this.projects[i].name
+            let isAvailable = false
+
+            if (this.projects[i].posX == -1) {
+                isAvailable = true
+            }
+
+            const c = new Chacheli(this.projects[i].forumNumber, this.projects[i].name, this.projects[i].posX, this.projects[i].posY, this.projects[i].width,
+                this.projects[i].height, displayedName, isAvailable, "dummy-green", this.projects[i].projectId, this.projects[i].classRoom)
             this.chachelis.push(c)
         }
     },
 
     methods: {
         async SavePlan() {
-            for (let [i, chacheli] of this.chachelis.entries()) {
-                if (!chacheli.available) {
-                    for (let classroom of this.plan.classRooms) {
-                        if (chacheli.x >= classroom.originX && chacheli.x <= classroom.endPositionX) {
-                            if (chacheli.y >= classroom.originY && chacheli.y <= classroom.endPositionY) {
-                                chacheli.classRoom = classroom.name
-                                const item = this.savedPlan.find(project => project.projectId === chacheli.projectId)
-                                if (!item) {
-                                    const project = this.projects.find(projectItem => projectItem.projectId === chacheli.projectId)
-                                    const p = new Project(chacheli.text, chacheli.x, chacheli.y,
-                                        chacheli.w, chacheli.h, project.semester, chacheli.classRoom, i+1, chacheli.projectId)
-                                    this.savedPlan.push(p)
-                                    break
-                                } else {
-                                    item.classRoom = classroom.name
-                                    item.posX = chacheli.x
-                                    item.posY = chacheli.y
-                                    item.height = chacheli.h
-                                    item.width = chacheli.w
-                                    await saveForumPlan(this.savedPlan)
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    const idxProject = this.savedPlan.indexOf(chacheli)
-                    if (idxProject >= 0) {
-                        this.savedPlan.splice(idxProject, 1)
+            await saveForumPlan(this.projects)
+            this.hasChanged = false
+            this.$message({
+                message: "Sauvegardé !.",
+                type: "success"
+            })
+        },
+
+        checkClassroom(chacheli) {
+            this.chacheliMoved(chacheli)
+            const middleX = chacheli.x + (chacheli.w / 2)
+            const middleY = chacheli.y + (chacheli.h / 2)
+            for (let classroom of this.plan.classRooms) {
+                if (middleX >= classroom.originX && middleX <= classroom.endPositionX) {
+                    if (middleY >= classroom.originY && middleY <= classroom.endPositionY) {
+                        chacheli.classRoom = classroom.name
+                        this.projects[chacheli.forumNumber - 1].classRoom = classroom.name
+                        return
                     }
                 }
             }
+            this.projects[chacheli.forumNumber - 1].classRoom = ""
+        },
+
+        closeChacheli(chacheli) {
+            const project = this.projects[chacheli.forumNumber - 1]
+            project.posX = -1
+            project.posY = -1
+            project.width = this.basicWidth
+            project.height = this.basicHeight
+            project.classRoom = ""
+
+            chacheli.w = this.basicWidth
+            chacheli.h = this.basicHeight
+            chacheli.classRoom = ""
+            this.hasChanged = true
+        },
+
+        chacheliMoved(chacheli) {
+            const project = this.projects[chacheli.forumNumber - 1]
+            project.posX = chacheli.x
+            project.posY = chacheli.y
+            project.width = chacheli.w
+            project.height = chacheli.h
+
+            this.hasChanged = true
+        },
+        tableRowClassName({ row }) {
+            return row.classRoom == "" ? "empty-row" : row.classRoom + "-row"
+            // if (row.classRoom === "") {
+            //     return "empty-row"
+            // } else {
+            //     return row.classRoom + "-row"
+            // }
         }
     }
 }
@@ -100,13 +143,14 @@ export default {
 
 <style>
 #plan {
-	height: 100%;
+	height: 140vh;
 	display: flex;
     flex-direction: column;
 }
 
 #saveButton {
-    width: 50%;
+    margin: 0 0 0 90%;
+    position: sticky;
 }
 
 body {
@@ -119,7 +163,7 @@ body {
 }
 
 .chacheli-designer-layout {
-    background-image: url("/plan_ecole.jpg");
+    background-image: url("/plan_ecole.png");
     background-size: 100% 100%;
 }
 
@@ -128,11 +172,46 @@ body {
 }
 
 .chacheli-designer-layout .chacheli .content {
-    background-color: transparent;
-    /* opacity: 0; */
-    color: #bd10e0;
-    font-weight: 900;
-    font-size: 22px;
+    color: #000000;
+    font-weight: 700;
+    font-size: 15px;
     border: none;
+}
+.el-table {
+    color: #000000;
+    font-weight: 700;
+}
+.el-table .empty-row td:last-child {
+    background: white;
+}
+.el-table .E01-row td:last-child {
+    background: #867180;
+}
+.el-table .E02-row td:last-child {
+    background: #fc8d84;
+}
+.el-table .E03-row td:last-child {
+    background: #fbbd84;
+}
+.el-table .E05-row td:last-child {
+    background: #ea2843;
+}
+.el-table .E06-row td:last-child {
+    background: #4c83ac;
+}
+.el-table .E07-row td:last-child {
+    background: #74bcf6;
+}
+.el-table .E08-row td:last-child {
+    background: white;
+}
+.el-table .E09-row td:last-child {
+    background: #a0a0a0;
+}
+.el-table .I16-row td:last-child {
+    background: #3cb0c7;
+}
+.el-table .E0S-row td:last-child {
+    background: #84bd5a;
 }
 </style>
