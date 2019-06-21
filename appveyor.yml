@@ -1,11 +1,13 @@
 version: 1.0.{build}
+image: Visual Studio 2017
+services: mssql2017
 branches:
   only:
   - toolChain
 environment:
-  SqlServer/MasterConnectionString: Server=(local)\SQLEXPRESS;Database=master;Trusted_Connection=True
+  SqlServer/MasterConnectionString: Server=(local)\SQL2016;Database=master;User ID=sa;Password=Password12!
 skip_non_tags: true
-image: Visual Studio 2017
-services: mssql2017
+install:
+  - ps: ./CodeCakeBuilder/InstallCredentialProvider.ps1
 build_script:
   - dotnet run --project inProjects.CokeCakeBuilder -autointeraction -PublishDirtyRepo=Y
