@@ -133,22 +133,20 @@ namespace inProjects.WebApp.Controllers
                 if(type =="student" || type == "staffMember" )
                 {
                     CsvStudentMapping<UserList> csvStudentMapping = new CsvStudentMapping<UserList>( _emailer );
-                    List<UserList> studentResult = await csvStudentMapping.CSVReader( file );
+                    List<UserList> studentResult = csvStudentMapping.CSVReader( file );
                     await csvStudentMapping.UserParser( studentResult, _stObjMap, _authenticationInfo, type );
                 }
                 else if (type == "projectNumber" )
                 {
                     CsvStudentMapping<ProjectNumbers> csvStudentMapping = new CsvStudentMapping<ProjectNumbers>( _emailer );
-                    List<ProjectNumbers> projectNumbers = await csvStudentMapping.CSVReaderProjectNumber( file );
+                    List<ProjectNumbers> projectNumbers = csvStudentMapping.CSVReaderProjectNumber( file );
                     await csvStudentMapping.ForumNumberParser( _stObjMap, projectNumbers, _authenticationInfo );
                 }
                 else if (type == "jury" )
                 {
                     CsvStudentMapping<JuryInfos> csvStudentMapping = new CsvStudentMapping<JuryInfos>( _emailer );
-                    List<JuryInfos> result = await csvStudentMapping.CSVReaderProjectNumber( file );
+                    List<JuryInfos> result = csvStudentMapping.CSVReaderProjectNumber( file );
                     await csvStudentMapping.AssignProjectToJury( _stObjMap, _authenticationInfo, result, type );
-                    
-
                 }
 
             }
