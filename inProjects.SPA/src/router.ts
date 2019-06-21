@@ -1,14 +1,14 @@
 import Vue from "vue"
 import Router from "vue-router"
 import Home from "./views/Home.vue"
-import Connection from "./views/Connection.vue"
+import Connection from "./components/Connection.vue"
 import SubmitProject from "./components/SubmitProject.vue"
-import Student from "./views/Student.vue"
+import StudentList from "./components/StudentList.vue"
 import CreatePeriod from "./components/CreatePeriod.vue"
 import ListPeriod from "./components/ListPeriod.vue"
-import StaffMember from "./views/StaffMember.vue"
-import Project from "./views/Project.vue"
-import MyProfil from "./views/MyProfil.vue"
+import StaffMemberList from "./components/StaffMemberList.vue"
+import ProjectDetail from "./components/ProjectDetail.vue"
+import MyProfil from "./components/MyProfil.vue"
 import Plan from "./components/Plan.vue"
 import ProjectList from "./components/ProjectList.vue"
 import AddJury from "./components/AddJury.vue"
@@ -38,7 +38,7 @@ export default new Router({
     {
       path: "/student",
       name: "student",
-      component: Student
+      component: StudentList
     },
     {
      path: "/createPeriod",
@@ -48,12 +48,12 @@ export default new Router({
     {
       path: "/staffMember",
       name: "staffMember",
-      component: StaffMember
+      component: StaffMemberList
     },
     {
       path: "/plan",
       name: "plan",
-      component: Plan
+      component: ForumPlan
     },
     {
       path: "/listPeriod",
@@ -78,7 +78,7 @@ export default new Router({
      {
       path: "/Project/:projectId",
       name: "Project",
-      component: Project
+      component: ProjectDetail
      },
      {
       path: "/ProjectUserVote",

@@ -83,19 +83,16 @@ export default class ProjectList extends Vue {
         }
         return this.starColor = "#000000 !important;"
     }
-
-    redirect(destination: string) {
-        this.$router.replace(destination)
+     redirect(idProject: number) {
+         this.$router.push("/Project/" + idProject)
     }
 }
 </script>
 
 <style>
-
 .image{
       width: 100%; 
       height: 300px;
-    cursor: pointer;
 }
 
 .projectList{
@@ -117,7 +114,7 @@ export default class ProjectList extends Vue {
     overflow: hidden;
     border-color: #167BEB;
 }
-    
+
 .masonry-layout-flip {
     perspective: 1000;
 }

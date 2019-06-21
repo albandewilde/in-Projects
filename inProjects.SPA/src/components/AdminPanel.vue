@@ -57,7 +57,7 @@ async created() {
 }
 
  redirect(destination: string) {
-        this.$router.replace(destination)
+        this.$router.push(destination)
     }
 }
 </script>
