@@ -1,5 +1,6 @@
 <template>
     <div>
+         <el-input-number v-model="num" :precision="2" :step="0.25" :max="20" :min="0"></el-input-number>
          <div v-for="(o, idx) in projects" :key="idx">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
@@ -35,6 +36,7 @@ import { ProjectForumResult } from '@/modules/classes/ProjectForumResult';
 @Component
 export default class ForumResult extends Vue {
     private projects: ProjectForumResult[] = []
+    private num: number = 0
 
     async created(){
        this.projects = await getAllGradeProjects()

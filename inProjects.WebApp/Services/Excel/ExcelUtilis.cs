@@ -39,6 +39,7 @@ namespace inProjects.WebApp.Services.Excel
 
                 // Target a worksheet
                 var worksheet = excel.Workbook.Worksheets["ResultatsFP"];
+
                 worksheet.Cells["A1:H1"].Merge = true;
                 worksheet.Cells["D2:F2"].Merge = true;
                 worksheet.Cells[lastRow].Merge = true;
@@ -77,9 +78,13 @@ namespace inProjects.WebApp.Services.Excel
                 worksheet.Cells["A2:G" + (allProjectsForumResult.Count + 2)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells["A2:G" + (allProjectsForumResult.Count + 2)].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
+                //Set Math formule
+                worksheet.Cells["G" + (allProjectsForumResult.Count + 3)].Formula = "=MOYENNE(" + column7 + ")";
+
+
                 List<object[]> cellData = new List<object[]>();
                 int idx = 0;
-                double moyenneTot = 0;
+                int formulaIdx = 3;
                 foreach( var item in allProjectsForumResult )
                 {
                     idx++;
@@ -89,10 +94,12 @@ namespace inProjects.WebApp.Services.Excel
                     project[2] = "S05";
                     
                     int count = 3;
+                    int numberJury = 0;
                     foreach( var indivGrade in item.IndividualGrade )
                     {
-                        project[count] = indivGrade.Value + 0.33;
+                        project[count] = indivGrade.Value;
                         count++;
+                        numberJury++;
                     }
 
                     if(count != 6 )
@@ -102,21 +109,21 @@ namespace inProjects.WebApp.Services.Excel
                             project[count] = "";
                         }
                     }
-                   
-                    project[6] = item.Average;
+
+                    project[6] = "";
                     project[7] = idx;
                     cellData.Add( project );
 
-                    moyenneTot += item.Average;
+                    worksheet.Cells["G" + formulaIdx].Formula = "=(D" + formulaIdx + "+E" + formulaIdx + "+F" + formulaIdx + ")/" + numberJury;
+                    formulaIdx++;
+
                 }
 
-                moyenneTot = Math.Round( moyenneTot / idx, 2 );
 
                 // Set text on the cells
                 worksheet.Cells[firstRow].LoadFromArrays( firstRowContents );
                 worksheet.Cells[secondRow].LoadFromArrays( secondRowContents );
                 worksheet.Cells[3, 1].LoadFromArrays( cellData );
-                worksheet.Cells["G" + (allProjectsForumResult.Count + 3)].LoadFromText( moyenneTot.ToString().Replace( ",", "." ) );
                 worksheet.Cells["D" + (allProjectsForumResult.Count + 3)].LoadFromText("Moyenne FPI");
 
                 FileInfo excelFile = new FileInfo( @"C:\Users\DCHIC\Desktop\test.xlsx" );
