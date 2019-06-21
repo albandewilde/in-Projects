@@ -7,7 +7,9 @@ using CK.SqlServer;
 using CK.SqlServer.Setup;
 using inProjects.Data;
 using inProjects.Data.Data.Group;
+using inProjects.Data.Data.Period;
 using inProjects.Data.Data.ProjectStudent;
+using inProjects.Data.Data.TimedUser;
 using inProjects.Data.Data.User;
 using inProjects.Data.Queries;
 using inProjects.Data.Res.Model;
@@ -109,7 +111,6 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet( "favProject" )]
-        [AllowAnonymous]
         public async Task<IActionResult> FavProject( int idProject)
         {
             int userId = _authenticationInfo.ActualUser.UserId;
@@ -127,7 +128,6 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet("getAllProjects")]
-
         public async Task<IEnumerable<AllProjectInfoData>> GetAllProjects()
         {
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
@@ -157,6 +157,121 @@ namespace inProjects.WebApp.Controllers
                 }
                 return projectData;
             }
+        }
+        [HttpGet( "getProjectEval" )]
+        public async Task<IEnumerable<AllProjectInfoData>> GetProjectsEvaluate(int idSchool)
+        {
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            int userId = _authenticationInfo.ActualUser.UserId;
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, db );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
+                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+                UserQueries userQueries = new UserQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
+
+                PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( idSchool );
+                //Implementer check date period
+
+                IEnumerable<AllProjectInfoData> projectData = await projectQueries.GetAllProjectTimedByJuryId( userId, periodData.ChildId );
+                return projectData;
+            }
+        }
+
+        [HttpGet( "getAllTypeProjectsOfASchool" )]
+        public async Task<IActionResult> GetAllTypeProjectsOfASchool(int idSchool, char type)
+        {
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            int userId = _authenticationInfo.ActualUser.UserId;
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, db );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
+                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+                UserQueries userQueries = new UserQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
+
+                PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( idSchool );
+                //Implementer check date period
+
+                TimedUserData timedUserData = await timedUserQueries.GetTimedUser( userId, periodData.ChildId );
+
+                if( timedUserData == null )
+                {
+                    timedUserData = new TimedUserData
+                    {
+                        TimedUserId = 0
+                    };
+                }
+
+                IEnumerable<AllProjectInfoData> projectData = await projectQueries.GetAllTypeProjectSpecificToSchool( periodData.ChildId,type,timedUserData.TimedUserId);
+                for( var i = 0; i < projectData.Count(); i++ )
+                {
+                    IEnumerable<UserByProjectData> userByProject = await userQueries.GetUserByProject( projectData.ElementAt( i ).ProjectStudentId );
+                    projectData.ElementAt( i ).BegDate = userByProject.ElementAt( 0 ).BegDate;
+                    projectData.ElementAt( i ).EndDate = userByProject.ElementAt( 0 ).EndDate;
+
+                    foreach( var e in userByProject )
+                    {
+                        IEnumerable<GroupData> groupDatas = await groupQueries.GetAllGroupByTimedUser( e.TimedUserId );
+                        projectData.ElementAt( i ).FirstName.Add( e.FirstName );
+                        projectData.ElementAt( i ).LastName.Add( e.LastName );
+                        projectData.ElementAt( i ).TimedUserId.Add( e.TimedUserId );
+                        projectData.ElementAt( i ).UserId.Add( e.UserId );
+                    }
+                }
+                return Ok(projectData);
+            }
+        }
+        [HttpPost( "noteProject" )]
+        public async Task<IActionResult> NoteProject([FromBody] NoteProjectViewModel model )
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            TimedUserNoteProjectTable timedUserNoteProjectTable = _stObjMap.StObjs.Obtain<TimedUserNoteProjectTable>();
+            TimedUserTable timedUserTable = _stObjMap.StObjs.Obtain<TimedUserTable>();
+            EvaluatesTable evaluatesTable = _stObjMap.StObjs.Obtain<EvaluatesTable>();
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, db );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
+                UserQueries userQueries = new UserQueries( ctx, db );
+                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
+
+                PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( model.SchoolId );
+
+                TimedUserData timedUserData = await timedUserQueries.GetTimedUser( userId, periodData.ChildId );
+
+                if(timedUserData == null )
+                {
+                    TimedUserStruct timedUser = await timedUserTable.CreateOrUpdateTimedUserAsyncWithType( ctx, Data.TypeTimedUser.Anon, periodData.ChildId, userId );
+                    timedUserData = new TimedUserData
+                    {
+                        TimedUserId = timedUser.TimedUserId
+                    };
+                    await timedUserNoteProjectTable.AddOrUpdateNote( ctx, timedUserData.TimedUserId, model.ProjectId, model.Grade );
+                    return Ok();
+                }
+
+                if( model.User == ViewModels.TypeTimedUser.Jury )
+                {
+                    int id = await userQueries.GetJuryId( userId );
+                    await evaluatesTable.EvaluateProject( ctx, id, model.ProjectId, model.Grade );
+                }
+                else
+                {
+                    await timedUserNoteProjectTable.AddOrUpdateNote( ctx, timedUserData.TimedUserId, model.ProjectId, model.Grade );
+                }
+
+                return Ok();
+
+            }
+
         }
 
     }

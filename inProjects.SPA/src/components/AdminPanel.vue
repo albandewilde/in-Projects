@@ -11,6 +11,7 @@
                 </el-menu-item-group>
 
         </el-submenu>
+
         <el-submenu index="11">
             <template slot="title">
                 <font-awesome-icon icon="user-tie" size="lg"/>
@@ -23,6 +24,7 @@
                     <el-menu-item index="11-2" @click="redirect('/staffMember')">Liste des professeurs</el-menu-item>
                 </el-menu-item-group>
         </el-submenu>
+
         <el-submenu index="12">
             <template slot="title">
                 <font-awesome-icon icon="clipboard" size="lg" />
@@ -31,6 +33,11 @@
             <el-menu-item index="12-1" @click="redirect('/plan')">Plan</el-menu-item>
             <el-menu-item index="12-2" @click="redirect('/addJury')">Ajouter la liste des jurys</el-menu-item>
         </el-submenu>
+
+    <el-menu-item index="13" @click="redirect(`/Events`)">
+        <font-awesome-icon icon="thumbs-up" />
+        <span v-if="isCollapse == false"> Evenements de l'ecole!</span>
+    </el-menu-item>
 
 </div>
 </template>

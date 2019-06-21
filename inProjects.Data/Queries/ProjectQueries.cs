@@ -142,11 +142,40 @@ namespace inProjects.Data.Queries
             return result;
         }
 
+        public async Task<IEnumerable<AllProjectInfoData>> GetAllTypeProjectSpecificToSchool( int idSchool, char type, int timedUser)
+        {
+
+            IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
+                          " select ps.ProjectStudentId,ps.Logo,g.GroupName, np.Grade" +
+                          //" CASE WHEN np.Grade is null then - 1" +
+                          //" ELSE np.Grade END as Grade " +
+                          " from IPR.tProjectStudent ps" +
+                          " left outer join IPR.tTimedUserNoteProject np on np.StudentProjectId = ps.ProjectStudentId  and np.TimedUserId = @TimedUser" +
+                          " left outer join CK.tGroup g on ps.ProjectStudentId = g.GroupId" +
+                          " where g.ZoneId = @SchoolId and ps.[Type] = @TypeProject ", new { SchoolId = idSchool, TypeProject = type, TimedUser = timedUser } );
+
+            return result;
+        }
+
         public async Task<IEnumerable<ProjectData>> GetAllProjectByForum( int forumId )
         {
             IEnumerable<ProjectData> result = await _controller.QueryAsync<ProjectData>(
                 "SELECT * FROM IPR.vForumProjectInfos WHERE ForumId = @ForumId ORDER BY ForumNumber;",
                 new { ForumId = forumId } );
+
+            return result;
+        }
+
+        public async Task<IEnumerable<AllProjectInfoData>> GetAllProjectTimedByJuryId( int userId, int periodId )
+        {
+            IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
+                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo" +
+                " FROM IPR.tEvaluates e" +
+                " JOIN CK.tActorProfile ap on ap.GroupId = e.JuryId" +
+                " JOIN CK.tGroup g on g.GroupId = e.ProjectId" +
+                " JOIN IPR.tProjectStudent ps on ps.ProjectStudentId = e.ProjectId" +
+                " where ap.ActorId = @UserId and g.ZoneId = @ZoneId",
+                new { UserId = userId ,ZoneId = periodId} );
 
             return result;
         }

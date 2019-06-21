@@ -53,17 +53,6 @@
             <span> Accueil</span>
         </el-menu-item>
 
-        <el-submenu index="4">
-            <template slot="title">
-                <font-awesome-icon icon="file-alt" size="lg" />
-                <span> Projets</span>
-            </template>
-        <el-menu-item-group>
-            <el-menu-item index="4-1" @click="redirect(`/projectList`)">Liste des projets</el-menu-item>
-            <el-menu-item index="4-2">Trouver un projet</el-menu-item>
-        </el-menu-item-group>
-        </el-submenu>
-
         <div v-for="(o,idx) in whatTimed" :key="idx">
             <!-- index Admin 10 to 30 -->
             <div v-if="o == 'Administration'">
