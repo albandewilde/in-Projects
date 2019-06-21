@@ -61,7 +61,6 @@ namespace CodeCake
                 .IsDependentOn( "Build" )
                 .Does( () =>
                 {
-                    Cake.DotNetCoreRestore();
                     StandardUnitTests( globalInfo, projects.Where( p => p.Name.EndsWith( ".Tests" ) ) );
                 } );
 
