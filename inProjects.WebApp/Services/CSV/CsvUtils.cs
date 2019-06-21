@@ -223,6 +223,7 @@ namespace inProjects.WebApp.Services.CSV
                 UserQueries userQueries = new UserQueries( ctx, sqlDatabase );
                 TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, sqlDatabase );
                 ProjectQueries projectQueries = new ProjectQueries( ctx, sqlDatabase );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDatabase );
                 foreach( JuryInfos juryInfo in juryInfos )
                 {
                     int enterpriseId = 0;
@@ -266,15 +267,19 @@ namespace inProjects.WebApp.Services.CSV
                     //get the project id by forumnumber
                     int projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe1, groupData.ZoneId );
 
+                    //get the Begdate of the periode
+                    DateTime begDate = await timedPeriodQueries.GetBegDateOfPeriod( groupData.ZoneId );
+
                     //insert
-                 //   await evaluatesTable.EvaluateProject(ctx, groupId, projectId, -1, )
+
+                   // await evaluatesTable.EvaluateProject(ctx, groupId, projectId, -1, )
                 }
             }
         }
 
         public int GetTimedUserType(string type )
         {
-            if( type == "student " ) return 1;
+            if( type == "student" ) return 1;
             if( type == "staffMember" ) return 2;
             if( type == "jury" ) return 3;
             return 0;

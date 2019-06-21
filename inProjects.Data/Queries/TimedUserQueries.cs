@@ -114,7 +114,7 @@ namespace inProjects.Data.Queries
 
         public async Task<bool> IsStaffMember( int timedUserId )
         {
-            int result = await _controller.QuerySingleOrDefaultAsync<int>( "select * from IPR.tTimedStaffMember tu where tu.TimedStaffMemberId = @TimedUserId", new { TimedUserId = timedUserId } );
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( " select * from IPR.tTimedStaffMember tu where tu.TimedStaffMemberId = @TimedUserId   ", new { TimedUserId = timedUserId } );
 
             return result != 0 ? true : false;
         }

@@ -27,11 +27,11 @@
                 </div>        
             </li>
         </div>
-
-    <el-menu-item index="13" @click="redirect(`/Events`)">
-        <font-awesome-icon icon="thumbs-up" />
-        <span v-if="isCollapse == false"> Evenements de l'ecole!</span>
-    </el-menu-item>
+        <div class="okok">
+            <li>
+                <a class="dropbtn" @click="redirect(`/Events`)">Evenements de l'ecole !</a>
+            </li>
+        </div>
     </div>
 </template>
 

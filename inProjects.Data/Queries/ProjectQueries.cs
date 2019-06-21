@@ -184,7 +184,7 @@ namespace inProjects.Data.Queries
 
         public async Task<int> GetProjectIdByForumNumberAndPeriod(int forumNumber, int periodId)
         {
-            int result = await _controller.QueryFirstOrDefaultAsync<int>( "  SELECT * FROM IPR.tForumInfos fi JOIN IPR.tProjectStudent ps ON ps.ProjectStudentId = fi.ProjectId JOIN CK.tGroup g ON g.GroupId = ps.ProjectStudentId WHERE g.ZoneId = @ZoneId AND fi.ForumNumber = @ForumNumber", new { ZoneId = periodId, ForumNumber = forumNumber } );
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "  SELECT * FROM IPR.tForumInfos fi JOIN IPR.tProjectStudent ps ON ps.ProjectStudentId = fi.ProjectId JOIN CK.tGroup g ON g.GroupId = ps.ProjectStudentId WHERE g.ZoneId = @ZoneId AND fi.ForumNumber = @ForumNumber", new { ZoneId = periodId, ForumNumber = forumNumber } );
             return result;
         }
 
