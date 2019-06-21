@@ -6,7 +6,6 @@ branches:
   - toolChain
 environment:
   SqlServer/MasterConnectionString: Server=(local)\SQL2016;Database=master;User ID=sa;Password=Password12!
-skip_non_tags: true
 install:
   - ps: ./CodeCakeBuilder/InstallCredentialProvider.ps1
 build_script:
