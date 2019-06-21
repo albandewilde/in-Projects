@@ -1,4 +1,3 @@
-
 using Microsoft.AspNetCore.Http;
 using System;
 using CsvHelper;
@@ -24,7 +23,6 @@ namespace inProjects.WebApp.Services.CSV
 {
     class CsvStudentMapping<T>
     {
-        readonly IStObjMap _stObjMap;
         private readonly Emailer _emailSender;
         private List<UserList> _studentLists = new List<UserList>();
 
@@ -38,10 +36,8 @@ namespace inProjects.WebApp.Services.CSV
         {
             _emailSender = emailer;
         }
-
-
-
-        public async Task<List<UserList>> CSVReader(IFormFile path )
+        
+        public List<UserList> CSVReader(IFormFile path )
         {
             var streamResult = path.OpenReadStream();
 
@@ -57,7 +53,6 @@ namespace inProjects.WebApp.Services.CSV
                 }
                 return studentInfo;
             }
-
         }
 
         public async Task<bool> UserParser(List<UserList> studentList, IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, string type)
@@ -77,7 +72,6 @@ namespace inProjects.WebApp.Services.CSV
 
                 int zoneId = groupData.ZoneId;
 
-
                 foreach( var element in studentList )
                 {
                     string userName = Guid.NewGuid().ToString();
@@ -92,7 +86,6 @@ namespace inProjects.WebApp.Services.CSV
                     if( type == "student" ) groupName = element.GroupName.Split( '-' );                    
                     else if (type == "staffMember") groupName[0] = element.GroupName;
                     int groupId = await groupQueries.GetIdGroupByNameAndPeriod( groupName[0], zoneId );
-
 
                     TimedUserData timedUserData = await userQueries.CheckIfTimedUserExists( idUser, zoneId );
 
@@ -120,7 +113,6 @@ namespace inProjects.WebApp.Services.CSV
 
                         }
                     }
-
                 }
             }
             return true;
@@ -148,8 +140,8 @@ namespace inProjects.WebApp.Services.CSV
                 else
                 {
                     string tempPwd = RandomPassword();
-                    string subject = "Vous êtes invité à rejoindre la plateforme InProject";
-                    string mailContent = "Afin de vous connectez a la plateforme InProject voici votre mot de passe provisoire: " + tempPwd + " il est conseillé de modifier ce mot de passe lors de votre première connection";
+                    //string subject = "Vous êtes invité à rejoindre la plateforme InProjects";
+                    string mailContent = "Afin de vous connectez a la plateforme InProjects voici votre mot de passe provisoire: " + tempPwd + " il est conseillé de modifier ce mot de passe lors de votre première connection";
                     int newUserId = await userTable.CreateUserAsync( ctx, currentIdUser, userName, firstName, lastName );
                     await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
                     await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
@@ -173,7 +165,7 @@ namespace inProjects.WebApp.Services.CSV
             return builder.ToString();
 
         }
-        public async Task<List<T>> CSVReaderProjectNumber( IFormFile path )
+        public List<T> CSVReaderProjectNumber( IFormFile path )
         {
             var streamResult = path.OpenReadStream();
 
@@ -204,7 +196,6 @@ namespace inProjects.WebApp.Services.CSV
                     await forumInfosTable.CreateForumInfo( ctx, projectId, "", -1, -1, 4, 3, projectNumber.ProjectNumber );
                 }
             }
-
         }
 
         public async Task AssignProjectToJury( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, List<JuryInfos> juryInfos, string type )
@@ -275,7 +266,5 @@ namespace inProjects.WebApp.Services.CSV
             return 0;
 
         }
-
     }
-
 }

@@ -74,7 +74,7 @@ namespace inProjects.TomlHelpers.Tests
         //[TestCase("https://drive.google.com/open?id=1Ky3JyH1GwEzuduyZNaYXEM0l1LTn4Bbq", 0, false)]    // Pfh toml for Pi project
         //[TestCase("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl", 0, true)]    // Pi toml for Pi project
         //[TestCase("https://drive.google.com/open?id=1Ky3JyH1GwEzuduyZNaYXEM0l1LTn4Bbq", 1, true)]    // Pfh toml for Pfh project
-        public async Task given_a_toml_url_is_the_project_succefuly_register(string url, int projectType, bool succefyllySaved)
+        public void given_a_toml_url_is_the_project_succefuly_register(string url, int projectType, bool succefyllySaved)
         {
             (bool, string) retour;
             using(SqlStandardCallContext ctx = new SqlStandardCallContext())
@@ -86,11 +86,11 @@ namespace inProjects.TomlHelpers.Tests
                 CustomGroupTable groupTable = TestHelper.StObjMap.StObjs.Obtain<CustomGroupTable>();
                 int memberId = new UserQueries(ctx, db).GetUserByEmail("agopian@intechinfo.fr").Result.UserId;
 
-                //retour = TomlHelpers.RegisterProject(url, projectType, projectStudent, memberId, db, groupTable).Result;
+                retour = TomlHelpers.RegisterProject( url, projectType, projectStudent, memberId, db, groupTable, stObjMap, projectUrlTable ).Result;
             }
 
-            //Console.WriteLine(retour.Item2);
-            //Assert.That(retour.Item1, Is.EqualTo(succefyllySaved));
+            Console.WriteLine( retour.Item2 );
+            Assert.That( retour.Item1, Is.EqualTo( succefyllySaved ) );
         }
     }
 }
