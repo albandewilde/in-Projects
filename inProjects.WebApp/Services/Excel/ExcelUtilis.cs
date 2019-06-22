@@ -18,7 +18,7 @@ namespace inProjects.WebApp.Services.Excel
         }
 
 
-        public async  Task<bool> CreateExcel( List<Data.Data.ProjectStudent.ProjectForumResultData> allProjectsForumResult )
+        public async  Task<bool> CreateExcel( List<Data.Data.ProjectStudent.ProjectForumResultData> allProjectsForumResult, Data.Queries.ProjectQueries projectQueries )
         {
             using( ExcelPackage excel = new ExcelPackage() )
             {
@@ -86,40 +86,53 @@ namespace inProjects.WebApp.Services.Excel
                 List<object[]> cellData = new List<object[]>();
                 int idx = 0;
                 int formulaIdx = 3;
-                foreach( var item in allProjectsForumResult )
-                {
-                    idx++;
-                    object[] project = new object[8];
-                    project[0] = idx;
-                    project[1] = item.Name;
-                    project[2] = "S05";
-                    
-                    int count = 3;
-                    int numberJury = 0;
-                    foreach( var indivGrade in item.IndividualGrade )
+                   foreach( var item in allProjectsForumResult )
                     {
-                        project[count] = indivGrade.Value;
-                        count++;
-                        numberJury++;
-                    }
-
-                    if(count != 6 )
-                    {
-                        for( int i = count; i < 6; i++ )
+                        idx++;
+                        object[] project = new object[8];
+                        project[0] = idx;
+                        project[1] = item.Name;
+                        List<string> listGroups = await projectQueries.GetGroupsOfProject(item.ProjectId );
+                        listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) || x == "IL" || x == "SR" );
+                        listGroups.Reverse();
+                        project[2] = String.Join( "-", listGroups.ToArray() );
+                        int count = 3;
+                        int numberJury = 0;
+                        foreach( var indivGrade in item.IndividualGrade )
                         {
-                            project[count] = "";
+                        
+                            if( indivGrade.Value > 0 )
+                            {
+                                numberJury++;
+                                project[count] = indivGrade.Value;
+
+                            }
+                            else
+                            {
+                                project[count] = "";
+                            }
+                            count++;
+                      
                         }
+
+                        if(count != 6 )
+                        {
+                            for( int i = count; i < 6; i++ )
+                            {
+                                project[count] = "";
+                            }
+                        }
+
+                        project[6] = "";
+                        project[7] = idx;
+                        cellData.Add( project );
+                        if( numberJury == 0 ) numberJury = 1;
+
+                        formula = "=ROUND(((D" + formulaIdx + "+E" + formulaIdx + "+F" + formulaIdx + ")/" + numberJury + "),2)";
+                        worksheet.Cells["G" + formulaIdx].Formula = formula;
+                        formulaIdx++;
+
                     }
-
-                    project[6] = "";
-                    project[7] = idx;
-                    cellData.Add( project );
-
-                    formula = "=ROUND(((D" + formulaIdx + "+E" + formulaIdx + "+F" + formulaIdx + ")/" + numberJury + "),2)";
-                    worksheet.Cells["G" + formulaIdx].Formula = formula;
-                    formulaIdx++;
-
-                }
 
 
                 // Set text on the cells

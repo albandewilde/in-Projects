@@ -188,7 +188,7 @@ import {Event} from "../modules/classes/EventSchool"
             checkDate() {
                 let begDate = new Date(this.eventClicked.begDate)
                 let endDate = new Date(this.eventClicked.endDate)
-                return begDate >= endDate ? true : false
+                return begDate >= endDate ? false : true
             },
 
 	}

@@ -6,7 +6,8 @@ CREATE PROCEDURE sEvaluateProject
     @JuryId INT,
     @ProjectId INT,
 	@Grade float = null,
-	@BegDate DATETIME2 = null
+	@BegDate DATETIME2 = null,
+    @BlockedNote BIT = 0
 )
 AS
 BEGIN
@@ -18,7 +19,7 @@ BEGIN
 		    UPDATE IPR.tEvaluates set Grade = @Grade where ProjectId = @ProjectId and JuryId = @JuryId
 		END
 	else
-		INSERT INTO IPR.tEvaluates VALUES(@JuryId, @ProjectId, @Grade, @BegDate)
+		INSERT INTO IPR.tEvaluates VALUES(@JuryId, @ProjectId, @Grade, @BegDate,@BlockedNote)
 	
 --<PostCreate revert />
 

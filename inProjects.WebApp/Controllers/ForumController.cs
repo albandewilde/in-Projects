@@ -102,7 +102,7 @@ namespace inProjects.WebApp.Controllers
                 List<ProjectForumResultData> allProjectsForumResult = await this.getProjectsOfForum( projectInfosJuries );
 
 
-                bool test =  await excel.CreateExcel( allProjectsForumResult );
+                bool test =  await excel.CreateExcel( allProjectsForumResult,projectQueries );
 
                 return Ok(test);
                 
@@ -150,7 +150,8 @@ namespace inProjects.WebApp.Controllers
             List<double> gradeOfProject = new List<double>();
             List<ProjectForumResultData> forumsResult = new List<ProjectForumResultData>();
             ProjectForumResultData project = new ProjectForumResultData();
-            Dictionary<string, double> IndividualGrade = new Dictionary<string, double>();
+            Dictionary<string, double> individualGrade = new Dictionary<string, double>();
+            List<int> jurysId = new List<int>();
 
             foreach( var item in projects )
             {
@@ -163,13 +164,17 @@ namespace inProjects.WebApp.Controllers
                     if( diviseur > 0 ) moyenne = Math.Round( total / diviseur, 2 );
                     project.Average = moyenne;
                     diviseur = 0;
-                    project.IndividualGrade = IndividualGrade;
-                    IndividualGrade = new Dictionary<string, double>();
+                    project.IndividualGrade = individualGrade;
+                    project.JurysId = jurysId;
+                    individualGrade = new Dictionary<string, double>();
+                    jurysId = new List<int>();
                     gradeOfProject = new List<double>();
                     forumsResult.Add( project );
                     project = new ProjectForumResultData
                     {
-                        Name = item.ProjectName
+                        Name = item.ProjectName,
+                        ProjectId = item.ProjectStudentId
+                        
                     };
                 }
 
@@ -181,7 +186,8 @@ namespace inProjects.WebApp.Controllers
 
                 oldProject = item;
                 count++;
-                IndividualGrade.Add( item.JuryName, item.Grade );
+                individualGrade.Add( item.JuryName, item.Grade );
+                jurysId.Add( item.JuryId );
 
                 if( count == projects.Count )
                 {
@@ -191,12 +197,13 @@ namespace inProjects.WebApp.Controllers
                     if( diviseur > 0 ) moyenne = Math.Round(total / diviseur,2);
                     project.Average = moyenne;
                     diviseur = 0;
-                    project.IndividualGrade = IndividualGrade;
-                    IndividualGrade = new Dictionary<string, double>();
+                    project.IndividualGrade = individualGrade;
+                    individualGrade = new Dictionary<string, double>();
                     forumsResult.Add( project );
                     project = new ProjectForumResultData
                     {
-                        Name = item.ProjectName
+                        Name = item.ProjectName,
+                        ProjectId = item.ProjectStudentId
                     };
 
                 }

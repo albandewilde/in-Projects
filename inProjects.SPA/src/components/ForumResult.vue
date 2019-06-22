@@ -1,6 +1,6 @@
 <template>
     <div>
-         <el-input-number v-model="num" :precision="2" :step="0.25" :max="20" :min="0"></el-input-number>
+        {{projects}}
          <div v-for="(o, idx) in projects" :key="idx">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
@@ -12,7 +12,7 @@
                         {{idx2}}
                         <div v-if="projects[idx].individualGrade[idx2] > 0">
                             <el-select @change="gradeChange(idx,idx2)" style="width: 5%" v-model="projects[idx].individualGrade[idx2]" placeholder="Select">
-                                        <el-option v-for="(item,index) in 21" :key="index" :value="index"></el-option>
+                                        <el-option v-for="(item,index) in selector" :key="index" :value="item"></el-option>
                             </el-select><span class="grade-max">/20</span>
                         </div>
                         <div v-else>
@@ -32,14 +32,16 @@
 import { Component,Vue } from 'vue-property-decorator';
 import { getAllGradeProjects, downloadExcel } from '../api/forumApi';
 import { ProjectForumResult } from '@/modules/classes/ProjectForumResult';
+import { GetSelectorGrade } from '../api/projectApi';
 
 @Component
 export default class ForumResult extends Vue {
     private projects: ProjectForumResult[] = []
-    private num: number = 0
+    private selector: number[]= []
 
     async created(){
        this.projects = await getAllGradeProjects()
+       this.selector = await GetSelectorGrade()
     }
 
      async gradeChange(idx: number, idx2: number) {
