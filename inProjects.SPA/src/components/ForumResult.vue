@@ -6,14 +6,19 @@
                 <div slot="header" class="clearfix">
                     <span>{{o.name}}</span>
                     &nbsp;
-                    <el-button type="warning">Bloquer les notes</el-button>
+                    <el-button v-if="!projects[idx].isBlocked" @click="blockedGrade(idx)" type="warning">Bloquer les notes</el-button>
                 </div>
-                <div v-for="(a,idx2) in o.individualGrade" :key="idx2" class="text item">
-                        {{idx2}}
-                        <div v-if="projects[idx].individualGrade[idx2] > 0">
-                            <el-select @change="gradeChange(idx,idx2)" style="width: 5%" v-model="projects[idx].individualGrade[idx2]" placeholder="Select">
-                                        <el-option v-for="(item,index) in selector" :key="index" :value="item"></el-option>
-                            </el-select><span class="grade-max">/20</span>
+                <div v-for="(a,value,idx2) in o.individualGrade" :key="idx2" class="text item">
+                        {{value}}
+                        <div v-if="projects[idx].individualGrade[value] > 0">
+                            <div v-if="!projects[idx].isBlocked">
+                                <el-select @change="gradeChange(idx,idx2,value)" style="width: 5%" v-model="projects[idx].individualGrade[value]" placeholder="Select">
+                                            <el-option v-for="(item,index) in selector" :key="index" :value="item"></el-option>
+                                </el-select><span class="grade-max">/20</span>
+                            </div>
+                            <div v-else>
+                                 <span class="grade-max">{{projects[idx].individualGrade[value]}}/20</span>
+                            </div>
                         </div>
                         <div v-else>
                             Ce Jury n'a pas encore voté ce projet
@@ -32,22 +37,39 @@
 import { Component,Vue } from 'vue-property-decorator';
 import { getAllGradeProjects, downloadExcel } from '../api/forumApi';
 import { ProjectForumResult } from '@/modules/classes/ProjectForumResult';
-import { GetSelectorGrade } from '../api/projectApi';
+import { GetSelectorGrade, changeNoteProject, blockedNoteProject } from '../api/projectApi';
+import { TypeTimedUser } from '../modules/classes/TimedUserEnum';
 
 @Component
 export default class ForumResult extends Vue {
     private projects: ProjectForumResult[] = []
+    private projectsOrigin: ProjectForumResult[] = []
     private selector: number[]= []
 
     async created(){
        this.projects = await getAllGradeProjects()
+    //    this.projects.forEach(element => {
+    //        this.projectsOrigin.push(element)
+    //    });
+    //    console.log(this.projectsOrigin)
        this.selector = await GetSelectorGrade()
     }
 
-     async gradeChange(idx: number, idx2: number) {
-         console.log(idx)
-         console.log(idx2)
-         console.log(this.projects[idx].individualGrade[idx2])
+     async gradeChange(idx: number, idx2: number, key: string) {
+        try {
+            await changeNoteProject(this.projects[idx].projectId, this.projects[idx].individualGrade[key], this.projects[idx].jurysId[idx2], TypeTimedUser.StaffMember)
+        } catch (e) {
+            console.log(e)
+        }
+     }
+
+     async blockedGrade(idx: number){
+        try {
+            await blockedNoteProject(this.projects[idx].projectId,this.projects[idx].jurysId,this.projects[idx].individualGrade)
+            this.projects[idx].isBlocked = true
+        } catch (e) {
+            console.log(e)
+        }
      }
 
     async DownloadExcel(){

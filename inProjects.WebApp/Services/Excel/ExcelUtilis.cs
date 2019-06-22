@@ -40,6 +40,7 @@ namespace inProjects.WebApp.Services.Excel
                 // Target a worksheet
                 var worksheet = excel.Workbook.Worksheets["ResultatsFP"];
 
+                //Merge Range Cells
                 worksheet.Cells["A1:H1"].Merge = true;
                 worksheet.Cells["D2:F2"].Merge = true;
                 worksheet.Cells[lastRow].Merge = true;
@@ -78,8 +79,8 @@ namespace inProjects.WebApp.Services.Excel
                 worksheet.Cells["A2:G" + (allProjectsForumResult.Count + 2)].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
                 worksheet.Cells["A2:G" + (allProjectsForumResult.Count + 2)].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
 
-                string formula = "=ROUND(MOYENNE(G3:G" + (allProjectsForumResult.Count + 2) + "),2)";
                 //Set Math formule
+                string formula = "=ROUND(MOYENNE(G3:G" + (allProjectsForumResult.Count + 2) + "),2)";
                 worksheet.Cells["G" + (allProjectsForumResult.Count + 3)].Formula = formula;
 
 
@@ -88,29 +89,22 @@ namespace inProjects.WebApp.Services.Excel
                 int formulaIdx = 3;
                    foreach( var item in allProjectsForumResult )
                     {
-                        idx++;
                         object[] project = new object[8];
+                        idx++;
                         project[0] = idx;
                         project[1] = item.Name;
+
                         List<string> listGroups = await projectQueries.GetGroupsOfProject(item.ProjectId );
                         listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) || x == "IL" || x == "SR" );
                         listGroups.Reverse();
-                        project[2] = String.Join( "-", listGroups.ToArray() );
+                        project[2] = string.Join( "-", listGroups.ToArray() );
+
                         int count = 3;
                         int numberJury = 0;
                         foreach( var indivGrade in item.IndividualGrade )
                         {
-                        
-                            if( indivGrade.Value > 0 )
-                            {
-                                numberJury++;
-                                project[count] = indivGrade.Value;
-
-                            }
-                            else
-                            {
-                                project[count] = "";
-                            }
+                            project[count] = indivGrade.Value > 0 ? indivGrade.Value.ToString() : "";
+                            if( indivGrade.Value > 0 ) numberJury++;
                             count++;
                       
                         }

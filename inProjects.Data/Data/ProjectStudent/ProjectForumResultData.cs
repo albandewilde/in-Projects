@@ -11,6 +11,7 @@ namespace inProjects.Data.Data.ProjectStudent
         public double Average { get; set; }
         public Dictionary<string,double> IndividualGrade { get; set; }
         public List<int> JurysId { get; set; }
+        public bool IsBlocked { get; set; }
 
     }
 }

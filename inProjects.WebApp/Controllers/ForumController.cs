@@ -99,7 +99,7 @@ namespace inProjects.WebApp.Controllers
                 }
                 List<ProjectInfosJuryData> projectInfosJuries = await projectQueries.getAllProjectsGrade( groupData.ZoneId );
 
-                List<ProjectForumResultData> allProjectsForumResult = await this.getProjectsOfForum( projectInfosJuries );
+                List<ProjectForumResultData> allProjectsForumResult = this.GetProjectsOfForum( projectInfosJuries );
 
 
                 bool test =  await excel.CreateExcel( allProjectsForumResult,projectQueries );
@@ -110,7 +110,7 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet( "getAllGradeProjects" )]
-        public async Task<IActionResult> getAllGradeProject()
+        public async Task<IActionResult> GetAllGradeProject()
         {
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             int userId = _authenticationInfo.ActualUser.UserId;
@@ -135,14 +135,14 @@ namespace inProjects.WebApp.Controllers
 
                 List<ProjectInfosJuryData> projects = await projectQueries.getAllProjectsGrade( groupData.ZoneId );
 
-                List<ProjectForumResultData> listToSend = await this.getProjectsOfForum( projects );
+                List<ProjectForumResultData> listToSend = GetProjectsOfForum( projects );
                
                 return Ok( listToSend );
             }
 
         }
 
-        internal async Task<List<ProjectForumResultData>> getProjectsOfForum( List<ProjectInfosJuryData> projects )
+        internal List<ProjectForumResultData> GetProjectsOfForum( List<ProjectInfosJuryData> projects )
         {
             int diviseur = 0;
             int count = 0;
@@ -174,7 +174,7 @@ namespace inProjects.WebApp.Controllers
                     {
                         Name = item.ProjectName,
                         ProjectId = item.ProjectStudentId
-                        
+
                     };
                 }
 
@@ -188,13 +188,14 @@ namespace inProjects.WebApp.Controllers
                 count++;
                 individualGrade.Add( item.JuryName, item.Grade );
                 jurysId.Add( item.JuryId );
+                if( item.IsBlocked == true ) project.IsBlocked = true;
 
                 if( count == projects.Count )
                 {
                     double moyenne = 0;
                     double total = 0;
                     total = gradeOfProject.Take( gradeOfProject.Count ).Sum();
-                    if( diviseur > 0 ) moyenne = Math.Round(total / diviseur,2);
+                    if( diviseur > 0 ) moyenne = Math.Round( total / diviseur, 2 );
                     project.Average = moyenne;
                     diviseur = 0;
                     project.IndividualGrade = individualGrade;

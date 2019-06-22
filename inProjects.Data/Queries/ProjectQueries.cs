@@ -183,7 +183,7 @@ namespace inProjects.Data.Queries
         public async Task<List<ProjectInfosJuryData>> getAllProjectsGrade(int timePeriodId )
         {
             IEnumerable<ProjectInfosJuryData> result = await _controller.QueryAsync<ProjectInfosJuryData>(
-                "SELECT g1.GroupName as ProjectName, g.GroupName as JuryName,g.GroupId as JuryId,ps.ProjectStudentId," +
+                "SELECT g1.GroupName as ProjectName, g.GroupName as JuryName,g.GroupId as JuryId,e.BlockedGrade as IsBlocked,ps.ProjectStudentId," +
                 " CASE WHEN e.Grade is null then - 1 " +
                 " ELSE e.Grade END as Grade" +
                 " FROM IPR.tEvaluates e" +

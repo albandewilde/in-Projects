@@ -18,9 +18,12 @@ namespace inProjects.Data
         }
 
         [SqlProcedure( "sEvaluateProject" )]
-        public abstract Task EvaluateProject( ISqlCallContext context, int juryId, int projectId, double grade, DateTime begDate );
+        public abstract Task EvaluateOrUpdateGradeProject( ISqlCallContext context, int juryId, int projectId, double grade, DateTime begDate );
 
         [SqlProcedure( "sEvaluateProject" )]
-        public abstract Task EvaluateProject( ISqlCallContext context, int juryId, int projectId, double grade);
+        public abstract Task EvaluateOrUpdateGradeProject( ISqlCallContext context, int juryId, int projectId, double grade);
+
+        [SqlProcedure( "sEvaluateProject" )]
+        public abstract Task BlockedProjectGrade( ISqlCallContext context, int juryId, int projectId,double grade, bool blockedNote);
     }
 }

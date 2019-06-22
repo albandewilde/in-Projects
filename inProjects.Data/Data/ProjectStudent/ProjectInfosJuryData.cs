@@ -11,5 +11,6 @@ namespace inProjects.Data.Data.ProjectStudent
         public string ProjectName { get; set; }
         public string JuryName { get; set; }
         public double Grade { get; set; }
+        public bool IsBlocked { get; set; }
     }
 }

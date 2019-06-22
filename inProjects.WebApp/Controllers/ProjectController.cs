@@ -15,6 +15,7 @@ using inProjects.Data.Data.User;
 using inProjects.Data.Queries;
 using inProjects.Data.Res.Model;
 using inProjects.ViewModels;
+using inProjects.WebApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -31,10 +32,10 @@ namespace inProjects.WebApp.Controllers
         {
             _stObjMap = stObjMap;
             _authenticationInfo = authenticationInfo;
-            _selectorInt = getSelectorInt();
+            _selectorInt = GetSelectorInt();
         }
 
-        private List<double> getSelectorInt()
+        private List<double> GetSelectorInt()
         {
             double x = 0;
             List<double> list = new List<double>();
@@ -248,6 +249,7 @@ namespace inProjects.WebApp.Controllers
                 return Ok(projectData);
             }
         }
+
         [HttpPost( "noteProject" )]
         public async Task<IActionResult> NoteProject([FromBody] NoteProjectViewModel model )
         {
@@ -256,6 +258,7 @@ namespace inProjects.WebApp.Controllers
             TimedUserTable timedUserTable = _stObjMap.StObjs.Obtain<TimedUserTable>();
             EvaluatesTable evaluatesTable = _stObjMap.StObjs.Obtain<EvaluatesTable>();
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            PeriodServices periodServices = new PeriodServices();
 
             using( var ctx = new SqlStandardCallContext() )
             {
@@ -263,10 +266,33 @@ namespace inProjects.WebApp.Controllers
                 TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
                 UserQueries userQueries = new UserQueries( ctx, db );
                 TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+                AclQueries aclQueries = new AclQueries( ctx, db );
                 GroupQueries groupQueries = new GroupQueries( ctx, db );
 
-                PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( model.SchoolId );
+                //Case Change Grade by Administration ====================================================================================================================
+                if( model.User == ViewModels.TypeTimedUser.StaffMember )
+                {
+                    if( !await periodServices.CheckInPeriod( _stObjMap, _authenticationInfo ) )
+                    {
+                        Result result = new Result( Status.Unauthorized, "A la date d'aujourd'hui votre etablissement n'est dans une aucune periode" );
+                        return this.CreateResult( result );
+                    }
 
+                    GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+
+                    if( !await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId), userId, Operator.SuperiorOrEqual ))
+                    {
+                        Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                        return this.CreateResult( result );
+                    }
+
+                    await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, model.JuryId, model.ProjectId, model.Grade );
+                    return Ok();
+                }
+                //=========================================================================================================================================================
+
+                PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( model.SchoolId );
+                                            
                 TimedUserData timedUserData = await timedUserQueries.GetTimedUser( userId, periodData.ChildId );
 
                 if(timedUserData == null )
@@ -283,7 +309,7 @@ namespace inProjects.WebApp.Controllers
                 if( model.User == ViewModels.TypeTimedUser.Jury )
                 {
                     int id = await userQueries.GetJuryId( userId );
-                    await evaluatesTable.EvaluateProject( ctx, id, model.ProjectId, model.Grade );
+                    await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, id, model.ProjectId, model.Grade );
                 }
                 else
                 {
@@ -295,6 +321,45 @@ namespace inProjects.WebApp.Controllers
             }
 
         }
+        [HttpPost( "blockedProject" )]
+        public async Task<IActionResult> BlockedProject( [FromBody] BlockedGradeViewModel model )
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            EvaluatesTable evaluatesTable = _stObjMap.StObjs.Obtain<EvaluatesTable>();
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            PeriodServices periodServices = new PeriodServices();
 
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                AclQueries aclQueries = new AclQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
+
+                if( !await periodServices.CheckInPeriod( _stObjMap, _authenticationInfo ) )
+                {
+                    Result result = new Result( Status.Unauthorized, "A la date d'aujourd'hui votre etablissement n'est dans une aucune periode" );
+                    return this.CreateResult( result );
+                }
+
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+
+                if( !await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) )
+                {
+                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                    return this.CreateResult( result );
+                }
+
+                int idx = 0;
+                foreach( var item in model.IndividualGrade )
+                {
+                    await evaluatesTable.BlockedProjectGrade( ctx, model.JurysId[idx], model.ProjectId,item.Value, true );
+                    idx++;
+                }
+               
+                return Ok();
+
+            }
+
+        }
     }
 }

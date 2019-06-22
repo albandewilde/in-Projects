@@ -9,6 +9,7 @@ namespace inProjects.ViewModels
         public int ProjectId {get; set;}
         public double Grade {get; set;}
         public int SchoolId { get; set; }
+        public int JuryId { get; set; }
         public TypeTimedUser User { get; set; }
     }
 
