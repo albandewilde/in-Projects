@@ -39,6 +39,7 @@ import { getAllGradeProjects, downloadExcel } from '../api/forumApi';
 import { ProjectForumResult } from '@/modules/classes/ProjectForumResult';
 import { GetSelectorGrade, changeNoteProject, blockedNoteProject } from '../api/projectApi';
 import { TypeTimedUser } from '../modules/classes/TimedUserEnum';
+import{saveAs} from "file-saver"
 
 @Component
 export default class ForumResult extends Vue {
@@ -73,7 +74,9 @@ export default class ForumResult extends Vue {
      }
 
     async DownloadExcel(){
-         await downloadExcel()
+         let excel = await downloadExcel()
+         let blob = new Blob([excel], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
+         saveAs(blob,'ResultatFP.xlsx')
      }
 }
 </script>

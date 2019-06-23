@@ -352,7 +352,8 @@ namespace inProjects.WebApp.Controllers
                 int idx = 0;
                 foreach( var item in model.IndividualGrade )
                 {
-                    await evaluatesTable.BlockedProjectGrade( ctx, model.JurysId[idx], model.ProjectId,item.Value, true );
+                    if(item.Value > 0) await evaluatesTable.BlockedProjectGrade( ctx, model.JurysId[idx], model.ProjectId, item.Value, true );
+                    else await evaluatesTable.BlockedProjectGrade( ctx, model.JurysId[idx], model.ProjectId, true );
                     idx++;
                 }
                

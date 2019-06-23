@@ -1,4 +1,4 @@
-import { postAsync, getAsync } from "../helpers/apiHelper"
+import { postAsync, getAsync, gettAsyncConfigResponseType } from "../helpers/apiHelper"
 import { Plan } from "../modules/classes/Plan"
 import { Project } from "@/modules/classes/Project"
 import { Chacheli } from "../modules/classes/Chacheli"
@@ -36,8 +36,9 @@ export async function getAllGradeProjects(): Promise<ProjectForumResult[]> {
     return projects
 }
 
-export async function downloadExcel(): Promise<boolean> {
-    const response = await getAsync(`${endpoint}/DownloadExcel`)
+export async function downloadExcel(): Promise<any> {
+    const response = await gettAsyncConfigResponseType(`${endpoint}/DownloadExcel`)
+    console.log(response)
     return response.data
 }
 

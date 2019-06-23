@@ -18,7 +18,7 @@ namespace inProjects.WebApp.Services.Excel
         }
 
 
-        public async  Task<bool> CreateExcel( List<Data.Data.ProjectStudent.ProjectForumResultData> allProjectsForumResult, Data.Queries.ProjectQueries projectQueries )
+        public async Task<byte[]> CreateExcel( List<Data.Data.ProjectStudent.ProjectForumResultData> allProjectsForumResult, Data.Queries.ProjectQueries projectQueries )
         {
             using( ExcelPackage excel = new ExcelPackage() )
             {
@@ -135,11 +135,14 @@ namespace inProjects.WebApp.Services.Excel
                 worksheet.Cells[3, 1].LoadFromArrays( cellData );
                 worksheet.Cells["D" + (allProjectsForumResult.Count + 3)].LoadFromText("Moyenne FPI");
 
-                FileInfo excelFile = new FileInfo( @"C:\Users\DCHIC\Desktop\test.xlsx" );
-                excel.SaveAs( excelFile );
+                //FileInfo excelFile = new FileInfo( @"C:\Users\DCHIC\Desktop\test.xlsx" );
+                //if( excelFile.Exists ) excelFile.Delete();
+                //excel.SaveAs( excelFile );
+                //excel.Save();
+                //MemoryStream test = new MemoryStream( excel.GetAsByteArray() );
+                return excel.GetAsByteArray();
             }
 
-            return true;
 
         }
 

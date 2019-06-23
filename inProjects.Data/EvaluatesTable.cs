@@ -25,5 +25,8 @@ namespace inProjects.Data
 
         [SqlProcedure( "sEvaluateProject" )]
         public abstract Task BlockedProjectGrade( ISqlCallContext context, int juryId, int projectId,double grade, bool blockedNote);
+
+        [SqlProcedure( "sEvaluateProject" )]
+        public abstract Task BlockedProjectGrade( ISqlCallContext context, int juryId, int projectId, bool blockedNote );
     }
 }

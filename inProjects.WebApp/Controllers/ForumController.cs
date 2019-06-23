@@ -1,4 +1,5 @@
 using CK.Core;
+using OfficeOpenXml;
 using inProjects.Data.Data.Period;
 using inProjects.Data.Data.ProjectStudent;
 using inProjects.Data.Queries;
@@ -15,6 +16,7 @@ using CK.Auth;
 using System.Linq;
 using inProjects.Data;
 using inProjects.WebApp.Services.Excel;
+using System.IO;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -102,10 +104,9 @@ namespace inProjects.WebApp.Controllers
                 List<ProjectForumResultData> allProjectsForumResult = this.GetProjectsOfForum( projectInfosJuries );
 
 
-                bool test =  await excel.CreateExcel( allProjectsForumResult,projectQueries );
+                byte[] excelToArray =  await excel.CreateExcel( allProjectsForumResult,projectQueries );
 
-                return Ok(test);
-                
+                return File( excelToArray, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" );
             }
         }
 
