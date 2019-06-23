@@ -21,6 +21,7 @@ class Project {
     public classRoom!: string
     public projectId!: number
     public grade!: number
+    public isBlocked!: boolean
 
     constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], url: string)
     constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], url: string, projectId: number, type: string, traitId: number, grade: number)
