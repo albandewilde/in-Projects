@@ -169,7 +169,7 @@ namespace inProjects.Data.Queries
         public async Task<IEnumerable<AllProjectInfoData>> GetAllProjectTimedByJuryId( int userId, int periodId )
         {
             IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
-                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo" +
+                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo,e.BlockedGrade as IsBlocked" +
                 " FROM IPR.tEvaluates e" +
                 " JOIN CK.tActorProfile ap on ap.GroupId = e.JuryId" +
                 " JOIN CK.tGroup g on g.GroupId = e.ProjectId" +
@@ -178,6 +178,22 @@ namespace inProjects.Data.Queries
                 new { UserId = userId ,ZoneId = periodId} );
 
             return result;
+        }
+
+        public async Task<List<ProjectInfosJuryData>> getAllProjectsGrade(int timePeriodId )
+        {
+            IEnumerable<ProjectInfosJuryData> result = await _controller.QueryAsync<ProjectInfosJuryData>(
+                "SELECT g1.GroupName as ProjectName, g.GroupName as JuryName,g.GroupId as JuryId,e.BlockedGrade as IsBlocked,ps.ProjectStudentId," +
+                " CASE WHEN e.Grade is null then - 1 " +
+                " ELSE e.Grade END as Grade" +
+                " FROM IPR.tEvaluates e" +
+                " JOIN CK.tGroup g on e.JuryId = g.GroupId" +
+                " JOIN IPR.tProjectStudent ps on ps.ProjectStudentId = e.ProjectId" +
+                " JOIN CK.tGroup g1 on g1.GroupId = ps.ProjectStudentId" +
+                " where g.ZoneId = @TimePeriodId" +
+                " order by ps.ProjectStudentId", new { TimePeriodId = timePeriodId } );
+
+            return result.AsList();
         }
     }
 }
