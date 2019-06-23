@@ -40,9 +40,12 @@ import { ProjectForumResult } from '@/modules/classes/ProjectForumResult';
 import { GetSelectorGrade, changeNoteProject, blockedNoteProject } from '../api/projectApi';
 import { TypeTimedUser } from '../modules/classes/TimedUserEnum';
 import{saveAs} from "file-saver"
+import * as SignalR from "@aspnet/signalr"
+
 
 @Component
 export default class ForumResult extends Vue {
+    private connection!: SignalR.HubConnection
     private projects: ProjectForumResult[] = []
     private projectsOrigin: ProjectForumResult[] = []
     private selector: number[]= []
@@ -54,6 +57,8 @@ export default class ForumResult extends Vue {
     //    });
     //    console.log(this.projectsOrigin)
        this.selector = await GetSelectorGrade()
+       await this.AddEvents()
+        
     }
 
      async gradeChange(idx: number, idx2: number, key: string) {
@@ -68,6 +73,7 @@ export default class ForumResult extends Vue {
         try {
             await blockedNoteProject(this.projects[idx].projectId,this.projects[idx].jurysId,this.projects[idx].individualGrade)
             this.projects[idx].isBlocked = true
+            await this.connection.invoke('SendBlocked',4,this.projects[idx].projectId)
         } catch (e) {
             console.log(e)
         }
@@ -77,6 +83,17 @@ export default class ForumResult extends Vue {
          let excel = await downloadExcel()
          let blob = new Blob([excel], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'})
          saveAs(blob,'ResultatFP.xlsx')
+     }
+
+     async AddEvents(){
+         this.connection = await new SignalR.HubConnectionBuilder()
+            .withUrl(process.env.VUE_APP_BACKEND + "/ForumHub").build()
+             await this.connection.on("RefreshClassment", async () => {
+                  this.projects = await getAllGradeProjects()
+                  console.log("pass")
+            });
+            await this.connection.start()
+            await this.connection.invoke("JoinRoom", 4)
      }
 }
 </script>
