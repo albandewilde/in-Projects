@@ -29,9 +29,7 @@ export async function getProjects(userId: number): Promise<Project[]> {
 export async function getAllGradeProjects(): Promise<ProjectForumResult[]> {
     let projects: ProjectForumResult[] = []
     const response = await getAsync(`${endpoint}/getAllGradeProjects`)
-    console.log(response.data)
     projects = response.data
-    console.log(projects)
 
     return projects
 }

@@ -12,9 +12,14 @@
                      <span class="name-project-jury-grade">{{projectList[index].groupName}}</span><br>          
                         <img :src="projectList[index].logo" class="image"  @click="redirect(projectList[index].projectStudentId)">
                         <div class="my-card-row">
+                         <div v-if="!projectList[index].isBlocked">
                             <el-select  @change="gradeChange(index,projectList[index].projectStudentId)" class="select-grade" v-model="projectList[index].grade" placeholder="Select">
                                 <el-option v-for="(item,index) in selector" :key="index" :value="item"></el-option>
                             </el-select><span class="grade-max">/20</span>
+                         </div>
+                         <div>
+                           <span class="grade-max">{{projectList[index].grade}}/20</span>
+                         </div>
                         </div>
                     </el-card>
                     <br/>

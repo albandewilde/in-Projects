@@ -73,7 +73,6 @@ export default class ProjectUserVote extends Vue {
    async note(newGrade: number, id: number) {
         try {
             const grade = newGrade * this.numberMax
-            console.log(grade)
             await noteProject(id, grade, this.schoolId, TypeTimedUser.Anon)
         } catch (e) {
             console.log(e)

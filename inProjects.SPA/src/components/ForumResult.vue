@@ -1,8 +1,8 @@
 <template>
     <div>
-        {{projects}}
          <div v-for="(o, idx) in projects" :key="idx">
-            <el-card class="box-card">
+
+            <el-card :class="'box-card-'+idx">
                 <div slot="header" class="clearfix">
                     <span>{{o.name}}</span>
                     &nbsp;
@@ -82,5 +82,14 @@ export default class ForumResult extends Vue {
 </script>
 
 <style>
+.box-card-0{
+    background: gold
+}
+.box-card-1{
+    background: silver
+}
+.box-card-2{
+    background: #ad713d
+}
 
 </style>

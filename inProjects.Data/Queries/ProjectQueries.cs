@@ -169,7 +169,7 @@ namespace inProjects.Data.Queries
         public async Task<IEnumerable<AllProjectInfoData>> GetAllProjectTimedByJuryId( int userId, int periodId )
         {
             IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
-                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo" +
+                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo,e.BlockedGrade as IsBlocked" +
                 " FROM IPR.tEvaluates e" +
                 " JOIN CK.tActorProfile ap on ap.GroupId = e.JuryId" +
                 " JOIN CK.tGroup g on g.GroupId = e.ProjectId" +
