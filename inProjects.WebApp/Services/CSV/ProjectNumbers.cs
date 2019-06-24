@@ -6,7 +6,7 @@ namespace inProjects.WebApp.Services.CSV
 {
     public class ProjectNumbers
     {
-        int ProjectNumber { get; set; }
-        string ProjectName { get; set; }
+        public int ProjectNumber { get; set; }
+        public string ProjectName { get; set; }
     }
 }

@@ -13,7 +13,7 @@
             <el-button id="saveButton" @click="SavePlan" type="success" disabled>Sauvegarder</el-button>
         </div>
         <div>
-            <el-table :data="projects" :row-class-name="tableRowClassName">
+            <el-table id="projectTable" :data="projects" :row-class-name="tableRowClassName">
                 <el-table-column prop="forumNumber" label="#" sortable width="180"/>
                 <el-table-column prop="name" label="Nom du projet" width="180"/>
                 <el-table-column prop="semester" label="Semestre" sortable width="180"/>
@@ -177,7 +177,7 @@ body {
     font-size: 15px;
     border: none;
 }
-.el-table {
+#projectTable {
     color: #000000;
     font-weight: 700;
 }

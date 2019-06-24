@@ -13,8 +13,8 @@ create procedure IPR.sCreateProjectStudent
     @CKTraitIdResult INT OUTPUT,
 
     @Logo nvarchar(126),
-    @Slogan NVARCHAR(MAX),
-    @Pitch NVARCHAR(255),
+    @Slogan NVARCHAR(255),
+    @Pitch TEXT,
     @LeaderId int = 0,
     @Type CHAR
 )

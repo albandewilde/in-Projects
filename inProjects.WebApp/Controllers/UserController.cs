@@ -102,7 +102,6 @@ namespace inProjects.WebApp.Controllers
         [HttpPost, DisableRequestSizeLimit]
         public async Task<IActionResult> AddStudentListCsv( string type )
         {
-            CsvStudentMapping csvStudentMapping = new CsvStudentMapping(_emailer);
             var file = Request.Form.Files[0];
 
             int userId = _authenticationInfo.ActualUser.UserId;
@@ -116,11 +115,11 @@ namespace inProjects.WebApp.Controllers
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
 
                 // User must have the rights to do this action
-                if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) == false )
-                {
-                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
-                    return this.CreateResult( result );
-                }
+                //if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) == false )
+                //{
+                //    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                //    return this.CreateResult( result );
+                //}
 
                 bool isInPeriod = await periodServices.CheckInPeriod( _stObjMap, _authenticationInfo );
 
@@ -133,12 +132,23 @@ namespace inProjects.WebApp.Controllers
 
                 if(type =="student" || type == "staffMember" )
                 {
+                    CsvStudentMapping<UserList> csvStudentMapping = new CsvStudentMapping<UserList>( _emailer );
                     List<UserList> studentResult = await csvStudentMapping.CSVReader( file );
                     await csvStudentMapping.UserParser( studentResult, _stObjMap, _authenticationInfo, type );
                 }
                 else if (type == "projectNumber" )
                 {
+                    CsvStudentMapping<ProjectNumbers> csvStudentMapping = new CsvStudentMapping<ProjectNumbers>( _emailer );
                     List<ProjectNumbers> projectNumbers = await csvStudentMapping.CSVReaderProjectNumber( file );
+                    await csvStudentMapping.ForumNumberParser( _stObjMap, projectNumbers, _authenticationInfo );
+                }
+                else if (type == "jury" )
+                {
+                    CsvStudentMapping<JuryInfos> csvStudentMapping = new CsvStudentMapping<JuryInfos>( _emailer );
+                    List<JuryInfos> result = await csvStudentMapping.CSVReaderProjectNumber( file );
+                    await csvStudentMapping.AssignProjectToJury( _stObjMap, _authenticationInfo, result, type );
+                    
+
                 }
 
             }
