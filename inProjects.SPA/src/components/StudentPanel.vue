@@ -1,9 +1,6 @@
 <template>
-<div>
-        <el-menu-item index="94" @click="redirect(`/submit_project`)">
-             <font-awesome-icon icon="plus-square" size="lg" />
-            <span v-if="isCollapse == false"> Deposer un Projet</span>
-        </el-menu-item>
+<div class="okok">
+        <li><a @click="redirect(`/submit_project`)">Deposer un projet</a></li>
 </div>
 </template>
 
@@ -16,7 +13,7 @@ export default class StudentPanel extends Vue {
 isCollapse!: boolean
 
  redirect(destination: string) {
-        this.$router.replace(destination)
+        this.$router.push(destination)
     }
 }
 </script>

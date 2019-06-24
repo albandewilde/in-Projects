@@ -1,24 +1,26 @@
 <template>
-    <div>
-        <el-row>
-            <el-col :span="5" v-for="(o, index) in projectListToDisplay.length" :key="o" :offset="index > 0 ? 1 : 1" >            
-                <el-card v-bind:body-style="{ padding: '0px', border:getType(projectListToDisplay[index]) }">
-                    <img :src="projectListToDisplay[index].logo" class="image"  @click="redirect(projectListToDisplay[index].projectStudentId)">
-                    <div class="my-card-row">
-                        <span>{{projectListToDisplay[index].groupName}}</span><br>
-                        <span>Slogan : {{projectListToDisplay[index].slogan}}</span><br>
-                        <span>Pitch : {{projectListToDisplay[index].pitch}}</span><br>
-                        <span>Chef de projet: {{getLeader(projectListToDisplay[index])}} equipe de {{projectListToDisplay[index].firstName.length}} personne(s)</span><br>
-                        <span>{{formatDate(projectListToDisplay[index].begDate)}} - {{formatDate(projectListToDisplay[index].endDate)}} </span>
-                        <div class="bottom clearfix">
-                            <el-button class="test" icon="el-icon-star-off" circle  @click="FavOrUnfav(projectListToDisplay[index], index)" v-bind:style="{background:isStarColored(projectListToDisplay[index].isFav)}"></el-button>
-                        </div>
-                    </div>
-                </el-card>
-            </el-col>
-        </el-row>
+<div>
+    <div class="masonry-layout">
+        <div class="masonry-layout-panel masonry-layout-flip--md masonry-layout-flip" v-for="(o, index) in projectListToDisplay.length" :key="o">
+            <div class="masonry-layout-panel__content masonry-layout-flip__content">
+                <div class="masonry-layout-flip__panel masonry-layout-flip__panel--front">
+                    <h2>{{projectListToDisplay[index].groupName}}</h2>
+                    <h3>{{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}} </h3>
+                    <img :src="projectListToDisplay[index].logo" class="image">
+                </div>
+                <br>
+                <div class="masonry-layout-flip__panel masonry-layout-flip__panel--back">
+                    <br>
+                    <u><b @click="redirect('Project/' + projectListToDisplay[index].projectStudentId)">{{projectListToDisplay[index].slogan}}</b></u>
+                    <br><br>
+                    {{projectListToDisplay[index].pitch}}
+                    <br><br>
+                    <el-button class="test" icon="el-icon-star-off" circle  @click="FavOrUnfav(projectListToDisplay[index], index)" v-bind:style="{background:isStarColored(projectListToDisplay[index].isFav)}"></el-button>
+                </div>
+            </div>
+        </div>
     </div>
-    
+</div>
 </template>
 
 <script lang="ts">
@@ -82,29 +84,69 @@ export default class ProjectList extends Vue {
         return this.starColor = "#000000 !important;"
     }
      redirect(idProject: number) {
-         this.$router.replace("/Project/" + idProject)
+         this.$router.push("/Project/" + idProject)
     }
 }
 </script>
 
 <style>
 .image{
-    width: 100%;
-    display: inline-block; 
-    height: 300px; 
-    cursor: pointer;
+      width: 100%; 
+      height: 300px;
 }
 
-.el-card{
-    border:darkred 1px solid ;
-    border: 100pc;
-
-}
-.el-col-6 {
-    margin-left: 1% !important
+.projectList{
+    position: relative;
 }
 
-.my-card-row{
-    height: 480 !important;
+.masonry-layout {
+    column-count: 3;
+    column-gap: 0;
+}
+.masonry-layout-panel {
+    break-inside: avoid;
+    padding: 5px;
+}
+.masonry-layout-panel__content {
+    padding: 10px;
+    border-radius: 10px;
+    border-style: solid;
+    overflow: hidden;
+    border-color: #167BEB;
+}
+
+.masonry-layout-flip {
+    perspective: 1000;
+}
+.masonry-layout-flip:hover .masonry-layout-flip__content {
+  transform: rotateY(180deg);
+}
+
+.masonry-layout-flip__panel--front {
+  transform: rotateY(0deg);
+  z-index: 2;
+}
+.masonry-layout-flip__panel--back {
+  transform: rotateY(180deg);
+  background: linear-gradient(rgb(13, 102, 219, 1), rgb(68, 218, 229))
+}
+
+.masonry-layout-flip__panel {
+  backface-visibility: hidden;
+  border-radius: 10px;
+  height: 100%;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.masonry-layout-flip__content {
+  overflow: visible;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: 0.25s;
+  height: 400px; 
 }
 </style>

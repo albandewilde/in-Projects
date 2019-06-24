@@ -17,9 +17,9 @@ export async function getPlan() {
     return plan
 }
 
-export async function getProjects(userId: number): Promise<Project[]> {
+export async function getProjects(): Promise<Project[]> {
     let projects: Project[] = []
-    const response = await getAsync(`${endpoint}/getProjects?userId=${userId}`)
+    const response = await getAsync(`${endpoint}/getProjects`)
     projects = response.data
 
     return projects

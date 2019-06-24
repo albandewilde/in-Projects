@@ -1,7 +1,7 @@
 CREATE VIEW IPR.vProjectsDetails
 AS
 
-SELECT LeaderId = tu.TimedUserId,
+SELECT LeaderId = p.LeaderId,
        LeaderFirstName = u.FirstName,
 	   LeaderLastName = u.LastName,
        g.GroupName,
@@ -14,6 +14,4 @@ SELECT LeaderId = tu.TimedUserId,
        g.ZoneId
 FROM IPR.tProjectStudent p
 JOIN CK.tGroup g on p.ProjectStudentId = g.GroupId
-JOIN IPR.tTimedUser tu on tu.TimedUserId = p.LeaderId
-JOIN CK.tUser u on u.UserId = tu.UserId
-
+JOIN CK.tUser u ON u.UserId = p.LeaderId

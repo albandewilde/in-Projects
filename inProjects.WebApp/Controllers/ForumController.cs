@@ -42,10 +42,11 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet("GetProjects")]
-        public async Task<List<Project>> GetAllProjects( [FromQuery] int userId )
+        public async Task<List<Project>> GetAllProjects()
         {
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             List<Project> projectList = new List<Project>();
+            int userId = _authenticationInfo.ActualUser.UserId;
 
             using( var ctx = new SqlStandardCallContext() )
             {
@@ -57,7 +58,7 @@ namespace inProjects.WebApp.Controllers
                 {
                     List<string> listGroups = await projectQueries.GetGroupsOfProject( project.ProjectStudentId );
                     listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) || x == "IL" || x == "SR" );
-                    project.Semester = listGroups[1] + " - " + listGroups[0];
+                    project.Semester = string.Join( "-", listGroups.ToArray() );
                     Project p = new Project( project.ProjectStudentId, project.Name,
                         project.Semester, project.CoordinatesX, project.CoordinatesY, project.ClassRoom, project.Height, project.Width, project.ForumNumber );
                     projectList.Add( p );
@@ -101,7 +102,7 @@ namespace inProjects.WebApp.Controllers
                 }
                 List<ProjectInfosJuryData> projectInfosJuries = await projectQueries.getAllProjectsGrade( groupData.ZoneId );
 
-                List<ProjectForumResultData> allProjectsForumResult = this.GetProjectsOfForum( projectInfosJuries );
+                List<ProjectForumResultData> allProjectsForumResult = GetProjectsOfForum( projectInfosJuries );
 
 
                 byte[] excelToArray =  await excel.CreateExcel( allProjectsForumResult,projectQueries );
@@ -174,7 +175,10 @@ namespace inProjects.WebApp.Controllers
                     project = new ProjectForumResultData
                     {
                         Name = item.ProjectName,
-                        ProjectId = item.ProjectStudentId
+                        ProjectId = item.ProjectStudentId,
+                        ClassRoom = item.ClassRoom,
+                        ForumNumber = item.ForumNumber
+                        
 
                     };
                 }
@@ -200,13 +204,9 @@ namespace inProjects.WebApp.Controllers
                     project.Average = moyenne;
                     diviseur = 0;
                     project.IndividualGrade = individualGrade;
+                    project.JurysId = jurysId;
                     individualGrade = new Dictionary<string, double>();
                     forumsResult.Add( project );
-                    project = new ProjectForumResultData
-                    {
-                        Name = item.ProjectName,
-                        ProjectId = item.ProjectStudentId
-                    };
 
                 }
 
