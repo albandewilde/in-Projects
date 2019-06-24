@@ -204,13 +204,9 @@ namespace inProjects.WebApp.Controllers
                     project.Average = moyenne;
                     diviseur = 0;
                     project.IndividualGrade = individualGrade;
+                    project.JurysId = jurysId;
                     individualGrade = new Dictionary<string, double>();
                     forumsResult.Add( project );
-                    project = new ProjectForumResultData
-                    {
-                        Name = item.ProjectName,
-                        ProjectId = item.ProjectStudentId
-                    };
 
                 }
 
