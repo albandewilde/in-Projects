@@ -36,7 +36,7 @@ import {Project} from "../modules/classes/Project"
 import {verifyProjectFav, favProject } from "../api/submitProjectApi"
 import JSZip from "jszip"
 import {ProjectSheet} from "../modules/classes/ProjectSheet"
-import {GeneratePiSheet, GeneratePfhSheet} from "../modules/functions/GenerateSheet"
+import {GenerateSheet} from "../modules/functions/GenerateSheet"
 import {GetAllSheet} from "../api/projectApi"
 import pdfMake from "pdfmake/build/pdfmake"
 import { saveAs } from "file-saver"
@@ -100,33 +100,34 @@ export default class ProjectList extends Vue {
     }
 
     async GetAllProjectSheet(index : number) {
-            const sheet =  pdfMake.createPdf(
-                    GeneratePiSheet(
-                        [
-                            "None",
-                            "None"
-                        ],
-                        this.projects[index].name,
-                        this.projects[index].semester,
-                        this.projects[index].sector,
-                        this.projects[index].technos,
-                        this.projects[index].logo,
-                        this.projects[index].slogan,
-                        this.projects[index].pitch,
-                        this.projects[index].team
-                    )
-                )
-                sheet.getBlob(async (blob :Blob) => {
-                    this.zip.file("fiches/"+this.projects[index].name + ".pdf",blob)
-                    if(this.projects.length -1 != index){
-                        await this.GetAllProjectSheet(++index)
-                    }else{
-                     this.zip.generateAsync({type:"blob"})
-                        .then(function(content) {
+        const sheet =  pdfMake.createPdf(
+            GenerateSheet(
+                [
+                    "None",
+                    "None"
+                ],
+                this.projects[index].name,
+                this.projects[index].semester,
+                this.projects[index].sector,
+                this.projects[index].technos,
+                this.projects[index].logo,
+                this.projects[index].slogan,
+                this.projects[index].pitch,
+                this.projects[index].team
+            )
+        )
+
+        sheet.getBlob(async (blob :Blob) => {
+            this.zip.file("fiches/"+this.projects[index].name + ".pdf", blob)
+            if(this.projects.length -1 != index) {
+                await this.GetAllProjectSheet(++index)
+            } else {
+                this.zip.generateAsync({type:"blob"})
+                    .then(function(content) {
                         saveAs(content, "fiches.zip");
-                    });
-                    }
-                 });
+                    })
+            }
+        })
     }
 
    async download(){
@@ -134,9 +135,10 @@ export default class ProjectList extends Vue {
        this.zip = new JSZip()
        this.zip.folder("fiches")
        this.projects = await GetAllSheet()
+       console.log("we now generate the sheets")
        await this.GetAllProjectSheet(index)
-
     }
+
     CheckedAuthorize(needToBe: string){
         return this.$store.state.currentUserType.find(x => x == needToBe) != null ? true : false
     }

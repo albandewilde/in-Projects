@@ -2,7 +2,7 @@ import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "pdfmake/build/vfs_fonts"
 pdfMake.vfs = pdfFonts.pdfMake.vfs
 
-export function GeneratePiSheet(
+export function GenerateSheet(
     plc: Array<string> = ["E07", "26"],
     project_name: string = "ITI'Humain",
     sem: string = "Semestre 1",
@@ -154,8 +154,6 @@ export function GeneratePiSheet(
 
     return sheet
 }
-
-export function GeneratePfhSheet(){}
 
 const removeNonString = function(array: Array<any>) {
     let new_array: Array<string> = []
