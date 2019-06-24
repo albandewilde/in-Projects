@@ -36,7 +36,7 @@ import {Project} from "../modules/classes/Project"
 import {verifyProjectFav, favProject } from "../api/submitProjectApi"
 import JSZip from "jszip"
 import {ProjectSheet} from "../modules/classes/ProjectSheet"
-import {GenerateSheet} from "../modules/functions/GenerateSheet"
+import {GeneratePiSheet, GeneratePfhSheet} from "../modules/functions/GenerateSheet"
 import {GetAllSheet} from "../api/projectApi"
 import pdfMake from "pdfmake/build/pdfmake"
 import { saveAs } from "file-saver"
@@ -98,9 +98,10 @@ export default class ProjectList extends Vue {
         }
         return this.starColor = "#000000 !important;"
     }
+
     async GetAllProjectSheet(index : number) {
             const sheet =  pdfMake.createPdf(
-                    GenerateSheet(
+                    GeneratePiSheet(
                         [
                             "None",
                             "None"

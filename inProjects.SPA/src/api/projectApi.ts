@@ -26,7 +26,7 @@ export async function GetAllSheet(): Promise<Array<ProjectSheet>> {
                     project.team.item1,
                     project.team.item2
                 ],
-                project.technos
+                // project.technos
             )
         )
     }

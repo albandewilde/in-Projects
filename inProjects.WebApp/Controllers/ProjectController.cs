@@ -162,7 +162,7 @@ namespace inProjects.WebApp.Controllers
             }
         }
 
-        public async Task<ProjectPiSheet> GetProjectPiSheet(int idx)
+        public async Task<ProjectSheet> GetProjectSheet(int idx)
         {
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             int userId = _authenticationInfo.ActualUser.UserId;
@@ -209,16 +209,30 @@ namespace inProjects.WebApp.Controllers
             }
             (string, string[]) team = (leader, members);
 
-            string[] technos = pd.Technologies.ToArray();
-            
-            return new ProjectPiSheet(name, semester, sector, logo, slogan, pitch, team, technos);
+            // check the type for the field techno of background field and return the project
+            if (pd.Type == "i")
+            {
+                string[] technos = pd.Technologies.ToArray();
+                return new ProjectPiSheet(name, semester, sector, logo, slogan, pitch, team, technos);
+            }
+            else if (pd.Type == "h")
+            {
+                // download and encode the background in base64
+                string background = Convert.ToBase64String(new WebClient().DownloadData(pd.Logo));
+                return new ProjectPfhSheet(name, semester, sector, logo, slogan, pitch, team, background);
+            }
+            else
+            {
+                return new ProjectSheet(name, semester, sector, logo, slogan, pitch, team);
+            }
         }
 
         [HttpGet("getProjectSheet")]
         [AllowAnonymous]
         public async Task<IActionResult> SendProjectSheet(int idx)
         {
-            return Ok(await GetProjectPiSheet(idx));
+            var foo = await GetProjectSheet(idx);
+            return Ok(foo);
         }
 
         [HttpGet("GetAllPiSheet")]
@@ -228,7 +242,7 @@ namespace inProjects.WebApp.Controllers
             List<AllProjectInfoData> projects = GetAllProjects().Result.ToList();
             List<ProjectSheet> projectsSheet = new List<ProjectSheet>();
 
-            foreach (AllProjectInfoData projet in projects) projectsSheet.Add(await GetProjectPiSheet(projet.ProjectStudentId));
+            foreach (AllProjectInfoData projet in projects) projectsSheet.Add(await GetProjectSheet(projet.ProjectStudentId));
             
             return Ok(projectsSheet);
         }

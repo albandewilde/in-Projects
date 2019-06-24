@@ -62,7 +62,8 @@ import { ProjectDetails } from "../modules/classes/ProjectDetails"
 import { getInfosProject, verifyProjectFav, favProject } from "../api/submitProjectApi"
 import { getGroupUserAccessPanel } from "../api/groupApi"
 import {GetProject} from "../api/getProject"
-import {GenerateSheet} from "../modules/functions/GenerateSheet"
+import {ProjectSheet, ProjectPiSheet, ProjectPfhSheet} from "../modules/classes/ProjectSheet"
+import {GeneratePiSheet, GeneratePfhSheet} from "../modules/functions/GenerateSheet"
 import pdfMake from "pdfmake/build/pdfmake"
 
 @Component
@@ -102,21 +103,30 @@ export default class ProjectDetail extends Vue {
     async CreateSheet(id: number) {
         // fetch to the server all information we need and formated
         let project = await GetProject(id)
+        console.log(project.technos)
 
         // generate the pdf
-        const sheet = GenerateSheet(
-            ["None", "None"],
-            project.name,
-            project.semester,
-            project.sector,
-            project.technos,
-            project.logo,
-            project.slogan,
-            project.pitch,
-            project.team,
-        );
+        var sheet
+        if (project.technos) {
+            sheet = GeneratePiSheet(
+                ["None", "None"],
+                project.name,
+                project.semester,
+                project.sector,
+                project.technos,
+                project.logo,
+                project.slogan,
+                project.pitch,
+                project.team,
+            )
+        } else if (project.background) {
+            sheet = GeneratePfhSheet(
+            )
+        }
+
         pdfMake.createPdf(sheet).download()
     }
+
     CheckedAuthorize(needToBe: string){
         return this.$store.state.currentUserType.find(x => x == needToBe) != null ? true : false
     }
