@@ -177,11 +177,11 @@ namespace inProjects.WebApp.Services.CSV
         {
             var streamResult = path.OpenReadStream();
 
-            using( var reader = new StreamReader( streamResult, Encoding.UTF8 ) )
+            using( var reader = new StreamReader( streamResult, Encoding.UTF8) )
             using( var csv = new CsvReader( reader ) )
             {
-                csv.Configuration.Delimiter = ";";
-                csv.Configuration.Encoding = Encoding.UTF8;
+
+               // csv.Configuration.Delimiter = ";";
                 var records = csv.GetRecords<T>();
                 var projectInfo = records.ToList();
                 return projectInfo;
@@ -200,8 +200,11 @@ namespace inProjects.WebApp.Services.CSV
 
                 foreach( ProjectNumbers projectNumber in projectNumbers )
                 {
+                    
                     int projectId = await projectQueries.GetSpecificIdGroupByZoneIdAndGroupName( groupData.ZoneId, projectNumber.ProjectName );
+                    if( projectId == 0 ) Console.WriteLine("-----" + projectNumber.ProjectName );
                     await forumInfosTable.CreateForumInfo( ctx, projectId, "", -1, -1, 4, 3, projectNumber.ProjectNumber );
+                   
                 }
             }
 
