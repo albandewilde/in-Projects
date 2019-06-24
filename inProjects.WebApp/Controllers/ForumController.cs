@@ -42,7 +42,7 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet("GetProjects")]
-        public async Task<List<Project>> GetAllProjects( )
+        public async Task<List<Project>> GetAllProjects()
         {
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             List<Project> projectList = new List<Project>();
@@ -102,7 +102,7 @@ namespace inProjects.WebApp.Controllers
                 }
                 List<ProjectInfosJuryData> projectInfosJuries = await projectQueries.getAllProjectsGrade( groupData.ZoneId );
 
-                List<ProjectForumResultData> allProjectsForumResult = this.GetProjectsOfForum( projectInfosJuries );
+                List<ProjectForumResultData> allProjectsForumResult = GetProjectsOfForum( projectInfosJuries );
 
 
                 byte[] excelToArray =  await excel.CreateExcel( allProjectsForumResult,projectQueries );
@@ -175,7 +175,10 @@ namespace inProjects.WebApp.Controllers
                     project = new ProjectForumResultData
                     {
                         Name = item.ProjectName,
-                        ProjectId = item.ProjectStudentId
+                        ProjectId = item.ProjectStudentId,
+                        ClassRoom = item.ClassRoom,
+                        ForumNumber = item.ForumNumber
+                        
 
                     };
                 }

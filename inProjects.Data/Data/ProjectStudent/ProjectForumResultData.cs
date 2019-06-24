@@ -12,6 +12,8 @@ namespace inProjects.Data.Data.ProjectStudent
         public Dictionary<string,double> IndividualGrade { get; set; }
         public List<int> JurysId { get; set; }
         public bool IsBlocked { get; set; }
+        public string ClassRoom { get; set; }
+        public int ForumNumber { get; set; }
 
     }
 }
