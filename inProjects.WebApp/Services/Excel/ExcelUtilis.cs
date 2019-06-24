@@ -38,7 +38,7 @@ namespace inProjects.WebApp.Services.Excel
 
 
                 // Target a worksheet
-                var worksheet = excel.Workbook.Worksheets["ResultatsFP"];
+                ExcelWorksheet worksheet = excel.Workbook.Worksheets["ResultatsFP"];
 
                 //Merge Range Cells
                 worksheet.Cells["A1:H1"].Merge = true;
@@ -87,12 +87,20 @@ namespace inProjects.WebApp.Services.Excel
                 List<object[]> cellData = new List<object[]>();
                 int idx = 0;
                 int formulaIdx = 3;
+
+                    //Add Information project to cells
                    foreach( var item in allProjectsForumResult )
                     {
                         object[] project = new object[8];
                         idx++;
-                        project[0] = idx;
-                        project[1] = item.Name;
+                        project[0] = item.ForumNumber;
+
+                        //add BackGround Color to Stand
+                        worksheet.Cells["A" + formulaIdx].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                        worksheet.Cells["A" + formulaIdx].Style.Fill.BackgroundColor.SetColor( getColorOfClassRoom(item.ClassRoom));
+                        worksheet.Cells["A" + formulaIdx].Style.Border.BorderAround( ExcelBorderStyle.Thin );
+
+                    project[1] = item.Name;
 
                         List<string> listGroups = await projectQueries.GetGroupsOfProject(item.ProjectId );
                         listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) || x == "IL" || x == "SR" );
@@ -146,5 +154,33 @@ namespace inProjects.WebApp.Services.Excel
 
         }
 
+        private Color getColorOfClassRoom( string classRoom )
+        {
+            switch( classRoom )
+            {
+                case "E01":
+                    return Color.FromArgb( 1, 133, 127, 127 );
+                case "E02":
+                    return Color.FromArgb( 1, 252, 144, 132 );
+                case "E03":
+                    return Color.FromArgb( 1, 251, 189, 132 );
+                case "E05":
+                    return Color.FromArgb( 1, 234, 40, 67 );
+                case "E06":
+                    return Color.FromArgb( 1, 76, 131, 172 );
+                case "E07":
+                    return Color.FromArgb( 1, 112, 188, 246 );
+                case "E08":
+                    return Color.White;
+                case "E09":
+                    return Color.FromArgb( 1, 160, 160, 160 );
+                case "E0S":
+                    return Color.FromArgb( 1, 132, 189, 90 );
+                case "I16":
+                    return Color.FromArgb( 1, 60, 176, 99 );
+                default:
+                    return Color.White;
+            }
+        }
     }
 }
