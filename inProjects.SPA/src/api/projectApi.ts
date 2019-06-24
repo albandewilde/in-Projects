@@ -10,10 +10,14 @@ export async function GetAllProject(): Promise<Project[]> {
 }
 
 export async function GetAllSheet(): Promise<Array<ProjectSheet>> {
+    console.log("hey can i ger all sheets ?")
     const rep = await getAsync(`${endpoint}/getAllPiSheet`)
+    console.log("the serv response is arrived")
     let projects: Array<ProjectSheet> = new Array<ProjectSheet>()
 
+    console.log("the for loop")
     for (const project of rep.data) {
+        console.log("att to the list")
         projects.push(
             new ProjectSheet(
                 project.name,
@@ -29,6 +33,8 @@ export async function GetAllSheet(): Promise<Array<ProjectSheet>> {
                 project.technos
             )
         )
+        console.log("+1")
     }
+    console.log("i get all")
     return projects
 }

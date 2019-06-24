@@ -115,7 +115,7 @@ export default class ProjectDetail extends Vue {
             project.pitch,
             project.team,
         );
-        pdfMake.createPdf(sheet).download()
+        pdfMake.createPdf(sheet).open()
     }
     CheckedAuthorize(needToBe: string){
         return this.$store.state.currentUserType.find(x => x == needToBe) != null ? true : false
