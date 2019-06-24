@@ -12,7 +12,7 @@ namespace inProjects.TomlHelpers.Tests
         public void is_the_downloaded_string_is_correct()
         {
             string offlineToml = File.ReadAllText("./toml_sample_for_tests/ficheprojet_in-projects.toml");
-            string onlineToml =  TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl"));
+            string onlineToml =  TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=10-TDZ27pDKegXF7H1Gjjxpnp06wcD61P"));
 
             Assert.That(onlineToml, Is.EqualTo(offlineToml));
         }
@@ -22,7 +22,7 @@ namespace inProjects.TomlHelpers.Tests
         {
             ProjectPi onlineProject =  TomlHelpers.GetInstanceFromToml<ProjectPi>(TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl")));
 
-            Assert.That(onlineProject.isValid(), Is.True);
+            Assert.That(onlineProject.isValid().Item1, Is.True);
         }
 
         [Test]

@@ -9,7 +9,7 @@ import { Component, Vue } from "vue-property-decorator"
 
 @Component
 export default class Countdown extends Vue {
-    nextForum: Date = new Date("July 05, 2019 13:15:00")
+    nextForum: Date = new Date("July 05, 2019 8:45:00")
     days: number = 0
     hours: number = 0
     minutes: number = 0

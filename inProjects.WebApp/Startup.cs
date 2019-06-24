@@ -109,6 +109,7 @@ namespace WebApp
             app.UseSignalR( routes =>
              {
                  routes.MapHub<StaffMemberHub>( "/StaffMemberHub" );
+                 routes.MapHub<ForumHub>( "/ForumHub" );
              } );
 
             app.UseMvc(routes =>

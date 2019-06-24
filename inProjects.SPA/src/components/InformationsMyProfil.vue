@@ -151,7 +151,6 @@ export default class InformationsMyProfil extends Vue {
 }
 
 .panel-body{
-   margin-left: 40%;
 }
 
 </style>
