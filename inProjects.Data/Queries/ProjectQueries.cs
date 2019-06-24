@@ -197,6 +197,20 @@ namespace inProjects.Data.Queries
             return result.AsList();
         }
 
+        public async Task<List<ProjectForumResultData>> GetAllPublicsNoteByTimedPeriodId( int timePeriodId )
+        {
+            IEnumerable<ProjectForumResultData> result = await _controller.QueryAsync<ProjectForumResultData>(
+                  "SELECT ps.ProjectStudentId AS ProjectId, g.GroupName as Name, SUM( np.Grade ) As Average" +
+                  " FROM  IPR.tProjectStudent ps" +
+                  " LEFT OUTER JOIN IPR.tTimedUserNoteProject np on ps.ProjectStudentId = np.StudentProjectId" +
+                  " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ps.ProjectStudentId AND g.ZoneId = @TimePeriodId" +
+                  " GROUP BY ps.ProjectStudentId, g.GroupName" +
+                  " ORDER BY Average DESC"
+                , new { TimePeriodId = timePeriodId } );
+
+            return result.AsList();
+        }
+
         public async Task<int> GetProjectIdByForumNumberAndPeriod(int forumNumber, int periodId)
         {
             int result = await _controller.QuerySingleOrDefaultAsync<int>( "  SELECT * FROM IPR.tForumInfos fi JOIN IPR.tProjectStudent ps ON ps.ProjectStudentId = fi.ProjectId JOIN CK.tGroup g ON g.GroupId = ps.ProjectStudentId WHERE g.ZoneId = @ZoneId AND fi.ForumNumber = @ForumNumber", new { ZoneId = periodId, ForumNumber = forumNumber } );

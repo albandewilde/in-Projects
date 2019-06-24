@@ -44,9 +44,9 @@ namespace inProjects.WebApp.Controllers
         [HttpGet("GetProjects")]
         public async Task<List<Project>> GetAllProjects()
         {
+            int userId = _authenticationInfo.ActualUser.UserId;
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             List<Project> projectList = new List<Project>();
-            int userId = _authenticationInfo.ActualUser.UserId;
 
             using( var ctx = new SqlStandardCallContext() )
             {
@@ -140,6 +140,29 @@ namespace inProjects.WebApp.Controllers
                 List<ProjectForumResultData> listToSend = GetProjectsOfForum( projects );
                
                 return Ok( listToSend );
+            }
+
+        }
+
+        [HttpGet( "getAllPublicNote" )]
+        public async Task<IActionResult> GetAllPublicNote()
+        {
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            int userId = _authenticationInfo.ActualUser.UserId;
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                ProjectQueries projectQueries = new ProjectQueries( ctx, db );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
+                TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+                UserQueries userQueries = new UserQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
+
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+
+                List<ProjectForumResultData> projects = await projectQueries.GetAllPublicsNoteByTimedPeriodId( groupData.ZoneId );
+
+                return Ok( projects );
             }
 
         }
