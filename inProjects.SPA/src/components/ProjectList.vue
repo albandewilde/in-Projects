@@ -54,7 +54,6 @@ export default class ProjectList extends Vue {
 
     async mounted() {
         this.projectList  = await GetAllProject()
-        console.log(this.projectList)
         for (const project of this.projectList) {
             this.projectListToDisplay.push(project)
         }
@@ -82,7 +81,6 @@ export default class ProjectList extends Vue {
             this.isFav = await verifyProjectFav(specificProject.projectStudentId)
             await favProject(specificProject.projectStudentId)
             this.isFav = !this.isFav
-            console.log(this.isFav)
             if (this.isFav) {
                 div.setAttribute("style", "background: #F5CC27 !important;")
             } else {
@@ -135,7 +133,6 @@ export default class ProjectList extends Vue {
        this.zip = new JSZip()
        this.zip.folder("fiches")
        this.projects = await GetAllSheet()
-       console.log("we now generate the sheets")
        await this.GetAllProjectSheet(index)
     }
 
