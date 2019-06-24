@@ -99,8 +99,9 @@ namespace inProjects.WebApp.Services.Excel
                         worksheet.Cells["A" + formulaIdx].Style.Fill.PatternType = ExcelFillStyle.Solid;
                         worksheet.Cells["A" + formulaIdx].Style.Fill.BackgroundColor.SetColor( getColorOfClassRoom(item.ClassRoom));
                         worksheet.Cells["A" + formulaIdx].Style.Border.BorderAround( ExcelBorderStyle.Thin );
+                        worksheet.Cells["A" + formulaIdx].Style.Font.Color.SetColor( Color.White );
 
-                    project[1] = item.Name;
+                         project[1] = item.Name;
 
                         List<string> listGroups = await projectQueries.GetGroupsOfProject(item.ProjectId );
                         listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) || x == "IL" || x == "SR" );
