@@ -65,9 +65,9 @@
         },
         {
             "Name": "E0S",
-            "OriginX": 40,
+            "OriginX": 30,
             "OriginY": 14,
-            "EndPositionX": 45,
+            "EndPositionX": 35,
             "EndPositionY": 16
         }
     ]

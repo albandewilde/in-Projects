@@ -12,14 +12,14 @@
         <div class="saveButton" v-else>
             <el-button id="saveButton" @click="SavePlan" type="success" disabled>Sauvegarder</el-button>
         </div>
-         
     </div>
-       <el-table id="projectTable" :data="projects" :row-class-name="tableRowClassName">
-                <el-table-column prop="forumNumber" label="#" sortable width="180"/>
-                <el-table-column prop="name" label="Nom du projet" width="180"/>
-                <el-table-column prop="semester" label="Semestre" sortable width="180"/>
-                <el-table-column prop="classRoom" label="Salle" sortable width="180"/>
-         </el-table>
+
+    <el-table id="projectTable" :data="projects" :row-class-name="tableRowClassName">
+        <el-table-column prop="forumNumber" label="#" sortable width="180"/>
+        <el-table-column prop="name" label="Nom du projet" width="180"/>
+        <el-table-column prop="semester" label="Semestre" sortable width="180"/>
+        <el-table-column prop="classRoom" label="Salle" sortable width="180"/>
+    </el-table>
 </div>
 </template>
 
@@ -128,13 +128,9 @@ export default {
 
             this.hasChanged = true
         },
+
         tableRowClassName({ row }) {
             return row.classRoom == "" ? "empty-row" : row.classRoom + "-row"
-            // if (row.classRoom === "") {
-            //     return "empty-row"
-            // } else {
-            //     return row.classRoom + "-row"
-            // }
         }
     }
 }
