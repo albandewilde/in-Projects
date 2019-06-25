@@ -77,5 +77,15 @@ namespace inProjects.Data.Queries
             return userByProjects;
         }
 
+        public async Task<int> GetJuryId(int userId, int timePeriodId )
+        {
+            return await _controller.QueryFirstOrDefaultAsync<int>(
+                " SELECT e.JuryId" +
+                " FROM IPR.tEvaluates e " +
+                " JOIN CK.tActorProfile ap on ap.GroupId = e.JuryId" +
+                " JOIN CK.tGroup g on g.GroupId = e.ProjectId" +
+                " JOIN IPR.tProjectStudent ps on ps.ProjectStudentId = e.ProjectId" +
+                " where ap.ActorId = @UserId and g.ZoneId = @TimePeriodId", new { UserId = userId, TimePeriodId = timePeriodId } );
+        }
     }
 }

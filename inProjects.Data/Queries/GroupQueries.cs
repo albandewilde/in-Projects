@@ -28,7 +28,8 @@ namespace inProjects.Data.Queries
 
         public async Task<int> GetSpecificIdGroupByZoneIdAndGroupName(int zoneId,string groupName )
         {
-         return await _controller.QueryFirstOrDefaultAsync<int>( "SELECT GroupId FROM CK.tGroup where GroupName = @GroupName AND ZoneId =@ZoneId;", new { ZoneId = zoneId, GroupName = groupName } );
+            int result =  await _controller.QuerySingleOrDefaultAsync<int>( "SELECT GroupId FROM CK.tGroup where GroupName = @GroupName AND ZoneId =@ZoneId;", new { ZoneId = zoneId, GroupName = groupName } );
+            return result;
         }
 
         public async Task<List<string>> GetAllGroupByZoneId(int zoneID )
@@ -79,5 +80,6 @@ namespace inProjects.Data.Queries
             IEnumerable<GroupData> result = await _controller.QueryAsync<GroupData>( "SELECT g.GroupId, g.GroupName FROM IPR.tTimedUser tu JOIN CK.tUser u ON u.UserId = tu.UserId AND tu.TimedUserId = @TimedUserId JOIN CK.tActorProfile ap ON ap.ActorId = u.UserId JOIN CK.tGroup g ON g.GroupId = ap.GroupId ", new { TimedUserId = timedUserId } );
             return result;
         }
+
     }
 }

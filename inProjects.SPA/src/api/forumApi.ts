@@ -1,7 +1,8 @@
-import { postAsync, getAsync } from "../helpers/apiHelper"
+import { postAsync, getAsync, gettAsyncConfigResponseType } from "../helpers/apiHelper"
 import { Plan } from "../modules/classes/Plan"
 import { Project } from "@/modules/classes/Project"
 import { Chacheli } from "../modules/classes/Chacheli"
+import { ProjectForumResult } from '@/modules/classes/ProjectForumResult';
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/forum"
 
@@ -16,12 +17,27 @@ export async function getPlan() {
     return plan
 }
 
-export async function getProjects(userId: number): Promise<Project[]> {
+export async function getProjects(): Promise<Project[]> {
     let projects: Project[] = []
-    const response = await getAsync(`${endpoint}/getProjects?userId=${userId}`)
+    const response = await getAsync(`${endpoint}/getProjects`)
     projects = response.data
 
     return projects
+}
+
+
+export async function getAllGradeProjects(): Promise<ProjectForumResult[]> {
+    let projects: ProjectForumResult[] = []
+    const response = await getAsync(`${endpoint}/getAllGradeProjects`)
+    projects = response.data
+
+    return projects
+}
+
+export async function downloadExcel(): Promise<any> {
+    const response = await gettAsyncConfigResponseType(`${endpoint}/DownloadExcel`)
+    console.log(response)
+    return response.data
 }
 
 export async function savePlan(plan: Chacheli[]): Promise<any> {

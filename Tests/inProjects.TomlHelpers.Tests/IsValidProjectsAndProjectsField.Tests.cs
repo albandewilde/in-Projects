@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using System.Net.Mail;
 using NUnit.Framework;
 
 namespace inProjects.TomlHelpers.Tests
@@ -160,7 +159,7 @@ namespace inProjects.TomlHelpers.Tests
             string project_toml = File.ReadAllText(filePath);
             ProjectPi project = TomlHelpers.GetInstanceFromToml<ProjectPi>(project_toml);
 
-            Assert.That(project.isValid(), Is.EqualTo(expected));
+            Assert.That(project.isValid().Item1, Is.EqualTo(expected));
         }
 
         [TestCase("./toml_sample_for_tests/pfh_given_pattern.toml", true)]
@@ -171,12 +170,12 @@ namespace inProjects.TomlHelpers.Tests
         [TestCase("./toml_sample_for_tests/with_otherDocuments_urlDocuments_pfh_given_pattern.toml", true)]
         [TestCase("./toml_sample_for_tests/wrong_othersDocuments_pfh_given_pattern.toml", false)]
         [TestCase("./toml_sample_for_tests/wrong_othersDocuments_urlDocuments_pfh_given_pattern.toml", false)]
-        public void projectPfh_alid_method(string filepath, bool expected)
+        public void projectPfh_valid_method(string filepath, bool expected)
         {
             string project_toml = File.ReadAllText(filepath);
             ProjectPfh project = TomlHelpers.GetInstanceFromToml<ProjectPfh>(project_toml);
 
-            Assert.That(project.isValid(), Is.EqualTo(expected));
+            Assert.That(project.isValid().Item1, Is.EqualTo(expected));
         }
     }
 }

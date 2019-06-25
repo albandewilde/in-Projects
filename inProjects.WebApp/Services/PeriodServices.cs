@@ -46,5 +46,34 @@ namespace inProjects.WebApp.Services
             } 
 
         }
+
+        public async Task<bool> CheckPeriodGivenDate( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, DateTime begDate, DateTime endDate )
+        {
+            var sqlDatabase = stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            var group = stObjMap.StObjs.Obtain<CustomGroupTable>();
+            int userId = authenticationInfo.ActualUser.UserId;
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                GroupQueries groupQueries = new GroupQueries( ctx, sqlDatabase );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDatabase );
+
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+                PeriodData periodData = await timedPeriodQueries.GetCurrentPeriod( groupData.ZoneId );
+
+               int shouldBeGreater = begDate.CompareTo( periodData.BegDate );
+               int shouldBeLower = endDate.CompareTo( periodData.EndDate );
+
+                if(shouldBeGreater >= 0 && shouldBeLower <= 0 )
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+        }
     }
 }

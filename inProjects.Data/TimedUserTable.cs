@@ -20,5 +20,18 @@ namespace inProjects.Data
 
         [SqlProcedure( "sCreateOrUpdateTimedUser" )]
         public abstract Task<TimedUserStruct> CreateOrUpdateTimedUserAsync( ISqlCallContext context, int typeUser, int timePeriodId, int userId);
+
+        [SqlProcedure( "sCreateOrUpdateTimedUser" )]
+        public abstract Task<TimedUserStruct> CreateOrUpdateTimedUserAsyncWithType( ISqlCallContext context, TypeTimedUser typeUser, int timePeriodId, int userId );
+    }
+
+
+    public enum TypeTimedUser
+    {
+        Anon,
+        Student,
+        StaffMember,
+        Jury,
+  
     }
 }

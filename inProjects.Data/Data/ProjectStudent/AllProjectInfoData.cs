@@ -27,6 +27,10 @@ namespace inProjects.Data.Data.ProjectStudent
 
         public int IsFav { get; set; }
 
+        public double Grade { get; set; }
+
+        public bool IsBlocked { get; set; }
+
 
     }
 }
