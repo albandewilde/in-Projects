@@ -5,6 +5,7 @@ class ProjectForumResult {
     public individualGrade: [string, number]
     public jurysId: number[]
     public isBlocked: boolean
+    public countTotalVote!: number
     
     constructor()
     constructor(name: string, average: number,projectId: number, individualGrade: [string, number],jurysId : number[],isBlocked: boolean )

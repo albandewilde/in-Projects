@@ -200,7 +200,7 @@ namespace inProjects.Data.Queries
         public async Task<List<ProjectForumResultData>> GetAllPublicsNoteByTimedPeriodId( int timePeriodId )
         {
             IEnumerable<ProjectForumResultData> result = await _controller.QueryAsync<ProjectForumResultData>(
-                  "SELECT ps.ProjectStudentId AS ProjectId, g.GroupName as Name, SUM( np.Grade ) As Average" +
+                  "SELECT ps.ProjectStudentId AS ProjectId, g.GroupName as Name, SUM( np.Grade ) As Average, CountTotalVote =(SELECT Count(*) FROM IPR.tTimedUserNoteProject np JOIN CK.tGroup g on g.GroupId = np.StudentProjectId Where g.ZoneId = 22)" +
                   " FROM  IPR.tProjectStudent ps" +
                   " LEFT OUTER JOIN IPR.tTimedUserNoteProject np on ps.ProjectStudentId = np.StudentProjectId" +
                   " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ps.ProjectStudentId AND g.ZoneId = @TimePeriodId" +
