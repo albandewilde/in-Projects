@@ -1,12 +1,22 @@
 <template>
     <div>
         <div v-if="CheckedAuthorize('Administration')">
-            <el-button type="primary" class="generate_sheet" @click="download()">
+            <el-button
+                v-loading="loading"
+                element-loading-text="Generation..."
+                element-loading-spinner="el-icon-loading"
+                element-loading-background="white"
+
+                type="primary"
+                @click="download()"
+            >
                 Télechargez les fiches projets
             </el-button>
         </div>
+
         <br/>
         <br/>
+
         <el-row>
             <el-col :span="5" v-for="(o, index) in projectListToDisplay.length" :key="o" :offset="index > 0 ? 1 : 1" >            
                 <el-card v-bind:body-style="{ padding: '0px', border:getType(projectListToDisplay[index]) }">
@@ -51,6 +61,7 @@ export default class ProjectList extends Vue {
     private isFav!: boolean
     private starColor!: string
     private zip : JSZip = new JSZip()
+    private loading: boolean = false
 
     async mounted() {
         this.projectList  = await GetAllProject()
@@ -129,11 +140,15 @@ export default class ProjectList extends Vue {
     }
 
    async download(){
+       this.loading = !this.loading
+
        let index = 0 
        this.zip = new JSZip()
        this.zip.folder("fiches")
        this.projects = await GetAllSheet()
        await this.GetAllProjectSheet(index)
+
+       this.loading = !this.loading
     }
 
     CheckedAuthorize(needToBe: string){

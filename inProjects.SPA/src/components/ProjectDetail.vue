@@ -16,8 +16,16 @@
             </span>
         </div>
 
-        <div v-if="CheckedAuthorize('Administration')" class="sheet">
-            <el-button type="primary" class="generate_sheet" @click="CreateSheet(idProject)">
+        <div v-if="CheckedAuthorize('Administration')" class="generate_sheet">
+            <el-button
+                v-loading="loading"
+                element-loading-text="Generation..."
+                element-loading-spinner="el-icon-loading"
+                element-loading-background="white"
+
+                type="primary"
+                @click="CreateSheet(idProject)"
+            >
                 Fiche du projet
             </el-button>
         </div>
@@ -72,6 +80,7 @@ export default class ProjectDetail extends Vue {
     private projectDetail: ProjectDetails = new ProjectDetails()
     private isFav!: boolean
     private idZone: number = 4
+    private loading: boolean = false
 
     async mounted() {
     
@@ -101,9 +110,10 @@ export default class ProjectDetail extends Vue {
     }
 
     async CreateSheet(id: number) {
+        this.loading = true
+
         // fetch to the server all information we need and formated
         let project = await GetProject(id)
-        console.log(project.technos)
 
         // generate the pdf
         const sheet = GenerateSheet(
@@ -118,6 +128,8 @@ export default class ProjectDetail extends Vue {
             project.team,
         );
         pdfMake.createPdf(sheet).open()
+
+        this.loading = false
     }
 
     CheckedAuthorize(needToBe: string){
@@ -182,8 +194,8 @@ export default class ProjectDetail extends Vue {
     width: 2vw;
 }
 
-.sheet {
+.generate_sheet{
     float: right;
-    margin-top: -4vw
+    margin-top: -4vw;
 }
 </style>
