@@ -66,7 +66,7 @@ namespace inProjects.Data.Queries
 
         public async Task<DateTime> GetBegDateOfPeriod(int periodId )
         {
-            return await _controller.QuerySingleOrDefaultAsync<DateTime>( "SELECT BegDate FROM IPR.tTimePeriod WHERE TimePeriodId = @TimePeriod", new { TimPeriod = periodId } );
+            return await _controller.QuerySingleOrDefaultAsync<DateTime>( "SELECT BegDate FROM IPR.tTimePeriod WHERE TimePeriodId = @TimePeriod", new { TimePeriod = periodId } );
 
         }
     }

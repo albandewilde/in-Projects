@@ -24,6 +24,7 @@
                 <div class="dropdown-content">
                     <a @click="redirect('/plan')">Plan</a>
                     <a  @click="redirect('/addJury')">Gestion forum</a>
+                    <a @click="redirect('/ForumResult')">Resultats Forum PI</a>
                 </div>        
             </li>
         </div>
@@ -32,7 +33,6 @@
                 <a class="dropbtn" @click="redirect(`/Events`)">Evenements de l'ecole !</a>
             </li>
         </div>
-            <el-menu-item index="12-3" @click="redirect('/ForumResult')">Resultats Forum PI </el-menu-item>
     </div>
 </template>
 

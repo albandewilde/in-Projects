@@ -19,6 +19,8 @@ using CK.DB.Auth;
 using inProjects.Data.Data.TimedUser;
 using inProjects.EmailJury;
 using CK.DB.Zone;
+using inProjects.Data.Data;
+using inProjects.Data.Data.ProjectStudent;
 
 namespace inProjects.WebApp.Services.CSV
 {
@@ -153,7 +155,7 @@ namespace inProjects.WebApp.Services.CSV
                     int newUserId = await userTable.CreateUserAsync( ctx, currentIdUser, userName, firstName, lastName );
                     await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
                     await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
-                    //await _emailSender.SendMessage( mail, subject, mailContent );
+                    await _emailSender.SendMessage( mail, subject, mailContent );
                     return newUserId;
                 }
             }
@@ -181,7 +183,7 @@ namespace inProjects.WebApp.Services.CSV
             using( var csv = new CsvReader( reader ) )
             {
 
-               // csv.Configuration.Delimiter = ";";
+                //csv.Configuration.Delimiter = ";";
                 var records = csv.GetRecords<T>();
                 var projectInfo = records.ToList();
                 return projectInfo;
@@ -210,7 +212,7 @@ namespace inProjects.WebApp.Services.CSV
 
         }
 
-        public async Task AssignProjectToJury( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, List<JuryInfos> juryInfos, string type )
+        internal async Task AssignProjectToJury( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, List<JuryInfos> juryInfos, string type )
         {
             using( var ctx = new SqlStandardCallContext() )
             {
@@ -227,10 +229,14 @@ namespace inProjects.WebApp.Services.CSV
                 TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, sqlDatabase );
                 ProjectQueries projectQueries = new ProjectQueries( ctx, sqlDatabase );
                 TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDatabase );
+                ForumQueries forumQueries = new ForumQueries( ctx, sqlDatabase );
+                //get the Begdate of the periode
+                DateTime begDate = await timedPeriodQueries.GetBegDateOfPeriod( groupData.ZoneId );
+
                 foreach( JuryInfos juryInfo in juryInfos )
                 {
                     int enterpriseId = 0;
-                    string groupName = "Jury " + juryInfo.Jury;
+                    string groupName = "Jury " + juryInfo.Jury + "-" + begDate.Year+ "/" + begDate.Month;
                     int timedUserType = 0;
                     //Check if the jury group exists or not at a moment
                     int groupId = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( groupData.ZoneId, groupName );
@@ -268,14 +274,59 @@ namespace inProjects.WebApp.Services.CSV
                     }
 
                     //get the project id by forumnumber
-                    int projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe1, groupData.ZoneId );
+                    ProjectData projectId;
+                    string groupName1 = "Vous êtes libre";
+                    string groupName2 = "Vous êtes libre";
+                    string groupName3 = "Vous êtes libre";
+                    string groupName4 = "Vous êtes libre";
+                    TimeSpan timeSpan1 = new TimeSpan( 13, 30, 0 );
+                    TimeSpan timeSpan2 = new TimeSpan( 14, 15, 0 );
+                    TimeSpan timeSpan3 = new TimeSpan( 15, 00, 0 );
+                    TimeSpan timeSpan4 = new TimeSpan( 15, 45, 0 );
 
-                    //get the Begdate of the periode
-                    DateTime begDate = await timedPeriodQueries.GetBegDateOfPeriod( groupData.ZoneId );
+                    if( juryInfo.Groupe1 != 0 )
+                    {
+                        projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe1, groupData.ZoneId );
+                        begDate = begDate.Date + timeSpan1;
+                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        groupName1 = projectId.GroupName;
+                    }
 
-                    //insert
+                    if(juryInfo.Groupe2 != 0 )
+                    {
+                        projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe2, groupData.ZoneId );
+                        begDate = begDate.Date + timeSpan2;
+                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        groupName2 = projectId.GroupName;
 
-                   // await evaluatesTable.EvaluateProject(ctx, groupId, projectId, -1, )
+                    }
+
+                    if(juryInfo.Groupe3 != 0 )
+                    {
+                        projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe3, groupData.ZoneId );
+                        begDate = begDate.Date + timeSpan3;
+                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        groupName3 = projectId.GroupName;
+
+                    }
+                    if(juryInfo.Groupe4 != 0 )
+                    {
+                        projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe4, groupData.ZoneId );
+                        begDate = begDate.Date + timeSpan4;
+                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        groupName4 = projectId.GroupName;
+
+                    }
+
+                    IEnumerable<ForumData> infoMail = await forumQueries.ForumInfoByJury( groupName );
+                    int nbProject = infoMail.Count();
+
+                    string subject = "Votre participation au Forum PI D'IN'TECH";
+                    string mailContent = "Bonjour " + juryInfo.Prenom + " " + juryInfo.Nom + ". Vous participez au forum informatique de l'école IN'TECH le " + begDate.Day + " " + begDate.Month + " " + begDate.Year + ". Vous appartenez au jury " + groupName + ". Vous aurez l'occasion de juger les projets " + groupName1 + " à " + timeSpan1 + ", " + groupName2 + " à " + timeSpan2 + ", " + groupName3 + " à " + timeSpan3 + ", " + groupName4 + "à " + timeSpan4;
+                    await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
+
+
+
                 }
             }
         }
