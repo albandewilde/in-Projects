@@ -1,6 +1,7 @@
-﻿using System.IO;
+using System.IO;
 using System.Net.Mail;
 using NUnit.Framework;
+using System;
 
 namespace inProjects.TomlHelpers.Tests
 {
@@ -159,6 +160,9 @@ namespace inProjects.TomlHelpers.Tests
         {
             string project_toml = File.ReadAllText(filePath);
             ProjectPi project = TomlHelpers.GetInstanceFromToml<ProjectPi>(project_toml);
+
+            if( project.isValid().Item1 != expected )
+                Console.WriteLine( project.isValid().Item2 );
 
             Assert.That(project.isValid().Item1, Is.EqualTo(expected));
         }

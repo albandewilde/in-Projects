@@ -69,6 +69,10 @@ namespace CodeCake
                             Verbosity = DotNetCoreVerbosity.Minimal,
                             ArgumentCustomization = args => args.Append( "/p:GenerateDocumentation=true" )
                         } );
+
+                        var t = System.IO.Path.GetDirectoryName( System.Reflection.Assembly.GetEntryAssembly().Location );
+                        System.IO.DirectoryInfo d = new System.IO.DirectoryInfo( @"./" );//Assuming Test is your Folder
+                        System.IO.FileInfo[] Files = d.GetFiles( "*" ); //Getting Text files
                     }
                 } );
 
