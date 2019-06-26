@@ -16,7 +16,7 @@ import {
     faFileAlt, faClipboard, faBars,
     faSignInAlt, faSignOutAlt, faBell,
     faUser, faCog, faSearch, faPlusSquare,
-    faThumbsUp
+    faThumbsUp, faFilter
 } from "@fortawesome/free-solid-svg-icons"
 
 library.add(
@@ -24,7 +24,7 @@ library.add(
     faFileAlt, faClipboard, faBars,
     faSignInAlt, faSignOutAlt, faBell,
     faUser, faCog, faSearch, faPlusSquare,
-    faThumbsUp
+    faThumbsUp, faFilter
 )
 
 

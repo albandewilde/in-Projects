@@ -13,10 +13,11 @@ namespace inProjects.Data.Data.ProjectStudent
         public int LeaderId { get; set; }
         public string Type { get; set; }
         public int TraitId { get; set; }
-
+        public string Semester { get; set; }
         public string TraitName { get; set; }
         public string GroupName { get; set; }
         public int ZoneId { get; set; }
+        public int SchoolId { get; set; }
 
         public List<string> FirstName = new List<string>();
         public List<string> LastName = new List<string>();
