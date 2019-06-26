@@ -6,6 +6,7 @@ class Event {
     public isOther: boolean
 
     constructor()
+    constructor(eventId: number, name: string, begDate: Date, endDate: Date )
     constructor(eventId: number, name: string, begDate: Date, endDate: Date, isOther: boolean )
     constructor(eventId: number = 0, name: string = "", begDate = new Date(), endDate = new Date(), isOther = false) {
         this.eventId = eventId

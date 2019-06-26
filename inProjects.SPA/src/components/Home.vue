@@ -10,7 +10,7 @@
         </div>
         <div class="masonry-layout-panel">
             <div class="masonry-layout-panel__content">
-                <Countdown></Countdown>
+                <Countdown :schoolName="schoolName"></Countdown>
             </div>
         </div>
         <div class="masonry-layout-panel">
@@ -102,7 +102,7 @@ import Countdown from "./Countdown.vue"
     }
 })
 export default class HomePage extends Vue {
-    
+    private schoolName = "IN'TECH"
 }
 </script>
 

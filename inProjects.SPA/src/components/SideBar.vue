@@ -5,7 +5,7 @@
             <li><a class="active" @click="redirect('/')">IN'TECH</a></li>
             <div v-if="authService.authenticationInfo.level != 0">
                 <li>
-                    <a><img src="../assets/deco.png" height="30px" @click="logout()">&nbsp
+                    <a><img src="../assets/deco.png" height="30px" @click="logout()">&nbsp;
                     <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/></a>
                 </li>
             </div>
@@ -13,15 +13,15 @@
             <div v-else>
                 <li><a><img src="../assets/co.png" @click="redirect('/connection')"></a></li>
             </div>
-            <li><a @click="redirect('/projectList')">Liste des projets</a></li>
-            <li><a @click="redirect(`ProjectUserVote`)">Votez pour les projets</a></li>
+            <!-- <li><a @click="redirect('/projectList')">Liste des projets</a></li>
+            <li><a @click="redirect(`ProjectUserVote`)">Votez pour les projets</a></li> -->
             <div v-for="(o, idx) in whatTimed" :key="idx">
                 <div v-if="o == 'Administration'">
                     <AdminPanel></AdminPanel>
                 </div>
-<!--                 <div v-if="o == 'User'">
+                <div v-if="o == 'User'">
                     <UserPanel></UserPanel>
-                </div> -->
+                </div>
                <!-- <div v-if="o == 'Teacher'">
                     <TeacherPanel :isCollapse="isCollapse"></TeacherPanel>
                 </div>        -->

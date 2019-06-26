@@ -41,6 +41,16 @@ namespace inProjects.Data.Queries
                                            , new { Name = name,Id = EventId } );
         }
 
+        public async Task<EventData> GetEventSchoolBylNameAndPeriodId( string name, int periodId )
+        {
+            EventData result = await _controller.QueryFirstOrDefaultAsync<EventData>(
+               "SELECT *" +
+               " FROM IPR.tEventSchool es" +
+               " JOIN CK.tGroup g on g.GroupId = es.EventId" +
+               " where g.ZoneId = @TimePeriodID and g.GroupName like CONCAT(@Name,'%')", new { TimePeriodID = periodId, Name = name} );
+            return result;
+        }
+
 
     }
 }
