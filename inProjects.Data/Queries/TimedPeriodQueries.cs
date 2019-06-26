@@ -63,5 +63,11 @@ namespace inProjects.Data.Queries
                   "select GroupName from CK.tGroup where GroupId = @TimePeriodId and ZoneId = @ZoneId ", new { TimePeriodId = timePeriodId,ZoneId = zoneId  } );
 
         }
+
+        public async Task<DateTime> GetBegDateOfPeriod(int periodId )
+        {
+            return await _controller.QuerySingleOrDefaultAsync<DateTime>( "SELECT BegDate FROM IPR.tTimePeriod WHERE TimePeriodId = @TimePeriod", new { TimePeriod = periodId } );
+
+        }
     }
 }

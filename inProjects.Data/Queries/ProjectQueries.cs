@@ -160,9 +160,7 @@ namespace inProjects.Data.Queries
         public async Task<IEnumerable<ProjectData>> GetAllProjectByForum( int forumId )
         {
             IEnumerable<ProjectData> result = await _controller.QueryAsync<ProjectData>(
-                "SELECT *" +
-                "FROM IPR.vForumProjectInfos" +
-                "WHERE ForumId = @ForumId",
+                "SELECT * FROM IPR.vForumProjectInfos WHERE ForumId = @ForumId ORDER BY ForumNumber;",
                 new { ForumId = forumId } );
 
             return result;
@@ -171,7 +169,7 @@ namespace inProjects.Data.Queries
         public async Task<IEnumerable<AllProjectInfoData>> GetAllProjectTimedByJuryId( int userId, int periodId )
         {
             IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
-                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo" +
+                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo,e.BlockedGrade as IsBlocked" +
                 " FROM IPR.tEvaluates e" +
                 " JOIN CK.tActorProfile ap on ap.GroupId = e.JuryId" +
                 " JOIN CK.tGroup g on g.GroupId = e.ProjectId" +
@@ -181,5 +179,43 @@ namespace inProjects.Data.Queries
 
             return result;
         }
+
+        public async Task<List<ProjectInfosJuryData>> getAllProjectsGrade(int timePeriodId )
+        {
+            IEnumerable<ProjectInfosJuryData> result = await _controller.QueryAsync<ProjectInfosJuryData>(
+                "SELECT g1.GroupName as ProjectName, g.GroupName as JuryName,g.GroupId as JuryId,e.BlockedGrade as IsBlocked,ps.ProjectStudentId,fi.ClassRoom,fi.ForumNumber," +
+                " CASE WHEN e.Grade is null then - 1 " +
+                " ELSE e.Grade END as Grade" +
+                " FROM IPR.tEvaluates e" +
+                " JOIN CK.tGroup g on e.JuryId = g.GroupId" +
+                " JOIN IPR.tProjectStudent ps on ps.ProjectStudentId = e.ProjectId" +
+                " JOIN CK.tGroup g1 on g1.GroupId = ps.ProjectStudentId" +
+                " JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId" +
+                " where g.ZoneId = @TimePeriodId" +
+                " order by ps.ProjectStudentId", new { TimePeriodId = timePeriodId } );
+
+            return result.AsList();
+        }
+
+        public async Task<List<ProjectForumResultData>> GetAllPublicsNoteByTimedPeriodId( int timePeriodId )
+        {
+            IEnumerable<ProjectForumResultData> result = await _controller.QueryAsync<ProjectForumResultData>(
+                  "SELECT ps.ProjectStudentId AS ProjectId, g.GroupName as Name, SUM( np.Grade ) As Average, CountTotalVote =(SELECT Count(*) FROM IPR.tTimedUserNoteProject np JOIN CK.tGroup g on g.GroupId = np.StudentProjectId Where g.ZoneId = 22)" +
+                  " FROM  IPR.tProjectStudent ps" +
+                  " LEFT OUTER JOIN IPR.tTimedUserNoteProject np on ps.ProjectStudentId = np.StudentProjectId" +
+                  " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ps.ProjectStudentId AND g.ZoneId = @TimePeriodId" +
+                  " GROUP BY ps.ProjectStudentId, g.GroupName" +
+                  " ORDER BY Average DESC"
+                , new { TimePeriodId = timePeriodId } );
+
+            return result.AsList();
+        }
+
+        public async Task<ProjectData> GetProjectIdByForumNumberAndPeriod(int forumNumber, int periodId)
+        {
+            ProjectData result = await _controller.QuerySingleOrDefaultAsync<ProjectData>( "SELECT ProjectStudentId = fi.ProjectId, g.GroupName FROM IPR.tForumInfos fi JOIN IPR.tProjectStudent ps ON ps.ProjectStudentId = fi.ProjectId JOIN CK.tGroup g ON g.GroupId = ps.ProjectStudentId WHERE g.ZoneId = @ZoneId AND fi.ForumNumber = @ForumNumber", new { ZoneId = periodId, ForumNumber = forumNumber } );
+            return result;
+        }
+
     }
 }

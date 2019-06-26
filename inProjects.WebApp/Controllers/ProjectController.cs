@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ using inProjects.Data.Data.User;
 using inProjects.Data.Queries;
 using inProjects.Data.Res.Model;
 using inProjects.ViewModels;
+using inProjects.WebApp.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,13 +26,34 @@ namespace inProjects.WebApp.Controllers
     {
         readonly IStObjMap _stObjMap;
         readonly IAuthenticationInfo _authenticationInfo;
+        readonly List<double> _selectorInt;
 
         public ProjectController(IStObjMap stObjMap, IAuthenticationInfo authenticationInfo)
         {
             _stObjMap = stObjMap;
             _authenticationInfo = authenticationInfo;
+            _selectorInt = GetSelectorInt();
         }
 
+        private List<double> GetSelectorInt()
+        {
+            double x = 0;
+            List<double> list = new List<double>();
+            while(x <= 20)
+            {
+                list.Add( x );
+                x += 0.25;
+            }
+
+            return list;
+        }
+
+
+        [HttpGet( "getSelectorGrade" )]
+        public async Task<List<double>> GetSelectorGrade( )
+        {
+            return _selectorInt;
+        }
 
         [HttpPost("submitProject")]
         [AllowAnonymous]
@@ -55,7 +78,7 @@ namespace inProjects.WebApp.Controllers
 
         [HttpGet( "getInfosProject" )]
         [AllowAnonymous]
-        public async Task<IActionResult> GetInfosProject( int idProject, int idZone )
+        public async Task<IActionResult> GetInfosProject( int idProject )
         {
             ProjectStudentTable projectTable = _stObjMap.StObjs.Obtain<ProjectStudentTable>();
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
@@ -145,7 +168,11 @@ namespace inProjects.WebApp.Controllers
                     IEnumerable<UserByProjectData> userByProject = await userQueries.GetUserByProject( projectData.ElementAt( i ).ProjectStudentId );
                     projectData.ElementAt( i ).BegDate = userByProject.ElementAt( 0 ).BegDate;
                     projectData.ElementAt( i ).EndDate = userByProject.ElementAt( 0 ).EndDate;
-
+                    List<string> listGroups = await projectQueries.GetGroupsOfProject( projectData.ElementAt(i).ProjectStudentId );
+                    listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) );
+                    projectData.ElementAt( i ).Semester = listGroups[0];
+                    GroupData data = await groupQueries.GetIdSchoolByPeriodId( projectData.ElementAt( i ).ZoneId );
+                    projectData.ElementAt( i ).SchoolId = data.ParentZoneId;
                     foreach( var e in userByProject )
                     {
                         IEnumerable<GroupData> groupDatas = await groupQueries.GetAllGroupByTimedUser( e.TimedUserId );
@@ -226,6 +253,7 @@ namespace inProjects.WebApp.Controllers
                 return Ok(projectData);
             }
         }
+
         [HttpPost( "noteProject" )]
         public async Task<IActionResult> NoteProject([FromBody] NoteProjectViewModel model )
         {
@@ -234,6 +262,7 @@ namespace inProjects.WebApp.Controllers
             TimedUserTable timedUserTable = _stObjMap.StObjs.Obtain<TimedUserTable>();
             EvaluatesTable evaluatesTable = _stObjMap.StObjs.Obtain<EvaluatesTable>();
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            PeriodServices periodServices = new PeriodServices();
 
             using( var ctx = new SqlStandardCallContext() )
             {
@@ -241,10 +270,33 @@ namespace inProjects.WebApp.Controllers
                 TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
                 UserQueries userQueries = new UserQueries( ctx, db );
                 TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+                AclQueries aclQueries = new AclQueries( ctx, db );
                 GroupQueries groupQueries = new GroupQueries( ctx, db );
 
-                PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( model.SchoolId );
+                //Case Change Grade by Administration ====================================================================================================================
+                if( model.User == ViewModels.TypeTimedUser.StaffMember )
+                {
+                    if( !await periodServices.CheckInPeriod( _stObjMap, _authenticationInfo ) )
+                    {
+                        Result result = new Result( Status.Unauthorized, "A la date d'aujourd'hui votre etablissement n'est dans une aucune periode" );
+                        return this.CreateResult( result );
+                    }
 
+                    GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+
+                    if( !await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId), userId, Operator.SuperiorOrEqual ))
+                    {
+                        Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                        return this.CreateResult( result );
+                    }
+
+                    await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, model.JuryId, model.ProjectId, model.Grade );
+                    return Ok();
+                }
+                //=========================================================================================================================================================
+
+                PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( model.SchoolId );
+                                            
                 TimedUserData timedUserData = await timedUserQueries.GetTimedUser( userId, periodData.ChildId );
 
                 if(timedUserData == null )
@@ -260,8 +312,8 @@ namespace inProjects.WebApp.Controllers
 
                 if( model.User == ViewModels.TypeTimedUser.Jury )
                 {
-                    int id = await userQueries.GetJuryId( userId );
-                    await evaluatesTable.EvaluateProject( ctx, id, model.ProjectId, model.Grade );
+                    int id = await userQueries.GetJuryId( userId, periodData.ChildId );
+                    await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, id, model.ProjectId, model.Grade );
                 }
                 else
                 {
@@ -273,6 +325,46 @@ namespace inProjects.WebApp.Controllers
             }
 
         }
+        [HttpPost( "blockedProject" )]
+        public async Task<IActionResult> BlockedProject( [FromBody] BlockedGradeViewModel model )
+        {
+            int userId = _authenticationInfo.ActualUser.UserId;
+            EvaluatesTable evaluatesTable = _stObjMap.StObjs.Obtain<EvaluatesTable>();
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            PeriodServices periodServices = new PeriodServices();
 
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                AclQueries aclQueries = new AclQueries( ctx, db );
+                GroupQueries groupQueries = new GroupQueries( ctx, db );
+
+                if( !await periodServices.CheckInPeriod( _stObjMap, _authenticationInfo ) )
+                {
+                    Result result = new Result( Status.Unauthorized, "A la date d'aujourd'hui votre etablissement n'est dans une aucune periode" );
+                    return this.CreateResult( result );
+                }
+
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+
+                if( !await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) )
+                {
+                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                    return this.CreateResult( result );
+                }
+
+                int idx = 0;
+                foreach( var item in model.IndividualGrade )
+                {
+                    if(item.Value > 0) await evaluatesTable.BlockedProjectGrade( ctx, model.JurysId[idx], model.ProjectId, item.Value, true );
+                    else await evaluatesTable.BlockedProjectGrade( ctx, model.JurysId[idx], model.ProjectId, true );
+                    idx++;
+                }
+               
+                return Ok();
+
+            }
+
+        }
     }
 }

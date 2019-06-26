@@ -9,14 +9,14 @@ import router from "./router"
 import store from "./store"
 import axios from "axios"
 import { initializeAuthService } from "./modules/authService"
-import { FontAwesomeIcon,FontAwesomeLayers, FontAwesomeLayersText } from "@fortawesome/vue-fontawesome"
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from "@fortawesome/vue-fontawesome"
 import { library } from "@fortawesome/fontawesome-svg-core"
 import {
     faHome, faUserGraduate, faUserTie,
     faFileAlt, faClipboard, faBars,
     faSignInAlt, faSignOutAlt, faBell,
     faUser, faCog, faSearch, faPlusSquare,
-    faThumbsUp
+    faThumbsUp, faFilter
 } from "@fortawesome/free-solid-svg-icons"
 
 library.add(
@@ -24,13 +24,13 @@ library.add(
     faFileAlt, faClipboard, faBars,
     faSignInAlt, faSignOutAlt, faBell,
     faUser, faCog, faSearch, faPlusSquare,
-    faThumbsUp
+    faThumbsUp, faFilter
 )
 
 
 Vue.component("font-awesome-icon", FontAwesomeIcon)
-Vue.component('font-awesome-layers', FontAwesomeLayers)
-Vue.component('font-awesome-layers-text', FontAwesomeLayersText)
+Vue.component("font-awesome-layers", FontAwesomeLayers)
+Vue.component("font-awesome-layers-text", FontAwesomeLayersText)
 
 
 Vue.config.productionTip = false

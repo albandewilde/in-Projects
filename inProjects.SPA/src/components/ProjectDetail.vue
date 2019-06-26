@@ -49,12 +49,11 @@ export default class ProjectDetail extends Vue {
     private idProject!: number
     private projectDetail: ProjectDetails = new ProjectDetails()
     private isFav!: boolean
-    private idZone: number = 4
 
     async mounted() {
 
         this.idProject = Number(this.$route.params.projectId)
-        this.projectDetail = await getInfosProject(this.idProject, this.idZone)
+        this.projectDetail = await getInfosProject(this.idProject)
         this.isFav = await verifyProjectFav(this.idProject)
 
         if (this.isFav) {
@@ -76,6 +75,10 @@ export default class ProjectDetail extends Vue {
         } catch (e) {
             console.error(e)
         }
+    }
+
+    async Back() {
+        this.$router.go(-1)
     }
 }
 </script>

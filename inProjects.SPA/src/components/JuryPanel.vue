@@ -1,10 +1,10 @@
 <template>
 <div>
-   <el-menu-item index="73" @click="redirect(`/ProjectJuryVote`)">
-        <font-awesome-icon icon="thumbs-up" />
-        <span v-if="isCollapse == false"> Evaluez projets !</span>
-    </el-menu-item>
-
+    <div class="menu-panel">
+        <li>
+            <a @click="redirect(`/ProjectJuryVote`)">Evaluez les projets</a>
+        </li>
+    </div>
 </div>
 </template>
 
@@ -17,7 +17,7 @@ export default class JuryPanel extends Vue {
 isCollapse!: boolean
 
  redirect(destination: string) {
-        this.$router.replace(destination)
+        this.$router.push(destination)
     }
 }
 </script>

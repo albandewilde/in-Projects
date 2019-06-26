@@ -63,7 +63,7 @@ import {Event} from "../modules/classes/EventSchool"
 
         async created(){
             //setHours to compare date with endDate drag and drop
-            this.showDate.setHours(0,0,0,0)
+            this.showDate.setHours(0 ,0 ,0 ,0)
             this.eventsInfo = await GetEventsSchool()
             await this.CreateEvents()
         },
@@ -80,7 +80,7 @@ import {Event} from "../modules/classes/EventSchool"
 
                     this.eventsInfo.forEach(element => {
                     this.AddEvent(element)
-                });
+                })
             },
 
             onClickEvent(e) {
@@ -116,15 +116,15 @@ import {Event} from "../modules/classes/EventSchool"
                             showClose: true,
                             duration: 5000,
                             message: e.message,
-                            type: 'error'
-                        });
+                            type: "error"
+                        })
                     }
 
                 }
             },
 
             AddEvent(event){
-                var list = {};
+                var list = {}
 
                 list.startDate = event.begDate
                 list.endDate = event.endDate
@@ -147,7 +147,7 @@ import {Event} from "../modules/classes/EventSchool"
                         showClose: true,
                         duration: 5000,
                         message: e.message,
-                        type: 'error'
+                        type: "error"
                     });
                 }
             },
@@ -157,10 +157,10 @@ import {Event} from "../modules/classes/EventSchool"
          
                 var begDate = new Date(event.startDate)
                 var endDate = new Date(event.endDate)
-                begDate.setDate(begDate.getDate() + eLength);
-                endDate.setDate(endDate.getDate() + eLength);
+                begDate.setDate(begDate.getDate() + eLength)
+                endDate.setDate(endDate.getDate() + eLength)
                 if(endDate < this.showDate){
-                   this.$message({ message: "L'évènement " + event.title + " a une date de fin inférieur à celle d'aujourd'hui",type: "error"})
+                   this.$message({ message: "L'évènement " + event.title + " a une date de fin inférieur à celle d'aujourd'hui", type: "error"})
                 }else{
 
                     let eventSend = new Event(event.originalEvent.id,  event.originalEvent.title,  begDate, endDate,false)
@@ -178,22 +178,17 @@ import {Event} from "../modules/classes/EventSchool"
                             showClose: true,
                             duration: 5000,
                             message: e.message,
-                            type: 'error'
-                        });
+                            type: "error"
+                        })
                     }
                 }
 			},
 
 
-            checkDate(){
+            checkDate() {
                 let begDate = new Date(this.eventClicked.begDate)
                 let endDate = new Date(this.eventClicked.endDate)
-                if (begDate >= endDate) {
-                    console.log(false)
-                    return false
-                }else{
-                    return true
-                }
+                return begDate >= endDate ? false : true
             },
 
 	}

@@ -40,7 +40,7 @@ export default class ProjectUserVote extends Vue {
     private projectListToDisplay: Project[] = []
     private schoolOptions: School[] = []
     private options: string = ""
-    private type: string ='I'
+    private type: string = "I"
     private schoolId: number = 0
     private numberMax = 4
 
@@ -48,33 +48,32 @@ export default class ProjectUserVote extends Vue {
       this.schoolOptions = await getSchools()
     }
 
-    async change(){
-        try{
+    async change() {
+        try {
             let idx = this.schoolOptions.find(x => x.name == this.options)
-            if(idx == undefined){
-                idx = new School(0,"Unknow")
+            if (idx == undefined) {
+                idx = new School(0, "Unknow")
             }
-            this.schoolId = idx.schoolId;
+            this.schoolId = idx.schoolId
             this.projectList  = await GetAllTypeProjectsOfSchool(this.schoolId, this.type)
-           for (let index = 0; index < this.projectList.length; index++) {
-               this.projectList[index].grade = Math.ceil(this.projectList[index].grade/4);
-           }
-        } catch(e){
-
+            for (let index = 0; index < this.projectList.length; index += 1 ) {
+                this.projectList[index].grade = Math.ceil(this.projectList[index].grade / 4)
+            }
+        } catch (e) {
+            console.log(e.message)
         }
     }
 
-    getStars(grade: number){
-        const idx = Math.ceil(grade/4);
+    getStars(grade: number) {
+        const idx = Math.ceil(grade / 4)
 
         return idx
     }
 
-   async note(newGrade: number, id:number){
-        try{
+   async note(newGrade: number, id: number) {
+        try {
             const grade = newGrade * this.numberMax
-            console.log(grade)
-            await noteProject(id, grade,this.schoolId,TypeTimedUser.Anon)
+            await noteProject(id, grade, this.schoolId, TypeTimedUser.Anon)
         } catch (e) {
             console.log(e)
         }
