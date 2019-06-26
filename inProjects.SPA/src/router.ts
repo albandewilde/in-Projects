@@ -16,67 +16,72 @@ import ForumPlan from "./components/ForumPlan.vue"
 Vue.use(Router)
 
 export default new Router({
-    routes: [
-        {
-            path: "/",
-            name: "home",
-            component: Home
-        },
-        {
-            path: "/connection",
-            name: "connection",
-            component: Connection,
-        },
-        {
-            path: "/submit_project",
-            name: "submit_project",
-            component: SubmitProject
-        },
-        {
-            path: "/student",
-            name: "student",
-            component: Student
-        },
-        {
-            path: "/createPeriod",
-            name: "createPeriod",
-            component: CreatePeriod
-        },
-        {
-            path: "/staffMember",
-            name: "staffMember",
-            component: StaffMember
-        },
-        {
-            path: "/plan",
-            name: "plan",
-            component: Plan
-        },
-        {
-            path: "/listPeriod",
-            name: "listPeriod",
-            component: ListPeriod
-        },
-        {
-            path: "/projectList",
-            name: "projectList",
-            component: ProjectList
-        },
-        {
-            path: "/addJury",
-            name: "addJury",
-            component: AddJury
-        },
-        {
-            path: "/MyProfil",
-            name: "MyProfil",
-            component: MyProfil
-        },
-        {
-            path: "/Project/:projectId",
-            name: "Project",
-            component: Project
-        }
-    ],
-    mode: "history"
+  routes: [
+    {
+      path: "/",
+      name: "home",
+      component: Home
+    },
+    {
+      path: "/connection",
+      name: "connection",
+      component: Connection,
+    },
+    {
+      path: "/submit_project",
+      name: "submit_project",
+      component: SubmitProject
+    },
+    {
+      path: "/student",
+      name: "student",
+      component: Student
+    },
+    {
+     path: "/createPeriod",
+     name: "createPeriod",
+     component: CreatePeriod
+    },
+    {
+      path: "/staffMember",
+      name: "staffMember",
+      component: StaffMember
+    },
+    {
+      path: "/plan",
+      name: "plan",
+      component: ForumPlan
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: ForumPlan
+    },
+    {
+      path: "/listPeriod",
+      name: "listPeriod",
+      component: ListPeriod
+    },
+    {
+      path: "/projectList",
+      name: "projectList",
+      component: ProjectList
+     },
+     {
+       path: "/addJury",
+       name: "addJury",
+       component: AddJury
+     },
+     {
+      path: "/MyProfil",
+      name: "MyProfil",
+      component: MyProfil
+     },
+     {
+      path: "/Project/:projectId",
+      name: "Project",
+      component: Project
+    }
+  ],
+  mode: "history"
 })
