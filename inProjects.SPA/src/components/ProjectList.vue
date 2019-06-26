@@ -3,7 +3,7 @@
         <div v-if="CheckedAuthorize('Administration')">
             <el-button
                 v-loading="loading"
-                element-loading-text="Generation..."
+                :element-loading-text=this.message
                 element-loading-spinner="el-icon-loading"
                 element-loading-background="white"
 
@@ -62,6 +62,7 @@ export default class ProjectList extends Vue {
     private starColor!: string
     private zip : JSZip = new JSZip()
     private loading: boolean = false
+    public message: string = "poulet"
 
     async mounted() {
         this.projectList  = await GetAllProject()
@@ -140,15 +141,26 @@ export default class ProjectList extends Vue {
     }
 
    async download(){
-       this.loading = !this.loading
+        this.loading = !this.loading
+        this.message = "Preparation..."
+        console.log(new Date() + " " + this.message)
 
-       let index = 0 
-       this.zip = new JSZip()
-       this.zip.folder("fiches")
-       this.projects = await GetAllSheet()
-       await this.GetAllProjectSheet(index)
+        let index = 0
+        this.message = "Création de l'archive"
+        console.log(new Date() + " " + this.message)
+        this.zip = new JSZip()
+        this.zip.folder("fiches")
 
-       this.loading = !this.loading
+        this.message = "Récupération des informations"
+        console.log(new Date() + " " + this.message)
+        this.projects = await GetAllSheet()
+        this.message = "Création des PDF"
+        console.log(new Date() + " " + this.message)
+        await this.GetAllProjectSheet(index)
+        
+        this.message = "C'est fini"
+        console.log(new Date() + " " + this.message)
+        this.loading = !this.loading
     }
 
     CheckedAuthorize(needToBe: string){
