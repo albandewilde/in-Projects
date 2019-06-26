@@ -24,6 +24,7 @@ import { Component, Vue, Prop } from "vue-property-decorator"
 import { Period } from "@/modules/classes/Periode/Period"
 import { getAllPeriod, changeDateOfPeriod} from "../api/periodApi"
 import Error from "./Erreur.vue"
+import { getIdSchoolOfUser } from '../api/schoolApi';
 
 @Component({
     components: {
@@ -37,7 +38,7 @@ export default class ListPeriod extends Vue {
 
 
     async created() {
-        this.idZone = 4
+        this.idZone = await getIdSchoolOfUser()
         this.listPeriods = await getAllPeriod(this.idZone)
     }
     async changeDate(idx: number) {

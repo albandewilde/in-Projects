@@ -78,7 +78,7 @@ namespace inProjects.WebApp.Controllers
 
         [HttpGet( "getInfosProject" )]
         [AllowAnonymous]
-        public async Task<IActionResult> GetInfosProject( int idProject, int idZone )
+        public async Task<IActionResult> GetInfosProject( int idProject )
         {
             ProjectStudentTable projectTable = _stObjMap.StObjs.Obtain<ProjectStudentTable>();
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();

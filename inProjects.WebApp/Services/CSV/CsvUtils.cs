@@ -155,7 +155,7 @@ namespace inProjects.WebApp.Services.CSV
                     int newUserId = await userTable.CreateUserAsync( ctx, currentIdUser, userName, firstName, lastName );
                     await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
                     await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
-                    await _emailSender.SendMessage( mail, subject, mailContent );
+                   // await _emailSender.SendMessage( mail, subject, mailContent );
                     return newUserId;
                 }
             }

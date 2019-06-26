@@ -19,6 +19,7 @@ using inProjects.Data.Data.Period;
 using inProjects.Data.Data.TimedUser;
 using System.Collections.Generic;
 using inProjects.Data.Data.ProjectStudent;
+using inProjects.WebApp.Services;
 
 namespace inProjects.WebApp.Controllers
 {
@@ -106,7 +107,7 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet( "getInfosAccount" )]
-        public async Task<IActionResult> GetInfosOwnAccount( int idZone )
+        public async Task<IActionResult> GetInfosOwnAccount()
         {
             int userId = _authenticationInfo.ActualUser.UserId;
             var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
@@ -115,6 +116,7 @@ namespace inProjects.WebApp.Controllers
             {
                 AccountUserData accountUserData = new AccountUserData();
 
+                PeriodServices periodService = new PeriodServices();
                 UserQueries userQueries = new UserQueries( ctx, sqlDataBase );
                 GroupQueries groupQueries = new GroupQueries( ctx, sqlDataBase );
                 TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDataBase );
@@ -133,8 +135,6 @@ namespace inProjects.WebApp.Controllers
                     return Ok( accountUserData );
 
                 }
-                //Periode actuelle
-                PeriodData actualPeriod = await timedPeriodQueries.GetLastPeriodBySchool( idZone );
 
                 //Recuperer Groupe du timedUser
                 List<string> listGroupUser = await groupQueries.GetAllGroupOfTimedUserByPeriod( timedUser.TimePeriodId, timedUser.TimedUserId );
@@ -147,14 +147,8 @@ namespace inProjects.WebApp.Controllers
                 accountUserData.UserData = userData;
                 accountUserData.Group = group;
 
-                if( actualPeriod.ChildId == timedUser.TimePeriodId )
-                {
-                    accountUserData.IsActual = true;
-                }
-                else
-                {
-                    accountUserData.IsActual = false;
-                }
+                if( await periodService.CheckInPeriod( _stObjMap, _authenticationInfo ) ) accountUserData.IsActual = true;
+                else accountUserData.IsActual = false;
 
                 return Ok( accountUserData );
             }

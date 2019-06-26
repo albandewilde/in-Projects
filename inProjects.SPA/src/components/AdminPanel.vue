@@ -46,7 +46,6 @@ export default class AdminPanel extends Vue {
 @Prop()
 isCollapse!: boolean
 private connection!: SignalR.HubConnection
-private idZone: number = 4
 private signalr: SignalRGestion = new SignalRGestion()
 
 async created() {
