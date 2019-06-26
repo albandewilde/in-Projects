@@ -25,7 +25,7 @@ namespace inProjects.WebApp.Services.Excel
                 excel.Workbook.Worksheets.Add( "ResultatsFP" );
 
                 List<string[]> firstRowContents = new List<string[]>() { new string[] { "RESULTAT FORUM PROJET INFORMATIQUE" } };
-                List<string[]> secondRowContents = new List<string[]>() { new string[] { "Stand", "Projet informatique", "Semestre Et Filiere", "Les totaux ne correspondent pas à l'ordre des passages","","","Total","" }};
+                List<string[]> secondRowContents = new List<string[]>() { new string[] { "Stands", "Projet informatique", "Semestre Et Filiere", "Les totaux ne correspondent pas à l'ordre des passages","","","Total","" }};
 
                 // Determine the header range (e.g. A1:D1)
                 string firstRow = "A1:" + Char.ConvertFromUtf32( secondRowContents[0].Length + 64 ) + "1";
@@ -84,6 +84,8 @@ namespace inProjects.WebApp.Services.Excel
                 worksheet.Cells["G" + (allProjectsForumResult.Count + 3)].Formula = formula;
 
 
+                const string letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
                 List<object[]> cellData = new List<object[]>();
                 int idx = 0;
                 int formulaIdx = 3;
@@ -113,8 +115,18 @@ namespace inProjects.WebApp.Services.Excel
                         foreach( var indivGrade in item.IndividualGrade )
                         {
                             project[count] = indivGrade.Value > 0 ? indivGrade.Value.ToString() : "";
-                            if( indivGrade.Value > 0 ) numberJury++;
-                            count++;
+                        if( indivGrade.Value > 0 )
+                        {
+                            numberJury++;
+                        }
+                        else
+                        {
+                            //set Background grey for the blank jury
+                            string letter = letters[count] + formulaIdx.ToString();
+                            worksheet.Cells[letter].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[letter].Style.Fill.BackgroundColor.SetColor( Color.LightGray );
+                        }
+                        count++;
                       
                         }
 
@@ -122,7 +134,11 @@ namespace inProjects.WebApp.Services.Excel
                         {
                             for( int i = count; i < 6; i++ )
                             {
-                                project[count] = "";
+                                project[i] = "";
+                                //set Background grey for the blank jury
+                                string letter = letters[i] + formulaIdx.ToString();
+                                worksheet.Cells[letter].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                                worksheet.Cells[letter].Style.Fill.BackgroundColor.SetColor( Color.LightGray );
                             }
                         }
 
@@ -144,7 +160,7 @@ namespace inProjects.WebApp.Services.Excel
                 worksheet.Cells[3, 1].LoadFromArrays( cellData );
                 worksheet.Cells["D" + (allProjectsForumResult.Count + 3)].LoadFromText("Moyenne FPI");
 
-                //FileInfo excelFile = new FileInfo( @"C:\Users\DCHIC\Desktop\test.xlsx" );
+                //FileInfo excelFile = new FileInfo(  );
                 //if( excelFile.Exists ) excelFile.Delete();
                 //excel.SaveAs( excelFile );
                 //excel.Save();

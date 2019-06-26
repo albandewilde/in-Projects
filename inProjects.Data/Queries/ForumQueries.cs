@@ -4,6 +4,7 @@ using inProjects.Data.ForumsPlan;
 using System.Threading.Tasks;
 using Dapper;
 using System.Collections.Generic;
+using inProjects.Data.Data;
 
 namespace inProjects.Data.Queries
 {
@@ -43,6 +44,12 @@ namespace inProjects.Data.Queries
                 results.Add( res );
             }
             return results;
+        }
+
+        public async Task<IEnumerable<ForumData>> ForumInfoByJury(string juryName )
+        {
+            IEnumerable<ForumData> result = await _controller.QueryAsync<ForumData>( "SELECT Jury = g.GroupName, e.Date, Project = g1.GroupName FROM CK.tGroup g JOIN IPR.tEvaluates e ON e.JuryId = g.GroupId LEFT OUTER JOIN IPR.tProjectStudent ps ON ps.ProjectStudentId = e.ProjectId LEFT OUTER JOIN CK.tGroup g1 on g1.GroupId = e.ProjectId WHERE g.GroupName = @JuryName", new { JuryName = juryName } );
+            return result;
         }
     }
 }

@@ -34,6 +34,14 @@ export async function getAllGradeProjects(): Promise<ProjectForumResult[]> {
     return projects
 }
 
+
+export async function getAllPublicNote(): Promise<ProjectForumResult[]> {
+    let projects: ProjectForumResult[] = []
+    const response = await getAsync(`${endpoint}/getAllPublicNote`)
+    projects = response.data
+    return projects
+}
+
 export async function downloadExcel(): Promise<any> {
     const response = await gettAsyncConfigResponseType(`${endpoint}/DownloadExcel`)
     console.log(response)
