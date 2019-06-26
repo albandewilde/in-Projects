@@ -19,6 +19,8 @@ using CK.DB.Auth;
 using inProjects.Data.Data.TimedUser;
 using inProjects.EmailJury;
 using CK.DB.Zone;
+using inProjects.Data.Data;
+using inProjects.Data.Data.ProjectStudent;
 
 namespace inProjects.WebApp.Services.CSV
 {
@@ -153,7 +155,7 @@ namespace inProjects.WebApp.Services.CSV
                     int newUserId = await userTable.CreateUserAsync( ctx, currentIdUser, userName, firstName, lastName );
                     await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
                     await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
-                    //await _emailSender.SendMessage( mail, subject, mailContent );
+                    await _emailSender.SendMessage( mail, subject, mailContent );
                     return newUserId;
                 }
             }
@@ -181,7 +183,7 @@ namespace inProjects.WebApp.Services.CSV
             using( var csv = new CsvReader( reader ) )
             {
 
-               // csv.Configuration.Delimiter = ";";
+                //csv.Configuration.Delimiter = ";";
                 var records = csv.GetRecords<T>();
                 var projectInfo = records.ToList();
                 return projectInfo;
@@ -210,7 +212,7 @@ namespace inProjects.WebApp.Services.CSV
 
         }
 
-        public async Task AssignProjectToJury( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, List<JuryInfos> juryInfos, string type )
+        internal async Task AssignProjectToJury( IStObjMap stObjMap, IAuthenticationInfo authenticationInfo, List<JuryInfos> juryInfos, string type )
         {
             using( var ctx = new SqlStandardCallContext() )
             {
@@ -227,10 +229,14 @@ namespace inProjects.WebApp.Services.CSV
                 TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, sqlDatabase );
                 ProjectQueries projectQueries = new ProjectQueries( ctx, sqlDatabase );
                 TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDatabase );
+                ForumQueries forumQueries = new ForumQueries( ctx, sqlDatabase );
+                //get the Begdate of the periode
+                DateTime begDate = await timedPeriodQueries.GetBegDateOfPeriod( groupData.ZoneId );
+
                 foreach( JuryInfos juryInfo in juryInfos )
                 {
                     int enterpriseId = 0;
-                    string groupName = "Jury " + juryInfo.Jury;
+                    string groupName = "Jury " + juryInfo.Jury + "-" + begDate.Year+ "/" + begDate.Month;
                     int timedUserType = 0;
                     //Check if the jury group exists or not at a moment
                     int groupId = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( groupData.ZoneId, groupName );
@@ -268,14 +274,206 @@ namespace inProjects.WebApp.Services.CSV
                     }
 
                     //get the project id by forumnumber
-                    int projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe1, groupData.ZoneId );
+                    ProjectData projectId;
+                    string groupName1 = "Vous êtes libre";
+                    string groupName2 = "Vous êtes libre";
+                    string groupName3 = "Vous êtes libre";
+                    string groupName4 = "Vous êtes libre";
+                    TimeSpan timeSpan1 = new TimeSpan( 13, 30, 0 );
+                    TimeSpan timeSpan2 = new TimeSpan( 14, 15, 0 );
+                    TimeSpan timeSpan3 = new TimeSpan( 15, 00, 0 );
+                    TimeSpan timeSpan4 = new TimeSpan( 15, 45, 0 );
 
-                    //get the Begdate of the periode
-                    DateTime begDate = await timedPeriodQueries.GetBegDateOfPeriod( groupData.ZoneId );
+                    if( juryInfo.Groupe1 != 0 )
+                    {
+                        projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe1, groupData.ZoneId );
+                        begDate = begDate.Date + timeSpan1;
+                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        groupName1 = projectId.GroupName;
+                    }
 
-                    //insert
+                    if(juryInfo.Groupe2 != 0 )
+                    {
+                        projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe2, groupData.ZoneId );
+                        begDate = begDate.Date + timeSpan2;
+                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        groupName2 = projectId.GroupName;
 
-                   // await evaluatesTable.EvaluateProject(ctx, groupId, projectId, -1, )
+                    }
+
+                    if(juryInfo.Groupe3 != 0 )
+                    {
+                        projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe3, groupData.ZoneId );
+                        begDate = begDate.Date + timeSpan3;
+                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        groupName3 = projectId.GroupName;
+
+                    }
+                    if(juryInfo.Groupe4 != 0 )
+                    {
+                        projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe4, groupData.ZoneId );
+                        begDate = begDate.Date + timeSpan4;
+                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        groupName4 = projectId.GroupName;
+
+                    }
+
+                    IEnumerable<ForumData> infoMail = await forumQueries.ForumInfoByJury( groupName );
+                    int nbProject = infoMail.Count();
+
+                    string subject = "Votre participation au Forum PI D'IN'TECH";
+                    string mailContent = @"
+            <table align = 'center' border='0' cellpadding='0' cellspacing='0' height='100%' width='100%' id='bodyTable'>
+  
+                            </tr>
+                            <tr>
+                                <td valign = 'top' id='templateBody'><table border = '0' cellpadding='0' cellspacing='0' width='100%' class='mcnTextBlock' style='min-width:100%;'>
+    <tbody class='mcnTextBlockOuter'>
+        <tr>
+            <td valign = 'top' class='mcnTextBlockInner' style='padding-top:9px;'>
+              	<!--[if mso]>
+				<table align = 'left' border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100%;'>
+				<tr>
+				<![endif]-->
+			    
+				<!--[if mso]>
+				<td valign = 'top' width='600' style='width:600px;'>
+				<![endif]-->
+                <table align = 'left' border='0' cellpadding='0' cellspacing='0' style='max-width:100%; min-width:100%;' width='100%' class='mcnTextContentContainer'>
+                    <tbody><tr>
+                        
+                        <td valign = 'top' class='mcnTextContent' style='padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;'>
+                        
+                            <h1>Bonjour " + juryInfo.Prenom + " " + juryInfo.Nom + @"</h1>
+
+<p>Vous participez au forum des projets informatique de l'école IN'TECH le " +begDate.Day + "/0" +begDate.Month + "/" +begDate.Year + @".</p>
+
+<p>Vous appartenez au jury '" + groupName + @"'.<br>
+Au cours de cet évènement vous aurez l'occasion de juger les projets suivants:&nbsp;</p>
+
+<ul>
+	<li>" + groupName1 + " à " +  timeSpan1 + @"</li>
+	<li>" + groupName2 + " à " + timeSpan2 + @"</li>
+	<li>" + groupName3 + " à " + timeSpan3 + @"</li>
+	<li>" + groupName4 + " à " + timeSpan4 + @"</li>
+</ul>
+Nous vous remercions de l’intérêt que vous portez à nos évènements.<br>
+Bonne continuation.
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+                
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                            <tr>
+                                <td valign = 'top' id= 'templateFooter' >
+        <td align = 'center' style='padding-left:9px;padding-right:9px;'>
+            <table border = '0' cellpadding='0' cellspacing='0' width='100%' style='min-width:100%;' class='mcnFollowContent'>
+                <tbody><tr>
+                    <td align = 'center' valign='top' style='padding-top:9px; padding-right:9px; padding-left:9px;'>
+                        <table align = 'center' border='0' cellpadding='0' cellspacing='0'>
+                            <tbody><tr>
+                                <td align = 'center' valign='top'>
+                                    <!--[if mso]>
+                                    <table align = 'center' border='0' cellspacing='0' cellpadding='0'>
+                                    <tr>
+                                    <![endif]-->
+
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </td>
+                </tr>
+            </tbody></table>
+        </td>
+    </tr>
+</tbody></table>
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+    <tbody class='mcnDividerBlockOuter'>
+        <tr>
+            <td class='mcnDividerBlockInner' style='min-width: 100%; padding: 10px 18px 25px;'>
+                <table class='mcnDividerContent' border='0' cellpadding='0' cellspacing='0' width='100%' style='min-width: 100%;border-top: 2px solid #EEEEEE;'>
+                    <tbody><tr>
+                        <td>
+                            <span></span>
+                        </td>
+                    </tr>
+                </tbody></table>
+<!--            
+                <td class='mcnDividerBlockInner' style='padding: 18px;'>
+                <hr class='mcnDividerContent' style='border-bottom-color:none; border-left-color:none; border-right-color:none; border-bottom-width:0; border-left-width:0; border-right-width:0; margin-top:0; margin-right:0; margin-bottom:0; margin-left:0;' />
+-->
+            </td>
+        </tr>
+    </tbody>
+</table>
+    <tbody class='mcnTextBlockOuter'>
+        <tr>
+            <td valign = 'top' class='mcnTextBlockInner' style='padding-top:9px;'>
+			    
+				<!--[if mso]>
+				<td valign = 'top' width='600' style='width:600px;'>
+				<![endif]-->
+                <table align = 'left' border='0' cellpadding='0' cellspacing='0' style='max-width:100%; min-width:100%;' width='100%' class='mcnTextContentContainer'>
+                    <tbody><tr>
+                        
+                        <td valign = 'top' class='mcnTextContent' style='padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;'>
+                        
+                            <br>
+<br>
+<strong>Notre adresse:</strong><br>
+74 bis Avenue Maurice Thorez, 94200 Ivry-sur-Seine<br>
+Metro 7: Pierre et Marie Curie<br>
+<br>
+IN'TECH Paris
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+                
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                        </table>
+                        <!--[if (gte mso 9)|(IE)]>
+                        </td>
+                        </tr>
+                        </table>
+                        <![endif]-->
+                        <!-- // END TEMPLATE -->
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </body>
+</html>";
+
+                    await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
+
+
+
                 }
             }
         }

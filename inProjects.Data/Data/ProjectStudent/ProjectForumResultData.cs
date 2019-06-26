@@ -14,6 +14,7 @@ namespace inProjects.Data.Data.ProjectStudent
         public bool IsBlocked { get; set; }
         public string ClassRoom { get; set; }
         public int ForumNumber { get; set; }
+        public int CountTotalVote { get; set; }
 
     }
 }

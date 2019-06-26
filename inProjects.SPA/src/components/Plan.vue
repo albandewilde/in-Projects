@@ -24,7 +24,7 @@
         <div class="plan" >
             <table class="table">
                 <tr
-                    v-for="boxRow in boxes.length"
+                    v-for="boxRow in boxes.length - 19"
                     :key="boxRow">
                     <td
                         v-for="box in boxes[boxRow - 1].length"

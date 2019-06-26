@@ -32,7 +32,10 @@ namespace inProjects.EmailJury
             message.To.Add(new MailboxAddress(to));
             message.From.Add(new MailboxAddress(_options.address));
             message.Subject = subject;
+            var builder = new BodyBuilder();
             message.Body = new TextPart("plain"){Text = content};
+            builder.HtmlBody = string.Format( content );
+            message.Body = builder.ToMessageBody();
 
             return message;
         }
