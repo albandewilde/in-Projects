@@ -322,7 +322,154 @@ namespace inProjects.WebApp.Services.CSV
                     int nbProject = infoMail.Count();
 
                     string subject = "Votre participation au Forum PI D'IN'TECH";
-                    string mailContent = "Bonjour " + juryInfo.Prenom + " " + juryInfo.Nom + ". Vous participez au forum informatique de l'école IN'TECH le " + begDate.Day + " " + begDate.Month + " " + begDate.Year + ". Vous appartenez au jury " + groupName + ". Vous aurez l'occasion de juger les projets " + groupName1 + " à " + timeSpan1 + ", " + groupName2 + " à " + timeSpan2 + ", " + groupName3 + " à " + timeSpan3 + ", " + groupName4 + "à " + timeSpan4;
+                    string mailContent = @"
+            <table align = 'center' border='0' cellpadding='0' cellspacing='0' height='100%' width='100%' id='bodyTable'>
+  
+                            </tr>
+                            <tr>
+                                <td valign = 'top' id='templateBody'><table border = '0' cellpadding='0' cellspacing='0' width='100%' class='mcnTextBlock' style='min-width:100%;'>
+    <tbody class='mcnTextBlockOuter'>
+        <tr>
+            <td valign = 'top' class='mcnTextBlockInner' style='padding-top:9px;'>
+              	<!--[if mso]>
+				<table align = 'left' border='0' cellspacing='0' cellpadding='0' width='100%' style='width:100%;'>
+				<tr>
+				<![endif]-->
+			    
+				<!--[if mso]>
+				<td valign = 'top' width='600' style='width:600px;'>
+				<![endif]-->
+                <table align = 'left' border='0' cellpadding='0' cellspacing='0' style='max-width:100%; min-width:100%;' width='100%' class='mcnTextContentContainer'>
+                    <tbody><tr>
+                        
+                        <td valign = 'top' class='mcnTextContent' style='padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;'>
+                        
+                            <h1>Bonjour " + juryInfo.Prenom + " " + juryInfo.Nom + @"</h1>
+
+<p>Vous participez au forum des projets informatique de l'école IN'TECH le " +begDate.Day + "/0" +begDate.Month + "/" +begDate.Year + @".</p>
+
+<p>Vous appartenez au jury '" + groupName + @"'.<br>
+Au cours de cet évènement vous aurez l'occasion de juger les projets suivants:&nbsp;</p>
+
+<ul>
+	<li>" + groupName1 + " à " +  timeSpan1 + @"</li>
+	<li>" + groupName2 + " à " + timeSpan2 + @"</li>
+	<li>" + groupName3 + " à " + timeSpan3 + @"</li>
+	<li>" + groupName4 + " à " + timeSpan4 + @"</li>
+</ul>
+Nous vous remercions de l’intérêt que vous portez à nos évènements.<br>
+Bonne continuation.
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+                
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                            <tr>
+                                <td valign = 'top' id= 'templateFooter' >
+        <td align = 'center' style='padding-left:9px;padding-right:9px;'>
+            <table border = '0' cellpadding='0' cellspacing='0' width='100%' style='min-width:100%;' class='mcnFollowContent'>
+                <tbody><tr>
+                    <td align = 'center' valign='top' style='padding-top:9px; padding-right:9px; padding-left:9px;'>
+                        <table align = 'center' border='0' cellpadding='0' cellspacing='0'>
+                            <tbody><tr>
+                                <td align = 'center' valign='top'>
+                                    <!--[if mso]>
+                                    <table align = 'center' border='0' cellspacing='0' cellpadding='0'>
+                                    <tr>
+                                    <![endif]-->
+
+                                </td>
+                            </tr>
+                        </tbody></table>
+                    </td>
+                </tr>
+            </tbody></table>
+        </td>
+    </tr>
+</tbody></table>
+
+            </td>
+        </tr>
+    </tbody>
+</table>
+    <tbody class='mcnDividerBlockOuter'>
+        <tr>
+            <td class='mcnDividerBlockInner' style='min-width: 100%; padding: 10px 18px 25px;'>
+                <table class='mcnDividerContent' border='0' cellpadding='0' cellspacing='0' width='100%' style='min-width: 100%;border-top: 2px solid #EEEEEE;'>
+                    <tbody><tr>
+                        <td>
+                            <span></span>
+                        </td>
+                    </tr>
+                </tbody></table>
+<!--            
+                <td class='mcnDividerBlockInner' style='padding: 18px;'>
+                <hr class='mcnDividerContent' style='border-bottom-color:none; border-left-color:none; border-right-color:none; border-bottom-width:0; border-left-width:0; border-right-width:0; margin-top:0; margin-right:0; margin-bottom:0; margin-left:0;' />
+-->
+            </td>
+        </tr>
+    </tbody>
+</table>
+    <tbody class='mcnTextBlockOuter'>
+        <tr>
+            <td valign = 'top' class='mcnTextBlockInner' style='padding-top:9px;'>
+			    
+				<!--[if mso]>
+				<td valign = 'top' width='600' style='width:600px;'>
+				<![endif]-->
+                <table align = 'left' border='0' cellpadding='0' cellspacing='0' style='max-width:100%; min-width:100%;' width='100%' class='mcnTextContentContainer'>
+                    <tbody><tr>
+                        
+                        <td valign = 'top' class='mcnTextContent' style='padding-top:0; padding-right:18px; padding-bottom:9px; padding-left:18px;'>
+                        
+                            <br>
+<br>
+<strong>Notre adresse:</strong><br>
+74 bis Avenue Maurice Thorez, 94200 Ivry-sur-Seine<br>
+Metro 7: Pierre et Marie Curie<br>
+<br>
+IN'TECH Paris
+                        </td>
+                    </tr>
+                </tbody></table>
+				<!--[if mso]>
+				</td>
+				<![endif]-->
+                
+				<!--[if mso]>
+				</tr>
+				</table>
+				<![endif]-->
+            </td>
+        </tr>
+    </tbody>
+</table></td>
+                            </tr>
+                        </table>
+                        <!--[if (gte mso 9)|(IE)]>
+                        </td>
+                        </tr>
+                        </table>
+                        <![endif]-->
+                        <!-- // END TEMPLATE -->
+                    </td>
+                </tr>
+            </table>
+        </center>
+    </body>
+</html>";
+
                     await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
 
 
