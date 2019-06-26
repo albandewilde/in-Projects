@@ -14,7 +14,6 @@
         </div>
     </div>
 
-    <div>
        <el-table id="projectTable" :data="projects" :row-class-name="tableRowClassName">
             <el-table-column prop="forumNumber" label="#" sortable width="180"/>
             <el-table-column prop="name" label="Nom du projet" width="180"/>

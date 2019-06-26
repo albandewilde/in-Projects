@@ -17,6 +17,7 @@ import ProjectUserVote from "./components/ProjectUserVote.vue"
 import ProjectJuryVote from "./components/ProjectJuryVote.vue"
 import EventSchool from "./components/EventSchool.vue"
 import ForumResult from "./components/ForumResult.vue"
+import ForumResultPublic from "./components/ForumResultPublic.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -100,6 +101,11 @@ export default new Router({
       path: "/ForumResult",
       name: "ForumResult",
       component: ForumResult
+     },
+     {
+      path: "/PublicResult",
+      name: "PublicResult",
+      component: ForumResultPublic
      }
 
   ],
