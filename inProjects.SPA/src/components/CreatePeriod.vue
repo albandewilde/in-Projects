@@ -118,6 +118,7 @@ export default class CreatePeriod extends Vue {
                     message: "La période a été créée avec succès.",
                     type: "success"
                 })
+                 this.$router.replace("/")
             } catch (e) {
                 console.log(e.response)
                 this.error.push(e.response.data)

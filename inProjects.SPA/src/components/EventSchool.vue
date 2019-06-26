@@ -116,7 +116,7 @@ export default class EventSchool extends Vue {
         begDate = new Date(this.event.begDate)
         endDate = new Date(this.event.endDate)
 
-        return begDate >= endDate ? true : false
+        return (begDate >= endDate ? false : true)
     }
 }
 </script>

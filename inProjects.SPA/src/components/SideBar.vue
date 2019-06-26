@@ -13,14 +13,22 @@
             <div v-else>
                 <li><center><el-button id="buttons"><img src="../assets/co.png" @click="redirect('/connection')"></el-button></center></li>
             </div>
-            <li><center><el-button id="buttons" @click="redirect('/projectList')">Liste des projets</el-button></center></li>
+            <li><a @click="redirect('/projectList')">Liste des projets</a></li>
+            <li><a @click="redirect(`ProjectUserVote`)">Votez pour les projets</a></li>
             <div v-for="(o, idx) in whatTimed" :key="idx">
                 <div v-if="o == 'Administration'">
                     <AdminPanel></AdminPanel>
                 </div>
-                <div v-if="o == 'User'">
+<!--                 <div v-if="o == 'User'">
                     <UserPanel></UserPanel>
+                </div> -->
+               <!-- <div v-if="o == 'Teacher'">
+                    <TeacherPanel :isCollapse="isCollapse"></TeacherPanel>
+                </div>        -->
+                <div v-if="o == 'Jury'">
+                    <JuryPanel :isCollapse="isCollapse"></JuryPanel>
                 </div>
+
                 <div v-if="o == 'Student'">
                     <StudentPanel></StudentPanel>
                 </div>

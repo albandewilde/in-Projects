@@ -34,6 +34,7 @@ namespace inProjects.WebApp.Controllers
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             var group = _stObjMap.StObjs.Obtain<CustomGroupTable>();
             var timePeriod = _stObjMap.StObjs.Obtain<TimePeriodTable>();
+            var timedUser = _stObjMap.StObjs.Obtain<TimedUserTable>();
 
             using( var ctx = new SqlStandardCallContext() )
             {
@@ -58,6 +59,7 @@ namespace inProjects.WebApp.Controllers
 
                 await group.Naming.GroupRenameAsync( ctx, userId, idPeriod, groupName );
 
+                int idGroupAdmin = 0;
                 for( int i = 0; i < createPeriodModel.Groups.Count; i++ )
                 {
                     int idGroup;
@@ -70,8 +72,13 @@ namespace inProjects.WebApp.Controllers
 
                     idGroup = await group.CreateGroupAsync( ctx, userId, idPeriod );
                     await group.Naming.GroupRenameAsync( ctx, 17, idGroup, createPeriodModel.Groups[i].Name );
+
+                    if( createPeriodModel.Groups[i].Name == "Administration" ) idGroupAdmin = idGroup;
                 }
 
+                //await group.AddUserAsync( ctx, 1, idGroupAdmin, userId, true );
+
+               // await timedUser.CreateOrUpdateTimedUserAsyncWithType( ctx, Data.TypeTimedUser.StaffMember, idPeriod, userId );
                 return this.CreateResult( Result.Success() );
 
             }
