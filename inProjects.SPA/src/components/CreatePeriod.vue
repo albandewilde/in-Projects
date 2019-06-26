@@ -79,6 +79,7 @@ import { GroupPeriod } from "@/modules/classes/Periode/GroupPeriod"
 import { createPeriodAsync, verifyActualPeriod} from "../api/periodApi"
 import { getTemplateGroupsAsync } from "../api/groupApi"
 import Error from "./Erreur.vue"
+import { getIdSchoolOfUser } from '../api/schoolApi';
 
 @Component({
     components: {
@@ -96,9 +97,9 @@ export default class CreatePeriod extends Vue {
     private idZone!: number
 
     async created() {
-        this.idZone = 4
+        this.idZone = await getIdSchoolOfUser()
         this.listGroup = await getTemplateGroupsAsync()
-        this.isInPeriod = await verifyActualPeriod(this.idZone)
+        this.isInPeriod = await verifyActualPeriod()
     }
 
     async CreatePeriod() {
@@ -111,7 +112,7 @@ export default class CreatePeriod extends Vue {
             pc.endDate = this.date[1]
             pc.Kind = "S"
             pc.Groups = this.listGroup
-            pc.idZone = 4
+            pc.idZone = this.idZone
             try {
                 const createdPeriod = await createPeriodAsync(pc)
                 this.$message({

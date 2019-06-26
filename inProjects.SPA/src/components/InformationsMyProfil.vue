@@ -91,14 +91,13 @@ import Error from "./Erreur.vue"
 })
 export default class InformationsMyProfil extends Vue {
     public  error: string[] = []
-    private idZone: number = 4
     private infosUser: InfosAccount = new InfosAccount()
     private infosUserTemp: InfosAccount = new InfosAccount()
     private mode: string = "normal"
     private authService: AuthService = getAuthService()
 
     async created() {
-       this.infosUser = await getAccountInfos(this.idZone)
+       this.infosUser = await getAccountInfos()
     }
 
     async ChangeInformation() {

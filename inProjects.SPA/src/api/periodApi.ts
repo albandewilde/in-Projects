@@ -9,8 +9,8 @@ export async function createPeriodAsync(data: PeriodCreate): Promise<any> {
     return response
 }
 
-export async function verifyActualPeriod(idZone: number): Promise<boolean> {
-    const response = await getAsync(`${endpoint}/verifyActualPeriod?idZone=${idZone}`)
+export async function verifyActualPeriod(): Promise<boolean> {
+    const response = await getAsync(`${endpoint}/verifyActualPeriod`)
     return response.data
 }
 

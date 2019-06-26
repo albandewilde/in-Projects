@@ -8,3 +8,8 @@ export async function getSchools() : Promise<School[]>  {
     const resp = await getAsync(endpoint)
     return resp.data
 }
+
+export async function getIdSchoolOfUser() : Promise<number>  {
+    const resp = await getAsync(`${endpoint}/getIdSchoolOfUser`)
+    return resp.data
+}

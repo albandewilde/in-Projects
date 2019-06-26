@@ -7,6 +7,7 @@ using inProjects.Data.Data.Period;
 using inProjects.Data.Data.TimePeriod;
 using inProjects.Data.Queries;
 using inProjects.ViewModels;
+using inProjects.WebApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -84,31 +85,15 @@ namespace inProjects.WebApp.Controllers
             }
         }
         [HttpGet("verifyActualPeriod")]
-        public async Task<IActionResult> verifyActualPeriod( int idZone )
+        public async Task<IActionResult> VerifyActualPeriod()
         {
-            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            PeriodServices periodServices = new PeriodServices();
 
-            using( var ctx = new SqlStandardCallContext() )
-            {
-                TimedPeriodQueries timedPeriod = new TimedPeriodQueries( ctx, sqlDataBase );
-                DateTime dateNow = DateTime.UtcNow;
-                PeriodData period = await timedPeriod.GetLastPeriodBySchool(idZone);
-
-                if(period.BegDate.DayOfYear <= dateNow.DayOfYear && period.EndDate.DayOfYear >= dateNow.DayOfYear )
-                {
-                    return Ok( true );
-                }
-                else
-                {
-                    return Ok( false );
-                }
-                
-            }
-
+            return Ok( await periodServices.CheckInPeriod(_stObjMap,_authenticationInfo) );
         }
 
         [HttpGet( "getAllPeriod" )]
-        public async Task<IActionResult> getAllPeriod( int idZone )
+        public async Task<IActionResult> GetAllPeriod( int idZone )
         {
             var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
 

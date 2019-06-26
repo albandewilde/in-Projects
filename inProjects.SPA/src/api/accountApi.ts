@@ -28,8 +28,8 @@ export async function changePassword(data: PasswordChangeInfo): Promise<any> {
 }
 
 
-export async function getAccountInfos(idZone: number): Promise<InfosAccount> {
-    const response = await getAsync(`${endpoint}/getInfosAccount?idZone=${idZone}`)
+export async function getAccountInfos(): Promise<InfosAccount> {
+    const response = await getAsync(`${endpoint}/getInfosAccount`)
     console.log(response)
     return new InfosAccount(
         new User(
