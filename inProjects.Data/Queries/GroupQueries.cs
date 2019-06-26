@@ -37,7 +37,13 @@ namespace inProjects.Data.Queries
             IEnumerable<string> list = await _controller.QueryAsync<string>( "select GroupName from CK.vGroup where ZoneId = 0 AND IsZone = 0 OR ZoneId = @ZoneId AND IsZone = 0 group by GroupName;", new { ZoneId = zoneID } );
             return list.AsList();
         }
-        
+
+        public async Task<GroupData> GetIdSchoolByPeriodId(int zoneId)
+        {
+            GroupData data = await _controller.QueryFirstAsync<GroupData>( "select * from CK.vZone where ZoneId = @ZoneId", new { ZoneId = zoneId } );
+            return data;
+        }
+
         public async Task<IEnumerable<GroupData>> GetAllGroupByPeriod(int zoneId)
         {
             IEnumerable<GroupData> result = await _controller.QueryAsync<GroupData>( "SELECT * FROM CK.vGroup WHERE ZoneId = @ZoneId AND IsZone = 0 AND UserCount <> 0;", new { ZoneId = zoneId } );

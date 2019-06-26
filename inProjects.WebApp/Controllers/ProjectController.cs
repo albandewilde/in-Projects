@@ -168,7 +168,11 @@ namespace inProjects.WebApp.Controllers
                     IEnumerable<UserByProjectData> userByProject = await userQueries.GetUserByProject( projectData.ElementAt( i ).ProjectStudentId );
                     projectData.ElementAt( i ).BegDate = userByProject.ElementAt( 0 ).BegDate;
                     projectData.ElementAt( i ).EndDate = userByProject.ElementAt( 0 ).EndDate;
-
+                    List<string> listGroups = await projectQueries.GetGroupsOfProject( projectData.ElementAt(i).ProjectStudentId );
+                    listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) );
+                    projectData.ElementAt( i ).Semester = listGroups[0];
+                    GroupData data = await groupQueries.GetIdSchoolByPeriodId( projectData.ElementAt( i ).ZoneId );
+                    projectData.ElementAt( i ).SchoolId = data.ParentZoneId;
                     foreach( var e in userByProject )
                     {
                         IEnumerable<GroupData> groupDatas = await groupQueries.GetAllGroupByTimedUser( e.TimedUserId );
