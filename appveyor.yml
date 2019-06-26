@@ -9,7 +9,7 @@ environment:
     secure: 0W65ZoMAe2gV9n68FqTY/Q==
   SqlServer/MasterConnectionString: Server=(local)\SQL2016;Database=master;User ID=sa;Password=Password12!
 init:
-  - ps: git config --global core.autocrlf input
+  - ps: git config --global core.autocrlf true
 install:
   - ps: ./CodeCakeBuilder/InstallCredentialProvider.ps1
   - ps: iex ((New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/appveyor/secure-file/master/install.ps1'))
