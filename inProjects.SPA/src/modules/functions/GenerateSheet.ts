@@ -1,33 +1,24 @@
 import pdfMake from "pdfmake/build/pdfmake"
 import pdfFonts from "pdfmake/build/vfs_fonts"
 pdfMake.vfs = pdfFonts.pdfMake.vfs
+import {ProjectSheet, ProjectPiSheet, ProjectPfhSheet} from "../../modules/classes/ProjectSheet"
 
-export function GeneratePiSheet(
-    plc: Array<string> = ["E07", "26"],
-    project_name: string = "ITI'Humain",
-    sem: string = "Semestre 1",
-    sector: string = "SR",
-    tec: Array < string > =["Rust", "Kotlin", "Python", "Bottle"],
-    logo: string = "",
-    slogan: string = "Parce qu'on aurait aimé en profiter nous aussi.",
-    pitch: string = "Le chat commence par une tête et se termine par une queue qui suis son corps. Elle s'arrête au bout d'un moment.\nLe chat est un animal entouré de poils noir, qui sont parfois gris ou blanc. S'il était rayés, ce serait un petit zèbre.\nIl a deux pattes devant et deux derrière. Il a aussi deux pattes de chaque côté. Les pattes de devant servent a courir, avec les pattes de derrière il freine.\nDe temps en temps le char se dit: \"Tien, je vais faire des petit.\" Quand il les a faits, on dit que c'est une chatte. Les petit s'appellent des chatelots.\nQuand il est dans le jardin, il miaule pour attirer les oiseaux. S'ils ne viennent pas, il grimpe dans les arbres et enlève les œufs dont il nourrit ses petit.",
-    team: [string, Array<string>] = ["Julie Agopian", ["Arthur Cheng", "Dan Chiche", "Melvin Delpierre", "Alban De Wilde"]]
-) {
+export function GeneratePiSheet(project: ProjectPiSheet) {
     // format data
-    const place: string = plc.join("\n")
-    const semester: string = "Semestre " + sem + (sector ? " - " + sector : "")
+    const place: string = project.place.join("\n")
+    const semester: string = "Semestre " + project.semester + (project.sector ? " - " + project.sector : "")
 
-    team[1] = removeNonString(team[1])
-    const leader = team[0] + (team[1].length > 0 && !["", " ", undefined, null].includes(team[0]) ? ", " : "")
-    const members = team[1].join(", ")
+    project.team[1] = removeNonString(project.team[1])
+    const leader = project.team[0] + (project.team[1].length > 0 && !["", " ", undefined, null].includes(project.team[0]) ? ", " : "")
+    const members = project.team[1].join(", ")
 
-    tec.length > 9 ? tec[9] = "..." : null
-    tec = tec.slice(0, 10)
-    let missing = 11 - tec.length
-    for (let idx = 0; idx < missing; idx += 1) { tec.push("") }
-    const technos: string = tec.join("\n")
+    project.technos.length > 9 ? project.technos[9] = "..." : null
+    project.technos = project.technos.slice(0, 10)
+    let missing = 11 - project.technos.length
+    for (let idx = 0; idx < missing; idx += 1) {project.technos.push("")}
+    const technos: string = project.technos.join("\n")
 
-    logo = "data:image/jpeg;base64," + logo
+    project.logo = "data:image/jpeg;base64," + project.logo
 
     // create the pdf
     const sheet = {
@@ -55,7 +46,7 @@ export function GeneratePiSheet(
             },
 
             {
-                text: project_name,
+                text: project.name,
                 style: "project_name"
             },
 
@@ -70,7 +61,7 @@ export function GeneratePiSheet(
             },
 
             {
-                image: logo,
+                image: project.logo,
                 width: 250,
                 height: 250,
                 style: "logo"
@@ -82,12 +73,12 @@ export function GeneratePiSheet(
             },
 
             {
-                text: slogan,
+                text: project.slogan,
                 style: "slogan"
             },
 
             {
-                text: pitch,
+                text: project.pitch,
                 style: "pitch"
             }
         ],
@@ -155,7 +146,9 @@ export function GeneratePiSheet(
     return sheet
 }
 
-export function GeneratePfhSheet(){}
+export function GeneratePfhSheet(project: ProjectPfhSheet){}
+
+export function GenerateSheet(project: ProjectSheet){}
 
 const removeNonString = function(array: Array<any>) {
     let new_array: Array<string> = []

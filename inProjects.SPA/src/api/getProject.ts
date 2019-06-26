@@ -1,39 +1,54 @@
 import { getAsync } from "../helpers/apiHelper"
-import {ProjectPiSheet, ProjectPfhSheet} from "../modules/classes/ProjectSheet"
+import {ProjectSheet, ProjectPiSheet, ProjectPfhSheet} from "../modules/classes/ProjectSheet"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/Project"
 
-export async function GetProject(idx: number): Promise<any> {
+export async function GetProject(idx: number): Promise<ProjectSheet | ProjectPiSheet | ProjectPfhSheet> {
     const resp = await getAsync(`${endpoint}/getProjectSheet?idx=${idx}`)
-    console.log(resp.data)
 
-    if (resp.data.technos) {    // if technos are present, it's a Pi
+    if (resp.data.type === "i") {
         return new ProjectPiSheet(
-            resp.data.name,
-            resp.data.semester,
-            resp.data.sector,
-            resp.data.logo,
-            resp.data.slogan,
-            resp.data.pitch,
+            resp.data.project.place,
+            resp.data.project.name,
+            resp.data.project.semester,
+            resp.data.project.sector,
+            resp.data.project.logo,
+            resp.data.project.slogan,
+            resp.data.project.pitch,
             [
-                resp.data.team.item1,
-                resp.data.team.item2
+                resp.data.project.team.item1,
+                resp.data.project.team.item2
             ],
-            resp.data.technos
+            resp.data.project.technos
+        )
+    } else if (resp.data.type === "h") {
+        return new ProjectPfhSheet(
+            resp.data.project.place,
+            resp.data.project.name,
+            resp.data.project.semester,
+            resp.data.project.sector,
+            resp.data.project.logo,
+            resp.data.project.slogan,
+            resp.data.project.pitch,
+            [
+                resp.data.project.team.item1,
+                resp.data.project.team.item2
+            ],
+            resp.data.project.background
         )
     } else {
-        return new ProjectPfhSheet(
-            resp.data.name,
-            resp.data.semester,
-            resp.data.sector,
-            resp.data.logo,
-            resp.data.slogan,
-            resp.data.pitch,
+        return new ProjectSheet(
+            resp.data.project.place,
+            resp.data.project.name,
+            resp.data.project.semester,
+            resp.data.project.sector,
+            resp.data.project.logo,
+            resp.data.project.slogan,
+            resp.data.project.pitch,
             [
-                resp.data.team.item1,
-                resp.data.team.item2
-            ],
-            resp.data.background
+                resp.data.project.team.item1,
+                resp.data.project.team.item2
+            ]
         )
     }
 }

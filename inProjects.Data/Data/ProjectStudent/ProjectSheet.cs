@@ -2,6 +2,7 @@
 {
     public class ProjectSheet
     {
+        public string[] place;
         public string name;
         public string semester;
         public string sector;
@@ -10,8 +11,9 @@
         public string pitch;
         public (string, string[]) team;
 
-        public ProjectSheet(string name, string semester, string sector, string logo, string slogan, string pitch, (string, string[]) team)
+        public ProjectSheet(string[] place, string name, string semester, string sector, string logo, string slogan, string pitch, (string, string[]) team)
         {
+            this.place = place;
             this.name = name;
             this.semester = semester;
             this.sector = sector;
@@ -27,6 +29,7 @@
         public string[] technos;
 
         public ProjectPiSheet(
+            string[] place,
             string name,
             string semester,
             string sector,
@@ -35,16 +38,8 @@
             string pitch,
             (string, string[]) team,
             string[] technos
-        ): base(name, semester, sector, logo, slogan, pitch, team)
+        ): base(place, name, semester, sector, logo, slogan, pitch, team)
         {
-            
-            this.name = name;
-            this.semester = semester;
-            this.sector = sector;
-            this.logo = logo;
-            this.slogan = slogan;
-            this.pitch = pitch;
-            this.team = team;
             this.technos = technos;
         }
     }
@@ -53,6 +48,7 @@
     {
         public string background;
         public ProjectPfhSheet(
+            string[] place,
             string name,
             string semester,
             string sector,
@@ -61,15 +57,8 @@
             string pitch,
             (string, string[]) team,
             string background
-        ): base(name, semester, sector, logo, slogan, pitch, team)
+        ): base(place, name, semester, sector, logo, slogan, pitch, team)
         {
-            this.name = name;
-            this.semester = semester;
-            this.sector = sector;
-            this.logo = logo;
-            this.slogan = slogan;
-            this.pitch = pitch;
-            this.team = team;
             this.background = background;
         }
     }
