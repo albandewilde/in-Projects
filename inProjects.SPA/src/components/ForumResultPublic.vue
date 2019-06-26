@@ -1,12 +1,24 @@
 <template>
     <div class="forum-result-public">
         <table class="table-forum-result-public">
-        <tr v-for="(item,index) in projectsPublicResult" :key="index">
-                    <td><span > {{item.name}}</span></td>
-                    <td><span style="font-weight: bold;" class="percentage-forum-result-public">{{getPercentage(index)}}%</span></td>
+        <tr v-for="(item,index) in projectsPublicResult.slice(0, projectsPublicResult.length/2)" :key="index">
+                    <td><span style="font-size:30px"> {{item.name}}</span></td>
+                    <td><span style="font-weight: bold; font-size:30px" class="percentage-forum-result-public">{{getPercentage(index)}}%</span></td>
                     <td v-if="getPercentage(index) > 0">
-                        <div class="w3-light" style="width: 100vw">
-                             <div class="w3-blue" :style="'height:12px;width:'+getPercentage(index) +'%'"></div>
+                        <div class="w3-light" style="width: 25vw">
+                             <div class="w3-blue" :style="'height:30px;width:'+getPercentage(index) +'%'"></div>
+                         </div>
+
+                           <!-- <div class="w3-light-grey" style="width: 100vw">
+                                <div class="w3-container w3-green" :style="'width:'+getPercentage(index)+'%'">a</div>
+                         </div> -->
+                    </td>
+                    <td><td>
+                    <td><span style="font-size:30px">{{projectsPublicResult[projectsPublicResult.length/2 + index].name}}</span></td>
+                    <td><span style="font-weight: bold; font-size:30px" class="percentage-forum-result-public">{{getPercentage(projectsPublicResult.length/2 + index)}}%</span></td>
+                    <td v-if="getPercentage(projectsPublicResult.length/2 + index) > 0">
+                        <div class="w3-light" style="width: 25vw">
+                             <div class="w3-blue" :style="'height:30px;width:'+getPercentage(projectsPublicResult.length/2 + index) +'%'"></div>
                          </div>
 
                            <!-- <div class="w3-light-grey" style="width: 100vw">
@@ -15,7 +27,6 @@
                     </td>
                     <br/>
                     <br/>
-               
         </tr>
 
         </table>
@@ -35,7 +46,7 @@ export default class ForumResultPublic extends Vue {
     async created(){
         this.projectsPublicResult = await getAllPublicNote()
         this.diviseur = this.projectsPublicResult[0].countTotalVote * 20
-        setInterval(this.update, 180000)
+        setInterval(this.update, 18000)
     }
 
     async update(){
@@ -61,20 +72,25 @@ text-align: end
 
 .forum-result-public{
    overflow-x: hidden;
+   
 }
 
 .percentage-forum-result-public{
-    margin-left: 100%
+    /* margin-left: 100% */
 }
 
 .w3-light{
-    margin-left: 3%;
+    /* margin-left: 3%; */
 
 }
 
 .w3-blue{
     border: 1px solid black;
     background-color: #75afff!important
+}
+
+.table-forum-result-public{
+    padding-top: 7%
 }
 
 
