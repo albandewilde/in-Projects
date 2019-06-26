@@ -1,11 +1,11 @@
 <template>
     <div id="app">
 
-      <SideBar></SideBar>
+      <TempSideBar></TempSideBar>
       <div class="content">
-        <el-main class="vue">
+        <main class="vue">
             <router-view></router-view>
-        </el-main>
+        </main>
       </div>
 
     </div>
@@ -14,10 +14,12 @@
 <script>
 import { Component, Vue } from "vue-property-decorator"
 import SideBar from "@/components/SideBar.vue"
+import TempSideBar from "@/components/TempSideBar.vue"
 
 @Component({
   components: {
-    SideBar,
+    // SideBar,
+    TempSideBar
   },
 })
 export default class App extends Vue {}
@@ -34,8 +36,14 @@ export default class App extends Vue {}
 }
 
 .content{
-  margin-left: 15%;
-  // padding: 1px 16px;
+  margin-left: 17%;
   height: 100vh;
+}
+@media screen and (max-width: 900px) {
+  .content{
+    margin-left: 4%;
+    margin-top: 2%;
+    margin-right: 2%;
+  }
 }
 </style>

@@ -2,34 +2,34 @@
     <div>
         <div class="okok">
             <li class="dropdown">
-                <el-button id="buttons" class="dropbtn">Periode</el-button>
+                <a class="dropbtn">Gestion des périodes</a>
                 <div class="dropdown-content">
-                    <el-button id="buttons" @click="redirect('/createPeriod')">Créer une période</el-button>
-                    <el-button id="buttons" @click="redirect('/listPeriod')">Voir toutes les periodes</el-button>
+                    <button @click="redirect('/createPeriod')">Créer une période</button>
+                    <button @click="redirect('/listPeriod')">Voir toutes les périodes</button>
                 </div>        
             </li>
         </div>
         <div class="okok">
             <li class="dropdown">
-                <el-button id="buttons" class="dropbtn">Liste</el-button>
+                <a class="dropbtn">Listes</a>
                 <div class="dropdown-content">
-                    <el-button id="buttons" @click="redirect('/student')">Liste des étudiants</el-button>
-                    <el-button id="buttons"  @click="redirect('/staffMember')">Liste des professeurs</el-button>
+                    <button @click="redirect('/student')">Liste des étudiants</button>
+                    <button  @click="redirect('/staffMember')">Liste des professeurs</button>
                 </div>        
             </li>
         </div>
         <div class="okok">
             <li class="dropdown">
-                <el-button id="buttons" class="dropbtn">Forum</el-button>
+                <a class="dropbtn">Forum</a>
                 <div class="dropdown-content">
-                    <el-button id="buttons" @click="redirect('/plan')">Plan</el-button>
-                    <el-button id="buttons"  @click="redirect('/addJury')">Gestion forum</el-button>
+                    <button @click="redirect('/plan')">Plan</button>
+                    <button @click="redirect('/addJury')">Gestion forum</button>
                 </div>        
             </li>
         </div>
         <div class="okok">
             <li>
-                <a class="dropbtn" @click="redirect(`/Events`)">Evenements de l'ecole !</a>
+                <a class="dropbtn" @click="redirect(`/Events`)">Évènements de l'école !</a>
             </li>
         </div>
     </div>
@@ -71,44 +71,43 @@ async created() {
   text-decoration: none;
  }
 
-
 .dropdown {
   display: inline-block;
-  width: 100%
+  width: 100%;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #2d3e4f;
-  min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
 
-.dropdown-content a {
-  color: black;
-//   padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
-}
-#buttons {
-  display: block;
-  color: white;
-  /* padding: 8px 16px; */
-  text-decoration: none;
+.dropdown-content button {
+  text-align: center;
   background-color: #2d3e4f;
   border: none;
+  width: 100%;
+  padding: 15px;
+  height: 100%;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  font-size: 100%;
 }
 
-.dropdown-content a:hover {background-color: red;}
+.dropdown-content button:hover {
+    background-color: #2d4f4f;
+}
 
 .dropdown:hover .dropdown-content {
   display: block;
+  width: 100%;
+  position: relative;
 }
 
-.okok{
-    display: block;
+.okok {
+    display: block  
 }
 </style>
