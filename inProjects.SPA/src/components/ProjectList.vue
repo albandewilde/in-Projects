@@ -182,7 +182,6 @@ export default class ProjectList extends Vue {
 .masonry-layout {
     column-count: 3;
     column-gap: 0;
-    margin-top: 5vh;
 }
 .masonry-layout-panel {
     break-inside: avoid;

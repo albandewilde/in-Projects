@@ -24,7 +24,7 @@
                 <div class="dropdown-content">
                     <button @click="redirect('/plan')">Plan</button>
                     <button @click="redirect('/addJury')">Gestion forum</button>
-                    <a @click="redirect('/ForumResult')">Resultats Forum PI</a>
+                    <button @click="redirect('/ForumResult')">Resultats Forum PI</button>
                 </div>        
             </li>
         </div>

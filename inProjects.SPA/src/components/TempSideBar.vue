@@ -1,25 +1,25 @@
 <template>
-  <nav>
-    <ul class="sidenav">
-        <li>
-            <a class="active" @click="redirect('/')">IN'TECH</a>
-        </li>
-        <div v-if="authService.authenticationInfo.level != 0">
-            <li class="btn-group">
-                <button class="buttons">
-                    <img src="../assets/deco.png" height="30px" @click="logout()">
-                </button>
-                <button class="buttons">
-                    <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/>
-                </button>
-            </li>
+  <ul class="sidenav">
+    <li>      
+        <a class="active" @click="redirect('/')">IN'TECH</a>
+    </li>
+    <div id="mySidenav">
+      <div v-if="authService.authenticationInfo.level != 0">
+          <li class="btn-group">
+              <button class="buttons">
+                  <img src="../assets/deco.png" height="30px" @click="logout()">
+              </button>
+              <button class="buttons">
+                  <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/>
+              </button>
+          </li>
         </div>
         <div v-else>
-            <li class="btn-group">
-                <button class="buttons" style="width: 100%;">
-                    <img src="../assets/co.png" @click="redirect('/connection')">
-                </button>
-            </li>
+          <li class="btn-group">
+              <button class="buttons" style="width: 100%;">
+                  <img src="../assets/co.png" @click="redirect('/connection')">
+              </button>
+          </li>
         </div>
         <li>
             <a @click="redirect('/projectList')">Liste des projets</a>
@@ -34,9 +34,12 @@
             <div v-if="o == 'Student'">
                 <StudentPanel></StudentPanel>
             </div>
-        </div> 
-    </ul>
-  </nav>
+        </div>
+      </div>
+        <div class="menu-toggle">
+          <font-awesome-icon aria-hidden="true" icon="bars" size="lg" @click="changeCollapse()" style="color: white; cursor: pointer;"/>
+        </div>
+  </ul>
 </template>
 
 <script lang="ts">
@@ -65,7 +68,7 @@ import { SignalRGestion } from "../modules/classes/SignalR"
 })
 
 export default class TempSideBar extends Vue {
-    isCollapse: boolean = false
+    isCollapsed: boolean = true
     whatTimed: string[] = []
     ZoneId: number = 4
     authService: AuthService = getAuthService()
@@ -91,7 +94,7 @@ export default class TempSideBar extends Vue {
         console.log(key, keyPath)
     }
     changeCollapse() {
-        this.isCollapse = !this.isCollapse
+        this.isCollapsed = !this.isCollapsed
     }
     redirect(destination: string) {
         this.$router.push(destination)
@@ -111,15 +114,15 @@ export default class TempSideBar extends Vue {
 </script>
 
 <style>
-nav {
-  background-color: #2d3e4f;
+.menu-toggle {
+  display: none;
 }
 ul.sidenav {
   background-color: #2d3e4f;
   position: fixed;
   height: 100%;
   width: 15%;  
-  margin: 0;
+  margin-top: 0%;
   padding: 0;
 }
 #intech {
@@ -130,7 +133,7 @@ ul.sidenav {
 }
 .in-menu {
     display: block;
-    margin-top: 116px;
+    margin-top: 0;
     margin-bottom: 50px;
     float: none;
     text-align: center;
@@ -171,18 +174,33 @@ ul.sidenav li a:hover:not(.active) {
 @media screen and (max-width: 900px) {
   ul.sidenav {
     width: 100%;
-    height: 18vh;
+    height: 15vh;
     position: relative;
     list-style: none;
+  }
+  #mySidenav {
+    position: absolute;
+    top: 50px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 50px);
+    background: #333;
+    transition: 0.5s;
+  }
+  .menu-toggle {
+    display: block;
+    float: right;
+    margin-right: 2vw;
+    margin-top: 5vh;
   }
   ul.sidenav li a {
     text-align: center;
     float: left;
     padding: 15px;
-    height: 18vh;
+    height: 15vh;
   }
   ul.sidenav li a.active {
-    height: 18vh;
+    height: 15vh;
   }
   .btn-group .buttons {
     background-color: #2d3e4f;
@@ -190,7 +208,7 @@ ul.sidenav li a:hover:not(.active) {
     cursor: pointer;
     float: left;
     width: 5%;
-    height: 18vh;
+    height: 15vh;
     padding-right: 6%;
   }
   div.okok {

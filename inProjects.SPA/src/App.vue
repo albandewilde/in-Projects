@@ -1,6 +1,5 @@
 <template>
     <div id="app">
-
       <TempSideBar></TempSideBar>
       <div class="content">
         <main class="vue">

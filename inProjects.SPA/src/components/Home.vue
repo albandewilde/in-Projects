@@ -1,5 +1,5 @@
 <template>
-<div>
+<div><br>
     <div class="masonry-layout">
         <div class="mansonry-layout-panel masonry-layout-cluster masonry-layou-cluster--horizontal">
               <div class="masonry-layout-cluster__segment masonry-layout-cluster__segment--column">
@@ -88,7 +88,7 @@
                     <img src="../assets/dan.png"  class="masonry-layout-panel__content--img">
 <!--                 </div>
             </div> -->
-</div>
+<br><br></div>
 </template>
 
 <script lang="ts">
