@@ -59,3 +59,9 @@ export async function GetEventsType() : Promise<string[]> {
     const resp = await getAsync(`${endpoint}/GetTypeEvents`)
     return resp.data
 }
+
+export async function GetEventSchoolByName(eventName:string, schoolName:string) : Promise<Event> {
+    const resp = await getAsync(`${endpoint}/GetEventSchoolByName?eventName=${eventName}&&schoolName=${schoolName}`)
+    let event = new Event(resp.data.eventId,resp.data.name,resp.data.begDate,resp.data.endDate)
+    return event
+}

@@ -1,21 +1,7 @@
 <template>
 <div>
-   
-    <el-submenu index="52">
-            <template slot="title">
-                <font-awesome-icon icon="file-alt" size="lg" />
-                <span v-if="isCollapse == false"> Projets</span>
-            </template>
-        <el-menu-item-group>
-            <el-menu-item index="4-1" @click="redirect(`/projectList`)">Liste des projets</el-menu-item>
-            <el-menu-item index="4-2">Trouver un projet</el-menu-item>
-        </el-menu-item-group>
-    </el-submenu>
-
-    <el-menu-item index="53" @click="redirect(`/ProjectUserVote`)">
-        <font-awesome-icon icon="thumbs-up" />
-        <span v-if="isCollapse == false"> Votez pour les projets !</span>
-    </el-menu-item>
+    <li><a @click="redirect('/projectList')">Liste des projets</a></li>
+    <li><a @click="redirect(`ProjectUserVote`)">Votez pour les projets</a></li>
     
 </div>
 </template>
