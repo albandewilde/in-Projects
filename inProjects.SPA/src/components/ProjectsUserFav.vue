@@ -6,12 +6,20 @@
             <img class="image-grumpy" src="../assets/grumpyCat.jpg">
         </div>
         <div v-else>
-            <el-carousel  class="carousel-fav" trigger="click" :interval="4000" type="card">
+<!--              <el-carousel  class="carousel-fav" trigger="click" :interval="4000" type="card">
                 <el-carousel-item class="carousel-item-fav" v-for="(o, idx) in usersFav" :key="idx">
                     <span class="text-fav">{{o.groupName}}</span>
                     <img @click="redirect(o.projectId)" class="image-fav" :src="o.logo"/>
                 </el-carousel-item>
-            </el-carousel>
+            </el-carousel>  -->
+            <div class="masonry-layout-fav">
+                <div class="masonry-layout-panel-fav" v-for="(o, idx) in usersFav" :key="idx">
+                    <div class="masonry-layout-panel__content-fav">
+                        <h5 class="mansonry-groupName">{{o.groupName}}</h5>
+                        <img :src="o.logo" style="height:100px; width:100px"  @click="redirect(o.projectId)">
+                    </div>
+                </div>
+            </div>
         </div>
   </div>
 </template>
@@ -31,16 +39,16 @@ export default class ProjectUserFav extends Vue {
     }
 
     redirect(idProject: string) {
-        this.$router.replace("/Project/" + idProject)
+        this.$router.push("/Project/" + idProject)
     }
 }
 </script>
 
 
-<style>
+ <style>
 .image-fav{
-    height: auto;
-    width: 10vw;
+    height: 200px;
+    width: 350px;
     padding-top:10%;
     margin-left :10%;
 }
@@ -65,8 +73,25 @@ export default class ProjectUserFav extends Vue {
     position: absolute;
     text-align: start;
     width: 100%;
-    
+} 
+
+.masonry-layout-fav {
+    column-count: 8;
+    column-gap: 0;
+    padding: 0
+}
+.masonry-layout-panel-fav {
+    break-inside: avoid;
+    padding: 5px;
+}
+.masonry-layout-panel__content-fav {
+    padding: 10px;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
+.mansonry-groupName{
+    padding: 10px
 
+}
 </style>

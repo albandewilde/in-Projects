@@ -2,8 +2,9 @@ CREATE TABLE IPR.tEvaluates
 (
     JuryId INT,
     ProjectId INT,
-    Grade INT,
+    Grade float,
     [Date] DATETIME2 NOT NULL,
+    BlockedGrade BIT
 
     CONSTRAINT PK_tEvaluates_JuryId_ProjectId PRIMARY KEY(JuryId, ProjectId),
     CONSTRAINT FK_tGroup_GroupId FOREIGN KEY(JuryId) REFERENCES CK.tGroup(GroupId),

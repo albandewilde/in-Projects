@@ -7,6 +7,7 @@ using inProjects.Data.Data.Period;
 using inProjects.Data.Data.TimePeriod;
 using inProjects.Data.Queries;
 using inProjects.ViewModels;
+using inProjects.WebApp.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -34,16 +35,17 @@ namespace inProjects.WebApp.Controllers
             var sqlDatabase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
             var group = _stObjMap.StObjs.Obtain<CustomGroupTable>();
             var timePeriod = _stObjMap.StObjs.Obtain<TimePeriodTable>();
+            var timedUser = _stObjMap.StObjs.Obtain<TimedUserTable>();
 
             using( var ctx = new SqlStandardCallContext() )
             {
                 AclQueries aclQueries = new AclQueries( ctx, sqlDatabase );
 
-                if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( createPeriodModel.idZone ), userId, Operator.SuperiorOrEqual ) == false )
-                {
-                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
-                    return this.CreateResult( result );
-                }
+                //if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( createPeriodModel.idZone ), userId, Operator.SuperiorOrEqual ) == false )
+                //{
+                //    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                //    return this.CreateResult( result );
+                //}
 
                 createPeriodModel.begDate =  createPeriodModel.begDate.AddDays( 1 );
                 createPeriodModel.endDate = createPeriodModel.endDate.AddDays( 1 );
@@ -58,6 +60,7 @@ namespace inProjects.WebApp.Controllers
 
                 await group.Naming.GroupRenameAsync( ctx, userId, idPeriod, groupName );
 
+                int idGroupAdmin = 0;
                 for( int i = 0; i < createPeriodModel.Groups.Count; i++ )
                 {
                     int idGroup;
@@ -70,38 +73,27 @@ namespace inProjects.WebApp.Controllers
 
                     idGroup = await group.CreateGroupAsync( ctx, userId, idPeriod );
                     await group.Naming.GroupRenameAsync( ctx, 17, idGroup, createPeriodModel.Groups[i].Name );
+
+                    if( createPeriodModel.Groups[i].Name == "Administration" ) idGroupAdmin = idGroup;
                 }
 
+                //await group.AddUserAsync( ctx, 1, idGroupAdmin, userId, true );
+
+               // await timedUser.CreateOrUpdateTimedUserAsyncWithType( ctx, Data.TypeTimedUser.StaffMember, idPeriod, userId );
                 return this.CreateResult( Result.Success() );
 
             }
         }
         [HttpGet("verifyActualPeriod")]
-        public async Task<IActionResult> verifyActualPeriod( int idZone )
+        public async Task<IActionResult> VerifyActualPeriod()
         {
-            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            PeriodServices periodServices = new PeriodServices();
 
-            using( var ctx = new SqlStandardCallContext() )
-            {
-                TimedPeriodQueries timedPeriod = new TimedPeriodQueries( ctx, sqlDataBase );
-                DateTime dateNow = DateTime.UtcNow;
-                PeriodData period = await timedPeriod.GetLastPeriodBySchool(idZone);
-
-                if(period.BegDate.DayOfYear <= dateNow.DayOfYear && period.EndDate.DayOfYear >= dateNow.DayOfYear )
-                {
-                    return Ok( true );
-                }
-                else
-                {
-                    return Ok( false );
-                }
-                
-            }
-
+            return Ok( await periodServices.CheckInPeriod(_stObjMap,_authenticationInfo) );
         }
 
         [HttpGet( "getAllPeriod" )]
-        public async Task<IActionResult> getAllPeriod( int idZone )
+        public async Task<IActionResult> GetAllPeriod( int idZone )
         {
             var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
 
