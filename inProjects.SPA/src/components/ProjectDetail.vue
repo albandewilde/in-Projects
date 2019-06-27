@@ -70,8 +70,7 @@ import { ProjectDetails } from "../modules/classes/ProjectDetails"
 import { getInfosProject, verifyProjectFav, favProject } from "../api/submitProjectApi"
 import { getGroupUserAccessPanel } from "../api/groupApi"
 import {GetProject} from "../api/getProject"
-import {ProjectSheet} from "../modules/classes/ProjectSheet"
-import {GenerateSheet} from "../modules/functions/GenerateSheet"
+import {ProjectSheet, ProjectPiSheet, ProjectPfhSheet} from "../modules/classes/ProjectSheet"
 import pdfMake from "pdfmake/build/pdfmake"
 
 @Component
@@ -116,20 +115,8 @@ export default class ProjectDetail extends Vue {
         let project = await GetProject(id)
 
         // generate the pdf
-        const sheet = GenerateSheet(
-            ["None", "None"],
-            project.name,
-            project.semester,
-            project.sector,
-            project.technos,
-            project.logo,
-            project.slogan,
-            project.pitch,
-            project.team,
-        );
-        pdfMake.createPdf(sheet).open()
-
-        this.loading = false
+        var sheet = project.generate_sheet()
+        pdfMake.createPdf(sheet).download()
     }
 
     CheckedAuthorize(needToBe: string){
