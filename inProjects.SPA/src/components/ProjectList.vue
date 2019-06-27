@@ -34,13 +34,11 @@ import { Component } from "vue-property-decorator"
 import { GetAllProject } from "../api/projectApi"
 import {Project} from "../modules/classes/Project"
 import {verifyProjectFav, favProject } from "../api/submitProjectApi"
-import JSZip from "jszip"
-import {ProjectSheet} from "../modules/classes/ProjectSheet"
-import {GeneratePiSheet, GeneratePfhSheet} from "../modules/functions/GenerateSheet"
+import {ProjectSheet, ProjectPiSheet, ProjectPfhSheet} from "../modules/classes/ProjectSheet"
 import {GetAllSheet} from "../api/projectApi"
 import pdfMake from "pdfmake/build/pdfmake"
 import { saveAs } from "file-saver"
-
+import {make_archive} from "../modules/functions/make_archive"
 
 @Component
 export default class ProjectList extends Vue {
@@ -50,7 +48,6 @@ export default class ProjectList extends Vue {
     private border !: string
     private isFav!: boolean
     private starColor!: string
-    private zip : JSZip = new JSZip()
 
     async mounted() {
         this.projectList  = await GetAllProject()
@@ -99,50 +96,65 @@ export default class ProjectList extends Vue {
         return this.starColor = "#000000 !important;"
     }
 
-    async GetAllProjectSheet(index : number) {
-            const sheet =  pdfMake.createPdf(
-                    GeneratePiSheet(
-                        [
-                            "None",
-                            "None"
-                        ],
-                        this.projects[index].name,
-                        this.projects[index].semester,
-                        this.projects[index].sector,
-                        this.projects[index].technos,
-                        this.projects[index].logo,
-                        this.projects[index].slogan,
-                        this.projects[index].pitch,
-                        this.projects[index].team
-                    )
-                )
-                sheet.getBlob(async (blob :Blob) => {
-                    this.zip.file("fiches/"+this.projects[index].name + ".pdf",blob)
-                    if(this.projects.length -1 != index){
-                        await this.GetAllProjectSheet(++index)
-                    }else{
-                     this.zip.generateAsync({type:"blob"})
-                        .then(function(content) {
-                        saveAs(content, "fiches.zip");
-                    });
-                    }
-                 });
-    }
+    // async GetAllProjectSheet(index : number) {
+    //         const sheet =  pdfMake.createPdf(
+    //                 GeneratePiSheet(
+    //                     [
+    //                         "None",
+    //                         "None"
+    //                     ],
+    //                     this.projects[index].name,
+    //                     this.projects[index].semester,
+    //                     this.projects[index].sector,
+    //                     this.projects[index].technos,
+    //                     this.projects[index].logo,
+    //                     this.projects[index].slogan,
+    //                     this.projects[index].pitch,
+    //                     this.projects[index].team
+    //                 )
+    //             )
+    //             sheet.getBlob(async (blob :Blob) => {
+    //                 this.zip.file("fiches/"+this.projects[index].name + ".pdf",blob)
+    //                 if(this.projects.length -1 != index){
+    //                     await this.GetAllProjectSheet(++index)
+    //                 }else{
+    //                  this.zip.generateAsync({type:"blob"})
+    //                     .then(function(content) {
+    //                     saveAs(content, "fiches.zip");
+    //                 });
+    //                 }
+    //              });
+    // }
 
-   async download(){
-       let index = 0 
-       this.zip = new JSZip()
-       this.zip.folder("fiches")
-       this.projects = await GetAllSheet()
-       await this.GetAllProjectSheet(index)
+    // async download(){
+    //     let index = 0 
+    //     this.zip = new JSZip()
+    //     this.zip.folder("fiches")
+    //     this.projects = await GetAllSheet()
+    //     await this.GetAllProjectSheet(index)
+    // }
 
-    }
     CheckedAuthorize(needToBe: string){
         return this.$store.state.currentUserType.find(x => x == needToBe) != null ? true : false
     }
 
-     redirect(idProject: number) {
-         this.$router.replace("/Project/" + idProject)
+    redirect(idProject: number) {
+        this.$router.replace("/Project/" + idProject)
+    }
+
+    async GetAllProjectSheet(school: number, type: string, semester: number) {
+        // get projects form the back
+        let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(school, type, semester)
+
+        // generate all pdf files as blob
+        let projectsSheet: Map<string, Blob> = new Map()
+        for (let project of projects) {projectsSheet.set(project.name, pdfMake.CreatePdf(project.generate_sheet()).getBlob((blob: Blob) => blob))}
+
+        // put pdf files in an archive file and convert the archive as a blob
+        let zip = await make_archive(projectsSheet).generateAsync({type: "blob"})
+
+        // download that archive
+        saveAs(zip, "fiches.zip")
     }
 }
 </script>

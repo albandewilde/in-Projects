@@ -162,6 +162,7 @@ namespace inProjects.WebApp.Controllers
             }
         }
 
+        // may we should rewrite the sql query
         public async Task<object> GetProjectSheet(int idx)
         {
             SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
@@ -181,7 +182,6 @@ namespace inProjects.WebApp.Controllers
 
             }
             
-            string[] place = pd.Place;
             string name = pd.Name;
             // semesters of the project
             List<int> semesters = new List<int>();
@@ -213,6 +213,7 @@ namespace inProjects.WebApp.Controllers
             // check the type for the field techno of background field and return the project
             if (pd.Type == "i")
             {
+                string[] place = pd.Place;
                 string[] technos = pd.Technologies.ToArray();
                 return new {project = new ProjectPiSheet(place, name, semester, sector, logo, slogan, pitch, team, technos), type = "i"};
             }
@@ -220,11 +221,11 @@ namespace inProjects.WebApp.Controllers
             {
                 // download and encode the background in base64
                 string background = Convert.ToBase64String(new WebClient().DownloadData(pd.Logo));
-                return new {project = new ProjectPfhSheet(place, name, semester, sector, logo, slogan, pitch, team, background), type = "h"};
+                return new {project = new ProjectPfhSheet(name, semester, sector, logo, slogan, pitch, team, background), type = "h"};
             }
             else
             {
-                return new {project = new ProjectSheet(place, name, semester, sector, logo, slogan, pitch, team), type = "None"};
+                return new {project = new ProjectSheet(name, semester, sector, logo, slogan, pitch, team), type = "None"};
             }
         }
 
@@ -232,24 +233,12 @@ namespace inProjects.WebApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> SendProjectSheet(int idx)
         {
-            var foo = await GetProjectSheet(idx);
-            return Ok(foo);
+            return Ok(await GetProjectSheet(idx));
         }
 
-        [HttpGet("GetAllPiSheet")]
+        [HttpGet("GetAllSheet")]
         [AllowAnonymous]
-        public async Task<IActionResult> GetAllPiSheet()
-        {
-            List<ProjectPiSheet> projectsSheet = new List<ProjectPiSheet>();
-
-            // call sql request here
-
-            return Ok(projectsSheet);
-        }
-
-        [HttpGet("GetAllPfhSheet")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetAllPfhSheet()
+        public async Task<IActionResult> GetAllSheet(int schoolId, char projectType, int semester)
         {
             List<ProjectPiSheet> projectsSheet = new List<ProjectPiSheet>();
 
