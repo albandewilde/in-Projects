@@ -289,11 +289,33 @@ namespace inProjects.WebApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllSheet(int schoolId, char projectType, int semester)
         {
-            List<ProjectPiSheet> projectsSheet = new List<ProjectPiSheet>();
 
-            // call sql request here
+            if (projectType == 'i')
+            {
+                List<ProjectPiSheet> projectsSheet = new List<ProjectPiSheet>();
 
-            return Ok(projectsSheet);
+                // call sql request here
+
+                return Ok(projectsSheet);
+            }
+            else if (projectType == 'h')
+            {
+                List<ProjectPfhSheet> projectsSheet = new List<ProjectPfhSheet>();
+
+                // call sql request here
+
+                return Ok(projectsSheet);
+            }
+            else
+            {
+                List<ProjectSheet> projectsSheet = new List<ProjectSheet>();
+
+                // call sql request here
+
+                return Ok(projectsSheet);
+            }
+
+
         }
 
         [HttpGet( "getAllTypeProjectsOfASchool" )]
