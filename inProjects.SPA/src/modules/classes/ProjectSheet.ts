@@ -47,7 +47,7 @@ class ProjectPiSheet extends ProjectSheet {
         for (let idx = 0; idx < missing; idx += 1) {this.technos.push("")}
         const technos: string = this.technos.join("\n")
 
-        this.logo = "data:image/jpeg;base64," + this.logo
+        this.logo = "data:image/png;base64," + this.logo
 
         // create the pdf
         const sheet = {

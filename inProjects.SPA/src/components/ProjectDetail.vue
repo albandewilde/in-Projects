@@ -117,7 +117,9 @@ export default class ProjectDetail extends Vue {
 
         // generate the pdf
         var sheet = project.generate_sheet()
-        pdfMake.createPdf(sheet).download()
+        let test = pdfMake.createPdf(sheet);
+        console.log(sheet)
+        console.log(test)
 
         this.loading = false
     }

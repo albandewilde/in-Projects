@@ -301,11 +301,15 @@ namespace inProjects.WebApp.Controllers
 
                 PeriodData School = await timedPeriodQueries.GetLastPeriodBySchool( schoolId );
 
+                IEnumerable<AllProjectInfoData> listProject;
+
+                if( semester > 0 ) listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, projectType, semester );
+                else listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, projectType );
+
                 if( projectType == 'I' )
                 {
                     List<ProjectPiSheet> projectsSheet = new List<ProjectPiSheet>();
 
-                    IEnumerable<AllProjectInfoData> listProject = await projectQueries.GetAllTypeSchoolProjectBySemester( School.ChildId, projectType, semester );
 
                     foreach( var item in listProject )
                     {
@@ -323,8 +327,10 @@ namespace inProjects.WebApp.Controllers
                         }
                         (string, string[]) team = (leader, members);
 
+                        string logo = Convert.ToBase64String( new WebClient().DownloadData( item.Logo ) );
 
-                        ProjectPiSheet projectPiSheet = new ProjectPiSheet( place, item.GroupName, item.Semester, item.Sector, item.Logo, item.Slogan, item.Pitch, team, item.Technologies.ToArray() );
+
+                        ProjectPiSheet projectPiSheet = new ProjectPiSheet( place, item.GroupName, item.Semester, item.Sector, logo, item.Slogan, item.Pitch, team, item.Technologies.ToArray() );
 
                         projectsSheet.Add( projectPiSheet );
                     }

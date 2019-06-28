@@ -151,18 +151,18 @@ namespace inProjects.Data.Queries
         }
 
 
-        public async Task<IEnumerable<AllProjectInfoData>> GetAllTypeSchoolProjectBySemester( int schoolId, char projectType, int semesterNumber )
+        public async Task<IEnumerable<AllProjectInfoData>> GetAllTypeSchoolProject( int schoolId, char projectType, int semesterNumber )
         {
             string semester = "S0" + semesterNumber.ToString();
 
-            IEnumerable<AllProjectInfoData> result =  await  _controller.QueryAsync<AllProjectInfoData>( "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber " +
+                IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>( "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber " +
                 " FROM IPR.tProjectStudent ps" +
                 " LEFT OUTER JOIN CK.tActorProfile ap on ap.ActorId = ps.ProjectStudentId" +
                 " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +
                 " LEFT OUTER JOIN CK.tGroup g1 on g1.GroupId = ps.ProjectStudentId" +
-                " LEFT OUTER JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId"+
-                " WHERE g.ZoneId = @SchoolId and g.GroupName = @SemesterName and  ps.[Type] = @TypeProject", new {SemesterName = semester,SchoolId = schoolId,TypeProject = projectType } );
-
+                " LEFT OUTER JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId" +
+                " WHERE g.ZoneId = @SchoolId and g.GroupName = @SemesterName and  ps.[Type] = @TypeProject", new { SemesterName = semester, SchoolId = schoolId, TypeProject = projectType } );
+                
             foreach( var item in result )
             {
                 List<UserData> userData = new List<UserData>();
@@ -182,6 +182,38 @@ namespace inProjects.Data.Queries
                     List<string> groups = await GetGroupsOfProject( item.ProjectStudentId );
                     item.Sector = string.Join( ", ", groups.ToArray() );
                 }
+
+            }
+
+            return result;
+        }
+
+        public async Task<IEnumerable<AllProjectInfoData>> GetAllTypeSchoolProject( int schoolId, char projectType )
+        {
+            IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>( "SELECT ps.ProjectStudentId, ps.Logo, ps.Pitch, ps.Slogan, ps.LeaderId, g.GroupName, fi.ClassRoom, fi.ForumNumber" +
+                " FROM IPR.tProjectStudent ps" +
+                " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ps.ProjectStudentId " +
+                " LEFT OUTER JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId " +
+                " WHERE g.ZoneId = @SchoolId and  ps.[Type] = @TypeProject", new { SchoolId = schoolId, TypeProject = projectType } );
+
+            foreach( var item in result )
+            {
+                List<UserData> userData = new List<UserData>();
+
+                item.UsersData = await GetAllUsersOfProject( item.ProjectStudentId );
+
+                string technos = await _controller.QueryFirstOrDefaultAsync<string>(
+                        "  SELECT ckt.TraitName as Technologies" +
+                       " from IPR.tProjectStudent ps" +
+                       " join CK.tGroup g on g.GroupId = ps.ProjectStudentId" +
+                       " join CK.tCKTrait ckt on ps.TraitId = ckt.CKTraitId" +
+                      " where ProjectStudentId =  @ProjectId",
+                       new { ProjectId = item.ProjectStudentId } );
+
+                item.Technologies = technos.Split( ';' ).AsList();
+                List<string> groups = await GetGroupsOfProject( item.ProjectStudentId );
+                item.Sector = string.Join( ", ", groups.ToArray() );
+                
 
             }
 
