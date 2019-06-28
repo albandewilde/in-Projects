@@ -10,10 +10,10 @@ export async function GetAllProject(): Promise<Project[]> {
 }
 
 export async function GetAllSheet(school: number, type: string, semester: number): Promise<ProjectSheet[] | ProjectPiSheet[] | ProjectPfhSheet[]> {
-    const rep = await getAsync(`${endpoint}/getAllSheet?school=${school}&type=${type}&semester=${semester}`)
+    const rep = await getAsync(`${endpoint}/getAllSheet?schoolId=${school}&projectType=${type}&semester=${semester}`)
 
     let projects
-    if (type === "i") {
+    if (type === "I") {
         projects = new Array<ProjectPiSheet>()
 
         for (const project of rep.data) {
@@ -34,7 +34,7 @@ export async function GetAllSheet(school: number, type: string, semester: number
                 )
             )
         }
-    } else if (type === "h") {
+    } else if (type === "H") {
         projects = new Array<ProjectPfhSheet>()
 
         for (const project of rep.data) {

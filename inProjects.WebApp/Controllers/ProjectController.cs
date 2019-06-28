@@ -262,7 +262,9 @@ namespace inProjects.WebApp.Controllers
             // check the type for the field techno of background field and return the project
             if (pd.Type == "i")
             {
-                string[] place = pd.Place;
+                string[] place = new string[2];
+                place[0] = "";
+                place[1] = "";
                 string[] technos = pd.Technologies.ToArray();
                 return new {project = new ProjectPiSheet(place, name, semester, sector, logo, slogan, pitch, team, technos), type = "i"};
             }
@@ -289,30 +291,62 @@ namespace inProjects.WebApp.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetAllSheet(int schoolId, char projectType, int semester)
         {
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
 
-            if (projectType == 'i')
+            using( SqlStandardCallContext ctx = new SqlStandardCallContext() )
             {
-                List<ProjectPiSheet> projectsSheet = new List<ProjectPiSheet>();
+                ProjectQueries projectQueries = new ProjectQueries( ctx, db );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
 
-                // call sql request here
 
-                return Ok(projectsSheet);
-            }
-            else if (projectType == 'h')
-            {
-                List<ProjectPfhSheet> projectsSheet = new List<ProjectPfhSheet>();
+                PeriodData School = await timedPeriodQueries.GetLastPeriodBySchool( schoolId );
 
-                // call sql request here
+                if( projectType == 'I' )
+                {
+                    List<ProjectPiSheet> projectsSheet = new List<ProjectPiSheet>();
 
-                return Ok(projectsSheet);
-            }
-            else
-            {
-                List<ProjectSheet> projectsSheet = new List<ProjectSheet>();
+                    IEnumerable<AllProjectInfoData> listProject = await projectQueries.GetAllTypeSchoolProjectBySemester( School.ChildId, projectType, semester );
 
-                // call sql request here
+                    foreach( var item in listProject )
+                    {
+                        string[] place = new string[2];
+                        place[0] = item.ClassRoom;
+                        place[1] = item.ForumNumber.ToString();
 
-                return Ok(projectsSheet);
+                        string[] members = new string[item.UsersData.Count - 1];
+                        string leader = "";
+                        foreach( UserData usr in item.UsersData )
+                        {
+                            if( usr.UserId == item.LeaderId ) { leader = usr.FirstName + " " + usr.LastName; }
+                            else { members[Array.IndexOf( members, null )] = usr.FirstName + " " + usr.LastName; }
+
+                        }
+                        (string, string[]) team = (leader, members);
+
+
+                        ProjectPiSheet projectPiSheet = new ProjectPiSheet( place, item.GroupName, item.Semester, item.Sector, item.Logo, item.Slogan, item.Pitch, team, item.Technologies.ToArray() );
+
+                        projectsSheet.Add( projectPiSheet );
+                    }
+
+                    return Ok( projectsSheet );
+                }
+                else if( projectType == 'H' )
+                {
+                    List<ProjectPfhSheet> projectsSheet = new List<ProjectPfhSheet>();
+
+                    // call sql request here
+
+                    return Ok( projectsSheet );
+                }
+                else
+                {
+                    List<ProjectSheet> projectsSheet = new List<ProjectSheet>();
+
+                    // call sql request here
+
+                    return Ok( projectsSheet );
+                }
             }
 
 
@@ -344,7 +378,7 @@ namespace inProjects.WebApp.Controllers
                     };
                 }
 
-                IEnumerable<AllProjectInfoData> projectData = await projectQueries.GetAllTypeProjectSpecificToSchool( periodData.ChildId,type,timedUserData.TimedUserId);
+                IEnumerable<AllProjectInfoData> projectData = await projectQueries.GetAllTypeProjectSpecificToSchoolWithTimedUserNote( periodData.ChildId,type,timedUserData.TimedUserId);
                 for( var i = 0; i < projectData.Count(); i++ )
                 {
                     IEnumerable<UserByProjectData> userByProject = await userQueries.GetUserByProject( projectData.ElementAt( i ).ProjectStudentId );
