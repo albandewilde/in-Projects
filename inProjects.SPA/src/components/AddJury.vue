@@ -1,14 +1,14 @@
 <template>
-    <div>
+    <div class="addJury">
         <div>  
-            <span><h3>Attribuer un n° au projets</h3></span>
+            <span><h3>Attribuer un n° aux projets</h3></span>
             <CsvImport type="projectNumber"></CsvImport>
         </div>
         <br>
-        {{countProjetWNumber()}} Projets se sont vue attribuer un numéro pour cette période      
+        {{countProjetWNumber()}} Projets se sont vus attribuer un numéro pour cette période      
         <br>
         <div>  
-            <span><h3>Attribuer les projets au jury</h3></span>
+            <span><h3>Attribuer les projets aux jurys</h3></span>
             <CsvImport type="jury"></CsvImport>
         </div>
     </div>
@@ -42,5 +42,7 @@ export default class AddJury extends Vue {
 }
 </script>
 <style>
-
+.addJury {
+    margin-top: -2vh;
+}
 </style>

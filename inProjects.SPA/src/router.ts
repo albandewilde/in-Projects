@@ -16,7 +16,6 @@ import ForumPlan from "./components/ForumPlan.vue"
 import ProjectUserVote from "./components/ProjectUserVote.vue"
 import ProjectJuryVote from "./components/ProjectJuryVote.vue"
 import EventSchool from "./components/EventSchool.vue"
-import TempSideBar from "./components/TempSideBar.vue"
 import ForumResult from "./components/ForumResult.vue"
 import ForumResultPublic from "./components/ForumResultPublic.vue"
 Vue.use(Router)
@@ -97,11 +96,6 @@ export default new Router({
       path: "/Events",
       name: "Events",
       component: EventSchool
-     },
-     {
-       path:"/test",
-       name: "test",
-       component: TempSideBar
      },
      {
       path: "/ForumResult",

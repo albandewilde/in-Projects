@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-      <TempSideBar></TempSideBar>
+      <SideBar></SideBar>
       <div class="content">
         <main class="vue">
             <router-view></router-view>
@@ -13,12 +13,10 @@
 <script>
 import { Component, Vue } from "vue-property-decorator"
 import SideBar from "@/components/SideBar.vue"
-import TempSideBar from "@/components/TempSideBar.vue"
 
 @Component({
   components: {
-    // SideBar,
-    TempSideBar
+    SideBar
   },
 })
 export default class App extends Vue {}
