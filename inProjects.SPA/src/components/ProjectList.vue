@@ -59,6 +59,8 @@ import {verifyProjectFav, favProject } from "../api/submitProjectApi"
 import {ProjectSheet, ProjectPiSheet, ProjectPfhSheet} from "../modules/classes/ProjectSheet"
 import {GetAllSheet} from "../api/projectApi"
 import pdfMake from "pdfmake/build/pdfmake"
+import pdfFonts from "pdfmake/build/vfs_fonts"
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 import { saveAs } from "file-saver"
 import {make_archive} from "../modules/functions/make_archive"
 import {School} from "../modules/classes/School"

@@ -72,6 +72,8 @@ import { getGroupUserAccessPanel } from "../api/groupApi"
 import {GetProject} from "../api/getProject"
 import {ProjectSheet, ProjectPiSheet, ProjectPfhSheet} from "../modules/classes/ProjectSheet"
 import pdfMake from "pdfmake/build/pdfmake"
+import pdfFonts from "pdfmake/build/vfs_fonts"
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 @Component
 export default class ProjectDetail extends Vue {
