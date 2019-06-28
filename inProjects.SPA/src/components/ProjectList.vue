@@ -26,6 +26,7 @@
             </option>
         </select>
     </div>
+    <el-button type="primary" @click="GetAllProjectSheet(schoolChoice,typeChoice,semesterChoice)">Telecharger </el-button>
     <div class="masonry-layout">
         <div class="masonry-layout-panel masonry-layout-flip--md masonry-layout-flip" v-for="(o, index) in projectListToDisplay.length" :key="o">
             <div class="masonry-layout-panel__content masonry-layout-flip__content">
@@ -172,13 +173,37 @@ export default class ProjectList extends Vue {
         this.$router.replace("/Project/" + idProject)
     }
 
-    async GetAllProjectSheet(school: number, type: string, semester: number) {
-        // get projects form the back
-        let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(school, type, semester)
+    async GetAllProjectSheet(school: string, type: string, semester: string) {
+        console.log(school)
+        console.log(type)
+        console.log(semester)
 
+         let schoolToSend = this.schoolOptions.find(x => x.name == school)
+            if (schoolToSend == undefined) {
+                schoolToSend = new School(0,"Unknown")
+            }
+         let semesterToSend = parseInt(semester.slice(semester.length - 1,semester.length))
+
+        // get projects form the back
+         let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(schoolToSend.schoolId, type, semesterToSend)
+
+        let sheet = projects[0].generate_sheet()
+        console.log(sheet)
+
+        let pdf = pdfMake.CreatePdf(sheet)
+        console.log(pdf)
+        
+        let blob = pdf.getBlob((blob :Blob) => {
+            return blob;
+        });
+        console.log(blob)
+
+        // let pdf = pdfMake.CreatePdf().getBlob((blob: Blob) => blob)
+        // console.log(pdf)
         // generate all pdf files as blob
         let projectsSheet: Map<string, Blob> = new Map()
         for (let project of projects) {projectsSheet.set(project.name, pdfMake.CreatePdf(project.generate_sheet()).getBlob((blob: Blob) => blob))}
+        console.log(projectsSheet)
 
         // put pdf files in an archive file and convert the archive as a blob
         let zip = await make_archive(projectsSheet).generateAsync({type: "blob"})

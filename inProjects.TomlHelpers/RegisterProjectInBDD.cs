@@ -38,7 +38,7 @@ namespace inProjects.TomlHelpers
                     ProjectPi project = toml as ProjectPi;
 
                     // register the project
-                    (UserQueries userQueries, TimedUserQueries timedUserQueries, ProjectStudentStruct ProjectCreate, TimedUserData timedUser) = await SaveProjectPi(project, projectTable, userId, db, ctx, type, projectUrl);
+                    (UserQueries userQueries, TimedUserQueries timedUserQueries, ProjectStudentStruct ProjectCreate, TimedUserData timedUser) = await SaveProjectPi(project, projectTable, userId, db, ctx, type, projectUrl,groupTable);
 
                     // link members to the project
                     if (toml.team.members.Length > 0) await LinkMembersToProject(project, userQueries, timedUserQueries, ProjectCreate, timedUser, groupTable, ctx);
@@ -104,9 +104,9 @@ namespace inProjects.TomlHelpers
 
             if(project.git.url != "None")await projectUrlTable.CreateOrUpdateProjectUrl( ctx, ProjectCreate.ProjectStudentId, project.git.url, "Git" );
 
-            string semester = "S0" + project.semester.ToString();
+            string semester = "S0" + project.semester.semester.ToString();
             int idSemester = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName(school.ZoneId, semester);
-            await CustomGroupTable.AddUserAsync(ctx, userId, idSemester, ProjectCreate.ProjectStudentId);
+            await CustomGroupTable.AddUserAsync(ctx, userId, idSemester, ProjectCreate.ProjectStudentId,true);
 
             return (userQueries, timedUserQueries, ProjectCreate, timedUser);
         }
