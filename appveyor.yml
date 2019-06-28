@@ -5,7 +5,7 @@ branches:
   only:
   - toolChain
 environment:
-  secret: 
+  secret:
     secure: 0W65ZoMAe2gV9n68FqTY/Q==
   SqlServer/MasterConnectionString: Server=(local)\SQL2016;Database=master;User ID=sa;Password=Password12!
 init:
@@ -17,3 +17,6 @@ install:
   - cmd: appveyor-tools\secure-file -decrypt C:\projects\in-Projects\inProjects.WebApp\appsettings.Development.json.enc -secret %secret%
 build_script:
   - dotnet run --project CodeCakeBuilder -autointeraction -PublishDirtyRepo=Y -RunUnitTests=Y
+artifacts:
+  - path: inProjects.zip
+    name: inProjects
