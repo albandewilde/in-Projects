@@ -99,12 +99,21 @@ namespace CodeCake
                 .IsDependentOn( "Publish-WebApp" )
                 .Does( () =>
                 {
-                    string zipNamePath = "./inProjects.zip";
+                    // Create WebApp zip
+                    string zipNamePathWebApp = "./webapp.zip";
 
-                    if( File.Exists( zipNamePath ))
-                        File.Delete( zipNamePath );
+                    if( File.Exists( zipNamePathWebApp ))
+                        File.Delete( zipNamePathWebApp );
 
-                    ZipFile.CreateFromDirectory( projects.Single( p => p.Name.Equals( "inProjects.WebApp" ) ).Path.GetDirectory().Combine( "bin/Debug/netcoreapp2.1/publish" ).ToString(), zipNamePath );
+                    ZipFile.CreateFromDirectory( projects.Single( p => p.Name.Equals( "inProjects.WebApp" ) ).Path.GetDirectory().Combine( "bin/Debug/netcoreapp2.1/publish" ).ToString(), zipNamePathWebApp );
+
+                    // Create SPA zip
+                    string zipNamePathSPA = "./spa.zip";
+
+                    if( File.Exists( zipNamePathSPA ) )
+                        File.Delete( zipNamePathSPA );
+
+                    ZipFile.CreateFromDirectory( "./inProjects.SPA", zipNamePathSPA );
                 } );
 
             Task( "Default" )

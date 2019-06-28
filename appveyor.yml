@@ -18,5 +18,8 @@ install:
 build_script:
   - dotnet run --project CodeCakeBuilder -autointeraction -PublishDirtyRepo=Y -RunUnitTests=Y
 artifacts:
-  - path: inProjects.zip
-    name: inProjects
+  - path: webapp.zip
+    name: webapp
+
+  - path: spa.zip
+    name: spa
