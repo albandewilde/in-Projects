@@ -78,6 +78,7 @@ export default class ProjectDetail extends Vue {
     private idProject!: number
     private projectDetail: ProjectDetails = new ProjectDetails()
     private isFav!: boolean
+    private loading: boolean = false
 
     async mounted() {
     
@@ -115,6 +116,8 @@ export default class ProjectDetail extends Vue {
         // generate the pdf
         var sheet = project.generate_sheet()
         pdfMake.createPdf(sheet).download()
+
+        this.loading = false
     }
 
     CheckedAuthorize(needToBe: string){
