@@ -185,8 +185,6 @@ export default class ProjectList extends Vue {
 
         // download that archive
         saveAs(zip, "fiches.zip")
-    redirect(idProject: number) {
-         this.$router.push("/Project/" + idProject)
     }
 
     typeSelect() {

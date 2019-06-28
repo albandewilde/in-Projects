@@ -43,6 +43,15 @@ namespace inProjects.TomlHelpers
                     // link members to the project
                     if (toml.team.members.Length > 0) await LinkMembersToProject(project, userQueries, timedUserQueries, ProjectCreate, timedUser, groupTable, ctx);
                 }
+                else if(type =="H")
+                {
+                    ProjectPfh project = toml as ProjectPfh;
+                    // register the project
+                    //(UserQueries userQueries, TimedUserQueries timedUserQueries, ProjectStudentStruct ProjectCreate, TimedUserData timedUser) = await SaveProjectPfh(project, projectTable, userId, db, ctx, type, projectUrl);
+
+                    // link members to the project
+                    //if (toml.team.members.Length > 0) await LinkMembersToProject(project, userQueries, timedUserQueries, ProjectCreate, timedUser, groupTable, ctx);
+                }
             }
         }
 
@@ -53,7 +62,8 @@ namespace inProjects.TomlHelpers
             SqlDefaultDatabase db,
             SqlStandardCallContext ctx,
             string type,
-            ProjectUrlTable projectUrlTable
+            ProjectUrlTable projectUrlTable,
+            CustomGroupTable CustomGroupTable
         )
         {
             GroupQueries groupQueries = new GroupQueries(ctx, db);
@@ -93,6 +103,10 @@ namespace inProjects.TomlHelpers
             );
 
             if(project.git.url != "None")await projectUrlTable.CreateOrUpdateProjectUrl( ctx, ProjectCreate.ProjectStudentId, project.git.url, "Git" );
+
+            string semester = "S0" + project.semester.ToString();
+            int idSemester = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName(school.ZoneId, semester);
+            await CustomGroupTable.AddUserAsync(ctx, userId, idSemester, ProjectCreate.ProjectStudentId);
 
             return (userQueries, timedUserQueries, ProjectCreate, timedUser);
         }
