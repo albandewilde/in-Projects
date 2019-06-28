@@ -130,11 +130,6 @@ export default {
         },
         tableRowClassName({ row }) {
             return row.classRoom == "" ? "empty-row" : row.classRoom + "-row"
-            // if (row.classRoom === "") {
-            //     return "empty-row"
-            // } else {
-            //     return row.classRoom + "-row"
-            // }
         }
     }
 }
@@ -142,7 +137,7 @@ export default {
 
 <style>
 #plan {
-	height: 140vh;
+	height: 120vh;
 	display: flex;
     flex-direction: column;
 }
