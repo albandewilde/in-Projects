@@ -7,6 +7,8 @@ using SimpleGitVersion;
 using System.Collections.Generic;
 using Cake.Common.Tools.DotNetCore.Build;
 using Cake.Common.Tools.DotNetCore;
+using System.IO.Compression;
+using System.IO;
 
 namespace CodeCake
 {
@@ -86,8 +88,27 @@ namespace CodeCake
                    StandardUnitTests( globalInfo, testProjects );
                } );
 
+            Task( "Publish-WebApp" )
+                .IsDependentOn( "Unit-Testing" )
+                .Does( () =>
+                {
+                    Cake.DotNetCorePublish( projects.First( p => p.Name.Equals( "inProjects.WebApp" ) ).Name );
+                } );
+
+            Task( "Export-Artifact" )
+                .IsDependentOn( "Publish-WebApp" )
+                .Does( () =>
+                {
+                    string zipNamePath = "./inProjects.zip";
+
+                    if( File.Exists( zipNamePath ))
+                        File.Delete( zipNamePath );
+
+                    ZipFile.CreateFromDirectory( projects.Single( p => p.Name.Equals( "inProjects.WebApp" ) ).Path.GetDirectory().Combine( "bin/Debug/netcoreapp2.1/publish" ).ToString(), zipNamePath );
+                } );
+
             Task( "Default" )
-                .IsDependentOn( "Unit-Testing" );
+                .IsDependentOn( "Export-Artifact" );
         }
     }
 }
