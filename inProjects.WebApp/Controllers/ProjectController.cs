@@ -175,7 +175,7 @@ namespace inProjects.WebApp.Controllers
                     projectData.ElementAt( i ).SchoolId = data.ParentZoneId;
                     foreach( var e in userByProject )
                     {
-                        IEnumerable<GroupData> groupDatas = await groupQueries.GetAllGroupByTimedUser( e.TimedUserId );
+                        //IEnumerable<GroupData> groupDatas = await groupQueries.GetAllGroupByTimedUser( e.TimedUserId );
                         projectData.ElementAt( i ).FirstName.Add( e.FirstName );
                         projectData.ElementAt( i ).LastName.Add( e.LastName );
                         projectData.ElementAt( i ).TimedUserId.Add( e.TimedUserId );

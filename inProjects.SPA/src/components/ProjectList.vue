@@ -48,7 +48,7 @@
                 <br>
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--back">
                     <br>
-                    <u><b @click="redirect(projectListToDisplay[index].projectStudentId)">{{projectListToDisplay[index].slogan}}</b></u>
+                    <u><b style="cursor:pointer;" @click="redirect(projectListToDisplay[index].projectStudentId)">{{projectListToDisplay[index].slogan}}</b></u>
                     <br><br>
                     {{projectListToDisplay[index].pitch}}
                     <br><br>
@@ -196,7 +196,6 @@ export default class ProjectList extends Vue {
 .masonry-layout {
     column-count: 3;
     column-gap: 0;
-    margin-top: 5vh;
 }
 .masonry-layout-panel {
     break-inside: avoid;

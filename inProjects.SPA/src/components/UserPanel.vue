@@ -1,9 +1,11 @@
 <template>
-<div>
-    <li><a @click="redirect('/projectList')">Liste des projets</a></li>
-    <li><a @click="redirect(`ProjectUserVote`)">Votez pour les projets</a></li>
-    
-</div>
+    <div>
+        <div class="okok">
+            <li class="dropdown">
+                <a class="dropbtn" @click="redirect(`/ProjectUserVote`)">Votez pour les projets !</a>  
+            </li>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">

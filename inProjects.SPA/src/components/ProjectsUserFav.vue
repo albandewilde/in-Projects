@@ -16,7 +16,7 @@
                 <div class="masonry-layout-panel-fav" v-for="(o, idx) in usersFav" :key="idx">
                     <div class="masonry-layout-panel__content-fav">
                         <h5 class="mansonry-groupName">{{o.groupName}}</h5>
-                        <img :src="o.logo" style="height:100px; width:100px"  @click="redirect(o.projectId)">
+                        <img :src="o.logo" style="height:100px; width:100px; cursor:pointer;"  @click="redirect(o.projectId)">
                     </div>
                 </div>
             </div>
