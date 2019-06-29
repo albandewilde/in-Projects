@@ -1,6 +1,6 @@
 <template>
     <div>
-        <b class="MyProfil">Mon Profil :</b>
+        <b class="MyProfil">Mon Profil:</b>
         <br><br><br><br>   
             <InformationsMyProfil></InformationsMyProfil>
         <br/>
@@ -11,7 +11,8 @@
         <br><hr>
         </div>
         <div>
-             <font size=5><b>Les Projets que vous aimez :</b></font> 
+             <font size=5><b>Les Projets que vous aimez :</b></font>
+             <br>
              <ProjectsUserFav></ProjectsUserFav>
         </div>
         <div v-if="this.whatTimed.find(x => x == 'Student')">
@@ -62,9 +63,6 @@ export default class MyProfil extends Vue {
     margin-top: 1%;
     color: #111; 
     float: left;
-    font-size:41px;
-    
-
-
+    font-size:43px;    
 }
 </style>

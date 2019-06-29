@@ -118,8 +118,7 @@ export default class SideBar extends Vue {
   display: none;
 }
 ul.sidenav {
-  background-color: #2d3e4f;
-  position: fixed;
+background: linear-gradient(180deg, rgba(17,46,88,1) 0%, rgba(198,198,198,1) 100%); position: fixed;
   height: 100%;
   width: 15%;  
   margin-top: 0%;
@@ -140,8 +139,7 @@ ul.sidenav {
 }
  
 ul.sidenav li a.active {
-  background-color: #4CAF50;
-  color: white;
+  color: black;
   line-height: 25px;
   font-size: 24px;
   font-weight: bold;
@@ -149,13 +147,12 @@ ul.sidenav li a.active {
 
 ul.sidenav li a {
   display: block;
-  color: white;
+  color: black;
   padding: 18px 16px;
   text-decoration: none;
   cursor: pointer;
 }
 .btn-group .buttons {
-  background-color: #2d3e4f;
   border: none;
   padding: 10px 25px;
   font-size: 16px;
@@ -163,12 +160,13 @@ ul.sidenav li a {
   /* width: 50%; */
   margin-top: 2%;
   margin-bottom: 2%;
+  background-color: inherit
 }
 .btn-group .buttons:hover {
-  background-color: #2d4f4f;
+  background-color: inherit
 }
 ul.sidenav li a:hover:not(.active) {
-  background-color: #2d4f4f;
+  background-color:inherit
 }
 
 @media screen and (max-width: 900px) {
@@ -184,7 +182,7 @@ ul.sidenav li a:hover:not(.active) {
     left: -100%;
     width: 100%;
     height: calc(100vh - 50px);
-    background: #333;
+    background:inherit;
     transition: 0.5s;
   }
   .menu-toggle {

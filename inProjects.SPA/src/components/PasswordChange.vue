@@ -108,10 +108,10 @@ $highlight-color: #E74C3C;
 
 
 .button{
-  border: 3px solid $text-color;
-  background: $bg-color;
-  padding: 15px 20px;
-  font-size: 1.1rem;
+  border: 2.5px solid $text-color;
+  background:linear-gradient(135deg, rgba(251,251,254,1) 0%, rgba(252,252,252,1) 18%, rgba(170,205,249,1) 36%, rgba(251,251,255,1) 53%, rgba(219,230,245,1) 76%, rgba(170,205,249,1) 85%);
+  padding: 10px 20px;
+  font-size: 0.9rem;
   text-transform: uppercase;
   transition: all 150ms ease-out;
   transform: translateY(0px);
