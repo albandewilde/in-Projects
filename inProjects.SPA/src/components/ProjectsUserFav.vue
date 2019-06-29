@@ -6,12 +6,12 @@
             <img class="image-grumpy" src="../assets/grumpyCat.jpg">
         </div>
         <div v-else>
-<!--              <el-carousel  class="carousel-fav" trigger="click" :interval="4000" type="card">
+              <el-carousel  class="carousel-fav" trigger="click" :interval="4000" type="card">
                 <el-carousel-item class="carousel-item-fav" v-for="(o, idx) in usersFav" :key="idx">
                     <span class="text-fav">{{o.groupName}}</span>
                     <img @click="redirect(o.projectId)" class="image-fav" :src="o.logo"/>
                 </el-carousel-item>
-            </el-carousel>  -->
+            </el-carousel> 
             <div class="masonry-layout-fav">
                 <div class="masonry-layout-panel-fav" v-for="(o, idx) in usersFav" :key="idx">
                     <div class="masonry-layout-panel__content-fav">
