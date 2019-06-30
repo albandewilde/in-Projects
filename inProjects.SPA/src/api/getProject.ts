@@ -6,7 +6,7 @@ const endpoint = process.env.VUE_APP_BACKEND + "/api/Project"
 export async function GetProject(idx: number): Promise<ProjectSheet | ProjectPiSheet | ProjectPfhSheet> {
     const resp = await getAsync(`${endpoint}/getProjectSheet?idx=${idx}`)
 
-    if (resp.data.type === "i") {
+    if (resp.data.type === "I") {
         return new ProjectPiSheet(
             resp.data.project.place,
             resp.data.project.name,
@@ -21,7 +21,7 @@ export async function GetProject(idx: number): Promise<ProjectSheet | ProjectPiS
             ],
             resp.data.project.technos
         )
-    } else if (resp.data.type === "h") {
+    } else if (resp.data.type === "H") {
         return new ProjectPfhSheet(
             resp.data.project.name,
             resp.data.project.semester,

@@ -1,4 +1,4 @@
-﻿namespace inProjects.Data.Data.ProjectStudent
+namespace inProjects.Data.Data.ProjectStudent
 {
     public class ProjectSheet
     {

@@ -260,19 +260,19 @@ namespace inProjects.WebApp.Controllers
             (string, string[]) team = (leader, members);
 
             // check the type for the field techno of background field and return the project
-            if (pd.Type == "i")
+            if (pd.Type == "I")
             {
                 string[] place = new string[2];
                 place[0] = "";
                 place[1] = "";
                 string[] technos = pd.Technologies.ToArray();
-                return new {project = new ProjectPiSheet(place, name, semester, sector, logo, slogan, pitch, team, technos), type = "i"};
+                return new {project = new ProjectPiSheet(place, name, semester, sector, logo, slogan, pitch, team, technos), type = "I"};
             }
-            else if (pd.Type == "h")
+            else if (pd.Type == "H")
             {
                 // download and encode the background in base64
-                string background = Convert.ToBase64String(new WebClient().DownloadData(pd.Logo));
-                return new {project = new ProjectPfhSheet(name, semester, sector, logo, slogan, pitch, team, background), type = "h"};
+                string background = Convert.ToBase64String(new WebClient().DownloadData( "https://drive.google.com/uc?id=143SNqM-rxFmDSrA7A2Wa29eu-gqhtdOn" ) );
+                return new {project = new ProjectPfhSheet(name, semester, sector, logo, slogan, pitch, team, background), type = "H"};
             }
             else
             {
@@ -327,10 +327,8 @@ namespace inProjects.WebApp.Controllers
                         }
                         (string, string[]) team = (leader, members);
 
-                        string logo = Convert.ToBase64String( new WebClient().DownloadData( item.Logo ) );
 
-
-                        ProjectPiSheet projectPiSheet = new ProjectPiSheet( place, item.GroupName, item.Semester, item.Sector, logo, item.Slogan, item.Pitch, team, item.Technologies.ToArray() );
+                        ProjectPiSheet projectPiSheet = new ProjectPiSheet( place, item.GroupName, item.Semester, item.Sector, item.Logo, item.Slogan, item.Pitch, team, item.Technologies.ToArray() );
 
                         projectsSheet.Add( projectPiSheet );
                     }
@@ -341,7 +339,26 @@ namespace inProjects.WebApp.Controllers
                 {
                     List<ProjectPfhSheet> projectsSheet = new List<ProjectPfhSheet>();
 
-                    // call sql request here
+                    foreach( var item in listProject )
+                    {
+                      
+                        string[] members = new string[item.UsersData.Count - 1];
+                        string leader = "";
+                        foreach( UserData usr in item.UsersData )
+                        {
+                            if( usr.UserId == item.LeaderId ) { leader = usr.FirstName + " " + usr.LastName; }
+                            else { members[Array.IndexOf( members, null )] = usr.FirstName + " " + usr.LastName; }
+
+                        }
+                        (string, string[]) team = (leader, members);
+
+                        string background = Convert.ToBase64String( new WebClient().DownloadData( "https://drive.google.com/uc?id=143SNqM-rxFmDSrA7A2Wa29eu-gqhtdOn" ) );
+
+
+                        ProjectPfhSheet projectPiSheet = new ProjectPfhSheet( item.GroupName, item.Semester, "", item.Logo, item.Slogan, item.Pitch, team, background);
+
+                        projectsSheet.Add( projectPiSheet );
+                    }
 
                     return Ok( projectsSheet );
                 }

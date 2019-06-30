@@ -186,6 +186,109 @@ class ProjectPfhSheet extends ProjectSheet {
     }
 
     generate_sheet() {
+          // format data
+          const semester: string = "Semestre " + this.semester 
+  
+          // this.team[1] = removeNonString(this.team[1])
+          const leader = this.team[0] + (this.team[1].length > 0 && !["", " ", undefined, null].includes(this.team[0]) ? ", " : "")
+          const members = this.team[1].join(", ")
+  
+          this.logo = "data:image/png;base64," + this.logo
+          this.background = "data:image/png;base64," + this.background
+
+        const sheet = {
+            background: [
+                {
+                    image: this.background,
+                    width: 2480,
+                    height: 3508 
+                }
+            ],
+            footer: {
+                columns: [
+                    {
+                        text: [
+                            {
+                                text: leader,
+                                style: "leader"
+                            },
+
+                            {
+                                text: members,
+                                style: "members"
+                            }
+                        ],
+                        alignment: "center"
+                    }
+                ]
+            },
+            content: [
+                {
+                    text: this.name,
+                    style: "project_name"
+                },
+
+                {
+                    image: this.logo,
+                    width: 400,
+                    height: 250,
+                    style: "logo"
+                },
+
+                {
+                    text: semester,
+                    style: "semester"
+                },
+
+                {
+                    text: this.slogan,
+                    style: "slogan"
+                },
+
+                {
+                    text: this.pitch,
+                    style: "pitch"
+                }
+            ],
+
+            styles: {
+                project_name: {
+                    alignment: "center",
+                    fontSize: 70
+                },
+                logo: {
+                    margin: [60, 0, 0, 0]
+                },
+                semester: {
+                    fontSize: 18,
+                    margin: [0, 50, 0, 0],
+                    alignment: "center"
+                },
+
+                slogan: {
+                    alignment: "center",
+                    color: "black",
+                    fontSize: 20,
+                    margin: [0, 50, 0, 0]
+                },
+
+                pitch: {
+                    margin: [0, 50, 0, 0]
+                },
+
+                leader: {
+                    bold: true
+                },
+
+                team: {
+                    alignment: "center",
+                    italics: true,
+                    margin: [0, 30, 0, 0]
+                }
+            }
+        }
+
+        return sheet
     }
 }
 
