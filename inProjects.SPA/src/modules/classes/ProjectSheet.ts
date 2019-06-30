@@ -6,8 +6,10 @@ class ProjectSheet {
     public slogan: string
     public pitch: string
     public team: [string, string[]]
+    public type: string
 
-    constructor(name: string, semester: string, sector: string, logo: string, slogan: string, pitch: string, team: [string, string[]]) {
+
+    constructor(name: string, semester: string, sector: string, logo: string, slogan: string, pitch: string, team: [string, string[]],type: string) {
         this.name = name
         this.semester = semester
         this.sector = sector
@@ -15,10 +17,11 @@ class ProjectSheet {
         this.slogan = slogan
         this.pitch = pitch
         this.team = team
+        this.type = type
     }
 
     generate_sheet() {
-        throw new Error()
+        throw new Error
     }
 }
 
@@ -27,7 +30,7 @@ class ProjectPiSheet extends ProjectSheet {
     public technos: string[]
 
     constructor(place: string[], name: string, semester: string, sector: string, logo: string, slogan: string, pitch: string, team: [string, string[]], technos: string[]) {
-        super(name, semester, sector, logo, slogan, pitch, team)
+        super(name, semester, sector, logo, slogan, pitch, team,"I")
         this.place = place
         this.technos = technos;
     }
@@ -181,7 +184,7 @@ class ProjectPfhSheet extends ProjectSheet {
     public background: string
 
     constructor(name: string, semester: string, sector: string, logo: string, slogan: string, pitch: string, team: [string, string[]], background: string) {
-        super(name, semester, sector, logo, slogan, pitch, team)
+        super(name, semester, sector, logo, slogan, pitch, team,"H")
         this.background = background;
     }
 

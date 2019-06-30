@@ -58,20 +58,41 @@ export async function GetAllSheet(school: number, type: string, semester: number
         projects = new Array<ProjectSheet>()
 
         for (const project of rep.data) {
-            projects.push(
-                new ProjectSheet(
-                    project.name,
-                    project.semester,
-                    project.sector,
-                    project.logo,
-                    project.slogan,
-                    project.pitch,
-                    [
-                        project.team.item1,
-                        project.team.item2
-                    ],
+            if(project.type =="I"){
+                projects.push(
+                    new ProjectPiSheet(
+                        project.place,
+                        project.name,
+                        project.semester,
+                        project.sector,
+                        project.logo,
+                        project.slogan,
+                        project.pitch,
+                        [
+                            project.team.item1,
+                            project.team.item2
+                        ],
+                        project.technos
+                    )
                 )
-            )
+            }else{
+                projects.push(
+                    new ProjectPfhSheet(
+                        project.name,
+                        project.semester,
+                        project.sector,
+                        project.logo,
+                        project.slogan,
+                        project.pitch,
+                        [
+                            project.team.item1,
+                            project.team.item2
+                        ],
+                        project.background
+                    )
+                )
+            }
+           
         }
     }
 

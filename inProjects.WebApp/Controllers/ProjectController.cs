@@ -276,7 +276,7 @@ namespace inProjects.WebApp.Controllers
             }
             else
             {
-                return new {project = new ProjectSheet(name, semester, sector, logo, slogan, pitch, team), type = "None"};
+                return new {project = new ProjectSheet(name, semester, sector, logo, slogan, pitch, team,"None"), type = "None"};
             }
         }
 
@@ -303,8 +303,18 @@ namespace inProjects.WebApp.Controllers
 
                 IEnumerable<AllProjectInfoData> listProject;
 
-                if( semester > 0 ) listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, projectType, semester );
-                else listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, projectType );
+
+                if( semester > 0 )
+                {
+                    if( projectType == 'I' || projectType == 'H' ) listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, projectType, semester );
+                    else listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, semester );
+                }
+                else
+                {
+                    if( projectType == 'I' || projectType == 'H' ) listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, projectType );
+                    else listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId );
+
+                }
 
                 if( projectType == 'I' )
                 {
@@ -355,9 +365,9 @@ namespace inProjects.WebApp.Controllers
                         string background = Convert.ToBase64String( new WebClient().DownloadData( "https://drive.google.com/uc?id=143SNqM-rxFmDSrA7A2Wa29eu-gqhtdOn" ) );
 
 
-                        ProjectPfhSheet projectPiSheet = new ProjectPfhSheet( item.GroupName, item.Semester, "", item.Logo, item.Slogan, item.Pitch, team, background);
+                        ProjectPfhSheet projectPfhSheet = new ProjectPfhSheet( item.GroupName, item.Semester, "", item.Logo, item.Slogan, item.Pitch, team, background);
 
-                        projectsSheet.Add( projectPiSheet );
+                        projectsSheet.Add( projectPfhSheet );
                     }
 
                     return Ok( projectsSheet );
@@ -366,7 +376,40 @@ namespace inProjects.WebApp.Controllers
                 {
                     List<ProjectSheet> projectsSheet = new List<ProjectSheet>();
 
-                    // call sql request here
+                    foreach( var item in listProject )
+                    {
+
+                        string[] members = new string[item.UsersData.Count - 1];
+                        string leader = "";
+                        foreach( UserData usr in item.UsersData )
+                        {
+                            if( usr.UserId == item.LeaderId ) { leader = usr.FirstName + " " + usr.LastName; }
+                            else { members[Array.IndexOf( members, null )] = usr.FirstName + " " + usr.LastName; }
+
+                        }
+                        (string, string[]) team = (leader, members);
+
+
+
+                        if( item.Type == "H" )
+                        {
+                            string background = Convert.ToBase64String( new WebClient().DownloadData( "https://drive.google.com/uc?id=143SNqM-rxFmDSrA7A2Wa29eu-gqhtdOn" ) );
+                            ProjectPfhSheet projectPfhSheet = new ProjectPfhSheet( item.GroupName, item.Semester, "", item.Logo, item.Slogan, item.Pitch, team, background );
+                            projectsSheet.Add( projectPfhSheet );
+
+                        }
+                        else
+                        {
+                            string[] place = new string[2];
+                            place[0] = item.ClassRoom;
+                            place[1] = item.ForumNumber.ToString();
+                            ProjectPiSheet projectPiSheet = new ProjectPiSheet( place, item.GroupName, item.Semester, item.Sector, item.Logo, item.Slogan, item.Pitch, team, item.Technologies.ToArray() );
+                            projectsSheet.Add( projectPiSheet );
+
+
+                        }
+
+                    }
 
                     return Ok( projectsSheet );
                 }

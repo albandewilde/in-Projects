@@ -46,7 +46,8 @@ export async function GetProject(idx: number): Promise<ProjectSheet | ProjectPiS
             [
                 resp.data.project.team.item1,
                 resp.data.project.team.item2
-            ]
+            ],
+            resp.data.project.type
         )
     }
 }

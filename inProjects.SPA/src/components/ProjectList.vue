@@ -136,7 +136,10 @@ export default class ProjectList extends Vue {
             const sheet =  pdfMake.createPdf(project[index].generate_sheet())
 
                 sheet.getBlob(async (blob :Blob) => {
-                    this.zip.file("fiches/"+project[index].name + ".pdf",blob)
+
+                    if(project[index].type =="I")this.zip.file("fiches/ProjetInformatique/"+project[index].name + ".pdf",blob)
+                    else this.zip.file("fiches/ProjetFormationHumaine/"+project[index].name + ".pdf",blob)
+
                     if(project.length -1 != index){
                         await this.CreatePdfAndSetUpToZip(project,++index)
                     }else{
@@ -164,6 +167,8 @@ export default class ProjectList extends Vue {
 
         // get projects form the back
         let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(schoolToSend.schoolId, type, semesterToSend)
+
+        console.log(projects)
 
         // generate all pdf files as blob
         // let projectsSheet: Map<string, Blob> = new Map()
