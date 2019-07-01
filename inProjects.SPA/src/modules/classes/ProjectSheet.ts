@@ -9,7 +9,7 @@ class ProjectSheet {
     public type: string
 
 
-    constructor(name: string, semester: string, sector: string, logo: string, slogan: string, pitch: string, team: [string, string[]],type: string) {
+    constructor(name: string, semester: string, sector: string, logo: string, slogan: string, pitch: string, team: [string, string[]], type: string) {
         this.name = name
         this.semester = semester
         this.sector = sector
@@ -30,7 +30,7 @@ class ProjectPiSheet extends ProjectSheet {
     public technos: string[]
 
     constructor(place: string[], name: string, semester: string, sector: string, logo: string, slogan: string, pitch: string, team: [string, string[]], technos: string[]) {
-        super(name, semester, sector, logo, slogan, pitch, team,"I")
+        super(name, semester, sector, logo, slogan, pitch, team, "I")
         this.place = place
         this.technos = technos;
     }
@@ -47,7 +47,7 @@ class ProjectPiSheet extends ProjectSheet {
         this.technos.length > 9 ? this.technos[9] = "..." : null
         this.technos = this.technos.slice(0, 10)
         let missing = 11 - this.technos.length
-        for (let idx = 0; idx < missing; idx += 1) {this.technos.push("")}
+        for (let idx = 0; idx < missing; idx += 1) { this.technos.push("") }
         const technos: string = this.technos.join("\n")
 
         this.logo = "data:image/png;base64," + this.logo
@@ -184,27 +184,49 @@ class ProjectPfhSheet extends ProjectSheet {
     public background: string
 
     constructor(name: string, semester: string, sector: string, logo: string, slogan: string, pitch: string, team: [string, string[]], background: string) {
-        super(name, semester, sector, logo, slogan, pitch, team,"H")
+        super(name, semester, sector, logo, slogan, pitch, team, "H")
         this.background = background;
     }
 
     generate_sheet() {
-          // format data
-          const semester: string = "Semestre " + this.semester 
-  
-          // this.team[1] = removeNonString(this.team[1])
-          const leader = this.team[0] + (this.team[1].length > 0 && !["", " ", undefined, null].includes(this.team[0]) ? ", " : "")
-          const members = this.team[1].join(", ")
-  
-          this.logo = "data:image/png;base64," + this.logo
-          this.background = "data:image/png;base64," + this.background
+        // format data
+        const semester: string = "Semestre " + this.semester
+
+        // this.team[1] = removeNonString(this.team[1])
+        const leader = this.team[0] + (this.team[1].length > 0 && !["", " ", undefined, null].includes(this.team[0]) ? ", " : "")
+        const members = this.team[1].join(", ")
+
+        this.logo = "data:image/png;base64," + this.logo
+        this.background = "data:image/png;base64," + this.background
 
         const sheet = {
-            background: [
+            background: {
+                image: this.background,
+                width: 2480,
+                height: 3508
+            },
+            content: [
                 {
-                    image: this.background,
-                    width: 2480,
-                    height: 3508 
+                    text: this.name,
+                    style: "name"
+                },
+                {
+                    image: this.logo,
+                    width: 400,
+                    height: 400,
+                    style: "logo"
+                },
+                {
+                    text: semester,
+                    style: "semester"
+                },
+                {
+                    text: this.slogan,
+                    style: "slogan"
+                },
+                {
+                    text: this.pitch,
+                    style: "pitch"
                 }
             ],
             footer: {
@@ -215,7 +237,6 @@ class ProjectPfhSheet extends ProjectSheet {
                                 text: leader,
                                 style: "leader"
                             },
-
                             {
                                 text: members,
                                 style: "members"
@@ -225,37 +246,8 @@ class ProjectPfhSheet extends ProjectSheet {
                     }
                 ]
             },
-            content: [
-                {
-                    text: this.name,
-                    style: "project_name"
-                },
-
-                {
-                    image: this.logo,
-                    width: 400,
-                    height: 250,
-                    style: "logo"
-                },
-
-                {
-                    text: semester,
-                    style: "semester"
-                },
-
-                {
-                    text: this.slogan,
-                    style: "slogan"
-                },
-
-                {
-                    text: this.pitch,
-                    style: "pitch"
-                }
-            ],
-
             styles: {
-                project_name: {
+                name: {
                     alignment: "center",
                     fontSize: 70
                 },
@@ -267,22 +259,18 @@ class ProjectPfhSheet extends ProjectSheet {
                     margin: [0, 50, 0, 0],
                     alignment: "center"
                 },
-
                 slogan: {
                     alignment: "center",
                     color: "black",
                     fontSize: 20,
                     margin: [0, 50, 0, 0]
                 },
-
                 pitch: {
                     margin: [0, 50, 0, 0]
                 },
-
                 leader: {
                     bold: true
                 },
-
                 team: {
                     alignment: "center",
                     italics: true,
@@ -295,14 +283,14 @@ class ProjectPfhSheet extends ProjectSheet {
     }
 }
 
-const removeNonString = function(array: Array<any>) {
+const removeNonString = function (array: Array<any>) {
     let new_array: Array<string> = []
     for (let idx = 0; idx < array.length; idx += 1) {
-        if (typeof(array[idx]) === typeof("string")) {
+        if (typeof (array[idx]) === typeof ("string")) {
             new_array.push(array[idx])
         }
     }
     return new_array
 }
 
-export {ProjectSheet, ProjectPiSheet, ProjectPfhSheet}
+export { ProjectSheet, ProjectPiSheet, ProjectPfhSheet }

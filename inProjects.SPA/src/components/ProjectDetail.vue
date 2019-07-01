@@ -115,8 +115,6 @@ export default class ProjectDetail extends Vue {
         // fetch to the server all information we need and formated
         let project = await GetProject(id)
 
-        console.log(project)
-
         // generate the pdf
         var sheet = project.generate_sheet()
         pdfMake.createPdf(sheet).open()

@@ -168,24 +168,9 @@ export default class ProjectList extends Vue {
         // get projects form the back
         let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(schoolToSend.schoolId, type, semesterToSend)
 
-        console.log(projects)
-
-        // generate all pdf files as blob
-        // let projectsSheet: Map<string, Blob> = new Map()
-        // for (let project of projects) {
-        //    projectsSheet.set(project.name, pdfMake.createPdf( project.generate_sheet()).getBlob(async (blob: Blob) => blob))
-        // }
-        
         let index = 0;
         this.zip = new JSZip()
         await this.CreatePdfAndSetUpToZip(projects,index)
-
-
-        // put pdf files in an archive file and convert the archive as a blob
-        // let zip = await make_archive(projectsSheet).generateAsync({type: "blob"})
-
-        // download that archive
-        // saveAs(zip, "fiches.zip")
     }
 
     typeSelect() {
