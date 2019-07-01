@@ -26,6 +26,7 @@
             </option>
         </select>
     </div>
+    <br><br>
     <div class="sk-cube-grid" v-if="isLoading">
         <div class="sk-cube sk-cube1"></div>
         <div class="sk-cube sk-cube2"></div>
@@ -37,7 +38,7 @@
         <div class="sk-cube sk-cube8"></div>
         <div class="sk-cube sk-cube9"></div>
     </div>
-    <div class="masonry-layout">
+<!--     <div class="masonry-layout">
         <div class="masonry-layout-panel masonry-layout-flip--md masonry-layout-flip" v-for="(o, index) in projectListToDisplay.length" :key="o">
             <div class="masonry-layout-panel__content masonry-layout-flip__content">
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--front">
@@ -56,8 +57,27 @@
                 </div>
             </div>
         </div>
+    </div> -->
+    <div class="masonry-layout test">
+        <div class="card-container">
+            <div class="card" v-for="(o, index) in projectListToDisplay.length" :key="o" @click="redirect(projectListToDisplay[index].projectStudentId)">
+                <a>
+                    <div class="card--display">
+                        <h2>{{projectListToDisplay[index].groupName}}</h2>
+                        <h3>{{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}} </h3>
+                        <img :src="projectListToDisplay[index].logo" class="image">
+                    </div>
+                    <div class="card--hover">
+                        <u><b style="cursor:pointer;">{{projectListToDisplay[index].slogan}}</b></u>
+                        <p>{{projectListToDisplay[index].pitch}}</p>
+                    </div>
+                </a>
+                <div class="card--border"></div>
+            </div>
+        </div>
     </div>
-</div>
+
+    </div>
 </template>
 
 <script lang="ts">
@@ -185,10 +205,11 @@ export default class ProjectList extends Vue {
 }
 </script>
 
-<style>
+<style <style lang="scss" scoped>
+
 .image{
-      width: 100%; 
-      height: 300px;
+      width: 250px; 
+      height: 250px;
 }
 .projectList{
     position: relative;
@@ -220,7 +241,7 @@ export default class ProjectList extends Vue {
 }
 .masonry-layout-flip__panel--back {
   transform: rotateY(180deg);
-  background: linear-gradient(rgb(13, 102, 219, 1), rgb(68, 218, 229))
+  background: linear-gradient(rgb(13, 102, 219), rgb(68, 218, 229))
 }
 .masonry-layout-flip__panel {
   backface-visibility: hidden;
@@ -315,4 +336,85 @@ export default class ProjectList extends Vue {
             transform: scale3D(0, 0, 1);
   } 
 }
+$highlight: #5bc0eb;
+$darkhighlight: #fde74c;
+
+.card-container {
+	.card {
+		font-weight: bold;
+		position: relative;
+        width: 100%;
+        z-index: 3;
+		a {
+			padding: 15px;
+			width: 70%;
+			height: 400px;
+			border: 2px solid black;
+			background: white;
+			text-decoration: none;
+			color: black;
+			display: block;
+            transition: 0.25s ease;
+			&:hover {
+				transform: translate(-30px, -30px);
+				border-color: $highlight;
+				.card--display {
+					display: none;
+				}
+				.card--hover {
+					display: block;
+				}
+			}
+			.card--display {
+				i {
+					font-size: 60px;
+					margin-top: 180px;
+				}
+				h2 {
+					margin: 20px 0 0;
+				}
+			}
+			.card--hover {
+				display: none;
+				h2 {
+					margin: 20px 0;
+				}
+				p {
+					font-weight: normal;
+					line-height: 1.5;
+					&.link {
+						margin: 20px 0 0;
+						font-weight: bold;
+						color: $highlight;
+					}
+				}
+			}
+		}
+		.card--border {
+			position: absolute;
+			width: 70%;
+			height: 100%;
+			left: 0;
+			top: 0;
+			border: 2px dashed black;
+            z-index: -1;
+		}
+		&.card--dark {
+			a {
+				color: white;
+				background-color: black;
+				border-color: black;
+				.card--hover {
+					.link {
+						color: $darkhighlight;
+					}
+				}
+			}
+		}
+	}
+}
+.test{
+    margin-top: 3px !important;
+}
+
 </style>
