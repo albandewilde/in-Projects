@@ -1,12 +1,8 @@
 <template>
     <div>
         <div class="okok">
-            <li class="dropdown">
-                <a class="dropbtn">Gestion des périodes</a>
-                <div class="dropdown-content">
-                    <button @click="redirect('/createPeriod')">Créer une période</button>
-                    <button @click="redirect('/listPeriod')">Voir toutes les périodes</button>
-                </div>        
+            <li>
+                <a @click="redirect('/createPeriod')">Periode</a>
             </li>
         </div>
         <div class="okok">

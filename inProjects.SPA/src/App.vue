@@ -33,7 +33,7 @@ export default class App extends Vue {}
   color: #2c3e50;
   background: linear-gradient(135deg, rgba(251,251,254,1) 0%, rgba(251,251,251,1) 43%, rgba(251,251,255,1) 72%, rgba(246,246,249,1) 85%, rgba(0,51,215,1) 100%);
   background-size: 100% 100%;
-  background-repeat: no-repeat
+  background-repeat: no-repeat;
 
 }
 
@@ -41,6 +41,7 @@ export default class App extends Vue {}
 .content{
   margin-left: 17%;
   height:100vh;
+
 
 }
 @media screen and (max-width: 900px) {

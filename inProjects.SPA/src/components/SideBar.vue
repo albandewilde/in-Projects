@@ -34,6 +34,9 @@
             <div v-if="o == 'Student'">
                 <StudentPanel></StudentPanel>
             </div>
+              <div v-if="o == 'Jury'">
+                <JuryPanel></JuryPanel>
+            </div>
         </div>
       </div>
         <div class="menu-toggle">
