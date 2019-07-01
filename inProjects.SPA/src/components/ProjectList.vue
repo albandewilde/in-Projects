@@ -180,14 +180,14 @@ export default class ProjectList extends Vue {
         console.log(type)
         console.log(semester)
 
-         let schoolToSend = this.schoolOptions.find(x => x.name == school)
+        let schoolToSend = this.schoolOptions.find(x => x.name == school)
             if (schoolToSend == undefined) {
                 schoolToSend = new School(0,"Unknown")
             }
-         let semesterToSend = parseInt(semester.slice(semester.length - 1,semester.length))
+        let semesterToSend = parseInt(semester.slice(semester.length - 1,semester.length))
 
         // get projects form the back
-         let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(schoolToSend.schoolId, type, semesterToSend)
+        let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(schoolToSend.schoolId, type, semesterToSend)
 
         let sheet = projects[0].generate_sheet()
         console.log(sheet)
