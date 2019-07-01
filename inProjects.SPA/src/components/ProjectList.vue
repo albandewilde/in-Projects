@@ -26,7 +26,19 @@
             </option>
         </select>
     </div>
-    <el-button type="primary" @click="GetAllProjectSheet(schoolChoice,typeChoice,semesterChoice)">Telecharger </el-button>
+    <div v-if="CheckedAuthorize('Administration')">
+        <el-button
+            v-loading="loading"
+            element-loading-text="Generation..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="white"
+
+            type="primary"
+            @click="GetAllProjectSheet(schoolChoice,typeChoice,semesterChoice)"
+        >
+            Telecharger
+        </el-button>
+    </div>
     <div class="masonry-layout">
         <div class="masonry-layout-panel masonry-layout-flip--md masonry-layout-flip" v-for="(o, index) in projectListToDisplay.length" :key="o">
             <div class="masonry-layout-panel__content masonry-layout-flip__content">
@@ -82,6 +94,7 @@ export default class ProjectList extends Vue {
     private typeChoice: string = "all"
     private semesterChoice: string = "all"
     private zip : JSZip = new JSZip()
+    private loading: boolean = false
     
     async mounted() {
         this.projectList  = await GetAllProject()
@@ -156,11 +169,14 @@ export default class ProjectList extends Vue {
         return this.$store.state.currentUserType.find(x => x == needToBe) != null ? true : false
     }
 
+
     redirect(idProject: number) {
         this.$router.replace("/Project/" + idProject)
     }
 
     async GetAllProjectSheet(school: string, type: string, semester: string) {
+        this.loading = true
+
         let schoolToSend = this.schoolOptions.find(x => x.name == school)
         if (schoolToSend == undefined) schoolToSend = new School(0,"Unknown")
         let semesterToSend = parseInt(semester.slice(semester.length - 1,semester.length))
@@ -168,9 +184,11 @@ export default class ProjectList extends Vue {
         // get projects form the back
         let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(schoolToSend.schoolId, type, semesterToSend)
 
-        let index = 0;
+        let index = 0
         this.zip = new JSZip()
         await this.CreatePdfAndSetUpToZip(projects,index)
+
+        this.loading = false
     }
 
     typeSelect() {
