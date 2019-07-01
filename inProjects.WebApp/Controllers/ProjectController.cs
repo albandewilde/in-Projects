@@ -179,7 +179,7 @@ namespace inProjects.WebApp.Controllers
                     projectData.ElementAt( i ).SchoolId = data.ParentZoneId;
                     foreach( var e in userByProject )
                     {
-                        IEnumerable<GroupData> groupDatas = await groupQueries.GetAllGroupByTimedUser( e.TimedUserId );
+                        //IEnumerable<GroupData> groupDatas = await groupQueries.GetAllGroupByTimedUser( e.TimedUserId );
                         projectData.ElementAt( i ).FirstName.Add( e.FirstName );
                         projectData.ElementAt( i ).LastName.Add( e.LastName );
                         projectData.ElementAt( i ).TimedUserId.Add( e.TimedUserId );
@@ -260,23 +260,23 @@ namespace inProjects.WebApp.Controllers
             (string, string[]) team = (leader, members);
 
             // check the type for the field techno of background field and return the project
-            if (pd.Type == "i")
+            if (pd.Type == "I")
             {
                 string[] place = new string[2];
-                place[0] = "";
-                place[1] = "";
+                place[0] = pd.ClassRoom;
+                place[1] = pd.ForumNumber.ToString();
                 string[] technos = pd.Technologies.ToArray();
-                return new {project = new ProjectPiSheet(place, name, semester, sector, logo, slogan, pitch, team, technos), type = "i"};
+                return new {project = new ProjectPiSheet(place, name, semester, sector, logo, slogan, pitch, team, technos), type = "I"};
             }
-            else if (pd.Type == "h")
+            else if (pd.Type == "H")
             {
                 // download and encode the background in base64
-                string background = Convert.ToBase64String(new WebClient().DownloadData(pd.Logo));
-                return new {project = new ProjectPfhSheet(name, semester, sector, logo, slogan, pitch, team, background), type = "h"};
+                string background = Convert.ToBase64String(new WebClient().DownloadData(pd.Background ) );
+                return new {project = new ProjectPfhSheet(name, semester, sector, logo, slogan, pitch, team, background), type = "H"};
             }
             else
             {
-                return new {project = new ProjectSheet(name, semester, sector, logo, slogan, pitch, team), type = "None"};
+                return new {project = new ProjectSheet(name, semester, sector, logo, slogan, pitch, team,"None"), type = "None"};
             }
         }
 
@@ -301,11 +301,25 @@ namespace inProjects.WebApp.Controllers
 
                 PeriodData School = await timedPeriodQueries.GetLastPeriodBySchool( schoolId );
 
+                IEnumerable<AllProjectInfoData> listProject;
+
+
+                if( semester > 0 )
+                {
+                    if( projectType == 'I' || projectType == 'H' ) listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, projectType, semester );
+                    else listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, semester );
+                }
+                else
+                {
+                    if( projectType == 'I' || projectType == 'H' ) listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId, projectType );
+                    else listProject = await projectQueries.GetAllTypeSchoolProject( School.ChildId );
+
+                }
+
                 if( projectType == 'I' )
                 {
                     List<ProjectPiSheet> projectsSheet = new List<ProjectPiSheet>();
 
-                    IEnumerable<AllProjectInfoData> listProject = await projectQueries.GetAllTypeSchoolProjectBySemester( School.ChildId, projectType, semester );
 
                     foreach( var item in listProject )
                     {
@@ -335,7 +349,26 @@ namespace inProjects.WebApp.Controllers
                 {
                     List<ProjectPfhSheet> projectsSheet = new List<ProjectPfhSheet>();
 
-                    // call sql request here
+                    foreach( var item in listProject )
+                    {
+                      
+                        string[] members = new string[item.UsersData.Count - 1];
+                        string leader = "";
+                        foreach( UserData usr in item.UsersData )
+                        {
+                            if( usr.UserId == item.LeaderId ) { leader = usr.FirstName + " " + usr.LastName; }
+                            else { members[Array.IndexOf( members, null )] = usr.FirstName + " " + usr.LastName; }
+
+                        }
+                        (string, string[]) team = (leader, members);
+
+                        string background = Convert.ToBase64String( new WebClient().DownloadData( "https://drive.google.com/uc?id=143SNqM-rxFmDSrA7A2Wa29eu-gqhtdOn" ) );
+
+
+                        ProjectPfhSheet projectPfhSheet = new ProjectPfhSheet( item.GroupName, item.Semester, "", item.Logo, item.Slogan, item.Pitch, team, background);
+
+                        projectsSheet.Add( projectPfhSheet );
+                    }
 
                     return Ok( projectsSheet );
                 }
@@ -343,7 +376,40 @@ namespace inProjects.WebApp.Controllers
                 {
                     List<ProjectSheet> projectsSheet = new List<ProjectSheet>();
 
-                    // call sql request here
+                    foreach( var item in listProject )
+                    {
+
+                        string[] members = new string[item.UsersData.Count - 1];
+                        string leader = "";
+                        foreach( UserData usr in item.UsersData )
+                        {
+                            if( usr.UserId == item.LeaderId ) { leader = usr.FirstName + " " + usr.LastName; }
+                            else { members[Array.IndexOf( members, null )] = usr.FirstName + " " + usr.LastName; }
+
+                        }
+                        (string, string[]) team = (leader, members);
+
+
+
+                        if( item.Type == "H" )
+                        {
+                            string background = Convert.ToBase64String( new WebClient().DownloadData( "https://drive.google.com/uc?id=143SNqM-rxFmDSrA7A2Wa29eu-gqhtdOn" ) );
+                            ProjectPfhSheet projectPfhSheet = new ProjectPfhSheet( item.GroupName, item.Semester, "", item.Logo, item.Slogan, item.Pitch, team, background );
+                            projectsSheet.Add( projectPfhSheet );
+
+                        }
+                        else
+                        {
+                            string[] place = new string[2];
+                            place[0] = item.ClassRoom;
+                            place[1] = item.ForumNumber.ToString();
+                            ProjectPiSheet projectPiSheet = new ProjectPiSheet( place, item.GroupName, item.Semester, item.Sector, item.Logo, item.Slogan, item.Pitch, team, item.Technologies.ToArray() );
+                            projectsSheet.Add( projectPiSheet );
+
+
+                        }
+
+                    }
 
                     return Ok( projectsSheet );
                 }

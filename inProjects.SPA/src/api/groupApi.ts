@@ -3,8 +3,8 @@ import { GroupPeriod } from "@/modules/classes/Periode/GroupPeriod"
 
 const endpoint = process.env.VUE_APP_BACKEND + "/api/group"
 
-export async function getTemplateGroupsAsync(): Promise<GroupPeriod[]> {
-    const response = await getAsync(`${endpoint}/getAllGroupTemplate`)
+export async function getTemplateGroupsAsync(idZone: number): Promise<GroupPeriod[]> {
+    const response = await getAsync(`${endpoint}/getAllGroupTemplate?idZone=${idZone}`)
     return response.data
 }
 

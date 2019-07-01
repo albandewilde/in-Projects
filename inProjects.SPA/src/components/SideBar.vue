@@ -1,42 +1,45 @@
 <template>
-<div>
-    <ul class="sidenav">
-        <div class="in-menu">
-            <li><a class="active" @click="redirect('/')">IN'TECH</a></li>
-            <div v-if="authService.authenticationInfo.level != 0">
-                <li>
-                    <a><img src="../assets/deco.png" height="30px" @click="logout()">&nbsp
-                    <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/></a>
-                </li>
-            </div>
-            
-            <div v-else>
-                <li><a><img src="../assets/co.png" @click="redirect('/connection')"></a></li>
-            </div>
-            <li><a @click="redirect('/projectList')">Liste des projets</a></li>
-            <li><a @click="redirect(`ProjectUserVote`)">Votez pour les projets</a></li>
-            <div v-for="(o, idx) in whatTimed" :key="idx">
-                <div v-if="o == 'Administration'">
-                    <AdminPanel></AdminPanel>
-                </div>
-<!--                 <div v-if="o == 'User'">
-                    <UserPanel></UserPanel>
-                </div> -->
-               <!-- <div v-if="o == 'Teacher'">
-                    <TeacherPanel :isCollapse="isCollapse"></TeacherPanel>
-                </div>        -->
-                <div v-if="o == 'Jury'">
-                    <JuryPanel :isCollapse="isCollapse"></JuryPanel>
-                </div>
-
-                <div v-if="o == 'Student'">
-                    <StudentPanel :isCollapse="isCollapse"></StudentPanel>
-                </div>
-            </div> 
+  <ul class="sidenav">
+    <li>      
+        <a class="active" @click="redirect('/')">IN'TECH</a>
+    </li>
+    <div id="mySidenav">
+      <div v-if="authService.authenticationInfo.level != 0">
+          <li class="btn-group">
+              <button class="buttons">
+                  <img src="../assets/deco.png" height="30px" @click="logout()">
+              </button>
+              <button class="buttons">
+                  <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/>
+              </button>
+          </li>
         </div>
-    </ul>
-
-</div>
+        <div v-else>
+          <li class="btn-group">
+              <button class="buttons" style="width: 100%;">
+                  <img src="../assets/co.png" @click="redirect('/connection')">
+              </button>
+          </li>
+        </div>
+        <li>
+            <a @click="redirect('/projectList')">Liste des projets</a>
+        </li>
+        <div v-for="(o, idx) in whatTimed" :key="idx">
+            <div v-if="o == 'Administration'">
+                <AdminPanel></AdminPanel>
+            </div>
+            <div v-if="o == 'User'">
+                <UserPanel></UserPanel>
+            </div>
+            <div v-if="o == 'Student'">
+                <StudentPanel></StudentPanel>
+            </div>
+        </div>
+      </div>
+        <div class="menu-toggle">
+          <font-awesome-icon aria-hidden="true" icon="bars" size="lg" @click="changeCollapse()" style="color: white; cursor: pointer;"/>
+        </div>
+  </ul>
 </template>
 
 <script lang="ts">
@@ -73,7 +76,7 @@ import JSZip from "jszip"
 })
 
 export default class SideBar extends Vue {
-    isCollapse: boolean = false
+    isCollapsed: boolean = true
     whatTimed: string[] = []
     ZoneId: number = 4
     authService: AuthService = getAuthService()
@@ -104,7 +107,7 @@ export default class SideBar extends Vue {
     }
 
     changeCollapse() {
-        this.isCollapse = !this.isCollapse
+        this.isCollapsed = !this.isCollapsed
     }
 
     redirect(destination: string) {
@@ -127,61 +130,107 @@ export default class SideBar extends Vue {
 </script>
 
 <style>
-.in-menu {
-    display: block;
-    margin-top: 116px;
-    margin-bottom: 50px;
-    float: none;
-    text-align: center;
+.menu-toggle {
+  display: none;
 }
-
 ul.sidenav {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  width: 15%;
   background-color: #2d3e4f;
   position: fixed;
   height: 100%;
-  overflow: auto;
+  width: 15%;  
+  margin-top: 0%;
+  padding: 0;
 }
-
-ul.sidenav li a {
-  display: block;
+#intech {
+  background-color: #4CAF50;
   color: white;
-  padding: 8px 16px;
-  text-decoration: none;
-  cursor: pointer;
+  border: none;
+  width: 100%;
+}
+.in-menu {
+    display: block;
+    margin-top: 0;
+    margin-bottom: 50px;
+    float: none;
+    text-align: center;
 }
  
 ul.sidenav li a.active {
   background-color: #4CAF50;
   color: white;
+  line-height: 25px;
+  font-size: 24px;
+  font-weight: bold;
 }
 
-ul.sidenav li a:hover:not(.active) {
-  background-color: #555;
+ul.sidenav li a {
+  display: block;
   color: white;
+  padding: 18px 16px;
+  text-decoration: none;
+  cursor: pointer;
 }
-
+.btn-group .buttons {
+  background-color: #2d3e4f;
+  border: none;
+  padding: 10px 25px;
+  font-size: 16px;
+  cursor: pointer;
+  /* width: 50%; */
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.btn-group .buttons:hover {
+  background-color: #2d4f4f;
+}
+ul.sidenav li a:hover:not(.active) {
+  background-color: #2d4f4f;
+}
 
 @media screen and (max-width: 900px) {
   ul.sidenav {
     width: 100%;
-    height: auto;
+    height: 15vh;
     position: relative;
+    list-style: none;
   }
-  
+  #mySidenav {
+    position: absolute;
+    top: 50px;
+    left: -100%;
+    width: 100%;
+    height: calc(100vh - 50px);
+    background: #333;
+    transition: 0.5s;
+  }
+  .menu-toggle {
+    display: block;
+    float: right;
+    margin-right: 2vw;
+    margin-top: 5vh;
+  }
   ul.sidenav li a {
+    text-align: center;
     float: left;
     padding: 15px;
+    height: 15vh;
   }
-  
-  .in-menu{margin-top: 0%}
-  div.content {margin-left: 0;}
-  div.okok{float: left;}
+  ul.sidenav li a.active {
+    height: 15vh;
+  }
+  .btn-group .buttons {
+    background-color: #2d3e4f;
+    border: none;
+    cursor: pointer;
+    float: left;
+    width: 5%;
+    height: 15vh;
+    padding-right: 6%;
+  }
+  div.okok {
+    float: left;
+  }
 }
-
 @media screen and (max-width: 400px) {
   ul.sidenav li a {
     text-align: center;
@@ -189,4 +238,3 @@ ul.sidenav li a:hover:not(.active) {
   }
 }
 </style>
- 

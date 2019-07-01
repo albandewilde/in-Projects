@@ -38,7 +38,7 @@
                 <br>
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--back">
                     <br>
-                    <u><b @click="redirect(projectListToDisplay[index].projectStudentId)">{{projectListToDisplay[index].slogan}}</b></u>
+                    <u><b style="cursor:pointer;" @click="redirect(projectListToDisplay[index].projectStudentId)">{{projectListToDisplay[index].slogan}}</b></u>
                     <br><br>
                     {{projectListToDisplay[index].pitch}}
                     <br><br>
@@ -65,6 +65,7 @@ import { saveAs } from "file-saver"
 import {make_archive} from "../modules/functions/make_archive"
 import {School} from "../modules/classes/School"
 import {getSchools} from "../api/schoolApi"
+import JSZip from "jszip"
 
 @Component
 export default class ProjectList extends Vue {
@@ -80,6 +81,7 @@ export default class ProjectList extends Vue {
     private schoolChoice: string = "all"
     private typeChoice: string = "all"
     private semesterChoice: string = "all"
+    private zip : JSZip = new JSZip()
     
     async mounted() {
         this.projectList  = await GetAllProject()
@@ -129,43 +131,26 @@ export default class ProjectList extends Vue {
         return this.starColor = "#000000 !important;"
     }
 
-    // async GetAllProjectSheet(index : number) {
-    //         const sheet =  pdfMake.createPdf(
-    //                 GeneratePiSheet(
-    //                     [
-    //                         "None",
-    //                         "None"
-    //                     ],
-    //                     this.projects[index].name,
-    //                     this.projects[index].semester,
-    //                     this.projects[index].sector,
-    //                     this.projects[index].technos,
-    //                     this.projects[index].logo,
-    //                     this.projects[index].slogan,
-    //                     this.projects[index].pitch,
-    //                     this.projects[index].team
-    //                 )
-    //             )
-    //             sheet.getBlob(async (blob :Blob) => {
-    //                 this.zip.file("fiches/"+this.projects[index].name + ".pdf",blob)
-    //                 if(this.projects.length -1 != index){
-    //                     await this.GetAllProjectSheet(++index)
-    //                 }else{
-    //                  this.zip.generateAsync({type:"blob"})
-    //                     .then(function(content) {
-    //                     saveAs(content, "fiches.zip");
-    //                 });
-    //                 }
-    //              });
-    // }
+    async CreatePdfAndSetUpToZip(project :Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet>,index : number) {
 
-    // async download(){
-    //     let index = 0 
-    //     this.zip = new JSZip()
-    //     this.zip.folder("fiches")
-    //     this.projects = await GetAllSheet()
-    //     await this.GetAllProjectSheet(index)
-    // }
+            const sheet =  pdfMake.createPdf(project[index].generate_sheet())
+
+                sheet.getBlob(async (blob :Blob) => {
+
+                    if(project[index].type =="I")this.zip.file("fiches/ProjetInformatique/"+project[index].name + ".pdf",blob)
+                    else this.zip.file("fiches/ProjetFormationHumaine/"+project[index].name + ".pdf",blob)
+
+                    if(project.length -1 != index){
+                        await this.CreatePdfAndSetUpToZip(project,++index)
+                    }else{
+                     this.zip.generateAsync({type:"blob"})
+                        .then(function(content) {
+                        saveAs(content, "fiches.zip");
+                    });
+                    }
+                 });
+
+    }
 
     CheckedAuthorize(needToBe: string){
         return this.$store.state.currentUserType.find(x => x == needToBe) != null ? true : false
@@ -176,42 +161,31 @@ export default class ProjectList extends Vue {
     }
 
     async GetAllProjectSheet(school: string, type: string, semester: string) {
-        console.log(school)
-        console.log(type)
-        console.log(semester)
-
         let schoolToSend = this.schoolOptions.find(x => x.name == school)
-            if (schoolToSend == undefined) {
-                schoolToSend = new School(0,"Unknown")
-            }
+        if (schoolToSend == undefined) schoolToSend = new School(0,"Unknown")
         let semesterToSend = parseInt(semester.slice(semester.length - 1,semester.length))
 
         // get projects form the back
         let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(schoolToSend.schoolId, type, semesterToSend)
 
-        let sheet = projects[0].generate_sheet()
-        console.log(sheet)
+        console.log(projects)
 
-        let pdf = pdfMake.CreatePdf(sheet)
-        console.log(pdf)
-        
-        let blob = pdf.getBlob((blob :Blob) => {
-            return blob;
-        });
-        console.log(blob)
-
-        // let pdf = pdfMake.CreatePdf().getBlob((blob: Blob) => blob)
-        // console.log(pdf)
         // generate all pdf files as blob
-        let projectsSheet: Map<string, Blob> = new Map()
-        for (let project of projects) {projectsSheet.set(project.name, pdfMake.CreatePdf(project.generate_sheet()).getBlob((blob: Blob) => blob))}
-        console.log(projectsSheet)
+        // let projectsSheet: Map<string, Blob> = new Map()
+        // for (let project of projects) {
+        //    projectsSheet.set(project.name, pdfMake.createPdf( project.generate_sheet()).getBlob(async (blob: Blob) => blob))
+        // }
+        
+        let index = 0;
+        this.zip = new JSZip()
+        await this.CreatePdfAndSetUpToZip(projects,index)
+
 
         // put pdf files in an archive file and convert the archive as a blob
-        let zip = await make_archive(projectsSheet).generateAsync({type: "blob"})
+        // let zip = await make_archive(projectsSheet).generateAsync({type: "blob"})
 
         // download that archive
-        saveAs(zip, "fiches.zip")
+        // saveAs(zip, "fiches.zip")
     }
 
     typeSelect() {
@@ -275,7 +249,6 @@ export default class ProjectList extends Vue {
 .masonry-layout {
     column-count: 3;
     column-gap: 0;
-    margin-top: 5vh;
 }
 .masonry-layout-panel {
     break-inside: avoid;

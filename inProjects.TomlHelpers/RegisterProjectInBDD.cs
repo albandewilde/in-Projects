@@ -47,10 +47,10 @@ namespace inProjects.TomlHelpers
                 {
                     ProjectPfh project = toml as ProjectPfh;
                     // register the project
-                    //(UserQueries userQueries, TimedUserQueries timedUserQueries, ProjectStudentStruct ProjectCreate, TimedUserData timedUser) = await SaveProjectPfh(project, projectTable, userId, db, ctx, type, projectUrl);
+                    (UserQueries userQueries, TimedUserQueries timedUserQueries, ProjectStudentStruct ProjectCreate, TimedUserData timedUser) = await SaveProjectPfh( project, projectTable, userId, db, ctx, type, projectUrl,groupTable );
 
                     // link members to the project
-                    //if (toml.team.members.Length > 0) await LinkMembersToProject(project, userQueries, timedUserQueries, ProjectCreate, timedUser, groupTable, ctx);
+                    if (toml.team.members.Length > 0) await LinkMembersToProject(project, userQueries, timedUserQueries, ProjectCreate, timedUser, groupTable, ctx);
                 }
             }
         }
@@ -107,6 +107,62 @@ namespace inProjects.TomlHelpers
             string semester = "S0" + project.semester.semester.ToString();
             int idSemester = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName(school.ZoneId, semester);
             await CustomGroupTable.AddUserAsync(ctx, userId, idSemester, ProjectCreate.ProjectStudentId,true);
+
+            return (userQueries, timedUserQueries, ProjectCreate, timedUser);
+        }
+
+        public static async Task<(UserQueries, TimedUserQueries, ProjectStudentStruct, TimedUserData)> SaveProjectPfh(
+            ProjectPfh project,
+            ProjectStudentTable projectTable,
+            int userId,
+            SqlDefaultDatabase db,
+            SqlStandardCallContext ctx,
+            string type,
+            ProjectUrlTable projectUrlTable,
+            CustomGroupTable CustomGroupTable
+)
+        {
+            GroupQueries groupQueries = new GroupQueries( ctx, db );
+            TraitContextQueries traitContext = new TraitContextQueries( ctx, db );
+            TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+            TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
+            UserQueries userQueries = new UserQueries( ctx, db );
+
+            GroupData school = await groupQueries.GetIdSchoolByConnectUser( userId );
+            // PeriodData timePeriod = await timedPeriodQueries.GetLastPeriodBySchool(school.ZoneId);
+            TimedUserData timedUser = await timedUserQueries.GetTimedUser( userId, school.ZoneId );
+            int traitContextId = await traitContext.GetTraitContextId( type );
+
+            string email = project.team.leader;
+            int leaderId;
+            if( email == "None" ) leaderId = 0;
+            else
+            {
+                UserData user = await userQueries.GetUserByEmail( email );
+                TimedUserData timedLeader = await timedUserQueries.GetTimedUser( user.UserId, school.ZoneId );
+                leaderId = user.UserId;
+            }
+
+            project.background.image = GetTomlFromGoogleDrive.GetUrlRessource( project.background.image );
+
+            ProjectStudentStruct ProjectCreate = await projectTable.CreateProjectStudent(
+                ctx,
+                userId,
+                school.ZoneId,
+                project.name.project_name,
+                traitContextId,
+                project.logo.url,
+                project.slogan.slogan,
+                project.pitch.pitch,
+                leaderId,
+                type,
+                project.background.image
+            );
+
+
+            string semester = "S0" + project.semester.semester.ToString();
+            int idSemester = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( school.ZoneId, semester );
+            await CustomGroupTable.AddUserAsync( ctx, userId, idSemester, ProjectCreate.ProjectStudentId, true );
 
             return (userQueries, timedUserQueries, ProjectCreate, timedUser);
         }

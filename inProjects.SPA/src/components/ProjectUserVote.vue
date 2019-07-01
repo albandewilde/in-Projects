@@ -6,6 +6,11 @@
         </el-select>
         <br/>
 
+        <div v-if="forumOff == true && changeSchool==true">
+            <h2> Forum PI non Ouvert</h2>
+            <countdown :schoolName="schoolName"></countdown>
+        </div>
+
         <div v-if="projectList.length >0">
             <el-row>
                 <el-col :span="5" v-for="(o, index) in projectList.length" :key="o" :offset="index > 0 ? 1 : 1" >            
@@ -33,9 +38,18 @@ import { getSchools } from "../api/schoolApi"
 import {Project} from "../modules/classes/Project"
 import {School} from "../modules/classes/School"
 import { TypeTimedUser } from "@/modules/classes/TimedUserEnum"
+import Countdown from "@/components/Countdown.vue"
+import { GetEventSchoolByName } from '../api/eventApi';
+import { Event } from '../modules/classes/EventSchool';
 
-@Component
+
+@Component({
+    components: {
+        Countdown,
+    }
+})
 export default class ProjectUserVote extends Vue {
+    private nextForum: Event = new Event()
     private projectList: Project[] = []
     private projectListToDisplay: Project[] = []
     private schoolOptions: School[] = []
@@ -43,6 +57,10 @@ export default class ProjectUserVote extends Vue {
     private type: string = "I"
     private schoolId: number = 0
     private numberMax = 4
+    private forumOff = true
+    private changeSchool = false
+    private schoolName = ""
+
 
     async created() {
       this.schoolOptions = await getSchools()
@@ -50,15 +68,27 @@ export default class ProjectUserVote extends Vue {
 
     async change() {
         try {
-            let idx = this.schoolOptions.find(x => x.name == this.options)
-            if (idx == undefined) {
-                idx = new School(0, "Unknow")
+            this.projectList = []
+            this.changeSchool = true;
+            this.forumOff = true;
+            let school = this.schoolOptions.find(x => x.name == this.options)
+            if (school == undefined) {
+                school = new School(0, "Unknow")
             }
-            this.schoolId = idx.schoolId
-            this.projectList  = await GetAllTypeProjectsOfSchool(this.schoolId, this.type)
-            for (let index = 0; index < this.projectList.length; index += 1 ) {
-                this.projectList[index].grade = Math.ceil(this.projectList[index].grade / 4)
-            }
+            this.schoolId = school.schoolId
+            this.schoolName = school.name
+            this.nextForum = await GetEventSchoolByName("ForumPI",this.schoolName)
+            let dateNow = new Date()
+
+           if(dateNow >= this.nextForum.begDate && dateNow <= this.nextForum.endDate){
+                this.changeSchool = false;
+                this.forumOff = false
+                this.projectList  = await GetAllTypeProjectsOfSchool(this.schoolId, this.type)
+                for (let index = 0; index < this.projectList.length; index += 1 ) {
+                    this.projectList[index].grade = Math.ceil(this.projectList[index].grade / 4)
+                }
+           }
+            
         } catch (e) {
             console.log(e.message)
         }

@@ -1,5 +1,5 @@
 <template>
-<div>
+<div><br>
     <div class="masonry-layout">
         <div class="mansonry-layout-panel masonry-layout-cluster masonry-layou-cluster--horizontal">
               <div class="masonry-layout-cluster__segment masonry-layout-cluster__segment--column">
@@ -10,7 +10,7 @@
         </div>
         <div class="masonry-layout-panel">
             <div class="masonry-layout-panel__content">
-                <Countdown></Countdown>
+                <Countdown :schoolName="schoolName"></Countdown>
             </div>
         </div>
         <div class="masonry-layout-panel">
@@ -88,7 +88,7 @@
                     <img src="../assets/dan.png"  class="masonry-layout-panel__content--img">
 <!--                 </div>
             </div> -->
-</div>
+<br><br></div>
 </template>
 
 <script lang="ts">
@@ -102,7 +102,7 @@ import Countdown from "./Countdown.vue"
     }
 })
 export default class HomePage extends Vue {
-    
+    private schoolName = "IN'TECH"
 }
 </script>
 
