@@ -107,33 +107,6 @@ $highlight-color: #E74C3C;
 }
 
 
-.button{
-  border: 2.5px solid $text-color;
-  background:linear-gradient(135deg, rgba(251,251,254,1) 0%, rgba(252,252,252,1) 18%, rgba(170,205,249,1) 36%, rgba(251,251,255,1) 53%, rgba(219,230,245,1) 76%, rgba(170,205,249,1) 85%);
-  padding: 10px 20px;
-  font-size: 0.9rem;
-  text-transform: uppercase;
-  transition: all 150ms ease-out;
-  transform: translateY(0px);
-  text-decoration: none;
-  &:hover, &:focus {
-    outline: 0;
-    transform: translateY(-5px);
-    transition: all 100ms ease-in;
-    box-shadow: 0 5px 10px rgba($text-color,0.4);
-  }
-  &:active {
-    transform: translateY(-3px);
-  }
-}
-
-h1 {
-	text-align: center;
-	font-family: "Trebuchet MS", Tahoma, Arial, sans-serif;
-	color: #333;
-	text-shadow: 0 1px 0 #fff;
-	margin: 50px 0;
-}
 
 .overlay {
 	position: absolute;
@@ -217,75 +190,19 @@ h1 {
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Nunito', sans-serif;
-  color: #384047;
-}
-
-form {
-  max-width: 300px;
-  margin: 10px auto;
-  padding: 10px 20px;
-  background: linear-gradient(135deg, rgba(251,251,254,1) 0%, rgba(238,238,251,1) 43%, rgba(225,225,228,1) 72%, rgba(0,0,0,1) 100%);}
 
 h1 {
   margin: 0 0 30px 0;
   text-align: center;
 }
 
-input[type="text"],
-input[type="password"],
-input[type="date"],
-input[type="datetime"],
-input[type="email"],
-input[type="number"],
-input[type="search"],
-input[type="tel"],
-input[type="time"],
-input[type="url"],
-textarea,
-select {
-  border: none;
-  font-size: 16px;
-  height: auto;
-  margin: 0;
-  outline: 0;
-  padding: 15px;
-  width: 100%;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
-  margin-bottom: 30px;
-}
+
 
 input[type="radio"],
 input[type="checkbox"] {
   margin: 0 4px 8px 0;
 }
 
-select {
-  padding: 6px;
-  height: 32px;
-  border-radius: 2px;
-}
-
-.button-a {
-  padding: 19px 39px 18px 39px;
-  color: #FFF;
-  background-color: #4bc970;
-  font-size: 18px;
-  text-align: center;
-  font-style: normal;
-  border-radius: 5px;
-  width: 100%;
-  border: 1px solid #3ac162;
-  border-width: 1px 1px 3px;
-  box-shadow: 0 -1px 0 rgba(255, 255, 255, 0.1) inset;
-  margin-bottom: 10px;
-}
-
-fieldset {
-  margin-bottom: 30px;
-  border: none;
-}
 
 legend {
   font-size: 1.4em;
@@ -302,19 +219,7 @@ label.light {
   display: inline;
 }
 
-.number {
-  background-color: #5fcf80;
-  color: #fff;
-  height: 30px;
-  width: 30px;
-  display: inline-block;
-  font-size: 0.8em;
-  margin-right: 4px;
-  line-height: 30px;
-  text-align: center;
-  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.2);
-  border-radius: 100%;
-}
+
 
 @media screen and (min-width: 480px) {
   form {
