@@ -26,6 +26,7 @@
             </option>
         </select>
     </div>
+    <br><br><br>
     <div class="sk-cube-grid" v-if="isLoading">
         <div class="sk-cube sk-cube1"></div>
         <div class="sk-cube sk-cube2"></div>
@@ -138,9 +139,10 @@ export default class ProjectList extends Vue {
          this.$router.push("/Project/" + idProject)
     }
     typeSelect() {
-        for (const project of this.projectList) {
-            if (project.type == this.typeChoice) {
-                this.projectListToDisplay.push(project)
+        for (const project of this.projectListToDisplay) {
+            if (project.type != this.typeChoice) {
+                let idx = this.projectListToDisplay.indexOf(project)
+                this.projectListToDisplay.splice(idx, 1)
             }
         }
     }
@@ -152,21 +154,22 @@ export default class ProjectList extends Vue {
         let idSchool = idx.schoolId
 
         for(const project of this.projectList) {
-            if(project.schoolId == idSchool) {
-                this.projectListToDisplay.push(project)
+            if(project.schoolId != idSchool) {
+                let idx = this.projectListToDisplay.indexOf(project)
+                this.projectListToDisplay.splice(idx, 1)     
             }
         }
     }
     semesterSelect() {
         let sem = this.semesterChoice.split(" ")
         for(const project of this.projectList) {
-            if(project.semester == "S0" + sem[1]) {
-                this.projectListToDisplay.push(project)
+            if(project.semester != "S0" + sem[1]) {
+                let idx = this.projectListToDisplay.indexOf(project)
+                this.projectListToDisplay.splice(idx, 1)
             }
         }
     }
     checkSort() {
-        this.projectListToDisplay = []
         if(this.schoolChoice != "all") {
             this.schoolSelect()
         }
