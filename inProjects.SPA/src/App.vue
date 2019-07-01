@@ -25,16 +25,23 @@ export default class App extends Vue {}
 <style lang="scss">
 @import "./styles/global.scss";
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Questrial', sans-serif;
+  font-size: 17px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background: linear-gradient(135deg, rgba(251,251,254,1) 0%, rgba(251,251,251,1) 43%, rgba(251,251,255,1) 72%, rgba(246,246,249,1) 85%, rgba(0,51,215,1) 100%);
+  background-size: 100% 100%;
+  background-repeat: no-repeat
+
 }
+
 
 .content{
   margin-left: 17%;
-  height: 100vh;
+  height:100vh;
+
 }
 @media screen and (max-width: 900px) {
   .content{

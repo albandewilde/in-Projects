@@ -242,7 +242,7 @@ namespace inProjects.WebApp.Services.CSV
                     int groupId = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( groupData.ZoneId, groupName );
                     if( groupId == 0 )
                     {
-                        groupId = await groupTable.CreateGroupAsync( ctx, userId );
+                        groupId = await groupTable.CreateGroupAsync( ctx, userId, groupData.ZoneId );
                         await groupTable.Naming.GroupRenameAsync( ctx, userId, groupId, groupName );
                     }
 
@@ -250,7 +250,7 @@ namespace inProjects.WebApp.Services.CSV
                     enterpriseId = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( groupData.ZoneId, juryInfo.Entreprise );
                     if( enterpriseId == 0 )
                     {
-                        enterpriseId = await groupTable.CreateGroupAsync( ctx, userId );
+                        enterpriseId = await groupTable.CreateGroupAsync( ctx, userId, groupData.ZoneId );
                         await groupTable.Naming.GroupRenameAsync( ctx, userId, enterpriseId, juryInfo.Entreprise );
                     }
 
