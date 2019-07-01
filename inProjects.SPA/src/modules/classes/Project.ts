@@ -23,6 +23,7 @@ class Project {
     public grade!: number
     public isBlocked!: boolean
     public schoolId!: number
+    public isNoted!:boolean
 
     constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], url: string)
     constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], url: string, projectId: number, type: string, traitId: number, grade: number)

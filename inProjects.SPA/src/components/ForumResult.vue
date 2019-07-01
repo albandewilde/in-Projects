@@ -1,7 +1,6 @@
 <template>
     <div>
-         <div v-for="(o, idx) in projects" :key="idx">
-
+        <div v-for="(o, idx) in projects" :key="idx">             
             <el-card :class="'box-card-'+idx">
                 <div slot="header" class="clearfix">
                     <span>{{o.name}}</span>
