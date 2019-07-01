@@ -63,7 +63,7 @@ export default class Countdown extends Vue {
               }
           }catch(e){
             this.forumOn = true
-            this.message = "Pas de date connue"
+            this.message = "Pas de date connue pour le prochain Forum Pi"
 
           }
 

@@ -522,8 +522,7 @@ namespace inProjects.WebApp.Controllers
 
                 if( model.User == ViewModels.TypeTimedUser.Jury )
                 {
-                    int id = await userQueries.GetJuryId( userId, periodData.ChildId );
-                    await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, id, model.ProjectId, model.Grade );
+                    await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, model.JuryId, model.ProjectId, model.Grade );
                 }
                 else
                 {
