@@ -45,7 +45,9 @@ export default class ForumResultPublic extends Vue {
 
     async created(){
         this.projectsPublicResult = await getAllPublicNote()
+        console.log(this.projectsPublicResult)
         this.diviseur = this.projectsPublicResult[0].countTotalVote * 20
+        if(this.diviseur ==0) this.diviseur = 20
         setInterval(this.update, 18000)
     }
 

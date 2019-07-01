@@ -3,11 +3,11 @@ CREATE TABLE IPR.tProjectStudent
     ProjectStudentId INT NOT NULL,
     Logo NVARCHAR(126) NOT NULL,
     Slogan TEXT NOT NULL,
-    Pitch NVARCHAR(255) NOT NULL,
+    Pitch NVARCHAR(600) NOT NULL,
     LeaderId INT NOT NULL,
     [Type] CHAR NOT NULL,
-    TraitId INT NOT NULL
-    
+    TraitId INT NOT NULL,
+    Background NVARCHAR(126)
 
 
     CONSTRAINT PK_tProjectStudent_ProjectStudentId PRIMARY KEY(ProjectStudentId),

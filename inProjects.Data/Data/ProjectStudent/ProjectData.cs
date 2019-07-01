@@ -8,6 +8,7 @@ namespace inProjects.Data.Data.ProjectStudent
     {
         public int ProjectStudentId { get; set; }
         public string Logo { get; set; }
+        public string Background { get; set; }
         public string Slogan { get; set; }
         public string Pitch { get; set; }
         public int LeaderId { get; set; }

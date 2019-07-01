@@ -50,8 +50,6 @@ private signalr: SignalRGestion = new SignalRGestion()
 
 async created() {
     await this.signalr.connect()
-    console.log("co")
-    console.log(this.$store.state.connectionStaffMember)
 
     // this.$store.state.connectionStaffMember = this.connection
 }

@@ -77,9 +77,9 @@ namespace inProjects.WebApp.Controllers
                     if( createPeriodModel.Groups[i].Name == "Administration" ) idGroupAdmin = idGroup;
                 }
 
-                //await group.AddUserAsync( ctx, 1, idGroupAdmin, userId, true );
+                await group.AddUserAsync( ctx, 1, idGroupAdmin, userId, true );
 
-               // await timedUser.CreateOrUpdateTimedUserAsyncWithType( ctx, Data.TypeTimedUser.StaffMember, idPeriod, userId );
+                await timedUser.CreateOrUpdateTimedUserAsyncWithType( ctx, Data.TypeTimedUser.StaffMember, idPeriod, userId );
                 return this.CreateResult( Result.Success() );
 
             }
