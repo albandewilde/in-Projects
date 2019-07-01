@@ -143,6 +143,8 @@ namespace inProjects.TomlHelpers
                 leaderId = user.UserId;
             }
 
+            project.background.image = GetTomlFromGoogleDrive.GetUrlRessource( project.background.image );
+
             ProjectStudentStruct ProjectCreate = await projectTable.CreateProjectStudent(
                 ctx,
                 userId,
@@ -153,7 +155,8 @@ namespace inProjects.TomlHelpers
                 project.slogan.slogan,
                 project.pitch.pitch,
                 leaderId,
-                type
+                type,
+                project.background.image
             );
 
 

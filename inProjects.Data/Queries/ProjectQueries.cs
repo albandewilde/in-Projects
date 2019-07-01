@@ -76,12 +76,23 @@ namespace inProjects.Data.Queries
         {
 
             ProjectData project = await _controller.QueryFirstOrDefaultAsync<ProjectData>(
-                        "  SELECT ps.Logo, ps.Slogan, ps.Pitch, g.GroupName as [Name], pu.[Url], ps.LeaderId,ps.[Type]" +
+                        " SELECT ps.Logo, ps.Slogan, ps.Pitch, g.GroupName as [Name], pu.[Url], ps.LeaderId, ps.[Type],ps.Background,fi.ClassRoom,fi.ForumNumber" +
                         " from IPR.tProjectStudent ps" +
                         " join CK.tGroup g on g.GroupId = ps.ProjectStudentId" +
                         " left outer join IPR.tProjectUrl pu on pu.ProjectId = ps.ProjectStudentId" +
+                        " LEFT OUTER JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId" + 
                         " where ProjectStudentId =  @ProjectId",
                         new { ProjectId = idProject } );
+
+            //" SELECT ps.Logo, ps.Slogan, ps.Pitch, g.GroupName as [Name], pu.[Url], ps.LeaderId, ps.[Type], ps.Background, g.GroupName as Semester" +
+            //" FROM IPR.tProjectStudent ps" +
+            //" LEFT OUTER JOIN CK.tActorProfile ap on ap.ActorId = ps.ProjectStudentId" +
+            //" LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +
+            //" LEFT OUTER JOIN CK.tGroup g1 on g1.GroupId = ps.ProjectStudentId" +
+            //" LEFT OUTER JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId" +
+            //" LEFT OUTER JOIN IPR.tProjectUrl pu on  pu.ProjectId = ps.ProjectStudentId " +
+            //" WHERE ps.ProjectStudentId = @ProjectId and g.GroupName <> g1.GroupName and g.GroupName like 'S0%'",
+            //            new { ProjectId = idProject } );
 
             string technos = await _controller.QueryFirstOrDefaultAsync<string>(
                          "  SELECT ckt.TraitName as Technologies" +
@@ -158,7 +169,7 @@ namespace inProjects.Data.Queries
             string semester = "S0" + semesterNumber.ToString();
 
                 IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
-                "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber,ps.Type " +
+                "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber,ps.Type,ps.Background " +
                 " FROM IPR.tProjectStudent ps" +
                 " LEFT OUTER JOIN CK.tActorProfile ap on ap.ActorId = ps.ProjectStudentId" +
                 " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +
@@ -207,7 +218,7 @@ namespace inProjects.Data.Queries
             string semester = "S0" + semesterNumber.ToString();
 
             IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
-            "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber,ps.Type " +
+            "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber,ps.Type,ps.Background " +
             " FROM IPR.tProjectStudent ps" +
             " LEFT OUTER JOIN CK.tActorProfile ap on ap.ActorId = ps.ProjectStudentId" +
             " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +
@@ -251,7 +262,7 @@ namespace inProjects.Data.Queries
         public async Task<IEnumerable<AllProjectInfoData>> GetAllTypeSchoolProject( int schoolId, char projectType )
         {
             IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
-               "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber,ps.Type " +
+               "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber,ps.Type,ps.Background " +
                 " FROM IPR.tProjectStudent ps" +
                 " LEFT OUTER JOIN CK.tActorProfile ap on ap.ActorId = ps.ProjectStudentId" +
                 " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +
@@ -297,7 +308,7 @@ namespace inProjects.Data.Queries
         public async Task<IEnumerable<AllProjectInfoData>> GetAllTypeSchoolProject( int schoolId )
         {
             IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
-               "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber,ps.Type " +
+               "SELECT ps.ProjectStudentId, ps.Logo,ps.Pitch,ps.Slogan,ps.LeaderId,g1.GroupName,g.GroupName as Semester, fi.ClassRoom,fi.ForumNumber,ps.Type,ps.Background " +
                 " FROM IPR.tProjectStudent ps" +
                 " LEFT OUTER JOIN CK.tActorProfile ap on ap.ActorId = ps.ProjectStudentId" +
                 " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +

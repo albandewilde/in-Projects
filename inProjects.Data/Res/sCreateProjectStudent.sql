@@ -16,7 +16,9 @@ create procedure IPR.sCreateProjectStudent
     @Slogan NVARCHAR(255),
     @Pitch TEXT,
     @LeaderId int = 0,
-    @Type CHAR
+    @Type CHAR,
+    @Background nvarchar(126) =''
+
 )
 as
 begin
@@ -35,7 +37,7 @@ begin
             exec CK.sGroupCreate @ActorId, @ProjectStudentId OUTPUT, @ZoneId;
             EXEC CK.sCKTraitFindOrCreate @ActorId, @CKTraitContextId, @FindOnly, @TraitName, @CKTraitIdResult OUTPUT;
     
-            insert into IPR.tProjectStudent VALUES (@ProjectStudentId, @Logo, @Slogan, @Pitch, @LeaderId, @Type, @CKTraitIdResult);
+            insert into IPR.tProjectStudent VALUES (@ProjectStudentId, @Logo, @Slogan, @Pitch, @LeaderId, @Type, @CKTraitIdResult,null);
             --set @ProjectStudentId = SCOPE_IDENTITY()
             exec CK.sGroupUserAdd @ActorId, @ProjectStudentId, @LeaderId, 1
             exec CK.sGroupGroupNameSet @ActorId, @ProjectStudentId,@Name
@@ -43,7 +45,7 @@ begin
     ELSE
         BEGIN
             exec CK.sGroupCreate @ActorId, @ProjectStudentId OUTPUT, @ZoneId;
-            insert into IPR.tProjectStudent VALUES (@ProjectStudentId, @Logo, @Slogan, @Pitch, @LeaderId, @Type, 0);
+            insert into IPR.tProjectStudent VALUES (@ProjectStudentId, @Logo, @Slogan, @Pitch, @LeaderId, @Type, 0,@Background);
             exec CK.sGroupUserAdd @ActorId, @ProjectStudentId, @LeaderId, 1
             exec CK.sGroupGroupNameSet @ActorId, @ProjectStudentId,@Name
             SET  @CKTraitIdResult = 0

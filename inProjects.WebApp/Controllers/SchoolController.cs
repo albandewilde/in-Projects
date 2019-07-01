@@ -53,10 +53,9 @@ namespace inProjects.WebApp.Controllers
 
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
 
-                if(groupData.ParentZoneId == 0 )
+                if( groupData.ParentZoneId == 0 )
                 {
-                    Result result = new Result( Status.Unauthorized, "Vous n'existez dans aucune ecole !" );
-                    return this.CreateResult( result );
+                    return Ok( groupData.ZoneId );
                 }
 
                 return Ok(groupData.ParentZoneId);

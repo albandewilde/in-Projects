@@ -263,15 +263,15 @@ namespace inProjects.WebApp.Controllers
             if (pd.Type == "I")
             {
                 string[] place = new string[2];
-                place[0] = "";
-                place[1] = "";
+                place[0] = pd.ClassRoom;
+                place[1] = pd.ForumNumber.ToString();
                 string[] technos = pd.Technologies.ToArray();
                 return new {project = new ProjectPiSheet(place, name, semester, sector, logo, slogan, pitch, team, technos), type = "I"};
             }
             else if (pd.Type == "H")
             {
                 // download and encode the background in base64
-                string background = Convert.ToBase64String(new WebClient().DownloadData( "https://drive.google.com/uc?id=143SNqM-rxFmDSrA7A2Wa29eu-gqhtdOn" ) );
+                string background = Convert.ToBase64String(new WebClient().DownloadData(pd.Background ) );
                 return new {project = new ProjectPfhSheet(name, semester, sector, logo, slogan, pitch, team, background), type = "H"};
             }
             else

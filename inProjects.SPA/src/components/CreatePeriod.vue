@@ -98,7 +98,7 @@ export default class CreatePeriod extends Vue {
 
     async created() {
         this.idZone = await getIdSchoolOfUser()
-        this.listGroup = await getTemplateGroupsAsync()
+        this.listGroup = await getTemplateGroupsAsync(this.idZone)
         this.isInPeriod = await verifyActualPeriod()
     }
 
