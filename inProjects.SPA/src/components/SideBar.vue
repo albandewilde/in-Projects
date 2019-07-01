@@ -25,9 +25,6 @@
               </button>
           </li>
         </div>
-        <li>
-            <a style="background-color: #2d3e4f;" @click="redirect('/projectList')">Liste des projets</a>
-        </li>
         <div v-for="(o, idx) in whatTimed" :key="idx">
             <div v-if="o == 'Administration'">
                 <AdminPanel></AdminPanel>
@@ -83,9 +80,29 @@ export default class SideBar extends Vue {
 
     }
 
+    test(){
+      console.log(window.innerWidth)
+    }
     async mounted() {
+      window.addEventListener("resize", function () {
+       if(window.innerWidth <= 900) {
+          if(document.getElementsByClassName("collapsedMenu")[0].style.display == "none") {
+            document.getElementsByClassName("nav")[0].style.marginBottom="40%"
+            document.getElementsByClassName("collapsedMenu")[0].style.display="block"
+            document.getElementsByClassName("liste")[0].style.backgroundColor="#2d3e4f"
+          }
+          else {
+            document.getElementsByClassName("nav")[0].style.marginBottom="-47%"
+            document.getElementsByClassName("collapsedMenu")[0].style.display="none"
+          }
+        }
+        else {
+          document.getElementsByClassName("collapsedMenu")[0].style.display="block"
+          document.getElementsByClassName("nav")[0].style.marginBottom="0%"
+        }
+      });
         this.co = this.$store.state.connectionStaffMember
-        this.isCollapsed = false
+        this.changeCollapse()
         if ( this.co.state == undefined ) {
             await this.signalr.connect()
         }
@@ -97,14 +114,22 @@ export default class SideBar extends Vue {
         console.log(key, keyPath)
     }
     changeCollapse() {
-        this.isCollapsed = !this.isCollapsed
-        if(!this.isCollapsed) {
-          document.getElementsByClassName("nav")[0].style.marginBottom="40%"
-          document.getElementsByClassName("collapsedMenu")[0].style.display="block"
+        if(window.innerWidth <= 900) {
+          this.isCollapsed = !this.isCollapsed
+          if(!this.isCollapsed) {
+            document.getElementsByClassName("nav")[0].style.marginBottom="40%"
+            document.getElementsByClassName("collapsedMenu")[0].style.display="block"
+            document.getElementsByClassName("liste")[0].style.backgroundColor="#2d3e4f"
+          }
+          else {
+            document.getElementsByClassName("nav")[0].style.marginBottom="-47%"
+            document.getElementsByClassName("collapsedMenu")[0].style.display="none"
+          }
         }
         else {
-          document.getElementsByClassName("nav")[0].style.marginBottom="-55%"
-          document.getElementsByClassName("collapsedMenu")[0].style.display="none"
+          this.isCollapsed = true
+          document.getElementsByClassName("collapsedMenu")[0].style.display="block"
+          document.getElementsByClassName("nav")[0].style.marginBottom="0%"
         }
     }
     redirect(destination: string) {
@@ -185,6 +210,9 @@ ul.sidenav li a:hover:not(.active) {
   .nav {
     height: 100vh;        
     margin-bottom: 28%;
+  }
+  .liste {
+    background-color: "#2d3e4f;"
   }
   a.dropbtn {
     color:white;
