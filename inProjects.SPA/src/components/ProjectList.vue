@@ -2,24 +2,24 @@
 <div>
     <div style="width: 100%;">
         <font-awesome-icon icon="filter" size="lg" /> <b style="margin-left: 10px; margin-right: 15px;">Trier :</b>
-        <select @change="schoolSelect()" v-model="schoolChoice" class="selects">
+        <select @change="checkSort()" v-model="schoolChoice" class="selects">
             <option selected value="all">Tous les projets</option>
             <option v-for="item in schoolOptions" :key="item.schoolId" :value="item.name">
                 {{item.name}}
             </option>
         </select>
-        <select @change="typeSelect()" v-model="typeChoice" class="selects">
+        <select @change="checkSort()" v-model="typeChoice" class="selects">
             <option selected value="all">Tous types de projets</option>
             <option value="I">Projets informatiques</option>
             <option value="H">Projets de Formation Humaine</option>
         </select>
-        <select v-if="typeChoice != 'H'" @change="semesterSelect()" v-model="semesterChoice" class="selects">
+        <select v-if="typeChoice != 'H'" @change="checkSort()" v-model="semesterChoice" class="selects">
             <option selected value="all">Tous les semestres</option>
             <option v-for="item in semesters" :key="item" :value="item">
                 {{item}}
             </option>
         </select>
-        <select v-else @change="semesterSelect()" v-model="semesterChoice" class="selects">
+        <select v-else @change="checkSort()" v-model="semesterChoice" class="selects">
             <option selected value="all">Tous les semestres</option>
             <option v-for="item in semestersPfh" :key="item" :value="item">
                 {{item}}
@@ -138,48 +138,46 @@ export default class ProjectList extends Vue {
          this.$router.push("/Project/" + idProject)
     }
     typeSelect() {
-        if (this.typeChoice == "all") {
-            this.projectListToDisplay = this.projectList
-        }
-        else {
-            this.projectListToDisplay = []
-            for (const project of this.projectList) {
-                if (project.type == this.typeChoice) {
-                    this.projectListToDisplay.push(project)
-                }
+        for (const project of this.projectList) {
+            if (project.type == this.typeChoice) {
+                this.projectListToDisplay.push(project)
             }
         }
     }
     schoolSelect() {
-        if(this.schoolChoice == "all") {
-            this.projectListToDisplay = this.projectList
+        let idx = this.schoolOptions.find(x => x.name == this.schoolChoice)
+        if (idx == undefined) {
+            idx = new School(0, "Unknown")
         }
-        else {
-            let idx = this.schoolOptions.find(x => x.name == this.schoolChoice)
-            if (idx == undefined) {
-                idx = new School(0, "Unknown")
-            }
-            let idSchool = idx.schoolId
-            this.projectListToDisplay = []
-            for(const project of this.projectList) {
-                if(project.schoolId == idSchool) {
-                    this.projectListToDisplay.push(project)
-                }
+        let idSchool = idx.schoolId
+
+        for(const project of this.projectList) {
+            if(project.schoolId == idSchool) {
+                this.projectListToDisplay.push(project)
             }
         }
     }
     semesterSelect() {
-        if(this.semesterChoice == "all") {
-            this.projectListToDisplay = this.projectList
+        let sem = this.semesterChoice.split(" ")
+        for(const project of this.projectList) {
+            if(project.semester == "S0" + sem[1]) {
+                this.projectListToDisplay.push(project)
+            }
         }
-        else {
-            this.projectListToDisplay = []
-            let sem = this.semesterChoice.split(" ")
-            for(const project of this.projectList) {
-                if(project.semester == "S0" + sem[1]) {
-                    this.projectListToDisplay.push(project)
-                }
-            }            
+    }
+    checkSort() {
+        this.projectListToDisplay = []
+        if(this.schoolChoice != "all") {
+            this.schoolSelect()
+        }
+        if(this.typeChoice != "all") {
+            this.typeSelect()
+        }
+        if(this.semesterChoice != "all") {
+            this.semesterSelect()
+        }
+        if(this.schoolChoice == "all" && this.semesterChoice == "all" && this.typeChoice == "all") {
+            this.projectListToDisplay = this.projectList
         }
     }
 }
