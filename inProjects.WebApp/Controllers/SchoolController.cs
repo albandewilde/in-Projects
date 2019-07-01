@@ -53,9 +53,11 @@ namespace inProjects.WebApp.Controllers
 
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
 
-                if( groupData.ParentZoneId == 0 )
+                if( groupData == null || groupData.ParentZoneId == 0 )
                 {
-                    return Ok( groupData.ZoneId );
+                    //if user not in school default by school id In'TECH
+                    int idSchool = await groupQueries.GetIdSchoolByName( "IN'TECH" );
+                    return Ok( idSchool );
                 }
 
                 return Ok(groupData.ParentZoneId);

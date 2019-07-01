@@ -1,11 +1,10 @@
 <template>
     <div id="app">
-
       <SideBar></SideBar>
       <div class="content">
-        <el-main class="vue">
+        <main class="vue">
             <router-view></router-view>
-        </el-main>
+        </main>
       </div>
 
     </div>
@@ -17,7 +16,7 @@ import SideBar from "@/components/SideBar.vue"
 
 @Component({
   components: {
-    SideBar,
+    SideBar
   },
 })
 export default class App extends Vue {}
@@ -31,11 +30,17 @@ export default class App extends Vue {}
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-
 }
+
 .content{
-  margin-left: 15%;
-  // padding: 1px 16px;
+  margin-left: 17%;
   height: 100vh;
+}
+@media screen and (max-width: 900px) {
+  .content{
+    margin-left: 4%;
+    margin-top: 2%;
+    margin-right: 2%;
+  }
 }
 </style>

@@ -5,6 +5,7 @@ using CK.SqlServer.Setup;
 using inProjects.Data;
 using inProjects.Data.Data.Event;
 using inProjects.Data.Data.Group;
+using inProjects.Data.Data.Period;
 using inProjects.Data.Data.TimedUser;
 using inProjects.Data.Queries;
 using inProjects.ViewModels;
@@ -215,6 +216,40 @@ namespace inProjects.WebApp.Controllers
 
             }
         }
+
+        [HttpGet( "GetEventSchoolByName" )]
+        public async Task<IActionResult> GetEventSchoolByName(string eventName, string schoolName)
+        {
+            var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            int userId = _authenticationInfo.ActualUser.UserId;
+
+            using( var ctx = new SqlStandardCallContext() )
+            {
+                EventQueries eventQueries = new EventQueries( ctx, sqlDataBase );
+                GroupQueries groupQueries = new GroupQueries( ctx, sqlDataBase );
+                TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, sqlDataBase );
+
+                GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
+                EventData eventData;
+
+                if(groupData == null )
+                {
+                    int idSchool = await groupQueries.GetIdSchoolByName( schoolName );
+                    PeriodData periodData = await timedPeriodQueries.GetLastPeriodBySchool( idSchool );
+                    eventData = await eventQueries.GetEventSchoolBylNameAndPeriodId( eventName, periodData.ChildId );
+
+                }
+                else
+                {
+                    eventData = await eventQueries.GetEventSchoolBylNameAndPeriodId( eventName, groupData.ZoneId );
+
+                }
+
+
+                return Ok( eventData );
+            }
+        }
+
 
 
 
