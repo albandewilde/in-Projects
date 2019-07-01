@@ -363,7 +363,7 @@ namespace inProjects.Data.Queries
         public async Task<IEnumerable<AllProjectInfoData>> GetAllProjectTimedByJuryId( int userId, int periodId )
         {
             IEnumerable<AllProjectInfoData> result = await _controller.QueryAsync<AllProjectInfoData>(
-                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo,e.BlockedGrade as IsBlocked" +
+                "SELECT ps.ProjectStudentId,g.GroupName, e.Grade, ps.Logo,e.BlockedGrade as IsBlocked,e.JuryId" +
                 " FROM IPR.tEvaluates e" +
                 " JOIN CK.tActorProfile ap on ap.GroupId = e.JuryId" +
                 " JOIN CK.tGroup g on g.GroupId = e.ProjectId" +
@@ -398,8 +398,8 @@ namespace inProjects.Data.Queries
                   "CountTotalVote =(SELECT Count(*) FROM IPR.tTimedUserNoteProject np JOIN CK.tGroup g on g.GroupId = np.StudentProjectId Where g.ZoneId = @TimePeriodId)" +
                   " FROM  IPR.tProjectStudent ps" +
                   " LEFT OUTER JOIN IPR.tTimedUserNoteProject np on ps.ProjectStudentId = np.StudentProjectId" +
-                  " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ps.ProjectStudentId AND g.ZoneId = @TimePeriodId" +
-                  " WHERE ps.Type = 'I'" + 
+                  " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ps.ProjectStudentId" +
+                  "  WHERE ps.Type = 'I' and g.ZoneId = @TimePeriodId" + 
                   " GROUP BY ps.ProjectStudentId, g.GroupName" +
                   " ORDER BY Average DESC"
                 , new { TimePeriodId = timePeriodId } );

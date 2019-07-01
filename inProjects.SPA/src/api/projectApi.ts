@@ -114,8 +114,8 @@ export async function GetEvaluateProject(idSchool: number): Promise<Project[]> {
     return resp.data
 }
 
-export async function noteProject(idProject: number, newGrade: number,idSchool: number, timedUser: TypeTimedUser): Promise<any> {
-    const resp = await postAsync(`${endpoint}/noteProject?`,{ProjectId: idProject,Grade: newGrade,SchoolId: idSchool,User:timedUser})
+export async function noteProject(idProject: number,idJury : number, newGrade: number,idSchool: number, timedUser: TypeTimedUser): Promise<any> {
+    const resp = await postAsync(`${endpoint}/noteProject?`,{ProjectId: idProject,JuryId: idJury,Grade: newGrade,SchoolId: idSchool,User:timedUser})
     return resp.data
 }
 

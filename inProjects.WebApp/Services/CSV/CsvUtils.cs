@@ -257,8 +257,8 @@ namespace inProjects.WebApp.Services.CSV
                     //Check if the user exists
                     int idJury = await CheckIfUserExists( stObjMap, authenticationInfo, juryInfo.Mail, userName, juryInfo.Prenom, juryInfo.Nom );
 
-                    await groupTable.AddUserAsync( ctx, userId, groupId, idJury );
-                    await groupTable.AddUserAsync( ctx, userId, enterpriseId, idJury );
+                    await groupTable.AddUserAsync( ctx, userId, groupId, idJury,true );
+                    await groupTable.AddUserAsync( ctx, userId, enterpriseId, idJury,true );
 
                     //get the timed user type
                     timedUserType = GetTimedUserType( type );
