@@ -90,9 +90,9 @@ export default class ProjectJuryVote extends Vue {
             console.log(e.mesage)
         }
     }
-   async note(newGrade: number, id: number) {
+   async note(newGrade: number, id: number,idJury : number) {
         try {
-            await noteProject(id, newGrade, this.schoolId, TypeTimedUser.Jury)
+            await noteProject(id, idJury,newGrade, this.schoolId, TypeTimedUser.Jury)
         } catch (e) {
             console.log(e)
         }
@@ -104,7 +104,7 @@ export default class ProjectJuryVote extends Vue {
           cancelButtonText: "Annuler",
           type: "warning"
         }).then(async () => {
-          await this.note(this.projectList[idx].grade, idProject)
+          await this.note(this.projectList[idx].grade, idProject,this.projectList[idx].juryId)
           await this.connection.invoke("RefreshClassment",this.schoolId)
           this.projectList[idx].isNoted = true
         }).catch(() => {

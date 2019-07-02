@@ -24,6 +24,8 @@ namespace inProjects.Data.Data.ProjectStudent
         public string ClassRoom { get; set; }
         public string Sector { get; set; }
         public int ForumNumber { get; set; }
+        public int JuryId { get; set; }
+
 
         public List<string> FirstName = new List<string>();
         public List<string> LastName = new List<string>();
