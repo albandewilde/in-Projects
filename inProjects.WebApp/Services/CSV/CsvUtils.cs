@@ -473,7 +473,7 @@ IN'TECH Paris
     </body>
 </html>";
 
-                    //await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
+                    await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
 
 
 
