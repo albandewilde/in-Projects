@@ -18,95 +18,102 @@ import ProjectJuryVote from "./components/ProjectJuryVote.vue"
 import EventSchool from "./components/EventSchool.vue"
 import ForumResult from "./components/ForumResult.vue"
 import ForumResultPublic from "./components/ForumResultPublic.vue"
+import Test from "./components/Test.vue"
 Vue.use(Router)
 
 export default new Router({
-    routes: [
-        {
-            path: "/",
-            name: "home",
-            component: Home
-        },
-        {
-            path: "/connection",
-            name: "connection",
-            component: Connection,
-        },
-        {
-            path: "/submit_project",
-            name: "submit_project",
-            component: SubmitProject
-        },
-        {
-            path: "/student",
-            name: "student",
-            component: StudentList
-        },
-        {
-            path: "/createPeriod",
-            name: "createPeriod",
-            component: CreatePeriod
-        },
-        {
-            path: "/staffMember",
-            name: "staffMember",
-            component: StaffMemberList
-        },
-        {
-            path: "/plan",
-            name: "plan",
-            component: ForumPlan
-        },
-        {
-            path: "/listPeriod",
-            name: "listPeriod",
-            component: ListPeriod
-        },
-        {
-            path: "/projectList",
-            name: "projectList",
-            component: ProjectList
-        },
-        {
-            path: "/addJury",
-            name: "addJury",
-            component: AddJury
-        },
-        {
-            path: "/MyProfil",
-            name: "MyProfil",
-            component: MyProfil
-        },
-        {
-            path: "/Project/:projectId",
-            name: "Project",
-            component: ProjectDetail
-        },
-        {
-            path: "/ProjectUserVote",
-            name: "ProjectUserVote",
-            component: ProjectUserVote
-        },
-        {
-            path: "/ProjectJuryVote",
-            name: "ProjectJuryVote",
-            component: ProjectJuryVote
-        },
-        {
-            path: "/Events",
-            name: "Events",
-            component: EventSchool
-        },
-        {
-            path: "/ForumResult",
-            name: "ForumResult",
-            component: ForumResult
-        },
-        {
-            path: "/PublicResult",
-            name: "PublicResult",
-            component: ForumResultPublic
-        }
-    ],
-    mode: "history"
+  routes: [
+    {
+      path: "/",
+      name: "home",
+      component: Home
+    },
+    {
+      path: "/connection",
+      name: "connection",
+      component: Connection,
+    },
+    {
+      path: "/submit_project",
+      name: "submit_project",
+      component: SubmitProject
+    },
+    {
+      path: "/student",
+      name: "student",
+      component: StudentList
+    },
+    {
+     path: "/createPeriod",
+     name: "createPeriod",
+     component: CreatePeriod
+    },
+    {
+      path: "/staffMember",
+      name: "staffMember",
+      component: StaffMemberList
+    },
+    {
+      path: "/plan",
+      name: "plan",
+      component: ForumPlan
+    },
+    {
+      path: "/listPeriod",
+      name: "listPeriod",
+      component: ListPeriod
+    },
+    {
+      path: "/projectList",
+      name: "projectList",
+      component: ProjectList
+     },
+     {
+       path: "/addJury",
+       name: "addJury",
+       component: AddJury
+     },
+     {
+      path: "/MyProfil",
+      name: "MyProfil",
+      component: MyProfil
+     },
+     {
+      path: "/Project/:projectId",
+      name: "Project",
+      component: ProjectDetail
+     },
+     {
+      path: "/ProjectUserVote",
+      name: "ProjectUserVote",
+      component: ProjectUserVote
+     },
+     {
+      path: "/ProjectJuryVote",
+      name: "ProjectJuryVote",
+      component: ProjectJuryVote
+     },
+     {
+      path: "/Events",
+      name: "Events",
+      component: EventSchool
+     },
+     {
+      path: "/ForumResult",
+      name: "ForumResult",
+      component: ForumResult
+     },
+     {
+      path: "/PublicResult",
+      name: "PublicResult",
+      component: ForumResultPublic
+     },
+     {
+      path: "/test",
+      name: "Test",
+      component: Test
+     }
+
+  ],
+  mode: "history"
 })

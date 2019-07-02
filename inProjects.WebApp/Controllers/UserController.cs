@@ -87,7 +87,11 @@ namespace inProjects.WebApp.Controllers
                 if(a.ElementAt( 0 ).GroupName == "S01"  || a.ElementAt(0).GroupName == "S02")
                 {
                     a.ElementAt( 0 ).GroupName = a.ElementAt( 0 ).GroupName;
-                }else
+                }else if (a.ElementAt(1).GroupName == "SR")
+                {
+                    a.ElementAt( 0 ).GroupName = a.ElementAt( 0 ).GroupName + " - " + a.ElementAt( 1 ).GroupName;
+                }
+                else
                 {
                     a.ElementAt( 0 ).GroupName = a.ElementAt( 1 ).GroupName + " - " + a.ElementAt( 0 ).GroupName;
                 }

@@ -1,21 +1,18 @@
 <template>
     <div>
-        <font size=5><b>Mon Profile :</b></font> 
-            <br/>
-            <br/>
+        <b class="MyProfil">Mon Profil:</b>
+        <br><br><br><br>   
             <InformationsMyProfil></InformationsMyProfil>
         <br/>
         <br/>
-        <hr>
         <div v-if="CheckUserSchemes('Basic')">
-            <font size=5><b>Editer votre Mot de passe :</b></font> 
-        <br/>
         <br/>
             <PasswordChange></PasswordChange>
-        <hr>
+        <br><hr>
         </div>
         <div>
-             <font size=5><b>Les Projets que vous aimez :</b></font> 
+             <font size=5><b>Les Projets que vous aimez :</b></font>
+             <br>
              <ProjectsUserFav></ProjectsUserFav>
         </div>
         <div v-if="this.whatTimed.find(x => x == 'Student')">
@@ -62,4 +59,10 @@ export default class MyProfil extends Vue {
 
 <style>
 
+.MyProfil{
+    margin-top: 1%;
+    color: #111; 
+    float: left;
+    font-size:43px;    
+}
 </style>
