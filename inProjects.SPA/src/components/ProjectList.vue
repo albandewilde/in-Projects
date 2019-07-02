@@ -160,30 +160,25 @@ export default class ProjectList extends Vue {
     }
 
     async CreatePdfAndSetUpToZip(project :Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet>,index : number) {
+        const sheet =  pdfMake.createPdf(project[index].generate_sheet())
+        sheet.getBlob(async (blob :Blob) => {
+            if(project[index].type =="I")this.zip.file("fiches/ProjetInformatique/"+project[index].name + ".pdf",blob)
+            else this.zip.file("fiches/ProjetFormationHumaine/"+project[index].name + ".pdf",blob)
 
-            const sheet =  pdfMake.createPdf(project[index].generate_sheet())
-
-                sheet.getBlob(async (blob :Blob) => {
-
-                    if(project[index].type =="I")this.zip.file("fiches/ProjetInformatique/"+project[index].name + ".pdf",blob)
-                    else this.zip.file("fiches/ProjetFormationHumaine/"+project[index].name + ".pdf",blob)
-
-                    if(project.length -1 != index){
-                        await this.CreatePdfAndSetUpToZip(project,++index)
-                    }else{
-                     this.zip.generateAsync({type:"blob"})
-                        .then(function(content) {
-                        saveAs(content, "fiches.zip");
-                    });
-                    }
-                 });
-
+            if(project.length -1 != index){
+                await this.CreatePdfAndSetUpToZip(project,++index)
+            }else{
+                this.zip.generateAsync({type:"blob"})
+                .then(function(content) {
+                    saveAs(content, "fiches.zip")
+                })
+            }
+        })
     }
 
     CheckedAuthorize(needToBe: string){
         return this.$store.state.currentUserType.find(x => x == needToBe) != null ? true : false
     }
-
 
     redirect(idProject: number) {
         this.$router.replace("/Project/" + idProject)
@@ -221,13 +216,14 @@ export default class ProjectList extends Vue {
             idx = new School(0, "Unknown")
         }
         let idSchool = idx.schoolId
-
-        for(const project of this.projectList) {
-            if(project.schoolId != idSchool) {
-                let idx = this.projectListToDisplay.indexOf(project)
-                this.projectListToDisplay.splice(idx, 1)     
-            }
-        }
+        // let result = this.projectList.filter(project => project.schoolId == this.schoolChoice)
+                        
+        // for(const project of this.projectList) {
+        //     if(project.schoolId != idSchool) {
+        //         let idx = this.projectListToDisplay.indexOf(project)
+        //         this.projectListToDisplay.splice(idx, 1)     
+        //     }
+        // }
     }
     semesterSelect() {
         let sem = this.semesterChoice.split(" ")
@@ -319,7 +315,6 @@ export default class ProjectList extends Vue {
    background-color: #0099ff;
    color: #fff;
    width: 30%;
-   height: 30px;
    font-size: medium;
    border-color: #0099ff
 }
