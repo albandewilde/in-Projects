@@ -132,7 +132,6 @@ namespace inProjects.TomlHelpers
     {
         public Git git {get; set;}
         public Technologies technologies {get; set;}
-        public Git git {get; set;}
     }
 
     public class ProjectPfh : Project
