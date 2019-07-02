@@ -11,18 +11,17 @@
 
                          
                     </td>
-                    <!-- <td><td>
-                    <td><span style="font-size:30px">{{projectsPublicResult[Math.round(projectsPublicResult.length/2) + index].name}}</span></td>
-                    <td><span style="font-weight: bold; font-size:30px" class="percentage-forum-result-public">{{getPercentage(Math.round(projectsPublicResult.length/2) + index)}}%</span></td>
-                    <td v-if="getPercentage(Math.round(projectsPublicResult.length/2) + index) > 0">
-                        <div class="w3-light" style="width: 25vw">
-                             <div class="w3-blue" :style="'height:30px;width:'+getPercentage(Math.round(projectsPublicResult.length/2) + index) +'%'"></div>
-                         </div>
-
-                           
-                    </td>
-                    <br/>
-                    <br/> -->
+                    
+                    <td></td>
+                    <div v-if="(Math.round(projectsPublicResult.length/2) + index) < projectsPublicResult.length ">
+                        <td><span style="font-size:30px">{{projectsPublicResult[Math.round(projectsPublicResult.length/2) + index].name}}</span></td>
+                        <td><span style="font-weight: bold; font-size:30px" class="percentage-forum-result-public">{{getPercentage(Math.round(projectsPublicResult.length/2) + index)}}%</span></td>
+                        <td v-if="getPercentage(Math.round(projectsPublicResult.length/2) + index) > 0">
+                            <div class="w3-light" style="width: 25vw">
+                                <div class="w3-blue" :style="'height:30px;width:'+getPercentage(Math.round(projectsPublicResult.length/2) + index) +'%'"></div>
+                            </div>
+                        </td>
+                    </div>
         </tr>
 
         </table>
