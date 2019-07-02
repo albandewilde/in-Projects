@@ -2,19 +2,19 @@
     <div>
         <div class="okok">
             <li class="dropdown">
-                <a class="dropbtn">Periode</a>
+                <a class="dropbtn">Gestion des périodes</a>
                 <div class="dropdown-content">
-                    <a @click="redirect('/createPeriod')">Créer une période</a>
-                    <a @click="redirect('/listPeriod')">Voir toutes les periodes</a>
+                    <button @click="redirect('/createPeriod')">Créer une période</button>
+                    <button @click="redirect('/listPeriod')">Voir toutes les périodes</button>
                 </div>        
             </li>
         </div>
         <div class="okok">
             <li class="dropdown">
-                <a class="dropbtn">Liste</a>
+                <a class="dropbtn">Listes</a>
                 <div class="dropdown-content">
-                    <a @click="redirect('/student')">Liste des étudiants</a>
-                    <a  @click="redirect('/staffMember')">Liste des professeurs</a>
+                    <button @click="redirect('/student')">Liste des étudiants</button>
+                    <button  @click="redirect('/staffMember')">Liste des professeurs</button>
                 </div>        
             </li>
         </div>
@@ -22,9 +22,15 @@
             <li class="dropdown">
                 <a class="dropbtn">Forum</a>
                 <div class="dropdown-content">
-                    <a @click="redirect('/plan')">Plan</a>
-                    <a  @click="redirect('/addJury')">Gestion forum</a>
+                    <button @click="redirect('/plan')">Plan</button>
+                    <button @click="redirect('/addJury')">Gestion forum</button>
+                    <button @click="redirect('/ForumResult')">Resultats Forum PI</button>
                 </div>        
+            </li>
+        </div>
+        <div class="okok">
+            <li>
+                <a class="dropbtn" @click="redirect(`/Events`)">Évènements de l'école !</a>
             </li>
         </div>
     </div>
@@ -40,19 +46,16 @@ export default class AdminPanel extends Vue {
 @Prop()
 isCollapse!: boolean
 private connection!: SignalR.HubConnection
-private idZone: number = 4
 private signalr: SignalRGestion = new SignalRGestion()
 
 async created() {
     await this.signalr.connect()
-    console.log("co")
-    console.log(this.$store.state.connectionStaffMember)
 
     // this.$store.state.connectionStaffMember = this.connection
 }
 
  redirect(destination: string) {
-        this.$router.replace(destination)
+        this.$router.push(destination)
     }
 }
 </script>
@@ -66,35 +69,43 @@ async created() {
   text-decoration: none;
  }
 
-
 .dropdown {
   display: inline-block;
+  width: 100%;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: #2d3e4f;
-  min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
 }
 
-.dropdown-content a {
-  color: black;
-  padding: 12px 16px;
-  text-decoration: none;
-  display: block;
-  text-align: left;
+.dropdown-content button {
+  text-align: center;
+  background-color: #2d3e4f;
+  border: none;
+  width: 100%;
+  padding: 15px;
+  height: 100%;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  font-size: 100%;
 }
 
-.dropdown-content a:hover {background-color: red;}
+.dropdown-content button:hover {
+    background-color: #2d4f4f;
+}
 
 .dropdown:hover .dropdown-content {
   display: block;
+  width: 100%;
+  position: relative;
 }
 
-.okok{
+.okok {
     display: block  
 }
 </style>

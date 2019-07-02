@@ -5,7 +5,8 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    connectionStaffMember: SignalR.HubConnection
+    connectionStaffMember: SignalR.HubConnection,
+    currentUserType: Array<string>()
   },
   mutations: {
 

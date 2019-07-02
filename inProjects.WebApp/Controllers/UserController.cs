@@ -87,7 +87,11 @@ namespace inProjects.WebApp.Controllers
                 if(a.ElementAt( 0 ).GroupName == "S01"  || a.ElementAt(0).GroupName == "S02")
                 {
                     a.ElementAt( 0 ).GroupName = a.ElementAt( 0 ).GroupName;
-                }else
+                }else if (a.ElementAt(1).GroupName == "SR")
+                {
+                    a.ElementAt( 0 ).GroupName = a.ElementAt( 0 ).GroupName + " - " + a.ElementAt( 1 ).GroupName;
+                }
+                else
                 {
                     a.ElementAt( 0 ).GroupName = a.ElementAt( 1 ).GroupName + " - " + a.ElementAt( 0 ).GroupName;
                 }
@@ -115,11 +119,11 @@ namespace inProjects.WebApp.Controllers
                 GroupData groupData = await groupQueries.GetIdSchoolByConnectUser( userId );
 
                 // User must have the rights to do this action
-                if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) == false )
-                {
-                    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
-                    return this.CreateResult( result );
-                }
+                //if( await aclQueries.VerifyGrantLevelByUserId( 112, await aclQueries.GetAclIdBySchoolId( groupData.ParentZoneId ), userId, Operator.SuperiorOrEqual ) == false )
+                //{
+                //    Result result = new Result( Status.Unauthorized, "Vous n'etes pas autorisé à utiliser cette fonctionnalité !" );
+                //    return this.CreateResult( result );
+                //}
 
                 bool isInPeriod = await periodServices.CheckInPeriod( _stObjMap, _authenticationInfo );
 

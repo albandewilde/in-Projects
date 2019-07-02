@@ -1,17 +1,19 @@
 <template>
-<div>
-    <el-submenu index="52">
-            <template slot="title">
-                <font-awesome-icon icon="user-tie" size="lg" />
-                <span v-if="isCollapse == false"> UserPanel </span>
-            </template>
-    </el-submenu>
+    <div>
+        <div class="okok">
+            <li class="dropdown">
+                <a class="dropbtn" @click="redirect('/projectList')">Liste des projets</a>
+                <a class="dropbtn" @click="redirect(`/ProjectUserVote`)">Votez pour les projets !</a>  
+                <a class="dropbtn" @click="redirect(`/PublicResult`)">Avancement des votes !</a>  
 
-</div>
+            </li>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue, Prop } from "vue-property-decorator"
+import { FontAwesomeIcon, FontAwesomeLayers, FontAwesomeLayersText } from "@fortawesome/vue-fontawesome"
 
 @Component
 export default class UserPanel extends Vue {
@@ -19,7 +21,7 @@ export default class UserPanel extends Vue {
 isCollapse!: boolean
 
  redirect(destination: string) {
-        this.$router.replace(destination)
+        this.$router.push(destination)
     }
 }
 </script>

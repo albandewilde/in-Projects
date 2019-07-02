@@ -1,21 +1,18 @@
 <template>
     <div>
-        <font size=5><b>Mon Profile :</b></font> 
-            <br/>
-            <br/>
+        <b class="MyProfil">Mon Profil:</b>
+        <br><br><br><br>   
             <InformationsMyProfil></InformationsMyProfil>
-            <br/>
-            <br/>
-            <hr>
+        <br/>
+        <br/>
         <div v-if="CheckUserSchemes('Basic')">
-            <font size=5><b>Editer votre Mot de passe :</b></font> 
-            <br/>
-            <br/>
+        <br/>
             <PasswordChange></PasswordChange>
-            <hr>
+        <br><hr>
         </div>
         <div>
-             <font size=5><b>Les Projets que vous aimez :</b></font> 
+             <font size=5><b>Les Projets que vous aimez :</b></font>
+             <br>
              <ProjectsUserFav></ProjectsUserFav>
         </div>
         <div v-if="this.whatTimed.find(x => x == 'Student')">
@@ -34,6 +31,8 @@ import ProjectsUserFav from "@/components/ProjectsUserFav.vue"
 import ProjectStudentOwn from "@/components/ProjectStudentOwn.vue"
 import { getGroupUserAccessPanel } from "../api/groupApi"
 import { getAuthService, AuthService } from "../modules/authService"
+import { InfosAccount } from '../modules/classes/InfosAccount';
+import { getAccountInfos } from '../api/accountApi';
 
 @Component({
     components: {
@@ -46,13 +45,19 @@ import { getAuthService, AuthService } from "../modules/authService"
 export default class MyProfil extends Vue {
     private ZoneId: number = 4
     private whatTimed: string[] = []
+    private infosUser: InfosAccount = new InfosAccount()
     private authService: AuthService = getAuthService()
 
     async created() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
+        this.infosUser = await getAccountInfos()
     }
 
     CheckUserSchemes(schemes: string) {
+        var email = this.infosUser.userData.email.substring(this.infosUser.userData.email.lastIndexOf("@") +1);
+
+        if(email == 'intechinfo.fr') return false
+
         const exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)
         if ( exist == undefined) return false
         return true
@@ -62,4 +67,10 @@ export default class MyProfil extends Vue {
 
 <style>
 
+.MyProfil{
+    margin-top: 1%;
+    color: #111; 
+    float: left;
+    font-size:43px;    
+}
 </style>

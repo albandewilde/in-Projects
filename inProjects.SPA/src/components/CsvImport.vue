@@ -22,6 +22,7 @@ import { Component, Prop, Watch } from "vue-property-decorator"
 import { getUserList } from "../api/UserApi"
 import axios from "axios"
 import { sendCsv } from "../api/csvApi"
+import { getIdSchoolOfUser } from '../api/schoolApi';
 
 @Component
 export default class CsvImport extends Vue {
@@ -30,7 +31,7 @@ export default class CsvImport extends Vue {
     private file: any = ""
     private env: any = process.env.VUE_APP_BACKEND
     private formData: FormData = new FormData()
-    private idZone: number = 4
+    private idZone: number = 0
     private test!: any
 
     handleFileChange() {
@@ -43,6 +44,8 @@ export default class CsvImport extends Vue {
     }
     async submitFile() {
         try {
+         this.idZone = await getIdSchoolOfUser()
+         console.log(this.idZone)
          this.test = await sendCsv(this.formData)
          this.$refs.file.files[0] = ""
         } catch (e) {

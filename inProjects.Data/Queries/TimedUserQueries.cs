@@ -102,42 +102,21 @@ namespace inProjects.Data.Queries
         {
             int result = await _controller.QuerySingleOrDefaultAsync<int>( "select * from IPR.tTimedJury tu where tu.TimedJuryId = @TimedUserId", new { TimedUserId = timedUserId } );
 
-            if( result != 0 )
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return result != 0 ? true : false;
         }
 
         public async Task<bool> IsStudent( int timedUserId )
         {
             int result = await _controller.QuerySingleOrDefaultAsync<int>( "select * from IPR.tTimedStudent tu where tu.TimedStudentId = @TimedUserId", new { TimedUserId = timedUserId} );
 
-            if(result != 0 )
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return result != 0 ? true : false;
         }
 
         public async Task<bool> IsStaffMember( int timedUserId )
         {
-            int result = await _controller.QuerySingleOrDefaultAsync<int>( "select * from IPR.tTimedStaffMember tu where tu.TimedStaffMemberId = @TimedUserId", new { TimedUserId = timedUserId } );
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( " select * from IPR.tTimedStaffMember tu where tu.TimedStaffMemberId = @TimedUserId   ", new { TimedUserId = timedUserId } );
 
-            if( result != 0 )
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return result != 0 ? true : false;
         }
 
         public async Task<TimedUserData> GetTimedUser( int userId, int periodId )

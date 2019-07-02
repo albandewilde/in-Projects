@@ -11,8 +11,8 @@ export async function SubmitProject(link: string, projectType: number, userId: n
     return [resp.data.item1, resp.data.item2]
 }
 
-export async function getInfosProject(idProject: number, idZone: number): Promise<ProjectDetails> {
-    const response = await getAsync(`${endpoint}/getInfosProject?idProject=${idProject}&idZone=${idZone}`)
+export async function getInfosProject(idProject: number): Promise<ProjectDetails> {
+    const response = await getAsync(`${endpoint}/getInfosProject?idProject=${idProject}`)
     console.log(response)
     const projectDetails: ProjectDetails = new ProjectDetails()
 
