@@ -154,12 +154,20 @@ namespace inProjects.TomlHelpers
 
     public class Semester: IProjectField
     {
-        public int semester {get; set;}
+        public int[] semester {get; set;}
         public string sector {get; set;}
 
         public bool isValid()
         {
-            return new int[]{1, 2, 3, 4, 5}.Contains(this.semester) && new string[]{"IL", "SR", "IL - SR", "None"}.Contains(this.sector);
+            int[] avariable_semester = new int[]{1, 2, 3, 4, 5};
+
+            if (semester == null || semester.Length == 0 || !new string[]{"IL", "SR", "IL - SR", "None"}.Contains(this.sector)) return false;
+
+            foreach (int elem in this.semester) {
+                if (!avariable_semester.Contains(elem)) return false;
+            }
+
+            return true;
         }
     }
 
@@ -245,7 +253,7 @@ namespace inProjects.TomlHelpers
 
     public class Git: IProjectField
     {
-        public string url { get; set; }
+        public string url {get; set;}
 
         public bool isValid()
         {
