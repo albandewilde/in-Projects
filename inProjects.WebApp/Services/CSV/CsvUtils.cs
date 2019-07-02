@@ -155,7 +155,7 @@ namespace inProjects.WebApp.Services.CSV
                     int newUserId = await userTable.CreateUserAsync( ctx, currentIdUser, userName, firstName, lastName );
                     await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
                     await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
-                    await _emailSender.SendMessage( mail, subject, mailContent );
+                    //await _emailSender.SendMessage( mail, subject, mailContent );
                     return newUserId;
                 }
             }
@@ -256,6 +256,9 @@ namespace inProjects.WebApp.Services.CSV
 
                     //Check if the user exists
                     int idJury = await CheckIfUserExists( stObjMap, authenticationInfo, juryInfo.Mail, userName, juryInfo.Prenom, juryInfo.Nom );
+
+                    await groupTable.AddUserAsync( ctx, userId, groupId, idJury,true );
+                    await groupTable.AddUserAsync( ctx, userId, enterpriseId, idJury,true );
 
                     //get the timed user type
                     timedUserType = GetTimedUserType( type );
@@ -470,7 +473,7 @@ IN'TECH Paris
     </body>
 </html>";
 
-                    await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
+                    //await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
 
 
 

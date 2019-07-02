@@ -35,6 +35,9 @@
             <div v-if="o == 'Student'">
                 <StudentPanel></StudentPanel>
             </div>
+             <div v-if="o == 'Jury'">
+                <JuryPanel></JuryPanel>
+            </div>
         </div>
     </div>
   </ul>
@@ -54,6 +57,14 @@ import { getGroupUserAccessPanel } from "../api/groupApi"
 import { getAuthService } from "../modules/authService"
 import * as SignalR from "@aspnet/signalr"
 import { SignalRGestion } from "../modules/classes/SignalR"
+import {GetAllProject} from '../api/projectApi'
+import {GenerateSheet} from "../modules/functions/GenerateSheet"
+import {ProjectSheet} from "../modules/classes/ProjectSheet"
+import {GetAllSheet} from "../api/projectApi"
+import pdfMake from "pdfmake/build/pdfmake"
+import { saveAs } from "file-saver"
+import JSZip from "jszip"
+
 
 @Component({
   components: {
@@ -71,11 +82,13 @@ export default class SideBar extends Vue {
     whatTimed: string[] = []
     ZoneId: number = 4
     authService: AuthService = getAuthService()
+    private projects : Array<ProjectSheet> = []
+    private zip : JSZip = new JSZip()
     private co!: SignalR.HubConnection
     private signalr: SignalRGestion = new SignalRGestion()
 
-@Watch("authService.authenticationInfo.level", { immediate: true, deep: true })
-  async onLevelChange() {
+    @Watch("authService.authenticationInfo.level", { immediate: true, deep: true })
+    async onLevelChange() {
         await this.getAuthorizedAccess()
 
     }
@@ -107,12 +120,15 @@ export default class SideBar extends Vue {
             await this.signalr.connect()
         }
     }
+
     handleOpen(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
+
     handleClose(key: number, keyPath: number) {
         console.log(key, keyPath)
     }
+
     changeCollapse() {
         if(window.innerWidth <= 900) {
           this.isCollapsed = !this.isCollapsed
@@ -132,13 +148,16 @@ export default class SideBar extends Vue {
           document.getElementsByClassName("nav")[0].style.marginBottom="0%"
         }
     }
+
     redirect(destination: string) {
         this.$router.push(destination)
     }
+
     async logout() {
         await this.authService.logout(true)
         this.$router.push("/")
     }
+
     async getAuthorizedAccess() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
         console.log("ok" + this.whatTimed)

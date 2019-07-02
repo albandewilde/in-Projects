@@ -120,6 +120,10 @@ export default class InformationsMyProfil extends Vue {
     }
 
     CheckUserSchemes(schemes: string) {
+        var email = this.infosUser.userData.email.substring(this.infosUser.userData.email.lastIndexOf("@") +1);
+
+        if(email == 'intechinfo.fr') return false
+
         const exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)
         if ( exist == undefined) return false
         return true

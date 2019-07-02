@@ -26,7 +26,19 @@
             </option>
         </select>
     </div>
-    <br><br><br>
+       <div v-if="CheckedAuthorize('Administration')">
+        <el-button
+            v-loading="loading"
+            element-loading-text="Generation..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="white"
+
+            type="primary"
+            @click="GetAllProjectSheet(schoolChoice,typeChoice,semesterChoice)"
+        >
+            Telecharger
+        </el-button>
+    </div>
     <div class="sk-cube-grid" v-if="isLoading">
         <div class="sk-cube sk-cube1"></div>
         <div class="sk-cube sk-cube2"></div>
@@ -38,6 +50,7 @@
         <div class="sk-cube sk-cube8"></div>
         <div class="sk-cube sk-cube9"></div>
     </div>
+ 
     <div class="masonry-layout">
         <div class="masonry-layout-panel masonry-layout-flip--md masonry-layout-flip" v-for="(o, index) in projectListToDisplay.length" :key="o">
             <div class="masonry-layout-panel__content masonry-layout-flip__content">
@@ -67,12 +80,21 @@ import { Component } from "vue-property-decorator"
 import { GetAllProject } from "../api/projectApi"
 import {Project} from "../modules/classes/Project"
 import {verifyProjectFav, favProject } from "../api/submitProjectApi"
+import {ProjectSheet, ProjectPiSheet, ProjectPfhSheet} from "../modules/classes/ProjectSheet"
+import {GetAllSheet} from "../api/projectApi"
+import pdfMake from "pdfmake/build/pdfmake"
+import pdfFonts from "pdfmake/build/vfs_fonts"
+pdfMake.vfs = pdfFonts.pdfMake.vfs
+import { saveAs } from "file-saver"
+import {make_archive} from "../modules/functions/make_archive"
 import {School} from "../modules/classes/School"
-import { getSchools } from "../api/schoolApi"
+import {getSchools} from "../api/schoolApi"
+import JSZip from "jszip"
 
 @Component
 export default class ProjectList extends Vue {
     private projectList: Project[] = []
+    private projects : ProjectSheet[] = []
     private projectListToDisplay: Project[] = []
     private border !: string
     private isFav!: boolean    
@@ -83,6 +105,8 @@ export default class ProjectList extends Vue {
     private schoolChoice: string = "all"
     private typeChoice: string = "all"
     private semesterChoice: string = "all"
+    private zip : JSZip = new JSZip()
+    private loading: boolean = false
     private isLoading: boolean = false
     
     async mounted() {
@@ -119,7 +143,6 @@ export default class ProjectList extends Vue {
             this.isFav = await verifyProjectFav(specificProject.projectStudentId)
             await favProject(specificProject.projectStudentId)
             this.isFav = !this.isFav
-            console.log(this.isFav)
             if (this.isFav) {
                 div.setAttribute("style", "background: #F5CC27 !important;")
             } else {
@@ -135,9 +158,54 @@ export default class ProjectList extends Vue {
         }
         return this.starColor = "#000000 !important;"
     }
-    redirect(idProject: number) {
-         this.$router.push("/Project/" + idProject)
+
+    async CreatePdfAndSetUpToZip(project :Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet>,index : number) {
+
+            const sheet =  pdfMake.createPdf(project[index].generate_sheet())
+
+                sheet.getBlob(async (blob :Blob) => {
+
+                    if(project[index].type =="I")this.zip.file("fiches/ProjetInformatique/"+project[index].name + ".pdf",blob)
+                    else this.zip.file("fiches/ProjetFormationHumaine/"+project[index].name + ".pdf",blob)
+
+                    if(project.length -1 != index){
+                        await this.CreatePdfAndSetUpToZip(project,++index)
+                    }else{
+                     this.zip.generateAsync({type:"blob"})
+                        .then(function(content) {
+                        saveAs(content, "fiches.zip");
+                    });
+                    }
+                 });
+
     }
+
+    CheckedAuthorize(needToBe: string){
+        return this.$store.state.currentUserType.find(x => x == needToBe) != null ? true : false
+    }
+
+
+    redirect(idProject: number) {
+        this.$router.replace("/Project/" + idProject)
+    }
+
+    async GetAllProjectSheet(school: string, type: string, semester: string) {
+        this.loading = true
+
+        let schoolToSend = this.schoolOptions.find(x => x.name == school)
+        if (schoolToSend == undefined) schoolToSend = new School(0,"Unknown")
+        let semesterToSend = parseInt(semester.slice(semester.length - 1,semester.length))
+
+        // get projects form the back
+        let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(schoolToSend.schoolId, type, semesterToSend)
+
+        let index = 0
+        this.zip = new JSZip()
+        await this.CreatePdfAndSetUpToZip(projects,index)
+
+        this.loading = false
+    }
+
     typeSelect() {
         for (const project of this.projectListToDisplay) {
             if (project.type != this.typeChoice) {
@@ -146,6 +214,7 @@ export default class ProjectList extends Vue {
             }
         }
     }
+
     schoolSelect() {
         let idx = this.schoolOptions.find(x => x.name == this.schoolChoice)
         if (idx == undefined) {
