@@ -123,8 +123,8 @@ export default class Submit extends Vue {
         )
 
         futur.catch(() => {
-            this.isSucces = false, this.msg = "Failed to join the server"
-            this.loading = false
+            this.isSucces = false
+            this.msg = "Failed to join the server"
         })
 
         futur.then((result) => {
