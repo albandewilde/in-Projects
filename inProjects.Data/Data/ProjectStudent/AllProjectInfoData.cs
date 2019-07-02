@@ -31,6 +31,7 @@ namespace inProjects.Data.Data.ProjectStudent
         public double Grade { get; set; }
 
         public bool IsBlocked { get; set; }
+        public string Sector { get; set; }
 
 
     }

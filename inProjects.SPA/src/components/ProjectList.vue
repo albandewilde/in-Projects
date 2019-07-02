@@ -1,5 +1,6 @@
 <template>
 <div>
+    {{projectList}}
     <div style="width: 100%;">
         <font-awesome-icon icon="filter" size="lg" /> <b style="margin-left: 10px; margin-right: 15px;">Trier :</b>
         <select @change="schoolSelect()" v-model="schoolChoice" class="selects">
@@ -25,6 +26,10 @@
                 {{item}}
             </option>
         </select>
+        <datalist id="languages" >
+            <option v-for="(o, idx) in projectListToDisplay" :key="idx">{{o.groupName}}</option>
+        </datalist>
+        Chercher un projet: <input type="text" style="width: 20%; border: solid black;" list="languages" v-model="groupName" @change="getProject(groupName)">
     </div>
     <br><br>
     <div class="sk-cube-grid" v-if="isLoading">
@@ -38,12 +43,14 @@
         <div class="sk-cube sk-cube8"></div>
         <div class="sk-cube sk-cube9"></div>
     </div>
-<!--     <div class="masonry-layout">
+     <div class="masonry-layout">
         <div class="masonry-layout-panel masonry-layout-flip--md masonry-layout-flip" v-for="(o, index) in projectListToDisplay.length" :key="o">
             <div class="masonry-layout-panel__content masonry-layout-flip__content">
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--front">
                     <h2>{{projectListToDisplay[index].groupName}}</h2>
-                    <h3>{{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}} </h3>
+                    {{projectListToDisplay[index].semester}} {{projectListToDisplay[index].sector}}
+                    <br>
+                    {{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}}
                     <img :src="projectListToDisplay[index].logo" class="image">
                 </div>
                 <br>
@@ -57,8 +64,8 @@
                 </div>
             </div>
         </div>
-    </div> -->
-    <div class="masonry-layout test">
+    </div> 
+<!--     <div class="masonry-layout test">
         <div class="card-container">
             <div class="card" v-for="(o, index) in projectListToDisplay.length" :key="o" @click="redirect(projectListToDisplay[index].projectStudentId)">
                 <a>
@@ -75,7 +82,7 @@
                 <div class="card--border"></div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     </div>
 </template>
@@ -103,6 +110,7 @@ export default class ProjectList extends Vue {
     private typeChoice: string = "all"
     private semesterChoice: string = "all"
     private isLoading: boolean = false
+    private groupName!: string
     
     async mounted() {
         this.isLoading = true
@@ -202,6 +210,16 @@ export default class ProjectList extends Vue {
             }            
         }
     }
+    getProject(groupName: string){
+        console.log(groupName)
+            for(const project of this.projectListToDisplay) {
+                if(project.groupName == groupName) {
+                    console.log("ok")
+                    this.projectListToDisplay = []
+                    this.projectListToDisplay.push(project)
+            }
+        }
+    }
 }
 </script>
 
@@ -224,10 +242,11 @@ export default class ProjectList extends Vue {
 }
 .masonry-layout-panel__content {
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 0px;
     border-style: solid;
     overflow: hidden;
-    border-color: #167BEB;
+    border-color: black;
+    width: 70%;
 }
 .masonry-layout-flip {
     perspective: 1000;
@@ -245,10 +264,10 @@ export default class ProjectList extends Vue {
 }
 .masonry-layout-flip__panel {
   backface-visibility: hidden;
-  border-radius: 10px;
+  border-radius: 0px;
   height: 100%;
   left: 0;
-  overflow: hidden;
+  overflow: auto;
   position: absolute;
   top: 0;
   width: 100%;
@@ -415,6 +434,7 @@ $darkhighlight: #fde74c;
 }
 .test{
     margin-top: 3px !important;
+    display: inline-block
 }
 
 </style>

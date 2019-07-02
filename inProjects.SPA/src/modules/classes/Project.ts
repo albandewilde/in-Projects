@@ -23,9 +23,10 @@ class Project {
     public grade!: number
     public isBlocked!: boolean
     public schoolId!: number
+    public sector!: string
 
     constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], url: string)
-    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], url: string, projectId: number, type: string, traitId: number, grade: number)
+    constructor(name: string, logo: string, slogan: string, pitch: string, leaderId: number, semester: string, technologies: string[], url: string, projectId: number, type: string, traitId: number, grade: number, sector: string)
     constructor(
         name: string = "",
         logo: string = "",
@@ -39,6 +40,7 @@ class Project {
         type: string = "",
         traitId: number = 0,
         grade: number = 0,
+        sector: string =""
     ) {
         this.projectStudentId = projectStudentId
         this.name = name
@@ -52,6 +54,7 @@ class Project {
         this.technologies = technologies
         this.url = url
         this.grade = grade
+        this.sector = sector
     }
 }
 export { Project }
