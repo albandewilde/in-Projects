@@ -3,27 +3,25 @@
     <div style="width: 100%;">
         <font-awesome-icon icon="filter" size="lg" /> <b style="margin-left: 10px; margin-right: 15px;">Trier :</b>
         <div class="selects">
-            <span class="spans" @click="showSchool = !showSchool">Choisir une école</span>
-            <ul class="listFilter" v-show="showSchool">
+            <span class="spans" @click="toggleSelect('School')">Choisir une école</span>
+            <ul class="listFilter" id="schoolChoices" v-show="showSchool">
                 <li v-for="item in schoolOptions" v-bind:key="item.schoolId">
-                    <input type="checkbox" @click="selectSchool(item)" checked>
-                        {{item.name}}
+                    <label><input type="checkbox" @click="selectSchool(item)" checked />{{item.name}}</label>
                 </li>
             </ul>
-            <span class="spans" @click="showType = !showType">Choisir un type</span>
-            <ul class="listFilter" v-show="showType">
+            <span class="spans" @click="toggleSelect('Type')">Choisir un type de projet</span>
+            <ul class="listFilter" id="typeChoices" v-show="showType">
                 <li>
-                    <input type="checkbox" @click="selectType('I')" checked />Projets informatiques
+                    <label><input type="checkbox" @click="selectType('I')" name="pi" checked />Projets informatiques</label>
                 </li>
                 <li>
-                    <input type="checkbox" @click="selectType('H')" checked />Projets de Formation Humaine
+                    <label><input type="checkbox" @click="selectType('H')" name="pfh" checked />Projets de Formation Humaine</label>                    
                 </li>
             </ul>
-            <span class="spans" @click="showSemesters = !showSemesters">Choisir un semestre</span>
-            <ul class="listFilter" v-show="showSemesters">
+            <span class="spans" @click="toggleSelect('Semesters')">Choisir un semestre</span>
+            <ul class="listFilter" id="semesterChoices" v-show="showSemesters">
                 <li v-for="item in semesters" v-bind:key="item">
-                    <input type="checkbox" @click="selectSemester(item)" checked>
-                        {{item}}
+                    <label><input type="checkbox" @click="selectSemester(item)" checked />{{item}}</label>
                 </li>
             </ul>
         </div>
@@ -261,6 +259,29 @@ export default class ProjectList extends Vue {
             }
         }
     }
+    toggleSelect(obj: string) {
+        switch(obj) {
+            case "School":
+                this.showSchool = !this.showSchool
+                this.showType = false
+                this.showSemesters = false
+                break
+            case "Type":
+                this.showType = !this.showType
+                this.showSchool = false
+                this.showSemesters = false
+                break
+            case "Semesters":
+                this.showSemesters = !this.showSemesters
+                this.showType = false
+                this.showSchool = false
+                break
+            default:
+                this.showSemesters = false
+                this.showType = false
+                this.showSchool = false
+        }
+    }
 }
 </script>
 
@@ -391,14 +412,29 @@ export default class ProjectList extends Vue {
     cursor: pointer;
     margin-top: 3%;
     margin-bottom: 2%;
+    width: 50%;
 }
 .spans {
-    border: 1px solid;
-    padding: 6px;
-    height: 32px;
-    border-radius: 2px;
+    border: 3px solid;
+    padding: 15px;
+    margin-right: 2%;
 }
-.listFilter {
+.selects .listFilter {
     list-style: none;
+    position:absolute;
+    z-index: 50;
+    background-color: grey;
+}
+#schoolChoices {
+
+}
+#typeChoices {
+
+}
+#semesterChoices {
+
+}
+label {
+    cursor: pointer;
 }
 </style>
