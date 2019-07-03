@@ -31,6 +31,8 @@ import ProjectsUserFav from "@/components/ProjectsUserFav.vue"
 import ProjectStudentOwn from "@/components/ProjectStudentOwn.vue"
 import { getGroupUserAccessPanel } from "../api/groupApi"
 import { getAuthService, AuthService } from "../modules/authService"
+import { InfosAccount } from '../modules/classes/InfosAccount';
+import { getAccountInfos } from '../api/accountApi';
 
 @Component({
     components: {
@@ -43,13 +45,19 @@ import { getAuthService, AuthService } from "../modules/authService"
 export default class MyProfil extends Vue {
     private ZoneId: number = 4
     private whatTimed: string[] = []
+    private infosUser: InfosAccount = new InfosAccount()
     private authService: AuthService = getAuthService()
 
     async created() {
         this.whatTimed = await getGroupUserAccessPanel(this.ZoneId)
+        this.infosUser = await getAccountInfos()
     }
 
     CheckUserSchemes(schemes: string) {
+        var email = this.infosUser.userData.email.substring(this.infosUser.userData.email.lastIndexOf("@") +1);
+
+        if(email == 'intechinfo.fr') return false
+
         const exist = this.authService.authenticationInfo.user.schemes.find(x => x.name == schemes)
         if ( exist == undefined) return false
         return true

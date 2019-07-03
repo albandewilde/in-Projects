@@ -27,7 +27,7 @@ namespace inProjects.WebApp.Controllers
         }
 
         [HttpGet("getAllGroupTemplate")]
-        public async Task<List<GroupPeriod>> GetAllGroupTemplate()
+        public async Task<List<GroupPeriod>> GetAllGroupTemplate(int idZone)
         {
             var sqlDataBase = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
 
@@ -35,7 +35,7 @@ namespace inProjects.WebApp.Controllers
             {
                 GroupQueries groupQueries = new GroupQueries( ctx, sqlDataBase );
 
-                List<string> listGroups = await groupQueries.GetAllGroupByZoneId( 4 );
+                List<string> listGroups = await groupQueries.GetAllGroupByZoneId( idZone );
 
                 List<GroupPeriod> list = new List<GroupPeriod>();
 

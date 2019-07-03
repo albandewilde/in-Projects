@@ -11,8 +11,6 @@ class SignalRGestion {
             .withUrl(process.env.VUE_APP_BACKEND + "/staffMemberHub").build()
         await this.connection.start()
         await this.connection.invoke("JoinRoom", this.idZone)
-        console.log("store")
-        console.log(store.state.connectionStaffMember)
         store.state.connectionStaffMember = this.connection
     }
 }

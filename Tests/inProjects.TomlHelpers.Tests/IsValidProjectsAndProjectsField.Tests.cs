@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace inProjects.TomlHelpers.Tests
@@ -112,17 +113,17 @@ namespace inProjects.TomlHelpers.Tests
             Assert.That(logo.isValid(), Is.EqualTo(expected));
         }
 
-        [TestCase(0, "IL", false)]
-        [TestCase(2, "IR", false)]
-        [TestCase(6, "SR", false)]
+        [TestCase(new int[]{0}, "IL", false)]
+        [TestCase(new int[]{2}, "IR", false)]
+        [TestCase(new int[]{6}, "SR", false)]
         [TestCase(null, "SR", false)]
-        [TestCase(5, "", false)]
-        [TestCase(3, "SR/IL", false)]
-        [TestCase(2, null, false)]
-        [TestCase(2, "SR", true)]
-        [TestCase(5, "IL - SR", true)]
-        [TestCase(1, "None", true)]
-        public void semester_valid_method(int sem, string sector, bool expected)
+        [TestCase(new int[]{5}, "", false)]
+        [TestCase(new int[]{3}, "SR/IL", false)]
+        [TestCase(new int[]{2}, null, false)]
+        [TestCase(new int[]{2}, "SR", true)]
+        [TestCase(new int[]{5}, "IL - SR", true)]
+        [TestCase(new int[]{1}, "None", true)]
+        public void semester_valid_method(int[] sem, string sector, bool expected)
         {
             Semester semester = new Semester();
             semester.semester = sem;
