@@ -1,29 +1,25 @@
 <template>
     <div>
-        <span style="font-size:200%">Créer un évenement</span>
-           <br/>
-
-        <el-form :label-position="'top'" ref="form" :model="event" label-width="120px" inline=true>
-            <el-form-item label="Nom de l'évènement">
-                <el-select ref="select" v-model="value" placeholder="Forum Pi" v-validate="'required'">
-                    <el-option  v-for="(item,index) in select" :key="index" :label="select[index]" :value="select[index]" />
-                </el-select>
-                <br/>
-                <div v-if="value == 'Autre'">
-                    <el-input  v-validate.immediate="'required_if:select,Autre'" placeholder="Precisez ici" style="width: 20%" type="text" v-model="event.name" ></el-input>
+        <details>
+            <summary><span style="font-size:200%">Créer un évenement</span></summary>
+            <form :label-position="'top'" ref="form" :model="event"  class="form-inline">
+                <label>Nom de l'évènement</label>
+                    <select ref="select" v-model="value" v-validate="'required'" style="width: 40%">
+                        <option  v-for="(item,index) in select" :key="index" :label="select[index]" :value="select[index]" />
+                    </select>
+                    <br/>
+                    <div v-if="value == 'Autre'">
+                        <input  v-validate.immediate="'required_if:select,Autre'" placeholder="Precisez ici"  type="text" v-model="event.name" >
+                    </div>
+                <label>Date de début</label>
+                    <el-date-picker placeholder="Selectionnez date et horaire" type="datetime" :clearable="false" v-model="event.begDate" > </el-date-picker>  
+                <label>Date de fin</label>
+                    <el-date-picker placeholder="Selectionnez date et horaire"  type="datetime" :clearable="false" v-model="event.endDate" > </el-date-picker>  
+                <div>
+                    <button type="button" class="button" @click="onSubmit">Create</button>
                 </div>
-            </el-form-item>            
-            <el-form-item label="Date de début">
-                <el-date-picker placeholder="Selectionnez date et horaire" type="datetime" :clearable="false" v-model="event.begDate" > </el-date-picker>  
-            </el-form-item>
-            <el-form-item label="Date de fin">
-                 <el-date-picker placeholder="Selectionnez date et horaire"  type="datetime" :clearable="false" v-model="event.endDate" > </el-date-picker>  
-            </el-form-item>
-            <div>
-                <el-button type="primary" @click="onSubmit">Create</el-button>
-            </div>
-        </el-form>
-
+            </form>
+        </details>
         <br/>
         <br/>
         <span style="font-size:200%">Calendrier des évenements</span>

@@ -50,7 +50,7 @@ namespace inProjects.WebApp.Services.CSV
             using( var reader = new StreamReader( streamResult, Encoding.UTF8 ) )
             using( var csv = new CsvReader( reader ) )
             {
-                csv.Configuration.Delimiter = ";";
+                //csv.Configuration.Delimiter = ";";
                 var records = csv.GetRecords<UserList>();
                 var studentInfo = records.ToList();
                 foreach(var e in studentInfo )

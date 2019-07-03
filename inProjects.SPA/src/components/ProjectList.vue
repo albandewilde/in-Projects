@@ -27,20 +27,12 @@
                 </li>
             </ul>
         </div>
+        <datalist id="languages" >
+            <option v-for="(o, idx) in projectListToDisplay" :key="idx">{{o.groupName}}  ({{formatDateMonth(o.begDate)}}) </option>
+        </datalist>
+        Chercher un projet: <input type="text" style="width: 20%; border: solid black;" list="languages" v-model="groupName" @change="getProject(groupName)">
     </div>
-    <div v-if="CheckedAuthorize('Administration')">
-        <el-button
-            v-loading="loading"
-            element-loading-text="Generation..."
-            element-loading-spinner="el-icon-loading"
-            element-loading-background="white"
-
-            type="primary"
-            @click="GetAllProjectSheet(schoolChoice,typeChoice,semesterChoice)"
-        >
-            Telecharger
-        </el-button>
-    </div>
+    <br><br>
     <div class="sk-cube-grid" v-if="isLoading">
         <div class="sk-cube sk-cube1"></div>
         <div class="sk-cube sk-cube2"></div>
@@ -52,13 +44,14 @@
         <div class="sk-cube sk-cube8"></div>
         <div class="sk-cube sk-cube9"></div>
     </div>
- 
-    <div class="masonry-layout">
+     <div class="masonry-layout">
         <div class="masonry-layout-panel masonry-layout-flip--md masonry-layout-flip" v-for="(o, index) in projectListToDisplay.length" :key="o">
             <div class="masonry-layout-panel__content masonry-layout-flip__content">
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--front">
                     <h2>{{projectListToDisplay[index].groupName}}</h2>
-                    <h3>{{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}} </h3>
+                    {{projectListToDisplay[index].semester}} {{projectListToDisplay[index].sector}}
+                    <br>
+                    {{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}}
                     <img :src="projectListToDisplay[index].logo" class="image">
                 </div>
                 <br>
@@ -73,7 +66,7 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -113,7 +106,8 @@ export default class ProjectList extends Vue {
     private showSemesters: boolean = false
     private showType: boolean = false
     private showSchool: boolean = false
-
+    private groupName!: string
+    
     async mounted() {
         this.isLoading = true
         this.projectList  = await GetAllProject()
@@ -138,6 +132,10 @@ export default class ProjectList extends Vue {
     formatDate(date: Date) {
         const newDate = date.toString()
         return newDate.substr(0, 10)
+    }
+    formatDateMonth(date: Date){
+        const newDate = date.toString()
+        return newDate.substr(0, 7)
     }
     getType(specificProject: Project) {
         if ( specificProject.type == "I" ) return this.border = "red 1px solid"
@@ -253,13 +251,24 @@ export default class ProjectList extends Vue {
             })
         this.projectListToDisplay = result
     }
+    getProject(groupName: string){
+        console.log(groupName)
+            for(const project of this.projectListToDisplay) {
+                if(project.groupName == groupName) {
+                    console.log("ok")
+                    this.projectListToDisplay = []
+                    this.projectListToDisplay.push(project)
+            }
+        }
+    }
 }
 </script>
 
-<style>
+<style <style lang="scss" scoped>
+
 .image{
-      width: 100%; 
-      height: 300px;
+      width: 250px; 
+      height: 250px;
 }
 .projectList{
     position: relative;
@@ -274,10 +283,11 @@ export default class ProjectList extends Vue {
 }
 .masonry-layout-panel__content {
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 0px;
     border-style: solid;
     overflow: hidden;
-    border-color: #167BEB;
+    border-color: black;
+    width: 70%;
 }
 .masonry-layout-flip {
     perspective: 1000;
@@ -291,14 +301,14 @@ export default class ProjectList extends Vue {
 }
 .masonry-layout-flip__panel--back {
   transform: rotateY(180deg);
-  background: linear-gradient(rgb(13, 102, 219, 1), rgb(68, 218, 229))
+  background: linear-gradient(rgb(13, 102, 219), rgb(68, 218, 229))
 }
 .masonry-layout-flip__panel {
   backface-visibility: hidden;
-  border-radius: 10px;
+  border-radius: 0px;
   height: 100%;
   left: 0;
-  overflow: hidden;
+  overflow: auto;
   position: absolute;
   top: 0;
   width: 100%;
@@ -370,7 +380,10 @@ export default class ProjectList extends Vue {
   } 35% {
     -webkit-transform: scale3D(0, 0, 1);
             transform: scale3D(0, 0, 1);
-  } 
+  } }
+.test{
+    margin-top: 3px !important;
+    display: inline-block
 }
 
 .selects {

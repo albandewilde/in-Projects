@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="maincal">
         <div class="calendar-parent">
             <calendar-view
                 :events="events"
@@ -77,7 +77,7 @@ import {Event} from "../modules/classes/EventSchool"
                 this.$root.$on('AddEvent', (event) =>{
                     this.AddEvent(event)
                 })
-
+                    
                     this.eventsInfo.forEach(element => {
                     this.AddEvent(element)
                 })
@@ -130,6 +130,16 @@ import {Event} from "../modules/classes/EventSchool"
                 list.endDate = event.endDate
                 list.id = event.eventId
                 list.title = event.name
+                if(list.title.startsWith("ForumPI")){
+                    console.log("ok")
+                    list.classes = "orange"
+                }
+                if(list.title.startsWith("JPO")){
+                    list.classes = "purple"
+                }
+                if(list.title.startsWith("Projet sur scene")){
+                    list.classes = "blue"
+                }
                 this.events.push(list)
             },
 
@@ -210,6 +220,116 @@ import {Event} from "../modules/classes/EventSchool"
 	min-width: 30rem;
 	max-width: 100rem;
 	min-height: 50rem;
-    margin-left: 5%
+   margin-left: 2%
+}
+ .maincal{
+     height: 79.9vh;
+ }
+
+
+
+
+/*
+**************************************************************
+This theme is the default shipping theme, it includes some
+decent defaults, but is separate from the calendar component
+to make it easier for users to implement their own themes w/o
+having to override as much.
+**************************************************************
+*/
+
+/* Header */
+
+.theme-default .cv-header,
+.theme-default .cv-header-day {
+	background-color: white;
+}
+
+.theme-default .cv-header .periodLabel {
+	font-size: 1.5em;
+}
+
+.theme-default .cv-header button {
+	color: black;
+}
+
+.theme-default .cv-header button:disabled {
+	color: white;
+	background-color: white;
+}
+
+/* Grid */
+
+.theme-default .cv-day.past {
+	background-color: white;
+}
+
+.theme-default .cv-day.outsideOfMonth {
+	background-color: #b6b3b3;
+}
+
+.theme-default .cv-day.today {
+	background-color: rgb(174, 221, 178);
+}
+
+/* Events */
+
+.theme-default .cv-event {
+	border-color: #e0e0f0;
+	border-radius: 0.5em;
+	background-color: #c2b05e;
+	text-overflow: ellipsis;
+    border-radius: 0%
+}
+
+.theme-default .cv-event.purple {
+	background-color: #ca9bf7;
+	border-color: #ca9bf7;
+}
+
+.theme-default .cv-event.orange {
+	background-color: #a53d3d;
+	border-color: #a53d3d;
+}
+
+.theme-default .cv-event.blue {
+	background-color: #5272ad;
+	border-color: #5272ad;
+}
+
+.theme-default .cv-event.continued::before,
+.theme-default .cv-event.toBeContinued::after {
+	content: " \21e2 ";
+	color: #999;
+}
+
+.theme-default .cv-event.toBeContinued {
+	border-right-style: none;
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.theme-default .cv-event.isHovered.hasUrl {
+	text-decoration: underline;
+}
+
+.theme-default .cv-event.continued {
+	border-left-style: none;
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+/* Event Times */
+
+.theme-default .cv-event .startTime,
+.theme-default .cv-event .endTime {
+	font-weight: bold;
+	color: #666;
+}
+
+/* Drag and drop */
+
+.theme-default .cv-day.draghover {
+	box-shadow: inset 0 0 0.2em 0.2em yellow;
 }
 </style>
