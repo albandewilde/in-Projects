@@ -4,7 +4,7 @@
         <tr v-for="(item, index) in  projectsPublicResult.slice(0, Math.round(projectsPublicResult.length/2))" :key="index">
                     <td><span style="font-size:30px"> {{item.name}}</span></td>
                     <td><span style="font-weight: bold; font-size:30px" class="percentage-forum-result-public">{{getPercentage(index)}}%</span></td>
-                    <td v-if="getPercentage(index) > 0">
+                    <td >
                         <div class="w3-light" style="width: 25vw">
                              <div class="w3-blue" :style="'height:30px;width:'+getPercentage(index) +'%'"></div>
                          </div>
@@ -12,11 +12,10 @@
                          
                     </td>
                     
-                    <td></td>
                     <div v-if="(Math.round(projectsPublicResult.length/2) + index) < projectsPublicResult.length ">
                         <td><span style="font-size:30px">{{projectsPublicResult[Math.round(projectsPublicResult.length/2) + index].name}}</span></td>
                         <td><span style="font-weight: bold; font-size:30px" class="percentage-forum-result-public">{{getPercentage(Math.round(projectsPublicResult.length/2) + index)}}%</span></td>
-                        <td v-if="getPercentage(Math.round(projectsPublicResult.length/2) + index) > 0">
+                        <td>
                             <div class="w3-light" style="width: 25vw">
                                 <div class="w3-blue" :style="'height:30px;width:'+getPercentage(Math.round(projectsPublicResult.length/2) + index) +'%'"></div>
                             </div>
@@ -41,19 +40,24 @@ export default class ForumResultPublic extends Vue {
     async created(){
         this.projectsPublicResult = await getAllPublicNote()
         console.log(this.projectsPublicResult)
-        this.diviseur = this.projectsPublicResult[0].countTotalVote * 20
-        if(this.diviseur ==0) this.diviseur = 20
+
+        const reducer = (accumulator : number, currentValue : ProjectForumResult) => accumulator + currentValue.average;
+
+        this.diviseur = this.projectsPublicResult.reduce(reducer,0);
+        if(this.diviseur ==0) this.diviseur = 1
         setInterval(this.update, 18000)
     }
 
     async update(){
         this.projectsPublicResult = await getAllPublicNote()
-        this.diviseur = this.projectsPublicResult[0].countTotalVote * 20
+        const reducer = (accumulator : number, currentValue : ProjectForumResult) => accumulator + currentValue.average;
+
+        this.diviseur = this.projectsPublicResult.reduce(reducer,0);
     }
 
     getPercentage(index: number){
-       
-       let percentage = Math.round(((this.projectsPublicResult[index].average/this.diviseur)*100))
+       let number = this.projectsPublicResult[index].average/this.diviseur * 100
+       let percentage = number.toFixed(2)
        return percentage
     }
 }
