@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="forumresult">
         <div v-for="(o, idx) in projects" :key="idx">             
             <el-card :class="'box-card-'+idx">
                 <div slot="header" class="clearfix">
@@ -108,4 +108,7 @@ export default class ForumResult extends Vue {
     background: #ad713d
 }
 
+.forumresult{
+    height: 100vh;
+}
 </style>

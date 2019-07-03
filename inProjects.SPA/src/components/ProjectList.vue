@@ -1,6 +1,5 @@
 <template>
 <div>
-    {{projectList}}
     <div style="width: 100%;">
         <font-awesome-icon icon="filter" size="lg" /> <b style="margin-left: 10px; margin-right: 15px;">Trier :</b>
         <select @change="schoolSelect()" v-model="schoolChoice" class="selects">
@@ -27,7 +26,7 @@
             </option>
         </select>
         <datalist id="languages" >
-            <option v-for="(o, idx) in projectListToDisplay" :key="idx">{{o.groupName}}</option>
+            <option v-for="(o, idx) in projectListToDisplay" :key="idx">{{o.groupName}}  ({{formatDateMonth(o.begDate)}}) </option>
         </datalist>
         Chercher un projet: <input type="text" style="width: 20%; border: solid black;" list="languages" v-model="groupName" @change="getProject(groupName)">
     </div>
@@ -134,6 +133,10 @@ export default class ProjectList extends Vue {
     formatDate(date: Date) {
         const newDate = date.toString()
         return newDate.substr(0, 10)
+    }
+    formatDateMonth(date: Date){
+        const newDate = date.toString()
+        return newDate.substr(0, 7)
     }
     getType(specificProject: Project) {
         if ( specificProject.type == "I" ) return this.border = "red 1px solid"
@@ -353,85 +356,7 @@ export default class ProjectList extends Vue {
   } 35% {
     -webkit-transform: scale3D(0, 0, 1);
             transform: scale3D(0, 0, 1);
-  } 
-}
-$highlight: #5bc0eb;
-$darkhighlight: #fde74c;
-
-.card-container {
-	.card {
-		font-weight: bold;
-		position: relative;
-        width: 100%;
-        z-index: 3;
-		a {
-			padding: 15px;
-			width: 70%;
-			height: 400px;
-			border: 2px solid black;
-			background: white;
-			text-decoration: none;
-			color: black;
-			display: block;
-            transition: 0.25s ease;
-			&:hover {
-				transform: translate(-30px, -30px);
-				border-color: $highlight;
-				.card--display {
-					display: none;
-				}
-				.card--hover {
-					display: block;
-				}
-			}
-			.card--display {
-				i {
-					font-size: 60px;
-					margin-top: 180px;
-				}
-				h2 {
-					margin: 20px 0 0;
-				}
-			}
-			.card--hover {
-				display: none;
-				h2 {
-					margin: 20px 0;
-				}
-				p {
-					font-weight: normal;
-					line-height: 1.5;
-					&.link {
-						margin: 20px 0 0;
-						font-weight: bold;
-						color: $highlight;
-					}
-				}
-			}
-		}
-		.card--border {
-			position: absolute;
-			width: 70%;
-			height: 100%;
-			left: 0;
-			top: 0;
-			border: 2px dashed black;
-            z-index: -1;
-		}
-		&.card--dark {
-			a {
-				color: white;
-				background-color: black;
-				border-color: black;
-				.card--hover {
-					.link {
-						color: $darkhighlight;
-					}
-				}
-			}
-		}
-	}
-}
+  } }
 .test{
     margin-top: 3px !important;
     display: inline-block

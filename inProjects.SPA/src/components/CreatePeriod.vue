@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="create">
         <details>
             <summary style="padding-top: 1%; text-align:left;">Créer une nouvelle période</summary> 
             <br>
@@ -159,6 +159,9 @@ export default class CreatePeriod extends Vue {
 
 
 <style>
+.create{
+    height: 100vh;
+}
    .list-groups-period {
         margin-left: 1%;
       
