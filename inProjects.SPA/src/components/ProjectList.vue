@@ -409,7 +409,6 @@ export default class ProjectList extends Vue {
 
 .selects {
     display: inline-block;
-    cursor: pointer;
     margin-top: 3%;
     margin-bottom: 2%;
     width: 50%;
@@ -417,27 +416,28 @@ export default class ProjectList extends Vue {
 .spans {
     border: 3px solid;
     padding: 15px;
+    cursor: pointer;
     margin-right: 2%;
 }
 .selects .listFilter {
     list-style: none;
     position:absolute;
-    z-index: 50;
+    z-index: 1;
     background-color: white;
-    // transform: translate(53%, -2px);
     padding: 5px 40px 5px 40px;
+    border: 3px solid;
 }
 #schoolChoices {
     top: 7.2%;
-    left: 32.4%;
+    left: 32.2%;
 }
 #typeChoices {
     top: 7.2%;
-    left: 39%;
+    left: 38.8%;
 }
 #semesterChoices {
     top: 7.2%;
-    left: 54.4%;
+    left: 54.2%;
 }
 label {
     cursor: pointer;
