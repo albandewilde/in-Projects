@@ -216,7 +216,8 @@ export default class ProjectList extends Vue {
     getProject(groupName: string){
         console.log(groupName)
             for(const project of this.projectListToDisplay) {
-                if(project.groupName == groupName) {
+                console.log(project.groupName.startsWith(groupName))
+                if(groupName.startsWith(project.groupName)) {
                     console.log("ok")
                     this.projectListToDisplay = []
                     this.projectListToDisplay.push(project)

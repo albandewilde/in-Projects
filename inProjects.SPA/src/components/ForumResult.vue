@@ -1,6 +1,6 @@
 <template>
     <div class="forumresult">
-        <div v-for="(o, idx) in projects" :key="idx">             
+        <div v-for="(o, idx) in projects" :key="idx" style="float: left">             
             <el-card :class="'box-card-'+idx">
                 <div slot="header" class="clearfix">
                     <span>{{o.name}}</span>
@@ -29,6 +29,7 @@
             <br/>
         </div>
         <el-button @click="DownloadExcel()"> Telecharger les résultats </el-button>
+        
     </div>
 </template>
 
@@ -97,18 +98,23 @@ export default class ForumResult extends Vue {
 }
 </script>
 
-<style>
+<style <style lang="scss">
+
 .box-card-0{
-    background: gold
+    background: gold;
 }
 .box-card-1{
-    background: silver
+    background: silver;
+
 }
 .box-card-2{
-    background: #ad713d
+    background: #ad713d;
+
+
 }
 
 .forumresult{
     height: 100vh;
 }
+
 </style>
