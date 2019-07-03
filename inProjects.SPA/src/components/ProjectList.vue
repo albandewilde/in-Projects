@@ -423,16 +423,21 @@ export default class ProjectList extends Vue {
     list-style: none;
     position:absolute;
     z-index: 50;
-    background-color: grey;
+    background-color: white;
+    // transform: translate(53%, -2px);
+    padding: 5px 40px 5px 40px;
 }
 #schoolChoices {
-
+    top: 7.2%;
+    left: 32.4%;
 }
 #typeChoices {
-
+    top: 7.2%;
+    left: 39%;
 }
 #semesterChoices {
-
+    top: 7.2%;
+    left: 54.4%;
 }
 label {
     cursor: pointer;
