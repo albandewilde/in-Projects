@@ -394,6 +394,9 @@ export default class ProjectList extends Vue {
 }
 .spans {
     border: 1px solid;
+    padding: 6px;
+    height: 32px;
+    border-radius: 2px;
 }
 .listFilter {
     list-style: none;
