@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="userVote">
         <el-select @change="change()" v-model="options" placeholder="Select">
             <el-option v-for="item in schoolOptions" :key="item.schoolId" :value="item.name">
             </el-option>
@@ -33,7 +33,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { GetAllProject, GetAllTypeProjectsOfSchool, noteProject } from "../api/projectApi"
+import { GetAllProject, GetAllTypeProjectsOfSchool, noteProjectUser } from "../api/projectApi"
 import { getSchools } from "../api/schoolApi"
 import {Project} from "../modules/classes/Project"
 import {School} from "../modules/classes/School"
@@ -103,7 +103,7 @@ export default class ProjectUserVote extends Vue {
    async note(newGrade: number, id: number) {
         try {
             const grade = newGrade * this.numberMax
-            await noteProject(id, grade, this.schoolId, TypeTimedUser.Anon)
+            await noteProjectUser(id, grade, this.schoolId, TypeTimedUser.Anon)
         } catch (e) {
             console.log(e)
         }
@@ -116,5 +116,8 @@ export default class ProjectUserVote extends Vue {
 </script>
 
 <style>
+.userVote{
+height: 100vh
+}
 
 </style>

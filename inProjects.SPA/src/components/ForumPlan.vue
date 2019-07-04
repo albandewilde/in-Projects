@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="forumplan">
     <div id="plan">
         <chacheli-designer 
             @chacheli-closed="closeChacheli"
@@ -137,13 +137,15 @@ export default {
 
 <style>
 #plan {
-	height: 120vh;
+	height: 90vh;
 	display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 #saveButton {
-    margin: 0 0 0 90%;
+    margin-left: 88%;
+    margin-bottom: 1%;
     position: sticky;
 }
 
@@ -168,12 +170,13 @@ body {
 .chacheli-designer-layout .chacheli .content {
     color: #000000;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 12px;
     border: none;
 }
 #projectTable {
     color: #000000;
     font-weight: 700;
+    left: 20%;
 }
 .el-table .empty-row td:last-child {
     background: white;
@@ -208,4 +211,6 @@ body {
 .el-table .E0S-row td:last-child {
     background: #84bd5a;
 }
+
+
 </style>

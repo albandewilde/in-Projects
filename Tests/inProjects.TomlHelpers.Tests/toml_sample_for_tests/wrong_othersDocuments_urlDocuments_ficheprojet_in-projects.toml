@@ -2,7 +2,7 @@
 project_name = "In'Projects"
 
 [semester]
-semester = 5
+semester = [5]
 sector = "IL"
 
 [technologies]

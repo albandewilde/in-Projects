@@ -56,8 +56,8 @@ namespace inProjects.WebApp.Controllers
                 if( groupData == null || groupData.ParentZoneId == 0 )
                 {
                     //if user not in school default by school id In'TECH
-                    int idSchool = await groupQueries.GetIdSchoolByName( "IN'TECH" );
-                    return Ok( idSchool );
+                   // int idSchool = await groupQueries.GetIdSchoolByName( "IN'TECH" );
+                    return Ok( groupData.ZoneId );
                 }
 
                 return Ok(groupData.ParentZoneId);

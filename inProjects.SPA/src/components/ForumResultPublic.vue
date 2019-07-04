@@ -1,32 +1,26 @@
 <template>
     <div class="forum-result-public">
         <table class="table-forum-result-public">
-        <tr v-for="(item,index) in projectsPublicResult.slice(0, projectsPublicResult.length/2)" :key="index">
+        <tr v-for="(item, index) in  projectsPublicResult.slice(0, Math.round(projectsPublicResult.length/2))" :key="index">
                     <td><span style="font-size:30px"> {{item.name}}</span></td>
                     <td><span style="font-weight: bold; font-size:30px" class="percentage-forum-result-public">{{getPercentage(index)}}%</span></td>
-                    <td v-if="getPercentage(index) > 0">
+                    <td >
                         <div class="w3-light" style="width: 25vw">
                              <div class="w3-blue" :style="'height:30px;width:'+getPercentage(index) +'%'"></div>
                          </div>
 
-                           <!-- <div class="w3-light-grey" style="width: 100vw">
-                                <div class="w3-container w3-green" :style="'width:'+getPercentage(index)+'%'">a</div>
-                         </div> -->
+                         
                     </td>
-                    <td><td>
-                    <td><span style="font-size:30px">{{projectsPublicResult[projectsPublicResult.length/2 + index].name}}</span></td>
-                    <td><span style="font-weight: bold; font-size:30px" class="percentage-forum-result-public">{{getPercentage(projectsPublicResult.length/2 + index)}}%</span></td>
-                    <td v-if="getPercentage(projectsPublicResult.length/2 + index) > 0">
-                        <div class="w3-light" style="width: 25vw">
-                             <div class="w3-blue" :style="'height:30px;width:'+getPercentage(projectsPublicResult.length/2 + index) +'%'"></div>
-                         </div>
-
-                           <!-- <div class="w3-light-grey" style="width: 100vw">
-                                <div class="w3-container w3-green" :style="'width:'+getPercentage(index)+'%'">a</div>
-                         </div> -->
-                    </td>
-                    <br/>
-                    <br/>
+                    
+                    <div v-if="(Math.round(projectsPublicResult.length/2) + index) < projectsPublicResult.length ">
+                        <td><span style="font-size:30px">{{projectsPublicResult[Math.round(projectsPublicResult.length/2) + index].name}}</span></td>
+                        <td><span style="font-weight: bold; font-size:30px" class="percentage-forum-result-public">{{getPercentage(Math.round(projectsPublicResult.length/2) + index)}}%</span></td>
+                        <td>
+                            <div class="w3-light" style="width: 25vw">
+                                <div class="w3-blue" :style="'height:30px;width:'+getPercentage(Math.round(projectsPublicResult.length/2) + index) +'%'"></div>
+                            </div>
+                        </td>
+                    </div>
         </tr>
 
         </table>
@@ -45,18 +39,25 @@ export default class ForumResultPublic extends Vue {
 
     async created(){
         this.projectsPublicResult = await getAllPublicNote()
-        this.diviseur = this.projectsPublicResult[0].countTotalVote * 20
+        console.log(this.projectsPublicResult)
+
+        const reducer = (accumulator : number, currentValue : ProjectForumResult) => accumulator + currentValue.average;
+
+        this.diviseur = this.projectsPublicResult.reduce(reducer,0);
+        if(this.diviseur ==0) this.diviseur = 1
         setInterval(this.update, 18000)
     }
 
     async update(){
         this.projectsPublicResult = await getAllPublicNote()
-        this.diviseur = this.projectsPublicResult[0].countTotalVote * 20
+        const reducer = (accumulator : number, currentValue : ProjectForumResult) => accumulator + currentValue.average;
+
+        this.diviseur = this.projectsPublicResult.reduce(reducer,0);
     }
 
     getPercentage(index: number){
-       let percentage = Math.round(((this.projectsPublicResult[index].average/this.diviseur)*100))
-       console.log("width:" + percentage + "%")
+       let number = this.projectsPublicResult[index].average/this.diviseur * 100
+       let percentage = number.toFixed(2)
        return percentage
     }
 }

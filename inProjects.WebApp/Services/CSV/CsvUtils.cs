@@ -50,7 +50,7 @@ namespace inProjects.WebApp.Services.CSV
             using( var reader = new StreamReader( streamResult, Encoding.UTF8 ) )
             using( var csv = new CsvReader( reader ) )
             {
-                csv.Configuration.Delimiter = ";";
+                //csv.Configuration.Delimiter = ";";
                 var records = csv.GetRecords<UserList>();
                 var studentInfo = records.ToList();
                 foreach(var e in studentInfo )
@@ -155,7 +155,7 @@ namespace inProjects.WebApp.Services.CSV
                     int newUserId = await userTable.CreateUserAsync( ctx, currentIdUser, userName, firstName, lastName );
                     await actorEmail.AddEMailAsync( ctx, 1, newUserId, mail, true, false );
                     await basic.CreateOrUpdatePasswordUserAsync( ctx, 1, newUserId, tempPwd );
-                    await _emailSender.SendMessage( mail, subject, mailContent );
+                    //await _emailSender.SendMessage( mail, subject, mailContent );
                     return newUserId;
                 }
             }
@@ -242,7 +242,7 @@ namespace inProjects.WebApp.Services.CSV
                     int groupId = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( groupData.ZoneId, groupName );
                     if( groupId == 0 )
                     {
-                        groupId = await groupTable.CreateGroupAsync( ctx, userId );
+                        groupId = await groupTable.CreateGroupAsync( ctx, userId, groupData.ZoneId );
                         await groupTable.Naming.GroupRenameAsync( ctx, userId, groupId, groupName );
                     }
 
@@ -250,12 +250,15 @@ namespace inProjects.WebApp.Services.CSV
                     enterpriseId = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( groupData.ZoneId, juryInfo.Entreprise );
                     if( enterpriseId == 0 )
                     {
-                        enterpriseId = await groupTable.CreateGroupAsync( ctx, userId );
+                        enterpriseId = await groupTable.CreateGroupAsync( ctx, userId, groupData.ZoneId );
                         await groupTable.Naming.GroupRenameAsync( ctx, userId, enterpriseId, juryInfo.Entreprise );
                     }
 
                     //Check if the user exists
                     int idJury = await CheckIfUserExists( stObjMap, authenticationInfo, juryInfo.Mail, userName, juryInfo.Prenom, juryInfo.Nom );
+
+                    await groupTable.AddUserAsync( ctx, userId, groupId, idJury,true );
+                    await groupTable.AddUserAsync( ctx, userId, enterpriseId, idJury,true );
 
                     //get the timed user type
                     timedUserType = GetTimedUserType( type );

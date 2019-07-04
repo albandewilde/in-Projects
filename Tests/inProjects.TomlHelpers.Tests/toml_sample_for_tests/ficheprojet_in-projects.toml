@@ -2,7 +2,7 @@
 project_name = "In'Projects"
 
 [semester]
-semester = 5
+semester = [5]
 sector = "IL"
 
 [technologies]
@@ -20,3 +20,6 @@ pitch = "In’tech regroupe des projets informatiques et des projets de formatio
 [team]
 leader = "agopian@intechinfo.fr"
 members = ["acheng@intechinfo.fr", "chiche@intechinfo.fr", "delpierre@intechinfo.fr", "dewilde@intechinfo.fr"]
+
+[git]
+url = "https://github.com/albandewilde/in-Projects/"

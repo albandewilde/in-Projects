@@ -5,7 +5,9 @@ using CK.DB.Actor.ActorEMail;
 using CK.DB.Auth;
 using CK.DB.User.UserOidc;
 using CK.SqlServer;
+using CK.SqlServer.Setup;
 using inProjects.Data;
+using inProjects.Data.Queries;
 using System;
 using System.Threading.Tasks;
 
@@ -37,18 +39,32 @@ namespace inProjects.WebApp.Services
             ICustomUserOidcInfos infos = (ICustomUserOidcInfos)context.Payload;
             ISqlCallContext ctx = context.HttpContext.RequestServices.GetService<ISqlCallContext>();
 
-          
-            int userId = await userTable.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString(),infos.FirstName,infos.LastName);
+            SqlDefaultDatabase db = _stObjMap.StObjs.Obtain<SqlDefaultDatabase>();
+            using( var sqlCtx = new SqlStandardCallContext() )
+            {
+                UserQueries userQueries = new UserQueries( sqlCtx, db );
+                int exists = await userQueries.CheckEmail( infos.Email );
+                if(exists == 0)
+                {
+                    int userId = await userTable.CreateUserAsync( ctx, 1, Guid.NewGuid().ToString(),
+                        infos.FirstName,infos.LastName);
 
-            await actorEmail.AddEMailAsync( ctx, 1, userId, infos.Email, true, false );
+                    await actorEmail.AddEMailAsync( ctx, 1, userId, infos.Email, true, false );
 
-            UCLResult result = await oidcTable.CreateOrUpdateOidcUserAsync(
-                ctx, 1, userId, infos, UCLMode.CreateOrUpdate | UCLMode.WithActualLogin );
+                    UCLResult result = await oidcTable.CreateOrUpdateOidcUserAsync(
+                        ctx, 1, userId, infos, UCLMode.CreateOrUpdate | UCLMode.WithActualLogin );
 
+                    if( result.OperationResult != UCResult.Created ) return null;
 
-            if( result.OperationResult != UCResult.Created ) return null;
-
-            return await _dbAuth.CreateUserLoginResultFromDatabase( ctx, _typeSystem, result.LoginResult );
+                    return await _dbAuth.CreateUserLoginResultFromDatabase( ctx, _typeSystem, result.LoginResult );
+                }
+                else
+                {
+                    UCLResult result = await oidcTable.CreateOrUpdateOidcUserAsync(
+                        ctx, 1, exists, infos, UCLMode.CreateOrUpdate | UCLMode.WithActualLogin );
+                    return await _dbAuth.CreateUserLoginResultFromDatabase( ctx, _typeSystem, result.LoginResult );
+                }
+            }
         }
     }
 }

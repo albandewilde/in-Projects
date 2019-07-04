@@ -49,7 +49,7 @@ namespace inProjects.TomlHelpers
             }
             catch
             {
-                return (false, "Le numÈro pour le type de projet n'est pas bon.");
+                return (false, "Le num√©ro pour le type de projet n'est pas bon.");
             }
 
             try    // to get the ressource
@@ -58,7 +58,7 @@ namespace inProjects.TomlHelpers
             }
             catch
             {
-                return (false, "La ressource n'est pas trouvÈe, peut-Ítre que le liens n'est pas le bon.");
+                return (false, "La ressource n'est pas trouv√©e, peut-√™tre que le liens n'est pas le bon.");
             }
 
             try    // parse the toml
@@ -72,7 +72,7 @@ namespace inProjects.TomlHelpers
                 List<string> foo = e.ToString().Split("-->")[1].Split(":").Skip(1).Take(2).ToList();
                 foo[1] = foo[1].Split(".")[0];
 
-                return (false, "Impossible de parser le fichier toml, est-ce que le fichier est correctement formatÈ ?\n" + String.Join(": ", foo));
+                return (false, "Impossible de parser le fichier toml, est-ce que le fichier est correctement format√© ?\n" + String.Join(": ", foo));
             }
 
             (bool isValid, string message) = toml.isValid();
@@ -82,19 +82,20 @@ namespace inProjects.TomlHelpers
             }
 
             toml.logo.url = GetTomlFromGoogleDrive.GetUrlRessource(toml.logo.url);
+            
 
-            if(toml.team.leader!= "None" && !await toml.team.isMailExisting( toml.team.leader, stObjMap ) ) return (false, "L'e-mail du chef de projet est invalide.");
-            foreach(string mail in toml.team.members ) { if( !await toml.team.isMailExisting( mail, stObjMap ) ) return (false, "L'un des e-mails des membres est invalide."); };
+            if(toml.team.leader!= "None" && !await toml.team.isMailExisting(toml.team.leader, stObjMap)) return (false, "L'e-mail du chef de projet est invalide.");
+            foreach(string mail in toml.team.members ) { if( !await toml.team.isMailExisting(mail, stObjMap)) return (false, "L'un des e-mails des membres est invalide."); };
             try    // register the project in the bdd
             {
                 await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable, projectUrlTable);
             }
-            catch 
+            catch(Exception e) 
             {
                 return (false, "Impossible de sauvegarder le projet dans la BDD.");
             }
 
-            return (true, "Le projet a ÈtÈ sauvegarde avec succËs.");
+            return (true, "Le projet a √©t√© sauvegarde avec succ√®s.");
         }
     }
 
@@ -107,7 +108,6 @@ namespace inProjects.TomlHelpers
         public Slogan slogan {get; set;}
         public Pitch pitch {get; set;}
         public Team team {get; set;}
-        public Git git { get; set; }
         public OthersDocuments othersDocuments {get; set;}
 
         public (bool, string) isValid()
@@ -119,10 +119,8 @@ namespace inProjects.TomlHelpers
             {
                 object propertieValue = propertie.GetValue(this, null);
 
-                if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return (false, "The propertie \"" + propertie.Name.ToString() + "\" is missing");
-                if (propertieValue is IProjectField && !(propertieValue as IProjectField).isValid()) {
-                    return (false, "The propertie \"" + propertie.Name.ToString() + "\" isn't valid.");
-                }
+                if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return (false, "La propri√©t√© \"" + propertie.Name.ToString() + "\" est absente.");
+                if (propertieValue is IProjectField && !(propertieValue as IProjectField).isValid()) return (false, "La propri√©t√© \"" + propertie.Name.ToString() + "\" est invalide.");
             }
             return (true, "All good");
         }
@@ -131,6 +129,7 @@ namespace inProjects.TomlHelpers
     public class ProjectPi : Project
     {
         public Technologies technologies {get; set;}
+        public Git git {get; set;}
     }
 
     public class ProjectPfh : Project
@@ -153,12 +152,20 @@ namespace inProjects.TomlHelpers
 
     public class Semester: IProjectField
     {
-        public int semester {get; set;}
+        public int[] semester {get; set;}
         public string sector {get; set;}
 
         public bool isValid()
         {
-            return new int[]{1, 2, 3, 4, 5}.Contains(this.semester) && new string[]{"IL", "SR", "IL - SR", "None"}.Contains(this.sector);
+            int[] avariable_semester = new int[]{1, 2, 3, 4, 5};
+
+            if (semester == null || semester.Length == 0 || !new string[]{"IL", "SR", "IL - SR", "None"}.Contains(this.sector)) return false;
+
+            foreach (int elem in this.semester) {
+                if (!avariable_semester.Contains(elem)) return false;
+            }
+
+            return true;
         }
     }
 
@@ -244,7 +251,7 @@ namespace inProjects.TomlHelpers
 
     public class Git: IProjectField
     {
-        public string url { get; set; }
+        public string url {get; set;}
 
         public bool isValid()
         {
