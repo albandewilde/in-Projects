@@ -51,5 +51,11 @@ namespace inProjects.Data.Queries
             IEnumerable<ForumData> result = await _controller.QueryAsync<ForumData>( "SELECT Jury = g.GroupName, e.Date, Project = g1.GroupName FROM CK.tGroup g JOIN IPR.tEvaluates e ON e.JuryId = g.GroupId LEFT OUTER JOIN IPR.tProjectStudent ps ON ps.ProjectStudentId = e.ProjectId LEFT OUTER JOIN CK.tGroup g1 on g1.GroupId = e.ProjectId WHERE g.GroupName = @JuryName", new { JuryName = juryName } );
             return result;
         }
+
+        public async Task<int> IsProjectJudgedByJury(int projectId, int juryId )
+        {
+            int result = await _controller.QuerySingleOrDefaultAsync<int>( "select JuryId from IPR.tEvaluates WHERE JuryId = @JuryId and ProjectId = @ProjectId", new { @JuryId = juryId, @ProjectId = projectId } );
+            return result;
+        }
     }
 }

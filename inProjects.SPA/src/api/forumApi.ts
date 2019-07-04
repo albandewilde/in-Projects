@@ -30,6 +30,7 @@ export async function getAllGradeProjects(): Promise<ProjectForumResult[]> {
     let projects: ProjectForumResult[] = []
     const response = await getAsync(`${endpoint}/getAllGradeProjects`)
     projects = response.data
+    console.log("test")
 
     return projects
 }

@@ -90,5 +90,7 @@ text-align: end
     padding-top: 7%
 }
 
-
+.forum-result-public{
+    height: 100vh;
+}
 </style>

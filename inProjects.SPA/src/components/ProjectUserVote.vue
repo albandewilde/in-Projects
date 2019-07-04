@@ -1,5 +1,6 @@
 <template>
     <div class="userVote">
+        <div>
         <el-select @change="change()" v-model="options" placeholder="Select">
             <el-option v-for="item in schoolOptions" :key="item.schoolId" :value="item.name">
             </el-option>
@@ -14,8 +15,8 @@
         <div v-if="projectList.length >0">
             <el-row>
                 <el-col :span="5" v-for="(o, index) in projectList.length" :key="o" :offset="index > 0 ? 1 : 1" >            
-                    <el-card v-bind:body-style="{ padding: '0px'}">
-                        <img :src="projectList[index].logo" class="image"  @click="redirect(projectList[index].projectStudentId)">
+                    <el-card v-bind:body-style="{ padding: '3px'}">
+                        <img :src="projectList[index].logo"  @click="redirect(projectList[index].projectStudentId)" style="height: 100px; width: 100px">
                         <div class="my-card-row">
                             <span>{{projectList[index].groupName}}</span><br>
                             <div class="block">
@@ -27,7 +28,7 @@
                 </el-col>
             </el-row>
         </div>
-        
+        </div>
     </div>
 </template>
 
@@ -116,8 +117,6 @@ export default class ProjectUserVote extends Vue {
 </script>
 
 <style>
-.userVote{
-height: 100vh
-}
+
 
 </style>

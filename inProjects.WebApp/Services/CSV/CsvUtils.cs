@@ -235,6 +235,10 @@ namespace inProjects.WebApp.Services.CSV
 
                 foreach( JuryInfos juryInfo in juryInfos )
                 {
+                    if( juryInfo.Mail == "six@hotmail.fr" )
+                    {
+                        Console.WriteLine( "ok" );
+                    }
                     int enterpriseId = 0;
                     string groupName = "Jury " + juryInfo.Jury + "-" + begDate.Year+ "/" + begDate.Month;
                     int timedUserType = 0;
@@ -291,7 +295,8 @@ namespace inProjects.WebApp.Services.CSV
                     {
                         projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe1, groupData.ZoneId );
                         begDate = begDate.Date + timeSpan1;
-                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        if( await forumQueries.IsProjectJudgedByJury( projectId.ProjectStudentId, groupId ) == 0 )
+                            await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
                         groupName1 = projectId.GroupName;
                     }
 
@@ -299,7 +304,8 @@ namespace inProjects.WebApp.Services.CSV
                     {
                         projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe2, groupData.ZoneId );
                         begDate = begDate.Date + timeSpan2;
-                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        if( await forumQueries.IsProjectJudgedByJury( projectId.ProjectStudentId, groupId ) == 0 )
+                            await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
                         groupName2 = projectId.GroupName;
 
                     }
@@ -308,7 +314,8 @@ namespace inProjects.WebApp.Services.CSV
                     {
                         projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe3, groupData.ZoneId );
                         begDate = begDate.Date + timeSpan3;
-                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        if( await forumQueries.IsProjectJudgedByJury( projectId.ProjectStudentId, groupId ) == 0 )
+                            await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
                         groupName3 = projectId.GroupName;
 
                     }
@@ -316,7 +323,8 @@ namespace inProjects.WebApp.Services.CSV
                     {
                         projectId = await projectQueries.GetProjectIdByForumNumberAndPeriod( juryInfo.Groupe4, groupData.ZoneId );
                         begDate = begDate.Date + timeSpan4;
-                        await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
+                        if( await forumQueries.IsProjectJudgedByJury( projectId.ProjectStudentId, groupId ) == 0 )
+                            await evaluatesTable.EvaluateOrUpdateGradeProject( ctx, groupId, projectId.ProjectStudentId, -1, begDate );
                         groupName4 = projectId.GroupName;
 
                     }
@@ -324,7 +332,7 @@ namespace inProjects.WebApp.Services.CSV
                     IEnumerable<ForumData> infoMail = await forumQueries.ForumInfoByJury( groupName );
                     int nbProject = infoMail.Count();
 
-                    string subject = "Votre participation au Forum PI D'IN'TECH";
+                    //string subject = "Votre participation au Forum PI D'IN'TECH";
                     string mailContent = @"
             <table align = 'center' border='0' cellpadding='0' cellspacing='0' height='100%' width='100%' id='bodyTable'>
   
@@ -473,7 +481,7 @@ IN'TECH Paris
     </body>
 </html>";
 
-                    await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
+                    //await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
 
 
 
