@@ -10,18 +10,18 @@
     <div class="collapsedMenu">
       <div v-if="authService.authenticationInfo.level != 0">
           <li class="btn-group">
-              <button class="buttons">
-                  <img src="../assets/deco.png" height="30px" @click="logout()">
+              <button class="buttons" @click="logout()">
+                  <img src="../assets/deco.png" height="30px">
               </button>
-              <button class="buttons">
-                  <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/>
+              <button class="buttons" @click="redirect('/MyProfil')">
+                  <img src="../assets/profile.png" height="30px"/>
               </button>
           </li>
         </div>
         <div v-else>
           <li class="btn-group">
-              <button class="buttons" style="width: 100%;">
-                  <img src="../assets/co.png" @click="redirect('/connection')">
+              <button class="buttons" @click="redirect('/connection')" style="width: 100%;">
+                  <img src="../assets/co.png">
               </button>
           </li>
         </div>
