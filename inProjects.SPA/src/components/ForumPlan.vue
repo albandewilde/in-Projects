@@ -140,6 +140,7 @@ export default {
 	height: 90vh;
 	display: flex;
     flex-direction: column;
+    background-color: white;
 }
 
 #saveButton {
