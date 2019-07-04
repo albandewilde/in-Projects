@@ -411,7 +411,8 @@ export default class ProjectList extends Vue {
     display: inline-block;
     margin-top: 3%;
     margin-bottom: 2%;
-    width: 50%;
+    width: 35%;
+
 }
 .spans {
     border: 3px solid;
@@ -428,16 +429,16 @@ export default class ProjectList extends Vue {
     border: 3px solid;
 }
 #schoolChoices {
-    top: 7.2%;
-    left: 32.2%;
+   position: absolute;
 }
 #typeChoices {
-    top: 7.2%;
-    left: 38.8%;
+   position: absolute;
+   left: 40%;
+
 }
 #semesterChoices {
-    top: 7.2%;
-    left: 54.2%;
+    position: absolute;
+    left: 53.8%;
 }
 label {
     cursor: pointer;
