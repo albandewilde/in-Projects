@@ -21,7 +21,7 @@
                     <br><br>
                     <label>Choissisez les groupes de la nouvelle période :</label>                    
                     <div class="square-container">
-                        <div class="card-container">Groupes à ajouter : 
+                        <div class="card-container">Groupes à ajouter: 
                             <el-card class="square">
                                 <el-table :data="listGroup" class="list-groups-period">
                                     <el-table-column label="Nom" prop="name" ></el-table-column>
@@ -50,7 +50,7 @@
                     <button class="button" @click="CreatePeriod()">Créer Période</button>
                 </div>
                 <div v-else>
-                <label>Periode en cours vous ne pouvez pas creer de Periode</label>
+                <label>Une période en cours, vous ne pouvez pas créer de périodes !</label>
                 <br>
                 <img src="../assets/notpass.gif">
             </div>

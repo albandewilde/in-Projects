@@ -2,7 +2,7 @@
     <div>
         <Error :error="error"/>
         <el-table :data="listPeriods">
-             <el-table-column label="Nom de la periode" prop="groupName" ></el-table-column>
+             <el-table-column label="Nom de la période" prop="groupName" ></el-table-column>
              <el-table-column label="Date de debut">
                   <template slot-scope="scope">
                     <el-date-picker :clearable="false" v-model="listPeriods[scope.$index].begDate"  @change="changeDate(scope.$index)" type="date">    
