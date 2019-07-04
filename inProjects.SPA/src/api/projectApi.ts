@@ -119,6 +119,11 @@ export async function noteProject(idProject: number,idJury : number, newGrade: n
     return resp.data
 }
 
+export async function noteProjectUser(idProject: number, newGrade: number,idSchool: number, timedUser: TypeTimedUser): Promise<any> {
+    const resp = await postAsync(`${endpoint}/noteProject?`,{ProjectId: idProject,Grade: newGrade,SchoolId: idSchool,User:timedUser})
+    return resp.data
+}
+
 //Case Staff Member
 export async function changeNoteProject(idProject: number, newGrade: number,juryId: number, timedUser: TypeTimedUser): Promise<any> {
     const resp = await postAsync(`${endpoint}/noteProject?`,{ProjectId: idProject,Grade: newGrade,JuryId: juryId,User:timedUser})

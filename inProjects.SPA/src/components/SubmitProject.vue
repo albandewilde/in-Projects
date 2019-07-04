@@ -78,10 +78,10 @@
 
                     <el-form-item label="Lien du fichier toml: ">
                         <el-input
-                                placeholder="Lien de partege du fichier toml"
-                                v-model="projectLink"
-                                clearable
-                                style="width: 600px"
+                            placeholder="Lien de partage du fichier toml"
+                            v-model="projectLink"
+                            clearable
+                            style="width: 600px"
                         >
                         </el-input>
                     </el-form-item>
@@ -123,8 +123,8 @@ export default class Submit extends Vue {
         )
 
         futur.catch(() => {
-            this.isSucces = false, this.msg = "Failed to join the server"
-            this.loading = false
+            this.isSucces = false
+            this.msg = "Failed to join the server"
         })
 
         futur.then((result) => {

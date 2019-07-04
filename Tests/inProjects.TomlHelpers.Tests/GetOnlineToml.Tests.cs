@@ -12,7 +12,7 @@ namespace inProjects.TomlHelpers.Tests
         public void is_the_downloaded_string_is_correct()
         {
             string offlineToml = File.ReadAllText("./toml_sample_for_tests/ficheprojet_in-projects.toml");
-            string onlineToml =  TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=10-TDZ27pDKegXF7H1Gjjxpnp06wcD61P"));
+            string onlineToml =  TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1TSwBj4-pMtqnUCoSJqkZVte0Ah2Z3fxC"));
 
             Assert.That(onlineToml, Is.EqualTo(offlineToml));
         }
@@ -20,7 +20,7 @@ namespace inProjects.TomlHelpers.Tests
         [Test]
         public void is_the_downloaded_file_a_valid_project()
         {
-            ProjectPi onlineProject =  TomlHelpers.GetInstanceFromToml<ProjectPi>(TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl")));
+            ProjectPi onlineProject = TomlHelpers.GetInstanceFromToml<ProjectPi>(TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1TSwBj4-pMtqnUCoSJqkZVte0Ah2Z3fxC")));
 
             Assert.That(onlineProject.isValid().Item1, Is.True);
         }
@@ -29,7 +29,7 @@ namespace inProjects.TomlHelpers.Tests
         public void download_then_get_the_toml_as_object()
         {
             string offlineToml = File.ReadAllText("./toml_sample_for_tests/ficheprojet_in-projects.toml");
-            string onlineToml =  TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1DgzQL3-7vmp1xptBH26H543e51eOYDLl"));
+            string onlineToml =  TomlHelpers.GetOnlineToml(GetTomlFromGoogleDrive.GetUrlRessource("https://drive.google.com/open?id=1TSwBj4-pMtqnUCoSJqkZVte0Ah2Z3fxC"));
             ProjectPi offlineProject = TomlHelpers.GetInstanceFromToml<ProjectPi>(offlineToml);
             ProjectPi onlineProject = TomlHelpers.GetInstanceFromToml<ProjectPi>(onlineToml);
 
