@@ -137,7 +137,7 @@ export default {
 
 <style>
 #plan {
-	height: 120vh;
+	height: 100vh;
 	display: flex;
     flex-direction: column;
 }
