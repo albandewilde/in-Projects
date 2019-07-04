@@ -91,7 +91,7 @@ text-align: end
 }
 
 .table-forum-result-public{
-    padding-top: 7%
+    /*padding-top: 7%*/
 }
 
 .forum-result-public{

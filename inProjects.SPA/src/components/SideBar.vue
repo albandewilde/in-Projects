@@ -2,7 +2,7 @@
 <div class="nav">
   <ul class="sidenav">
     <li>      
-        <a class="active" @click="redirect('/')">IN'TECH</a>
+        <a class="active" @click="redirect('/')"><img src="../assets/home.png" height="24px" width="24px" style="margin-bottom: 5px;">&nbsp;IN'TECH</a>
         <div class="menu-toggle">
           <font-awesome-icon aria-hidden="true" icon="bars" size="lg" @click="changeCollapse()" style="color: white; cursor: pointer;"/>
         </div>

@@ -12,7 +12,7 @@
             <countdown :schoolName="schoolName"></countdown>
         </div>
 
-        <div v-if="projectList.length >0">
+        <div v-if="projectList.length >0" style="background-color: white">
             <el-row>
                 <el-col :span="5" v-for="(o, index) in projectList.length" :key="o" :offset="index > 0 ? 1 : 1" >            
                     <el-card v-bind:body-style="{ padding: '3px'}">
@@ -117,6 +117,8 @@ export default class ProjectUserVote extends Vue {
 </script>
 
 <style>
-
+.userVote{
+    height: 100vh;    
+}
 
 </style>

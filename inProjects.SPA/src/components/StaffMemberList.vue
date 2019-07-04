@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <a href="exemple_csv_staff.csv" download style="float: left">
-            <button type="button">
-                Télécherger un template
+    <div style="background-color: white">
+        <a href="exemple_csv_staff.csv" download>
+            <button type="button" class="button">
+                Télécharger un template
             </button>
         </a>
 

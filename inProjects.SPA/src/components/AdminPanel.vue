@@ -18,8 +18,8 @@
             <li class="dropdown">
                 <a class="dropbtn">Forum</a>
                 <div class="dropdown-content">
-                    <button @click="redirect('/plan')">Plan</button>
                     <button @click="redirect('/addJury')">Gestion forum</button>
+                    <button @click="redirect('/plan')">Plan</button>
                     <button @click="redirect('/ForumResult')">Résultats Forum PI</button>
                 </div>        
             </li>

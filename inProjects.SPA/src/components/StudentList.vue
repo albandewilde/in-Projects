@@ -1,5 +1,5 @@
 <template>
-<div>
+<div style="background-color: white">
     <a href="exemple_csv_student.csv" download>
         <button type="button" class="button">
             Télécharger un exemple

@@ -3,7 +3,7 @@
         <div><br>
             <span>Attribuer un n° aux projets</span>
             <CsvImport type="projectNumber"></CsvImport>
-
+            <br>
             <a href="exemple_csv_number_project.csv" download>
                 <button type="button" class="button">
                     Télécharger un template
@@ -24,7 +24,7 @@
         <div>  
             <span><h3>Attribuer les projets aux jurys</h3></span>
             <CsvImport type="jury"></CsvImport>
-
+            <br>
             <a href="example_csv_jury.csv" download>
                 <button type="button" class="button">
                     Télécharger un template

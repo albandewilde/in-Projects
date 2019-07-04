@@ -1,13 +1,12 @@
 <template>
     <div>
-        <el-button type="primary" icon="el-icon-document-add" @click="dialogVisible = true">Importer un fichier .csv</el-button>
+        <button type="button" class="button" icon="el-icon-document-add" @click="dialogVisible = true">Importer un fichier .csv</button>
     
         <el-dialog
-            title="Ajouter une liste d'élèves via un csv"
+            title="Ajouter une liste via un csv"
             :visible.sync="dialogVisible"
             width="30%"
             class="dialog--uploadxcel"
-            style="display: inline"
         >
             <el-form enctype="mutltipart/form-data">
                 <input type="file" name="file" accept=".csv" ref="file" @change="handleFileChange()"/>
@@ -36,8 +35,8 @@ export default class CsvImport extends Vue {
     private test!: any
 
     handleFileChange() {
-        const test =  this.$refs.file.files[0]
-        this.formData.append("file", test)
+        const finalFile =  this.$refs.file.files[0]
+        this.formData.append("file", finalFile)
         this.formData.append("type", this.type)
         for ( const i of this.formData.entries()) {
             console.log(i)
@@ -45,6 +44,8 @@ export default class CsvImport extends Vue {
     }
     async submitFile() {
         try {
+            console.log("eee")
+            console.log(this.type)
          this.idZone = await getIdSchoolOfUser()
          console.log(this.idZone)
          this.test = await sendCsv(this.formData)
@@ -56,8 +57,15 @@ export default class CsvImport extends Vue {
             this.dialogVisible = false
             const co = this.$store.state.connectionStaffMember
             await co.invoke("RefreshList", this.idZone)
+            
         }
-
+        if(this.type == "jury"){
+        this.$notify({
+          title: 'envoi réussi',
+          message: 'les jurys ont bien été assignés à un projet. rendez-vous sur la page des résultats pour plus d\'informations',
+          duration: 0
+        });
+        }
     }
 }
 </script>

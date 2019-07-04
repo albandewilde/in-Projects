@@ -31,8 +31,8 @@
                         <span v-show="errors.has('password')" class="errorStyle">{{ errors.first('password') }}</span>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="success" @click="Login">Valider</el-button>
-                        <el-button type="info" @click="resetForm()">Réinitialiser</el-button>
+                        <button class="button" type="button" @click="Login">Valider</button>&nbsp;
+                        <button class="button" type="button" @click="resetForm()">Réinitialiser</button>
                     </el-form-item>
                 </b>
             </center>
@@ -40,7 +40,7 @@
         </form>
         </el-form>
         <div>
-            <el-button type="primary" @click="Outlook()">Connexion avec Outlook</el-button>
+            <button @click="Outlook()" class="button" type="button">Connexion avec Outlook</button>
         </div>
     </div>
 </template>
