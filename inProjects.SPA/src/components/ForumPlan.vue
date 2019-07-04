@@ -137,13 +137,14 @@ export default {
 
 <style>
 #plan {
-	height: 100vh;
+	height: 90vh;
 	display: flex;
     flex-direction: column;
 }
 
 #saveButton {
-    margin: 0 0 0 90%;
+    margin-left: 88%;
+    margin-bottom: 1%;
     position: sticky;
 }
 
@@ -168,12 +169,13 @@ body {
 .chacheli-designer-layout .chacheli .content {
     color: #000000;
     font-weight: 700;
-    font-size: 15px;
+    font-size: 12px;
     border: none;
 }
 #projectTable {
     color: #000000;
     font-weight: 700;
+    left: 20%;
 }
 .el-table .empty-row td:last-child {
     background: white;
