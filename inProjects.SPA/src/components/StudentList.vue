@@ -1,8 +1,8 @@
 <template>
 <div>
-    <a href="exemple_csv_student.csv" download style="float: left">
-        <button type="button">
-            Télécherger un template
+    <a href="exemple_csv_student.csv" download>
+        <button type="button" class="button">
+            Télécharger un exemple
         </button>
     </a>
 
@@ -84,10 +84,7 @@ export default class StudentList extends Vue {
         await this.checkAdmin()
         // co.state is undefined when co is not working
         this.co = this.$store.state.connectionStaffMember
-        console.log("je teste la co")
-        console.log(this.co.state)
         await this.co.on("RefreshList", async () => {
-            console.log("je suis la")
             this.studentList = []
             this.userListDisplay = []
             this.studentList = await getUserList(this.bddInfo)

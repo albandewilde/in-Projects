@@ -3,9 +3,8 @@
         <div class="okok">
             <li class="dropdown">
                 <a class="dropbtn" @click="redirect('/projectList')">Liste des projets</a>
-                <a class="dropbtn" @click="redirect(`/ProjectUserVote`)">Votez pour les projets !</a>  
-                <a class="dropbtn" @click="redirect(`/PublicResult`)">Avancement des votes !</a>  
-
+                <a class="dropbtn" @click="redirect(`/ProjectUserVote`)">Voter pour les projets</a>  
+                <a class="dropbtn" @click="redirect(`/PublicResult`)">État des votes</a>  
             </li>
         </div>
     </div>

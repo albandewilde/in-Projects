@@ -1,6 +1,6 @@
 <template>
 <div class="okok">
-        <li><a @click="redirect(`/submit_project`)">Deposer un projet</a></li>
+        <li><a style="font-size: 19px;" @click="redirect(`/submit_project`)">Déposer un projet</a></li>
 </div>
 </template>
 

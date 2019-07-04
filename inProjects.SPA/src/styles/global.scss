@@ -12,6 +12,7 @@ body {
 
 .button{
     border: 2.5px solid #333333;
+    cursor: pointer;
     background:linear-gradient(135deg, rgba(251,251,254,1) 0%, rgba(252,252,252,1) 18%, rgba(170,205,249,1) 36%, rgba(251,251,255,1) 53%, rgba(219,230,245,1) 76%, rgba(170,205,249,1) 85%);
     padding: 10px 20px;
     font-size: 0.9rem;

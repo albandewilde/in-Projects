@@ -40,7 +40,7 @@
             type="primary"
             @click="GetAllProjectSheet(schoolChoice,typeChoice,semesterChoice)"
         >
-            Telecharger
+            Télécharger
         </el-button>
     </div>
     <br><br>
