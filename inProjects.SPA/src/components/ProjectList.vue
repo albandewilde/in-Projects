@@ -1,7 +1,7 @@
 <template>
 <div>
-    <div style="width: 100%;">
-        <font-awesome-icon icon="filter" size="lg" /> <b style="margin-left: 10px; margin-right: 15px;">Trier :</b>
+    <div style="width: 100%; margin-left: -10%;">
+        <font-awesome-icon icon="filter" size="lg" style="position: absolute; top: 1%; left: 49%;" /><b style="position: absolute; top: 1%; left: 51%;">Trier :</b>
         <div class="selects">
             <span class="spans" @click="toggleSelect('School')">Choisir une école</span>
             <ul class="listFilter" id="schoolChoices" v-show="showSchool">
@@ -24,11 +24,24 @@
                     <label><input type="checkbox" @click="selectSemester(item)" checked />{{item}}</label>
                 </li>
             </ul>
-        </div>
         <datalist id="languages" >
             <option v-for="(o, idx) in projectListToDisplay" :key="idx">{{o.groupName}}  ({{formatDateMonth(o.begDate)}}) </option>
         </datalist>
-        Chercher un projet: <input type="text" style="width: 20%; border: solid black;" list="languages" v-model="groupName" @change="getProject(groupName)">
+        <span>Chercher un projet:</span> <input type="text" style="width: 20%; border: solid black;" list="languages" v-model="groupName" @change="getProject(groupName)">
+        </div>
+    </div>
+    <div v-if="CheckedAuthorize('Administration')">
+        <el-button
+            v-loading="loading"
+            element-loading-text="Generation..."
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="white"
+
+            type="primary"
+            @click="GetAllProjectSheet(schoolChoice,typeChoice,semesterChoice)"
+        >
+            Telecharger
+        </el-button>
     </div>
     <br><br>
     <div class="sk-cube-grid" v-if="isLoading">
@@ -410,9 +423,7 @@ export default class ProjectList extends Vue {
 .selects {
     display: inline-block;
     margin-top: 3%;
-    margin-bottom: 2%;
-    width: 35%;
-
+    width: 100vw;
 }
 .spans {
     border: 3px solid;
@@ -430,15 +441,18 @@ export default class ProjectList extends Vue {
 }
 #schoolChoices {
    position: absolute;
+   left: 27.1%;
+   top: 9%;
 }
 #typeChoices {
    position: absolute;
-   left: 40%;
-
+   left: 35%;
+   top: 9%;
 }
 #semesterChoices {
     position: absolute;
-    left: 53.8%;
+    left: 51.4%;
+    top: 9%;
 }
 label {
     cursor: pointer;
