@@ -7,7 +7,7 @@
         <br/>
 
         <div v-if="forumOff == true && changeSchool==true">
-            <h2> Forum PI non Ouvert</h2>
+            <h2> Le Forum PI n'est pas ouvert !</h2>
             <countdown :schoolName="schoolName"></countdown>
         </div>
 
