@@ -6,12 +6,13 @@
             title="Ajouter une liste d'élèves via un csv"
             :visible.sync="dialogVisible"
             width="30%"
-            class="dialog--uploadxcel">
+            class="dialog--uploadxcel"
+            style="display: inline"
+        >
             <el-form enctype="mutltipart/form-data">
                 <input type="file" name="file" accept=".csv" ref="file" @change="handleFileChange()"/>
                 <el-button type="button" @click="submitFile()">télécharger</el-button>
             </el-form>
-
         </el-dialog>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <div>
         <details>
-            <summary><span style="font-size:200%">Créer un évenement</span></summary>
+            <summary><span style="font-size:200%">Créer un évènement</span></summary>
             <form :label-position="'top'" ref="form" :model="event"  class="form-inline">
                 <label>Nom de l'évènement</label>
                     <select ref="select" v-model="value" v-validate="'required'" style="width: 40%">
@@ -16,13 +16,13 @@
                 <label>Date de fin</label>
                     <el-date-picker placeholder="Selectionnez date et horaire"  type="datetime" :clearable="false" v-model="event.endDate" > </el-date-picker>  
                 <div>
-                    <button type="button" class="button" @click="onSubmit">Create</button>
+                    <button type="button" class="button" @click="onSubmit">Créer</button>
                 </div>
             </form>
         </details>
         <br/>
         <br/>
-        <span style="font-size:200%">Calendrier des évenements</span>
+        <span style="font-size:200%">Calendrier des évènements</span>
         <!-- <el-table :data="events">
              <el-table-column label="Nom de l'evenement" prop="name" ></el-table-column>
              <el-table-column label="Date de debut">

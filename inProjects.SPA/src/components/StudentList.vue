@@ -1,5 +1,11 @@
 <template>
 <div>
+    <a href="exemple_csv_student.csv" download>
+        <button type="button" class="button">
+            Télécharger un exemple
+        </button>
+    </a>
+
     <el-table
         :data="userListDisplay.filter(data => !search || data.firstName.toLowerCase().includes(search.toLowerCase()) || data.lastName.toLowerCase().includes(search.toLowerCase()) || data.groupName.toLowerCase().includes(search.toLowerCase()))"
         stripe
@@ -78,10 +84,7 @@ export default class StudentList extends Vue {
         await this.checkAdmin()
         // co.state is undefined when co is not working
         this.co = this.$store.state.connectionStaffMember
-        console.log("je teste la co")
-        console.log(this.co.state)
         await this.co.on("RefreshList", async () => {
-            console.log("je suis la")
             this.studentList = []
             this.userListDisplay = []
             this.studentList = await getUserList(this.bddInfo)

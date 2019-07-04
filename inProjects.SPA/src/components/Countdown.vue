@@ -59,7 +59,7 @@ export default class Countdown extends Vue {
                   console.log(vm.test)
               }else{
                 this.forumOn = true
-                this.message = "Le forum est terminé ! Revennez le semestre prochain pour de nouveaux projet fabuleux !"
+                this.message = "Le forum est terminé ! Revenez le semestre prochain pour de nouveaux projets fabuleux !"
               }
           }catch(e){
             this.forumOn = true

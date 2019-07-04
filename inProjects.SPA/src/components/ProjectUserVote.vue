@@ -8,7 +8,7 @@
         <br/>
 
         <div v-if="forumOff == true && changeSchool==true">
-            <h2> Forum PI non Ouvert</h2>
+            <h2> Le Forum PI n'est pas ouvert !</h2>
             <countdown :schoolName="schoolName"></countdown>
         </div>
 
@@ -74,7 +74,7 @@ export default class ProjectUserVote extends Vue {
             this.forumOff = true;
             let school = this.schoolOptions.find(x => x.name == this.options)
             if (school == undefined) {
-                school = new School(0, "Unknow")
+                school = new School(0, "Unknown")
             }
             this.schoolId = school.schoolId
             this.schoolName = school.name

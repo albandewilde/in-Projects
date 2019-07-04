@@ -22,7 +22,7 @@
                 
                 <div slot="footer" class="dialog-footer">
                 <el-button @click="outerVisible = false">Annuler</el-button>
-                <el-button type="danger" @click="innerVisible = true">Supprimer Evenements</el-button>
+                <el-button type="danger" @click="innerVisible = true">Supprimer l'évènements</el-button>
                 </div>
 
                 <el-dialog width="30%" title=" Etes-vous sur de vouloir supprimer ?" :visible.sync="innerVisible" append-to-body>

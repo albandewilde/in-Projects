@@ -3,25 +3,25 @@
         <center>
         <div style="width: 1000px; text-align: justify">
 
-        Les fiches de présentation de vos projets PI et PFH doivent être disponible en public sur au moins l'une des plateformes suivantes: Google Drive.<br>
+        Les fiches de présentation de vos projets PI et PFH doivent être disponibles en public sur Google Drive.<br>
         Leur niveau d'accessibilité doit être public. Cela signifie que tout utilisateur d'internet peut y avoir accès sans inscription à la plateforme avec le lien que vous nous donnerez.<br> 
         Il en est de même pour toutes les ressources que vous nous joindrez sous forme de liens tels que votre logo et votre image de fond en PFH. Le lien doit mener directement à votre image, non à un site sur lequel votre image est.<br>
         Votre logo doit avoir une taille de 800 px par 800 px.<br>
         <br>
-        Ces fiches doivent-être nommées ficheprojet.toml et placé à la racine de votre répertoire en ligne.<br>
+        Ces fiches doivent être nommées ficheprojet.toml et placées à la racine de votre répertoire en ligne.<br>
         Pour plus d'informations sur les fichiers en toml <a target="_blank" href="https://github.com/toml-lang/toml">cliquez ici</a>.<br>
         Les ressources jointes, hors images, doivent être au format PDF.<br>
         <br>
-        Les fichiers d'exemples se trouvent dans les répertoires ./projet_PFH et ./projet_PI. Ces derniers doivent contenir toutes les tables et clés présentes dans les templates. Les tables ou clés en plus seront ignorés.<br>
+        Les fichiers d'exemples se trouvent dans les répertoires ./projet_PFH et ./projet_PI. Ces derniers doivent contenir toutes les tables et clés présentes dans les templates. Les tables ou clés en plus seront ignorées.<br>
         Il y a une exception, c'est la table othersDocuments qui est facultative. Dans le cas où vous n'avez pas d'autres ressources en plus à joindre, veillez à effacer ces lignes.<br>
         <br>
-        Pour les valeurs possibles à chaque clé referez-vous aux fichiers d'exemple.<br>
+        Pour les valeurs possibles à chaque clé, référez-vous aux fichiers d'exemples.<br>
         Les fichiers d'exemples se trouvent dans les répertoires ./projet_PFH et ./projet_PI.<br>
         <br>
         <a href="documentations.zip" download>
-            <el-button type="primary">
-                Télécherger les templates
-            </el-button>
+            <button type="button" class="button">
+                <b>Télécharger les exemples</b>
+            </button>
         </a>
 
         </div>
@@ -81,12 +81,12 @@
                             placeholder="Lien de partage du fichier toml"
                             v-model="projectLink"
                             clearable
-                            style="width: 600px"
+                            style="width: 100%"
                         >
                         </el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="Submit()">Soumettre le projet</el-button>
+                        <button type="button" class="button" @click="Submit()">Soumettre le projet</button>
                     </el-form-item>
                 </b>
             </el-form>

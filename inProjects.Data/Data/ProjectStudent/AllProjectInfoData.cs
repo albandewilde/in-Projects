@@ -42,6 +42,5 @@ namespace inProjects.Data.Data.ProjectStudent
 
         public bool IsBlocked { get; set; }
 
-
     }
 }

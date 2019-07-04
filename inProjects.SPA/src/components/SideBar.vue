@@ -10,18 +10,18 @@
     <div class="collapsedMenu">
       <div v-if="authService.authenticationInfo.level != 0">
           <li class="btn-group">
-              <button class="buttons">
-                  <img src="../assets/deco.png" height="30px" @click="logout()">
+              <button class="buttons" @click="logout()">
+                  <img src="../assets/deco.png" height="30px">
               </button>
-              <button class="buttons">
-                  <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/>
+              <button class="buttons" @click="redirect('/MyProfil')">
+                  <img src="../assets/profile.png" height="30px"/>
               </button>
           </li>
         </div>
         <div v-else>
           <li class="btn-group">
-              <button class="buttons" style="width: 100%;">
-                  <img src="../assets/co.png" @click="redirect('/connection')">
+              <button class="buttons" @click="redirect('/connection')" style="width: 100%;">
+                  <img src="../assets/co.png">
               </button>
           </li>
         </div>
@@ -58,13 +58,6 @@ import { getAuthService } from "../modules/authService"
 import * as SignalR from "@aspnet/signalr"
 import { SignalRGestion } from "../modules/classes/SignalR"
 import {GetAllProject} from '../api/projectApi'
-import {GenerateSheet} from "../modules/functions/GenerateSheet"
-import {ProjectSheet} from "../modules/classes/ProjectSheet"
-import {GetAllSheet} from "../api/projectApi"
-import pdfMake from "pdfmake/build/pdfmake"
-import { saveAs } from "file-saver"
-import JSZip from "jszip"
-
 
 @Component({
   components: {
@@ -82,8 +75,6 @@ export default class SideBar extends Vue {
     whatTimed: string[] = []
     ZoneId: number = 4
     authService: AuthService = getAuthService()
-    private projects : Array<ProjectSheet> = []
-    private zip : JSZip = new JSZip()
     private co!: SignalR.HubConnection
     private signalr: SignalRGestion = new SignalRGestion()
 
@@ -191,7 +182,7 @@ background: linear-gradient(180deg, rgba(17,46,88,1) 0%, rgba(198,198,198,1) 100
 }
  
 ul.sidenav li a.active {
-  color: black;
+  color: white;
   line-height: 25px;
   font-size: 24px;
   font-weight: bold;
@@ -199,7 +190,7 @@ ul.sidenav li a.active {
 
 ul.sidenav li a {
   display: block;
-  color: black;
+  color: white;
   padding: 18px 16px;
   text-decoration: none;
   cursor: pointer;
@@ -219,7 +210,7 @@ ul.sidenav li a:hover:not(.active) {
 }
   .test {
   display: block;
-  color: black;
+  color: white;
   padding: 18px 16px;
   text-decoration: none;
   cursor: pointer;
