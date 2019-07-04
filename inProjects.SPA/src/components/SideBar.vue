@@ -58,13 +58,6 @@ import { getAuthService } from "../modules/authService"
 import * as SignalR from "@aspnet/signalr"
 import { SignalRGestion } from "../modules/classes/SignalR"
 import {GetAllProject} from '../api/projectApi'
-import {GenerateSheet} from "../modules/functions/GenerateSheet"
-import {ProjectSheet} from "../modules/classes/ProjectSheet"
-import {GetAllSheet} from "../api/projectApi"
-import pdfMake from "pdfmake/build/pdfmake"
-import { saveAs } from "file-saver"
-import JSZip from "jszip"
-
 
 @Component({
   components: {
@@ -82,8 +75,6 @@ export default class SideBar extends Vue {
     whatTimed: string[] = []
     ZoneId: number = 4
     authService: AuthService = getAuthService()
-    private projects : Array<ProjectSheet> = []
-    private zip : JSZip = new JSZip()
     private co!: SignalR.HubConnection
     private signalr: SignalRGestion = new SignalRGestion()
 
@@ -174,7 +165,7 @@ export default class SideBar extends Vue {
 }
 ul.sidenav {
 background: linear-gradient(180deg, rgba(17,46,88,1) 0%, rgba(198,198,198,1) 100%); position: fixed;
-  height: 100%;
+  height: 100vh;
   width: 15%;  
   margin-top: 0%;
   padding: 0;

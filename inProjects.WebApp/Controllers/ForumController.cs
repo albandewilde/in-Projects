@@ -59,6 +59,7 @@ namespace inProjects.WebApp.Controllers
                     List<string> listGroups = await projectQueries.GetGroupsOfProject( project.ProjectStudentId );
                     listGroups = listGroups.FindAll( x => x.StartsWith( "S0" ) || x == "IL" || x == "SR" );
                     project.Semester = string.Join( "-", listGroups.ToArray() );
+                    if( listGroups[0] == "IL" ) project.Semester = string.Join( "-", listGroups.ToArray().Reverse() );
                     Project p = new Project( project.ProjectStudentId, project.Name,
                         project.Semester, project.CoordinatesX, project.CoordinatesY, project.ClassRoom, project.Height, project.Width, project.ForumNumber );
                     projectList.Add( p );

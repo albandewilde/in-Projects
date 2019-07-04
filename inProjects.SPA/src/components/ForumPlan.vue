@@ -1,5 +1,5 @@
 <template>
-<div>
+<div class="forumplan">
     <div id="plan">
         <chacheli-designer 
             @chacheli-closed="closeChacheli"
@@ -208,4 +208,6 @@ body {
 .el-table .E0S-row td:last-child {
     background: #84bd5a;
 }
+
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="userVote">
         <el-select @change="change()" v-model="options" placeholder="Select">
             <el-option v-for="item in schoolOptions" :key="item.schoolId" :value="item.name">
             </el-option>
@@ -116,5 +116,8 @@ export default class ProjectUserVote extends Vue {
 </script>
 
 <style>
+.userVote{
+height: 100vh
+}
 
 </style>
