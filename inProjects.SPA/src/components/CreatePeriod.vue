@@ -161,6 +161,7 @@ export default class CreatePeriod extends Vue {
 <style>
 .create{
     height: 100vh;
+    font-size: 20px;
 }
    .list-groups-period {
         margin-left: 1%;
