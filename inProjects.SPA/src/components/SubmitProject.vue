@@ -19,9 +19,9 @@
         Les fichiers d'exemples se trouvent dans les répertoires ./projet_PFH et ./projet_PI.<br>
         <br>
         <a href="documentations.zip" download>
-            <el-button type="primary">
-                Télécherger les templates
-            </el-button>
+            <button type="button" class="button">
+                Télécharger les templates
+            </button>
         </a>
 
         </div>
@@ -81,12 +81,12 @@
                             placeholder="Lien de partage du fichier toml"
                             v-model="projectLink"
                             clearable
-                            style="width: 600px"
+                            style="width: 100%"
                         >
                         </el-input>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="Submit()">Soumettre le projet</el-button>
+                        <button type="button" class="button" @click="Submit()">Soumettre le projet</button>
                     </el-form-item>
                 </b>
             </el-form>

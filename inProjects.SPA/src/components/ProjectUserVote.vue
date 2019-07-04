@@ -73,7 +73,7 @@ export default class ProjectUserVote extends Vue {
             this.forumOff = true;
             let school = this.schoolOptions.find(x => x.name == this.options)
             if (school == undefined) {
-                school = new School(0, "Unknow")
+                school = new School(0, "Unknown")
             }
             this.schoolId = school.schoolId
             this.schoolName = school.name
