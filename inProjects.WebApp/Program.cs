@@ -16,16 +16,16 @@ namespace WebApp
                             .UseScopedHttpContext()
                             .ConfigureAppConfiguration( ( hostBuilderContext, confBuilder ) =>
                             {
-                             confBuilder
-                                 .AddJsonFile( "appsettings.json", optional: false, reloadOnChange: true )
-                                 .AddJsonFile( $"appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true )
-                                 .AddEnvironmentVariables();
-                                 
+                                confBuilder
+                                    .AddJsonFile( "appsettings.json", optional: false, reloadOnChange: true )
+                                    .AddJsonFile( $"appsettings.{hostBuilderContext.HostingEnvironment.EnvironmentName}.json", optional: true, reloadOnChange: true )
+                                    .AddEnvironmentVariables();
+
 
                             } )
                             .UseKestrel()
+                            .UseIIS()
                             .UseStartup<Startup>();
-
             builder.Build().Run();
         }
     }

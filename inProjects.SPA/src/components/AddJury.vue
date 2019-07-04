@@ -1,7 +1,7 @@
 <template>
     <div class="addJury">
-        <div>  
-            <span><h3>Attribuer un n° aux projets</h3></span>
+        <div><br>
+            <span>Attribuer un n° aux projets</span>
             <CsvImport type="projectNumber"></CsvImport>
 
             <a href="exemple_csv_number_project.csv" download>
@@ -55,6 +55,6 @@ export default class AddJury extends Vue {
 </script>
 <style>
 .addJury {
-    margin-top: -2vh;
+    height: 100vh;
 }
 </style>
