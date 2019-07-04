@@ -442,17 +442,17 @@ export default class ProjectList extends Vue {
 #schoolChoices {
    position: absolute;
    left: 27.1%;
-   top: 13%;
+   top: 9%;
 }
 #typeChoices {
    position: absolute;
    left: 35%;
-   top: 13%;
+   top: 9%;
 }
 #semesterChoices {
     position: absolute;
     left: 51.4%;
-    top: 13%;
+    top: 9%;
 }
 label {
     cursor: pointer;
