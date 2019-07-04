@@ -16,7 +16,7 @@
                 <label>Date de fin</label>
                     <el-date-picker placeholder="Selectionnez date et horaire"  type="datetime" :clearable="false" v-model="event.endDate" > </el-date-picker>  
                 <div>
-                    <button type="button" class="button" @click="onSubmit">Create</button>
+                    <button type="button" class="button" @click="onSubmit">Créer</button>
                 </div>
             </form>
         </details>
