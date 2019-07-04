@@ -182,7 +182,7 @@ background: linear-gradient(180deg, rgba(17,46,88,1) 0%, rgba(198,198,198,1) 100
 }
  
 ul.sidenav li a.active {
-  color: black;
+  color: white;
   line-height: 25px;
   font-size: 24px;
   font-weight: bold;
@@ -190,7 +190,7 @@ ul.sidenav li a.active {
 
 ul.sidenav li a {
   display: block;
-  color: black;
+  color: white;
   padding: 18px 16px;
   text-decoration: none;
   cursor: pointer;
@@ -210,7 +210,7 @@ ul.sidenav li a:hover:not(.active) {
 }
   .test {
   display: block;
-  color: black;
+  color: white;
   padding: 18px 16px;
   text-decoration: none;
   cursor: pointer;
