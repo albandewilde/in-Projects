@@ -1,5 +1,11 @@
 <template>
 <div>
+    <a href="exemple_csv_student.csv" download style="float: left">
+        <button type="button">
+            Télécherger un template
+        </button>
+    </a>
+
     <el-table
         :data="userListDisplay.filter(data => !search || data.firstName.toLowerCase().includes(search.toLowerCase()) || data.lastName.toLowerCase().includes(search.toLowerCase()) || data.groupName.toLowerCase().includes(search.toLowerCase()))"
         stripe
