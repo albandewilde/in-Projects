@@ -1,32 +1,36 @@
 <template>
 <div>
-    <div style="width: 100%;">
-        <font-awesome-icon icon="filter" size="lg" /> <b style="margin-left: 10px; margin-right: 15px;">Trier :</b>
-        <select @change="checkSort()" v-model="schoolChoice" class="selects">
-            <option selected value="all">Tous les projets</option>
-            <option v-for="item in schoolOptions" :key="item.schoolId" :value="item.name">
-                {{item.name}}
-            </option>
-        </select>
-        <select @change="checkSort()" v-model="typeChoice" class="selects">
-            <option selected value="all">Tous types de projets</option>
-            <option value="I">Projets informatiques</option>
-            <option value="H">Projets de Formation Humaine</option>
-        </select>
-        <select v-if="typeChoice != 'H'" @change="checkSort()" v-model="semesterChoice" class="selects">
-            <option selected value="all">Tous les semestres</option>
-            <option v-for="item in semesters" :key="item" :value="item">
-                {{item}}
-            </option>
-        </select>
-        <select v-else @change="checkSort()" v-model="semesterChoice" class="selects">
-            <option selected value="all">Tous les semestres</option>
-            <option v-for="item in semestersPfh" :key="item" :value="item">
-                {{item}}
-            </option>
-        </select>
+    <div style="width: 100%; margin-left: -10%;">
+        <font-awesome-icon icon="filter" size="lg" style="position: absolute; top: 1%; left: 49%;" /><b style="position: absolute; top: 1%; left: 51%;">Trier :</b>
+        <div class="selects">
+            <span class="spans" @click="toggleSelect('School')">Choisir une école</span>
+            <ul class="listFilter" id="schoolChoices" v-show="showSchool">
+                <li v-for="item in schoolOptions" v-bind:key="item.schoolId">
+                    <label><input type="checkbox" @click="selectSchool(item)" checked />{{item.name}}</label>
+                </li>
+            </ul>
+            <span class="spans" @click="toggleSelect('Type')">Choisir un type de projet</span>
+            <ul class="listFilter" id="typeChoices" v-show="showType">
+                <li>
+                    <label><input type="checkbox" @click="selectType('I')" name="pi" checked />Projets informatiques</label>
+                </li>
+                <li>
+                    <label><input type="checkbox" @click="selectType('H')" name="pfh" checked />Projets de Formation Humaine</label>                    
+                </li>
+            </ul>
+            <span class="spans" @click="toggleSelect('Semesters')">Choisir un semestre</span>
+            <ul class="listFilter" id="semesterChoices" v-show="showSemesters">
+                <li v-for="item in semesters" v-bind:key="item">
+                    <label><input type="checkbox" @click="selectSemester(item)" checked />{{item}}</label>
+                </li>
+            </ul>
+        <datalist id="languages" >
+            <option v-for="(o, idx) in projectListToDisplay" :key="idx">{{o.groupName}}  ({{formatDateMonth(o.begDate)}}) </option>
+        </datalist>
+        <span>Chercher un projet:</span> <input type="text" style="width: 20%; border: solid black;" list="languages" v-model="groupName" @change="getProject(groupName)">
+        </div>
     </div>
-       <div v-if="CheckedAuthorize('Administration')">
+    <div v-if="CheckedAuthorize('Administration')">
         <el-button
             v-loading="loading"
             element-loading-text="Generation..."
@@ -36,9 +40,10 @@
             type="primary"
             @click="GetAllProjectSheet(schoolChoice,typeChoice,semesterChoice)"
         >
-            Telecharger
+            Télécharger
         </el-button>
     </div>
+    <br><br>
     <div class="sk-cube-grid" v-if="isLoading">
         <div class="sk-cube sk-cube1"></div>
         <div class="sk-cube sk-cube2"></div>
@@ -50,13 +55,14 @@
         <div class="sk-cube sk-cube8"></div>
         <div class="sk-cube sk-cube9"></div>
     </div>
- 
-    <div class="masonry-layout">
+     <div class="masonry-layout">
         <div class="masonry-layout-panel masonry-layout-flip--md masonry-layout-flip" v-for="(o, index) in projectListToDisplay.length" :key="o">
             <div class="masonry-layout-panel__content masonry-layout-flip__content">
                 <div class="masonry-layout-flip__panel masonry-layout-flip__panel--front">
                     <h2>{{projectListToDisplay[index].groupName}}</h2>
-                    <h3>{{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}} </h3>
+                    {{projectListToDisplay[index].semester}} {{projectListToDisplay[index].sector}}
+                    <br>
+                    {{formatDate(projectListToDisplay[index].begDate)}} / {{formatDate(projectListToDisplay[index].endDate)}}
                     <img :src="projectListToDisplay[index].logo" class="image">
                 </div>
                 <br>
@@ -71,7 +77,7 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
 </template>
 
 <script lang="ts">
@@ -102,12 +108,16 @@ export default class ProjectList extends Vue {
     private starColor!: string
     private semesters!: string[]
     private semestersPfh!: string[]
-    private schoolChoice: string = "all"
-    private typeChoice: string = "all"
-    private semesterChoice: string = "all"
+    private schoolChoice: School[] = []
+    private typeChoice: string[] = []
+    private semesterChoice: string[] = []
     private zip : JSZip = new JSZip()
     private loading: boolean = false
     private isLoading: boolean = false
+    private showSemesters: boolean = false
+    private showType: boolean = false
+    private showSchool: boolean = false
+    private groupName!: string
     
     async mounted() {
         this.isLoading = true
@@ -119,7 +129,9 @@ export default class ProjectList extends Vue {
         this.schoolOptions = await getSchools()
         this.schoolOptions.splice(0, 1)
         this.semesters = ["Semestre 1", "Semestre 2", "Semestre 3", "Semestre 4", "Semestre 5"]
-        this.semestersPfh = ["Semestre 1", "Semestre 2", "Semestre 3", "Semestre 4"]
+        this.schoolChoice = this.schoolOptions.slice(0)
+        this.semesterChoice = this.semesters.slice(0)
+        this.typeChoice = ["I", "H"]
     }
     getLeader(specificProject: Project) {
         for (let i = 0; i < specificProject.userId.length; i += 1) {
@@ -131,6 +143,10 @@ export default class ProjectList extends Vue {
     formatDate(date: Date) {
         const newDate = date.toString()
         return newDate.substr(0, 10)
+    }
+    formatDateMonth(date: Date){
+        const newDate = date.toString()
+        return newDate.substr(0, 7)
     }
     getType(specificProject: Project) {
         if ( specificProject.type == "I" ) return this.border = "red 1px solid"
@@ -200,61 +216,94 @@ export default class ProjectList extends Vue {
 
         this.loading = false
     }
+    selectSchool(item: School) {
+        let idx = this.schoolChoice.indexOf(item)
 
-    typeSelect() {
-        for (const project of this.projectListToDisplay) {
-            if (project.type != this.typeChoice) {
-                let idx = this.projectListToDisplay.indexOf(project)
-                this.projectListToDisplay.splice(idx, 1)
+        if(idx == -1) this.schoolChoice.push(item)
+        else this.schoolChoice.splice(idx, 1)
+
+        this.sortProjects()
+    }
+    selectSemester(item: string) {
+        let idx = this.semesterChoice.indexOf(item)
+
+        if(idx == -1) this.semesterChoice.push(item)
+        else this.semesterChoice.splice(idx, 1)
+        
+        this.sortProjects()
+    }
+    selectType(item: string) {
+        let idx = this.typeChoice.indexOf(item)
+
+        if(idx == -1) this.typeChoice.push(item)
+        else this.typeChoice.splice(idx, 1)
+        
+        this.sortProjects()
+    }
+    sortProjects() {
+        this.projectListToDisplay = []
+        let result = this.projectList.filter(project => 
+            {
+                for(const school of this.schoolChoice) {
+                    if(project.schoolId == school.schoolId) {
+                        for(const type of this.typeChoice) {
+                            if(project.type == type) {
+                                for(const semester of this.semesterChoice) {
+                                    let sem = semester.split(" ")
+                                    if(project.semester == "S0" + sem[1]) {
+                                        return true
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                return false
+            })
+        this.projectListToDisplay = result
+    }
+    getProject(groupName: string){
+        console.log(groupName)
+            for(const project of this.projectListToDisplay) {
+                console.log(project.groupName.startsWith(groupName))
+                if(groupName.startsWith(project.groupName)) {
+                    console.log("ok")
+                    this.projectListToDisplay = []
+                    this.projectListToDisplay.push(project)
             }
         }
     }
-
-    schoolSelect() {
-        let idx = this.schoolOptions.find(x => x.name == this.schoolChoice)
-        if (idx == undefined) {
-            idx = new School(0, "Unknown")
-        }
-        let idSchool = idx.schoolId
-        // let result = this.projectList.filter(project => project.schoolId == this.schoolChoice)
-                        
-        // for(const project of this.projectList) {
-        //     if(project.schoolId != idSchool) {
-        //         let idx = this.projectListToDisplay.indexOf(project)
-        //         this.projectListToDisplay.splice(idx, 1)     
-        //     }
-        // }
-    }
-    semesterSelect() {
-        let sem = this.semesterChoice.split(" ")
-        for(const project of this.projectList) {
-            if(project.semester != "S0" + sem[1]) {
-                let idx = this.projectListToDisplay.indexOf(project)
-                this.projectListToDisplay.splice(idx, 1)
-            }
-        }
-    }
-    checkSort() {
-        if(this.schoolChoice != "all") {
-            this.schoolSelect()
-        }
-        if(this.typeChoice != "all") {
-            this.typeSelect()
-        }
-        if(this.semesterChoice != "all") {
-            this.semesterSelect()
-        }
-        if(this.schoolChoice == "all" && this.semesterChoice == "all" && this.typeChoice == "all") {
-            this.projectListToDisplay = this.projectList
+    toggleSelect(obj: string) {
+        switch(obj) {
+            case "School":
+                this.showSchool = !this.showSchool
+                this.showType = false
+                this.showSemesters = false
+                break
+            case "Type":
+                this.showType = !this.showType
+                this.showSchool = false
+                this.showSemesters = false
+                break
+            case "Semesters":
+                this.showSemesters = !this.showSemesters
+                this.showType = false
+                this.showSchool = false
+                break
+            default:
+                this.showSemesters = false
+                this.showType = false
+                this.showSchool = false
         }
     }
 }
 </script>
 
-<style>
+<style <style lang="scss" scoped>
+
 .image{
-      width: 100%; 
-      height: 300px;
+      width: 250px; 
+      height: 250px;
 }
 .projectList{
     position: relative;
@@ -269,10 +318,11 @@ export default class ProjectList extends Vue {
 }
 .masonry-layout-panel__content {
     padding: 10px;
-    border-radius: 10px;
+    border-radius: 0px;
     border-style: solid;
     overflow: hidden;
-    border-color: #167BEB;
+    border-color: black;
+    width: 70%;
 }
 .masonry-layout-flip {
     perspective: 1000;
@@ -286,14 +336,14 @@ export default class ProjectList extends Vue {
 }
 .masonry-layout-flip__panel--back {
   transform: rotateY(180deg);
-  background: linear-gradient(rgb(13, 102, 219, 1), rgb(68, 218, 229))
+  background: linear-gradient(rgb(13, 102, 219), rgb(68, 218, 229))
 }
 .masonry-layout-flip__panel {
   backface-visibility: hidden;
-  border-radius: 10px;
+  border-radius: 0px;
   height: 100%;
   left: 0;
-  overflow: hidden;
+  overflow: auto;
   position: absolute;
   top: 0;
   width: 100%;
@@ -304,19 +354,6 @@ export default class ProjectList extends Vue {
   transform-style: preserve-3d;
   transition: 0.25s;
   height: 400px; 
-}
-.selects {
-   -webkit-border-radius: 20px;
-   -moz-border-radius: 20px;
-   border-radius: 20px;
-   -webkit-border-radius: 5px;
-   -moz-border-radius: 5px;
-   border-radius: 5px;
-   background-color: #0099ff;
-   color: #fff;
-   width: 30%;
-   font-size: medium;
-   border-color: #0099ff
 }
 
 .sk-cube-grid {
@@ -378,6 +415,47 @@ export default class ProjectList extends Vue {
   } 35% {
     -webkit-transform: scale3D(0, 0, 1);
             transform: scale3D(0, 0, 1);
-  } 
+  } }
+.test{
+    margin-top: 3px !important;
+    display: inline-block
+}
+
+.selects {
+    display: inline-block;
+    margin-top: 3%;
+    width: 100vw;
+}
+.spans {
+    border: 3px solid;
+    padding: 15px;
+    cursor: pointer;
+    margin-right: 2%;
+}
+.selects .listFilter {
+    list-style: none;
+    position:absolute;
+    z-index: 1;
+    background-color: white;
+    padding: 5px 40px 5px 40px;
+    border: 3px solid;
+}
+#schoolChoices {
+   position: absolute;
+   left: 27.4%;
+   top: 9%;
+}
+#typeChoices {
+   position: absolute;
+   left: 35%;
+   top: 9%;
+}
+#semesterChoices {
+    position: absolute;
+    left: 51.75%;
+    top: 9%;
+}
+label {
+    cursor: pointer;
 }
 </style>

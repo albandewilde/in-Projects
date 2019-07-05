@@ -136,6 +136,7 @@ export default class ProjectDetail extends Vue {
 <style>
 .image-detail-project{
     height: auto;
+    border: 2px solid;
     width: 20vw;
 }
 
@@ -188,6 +189,7 @@ export default class ProjectDetail extends Vue {
 
 .generate_sheet{
     float: right;
-    margin-top: -4vw;
+    margin-top: -3vw;
+    margin-right: 2vw;
 }
 </style>

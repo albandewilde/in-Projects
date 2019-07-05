@@ -2,11 +2,11 @@
     <div>
         <div v-if="action == true">
             <Login></Login>
-            <el-button type="danger" @click="changeAction()">Créer un compte</el-button>
+            <button type="button" class="button" @click="changeAction()">Créer un compte</button>
         </div>
         <div v-else>
             <Register></Register>
-            <el-button type="danger" @click="changeAction()">Déja un compte ?</el-button>
+            <button type="button" class="button" @click="changeAction()">Déja un compte ?</button>
         </div>
     </div>
 </template>

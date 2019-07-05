@@ -108,11 +108,7 @@ export default new Router({
       name: "PublicResult",
       component: ForumResultPublic
      },
-     {
-      path: "/test",
-      name: "Test",
-      component: Test
-     }
+
 
   ],
   mode: "history"

@@ -2,7 +2,7 @@
 <div class="nav">
   <ul class="sidenav">
     <li>      
-        <a class="active" @click="redirect('/')">IN'TECH</a>
+        <a class="active" @click="redirect('/')"><img src="../assets/home.png" height="24px" width="24px" style="margin-bottom: 5px;">&nbsp;IN'TECH</a>
         <div class="menu-toggle">
           <font-awesome-icon aria-hidden="true" icon="bars" size="lg" @click="changeCollapse()" style="color: white; cursor: pointer;"/>
         </div>
@@ -10,18 +10,18 @@
     <div class="collapsedMenu">
       <div v-if="authService.authenticationInfo.level != 0">
           <li class="btn-group">
-              <button class="buttons">
-                  <img src="../assets/deco.png" height="30px" @click="logout()">
+              <button class="buttons" @click="logout()">
+                  <img src="../assets/deco.png" height="30px">
               </button>
-              <button class="buttons">
-                  <img src="../assets/profile.png" height="30px" @click="redirect('/MyProfil')"/>
+              <button class="buttons" @click="redirect('/MyProfil')">
+                  <img src="../assets/profile.png" height="30px"/>
               </button>
           </li>
         </div>
         <div v-else>
           <li class="btn-group">
-              <button class="buttons" style="width: 100%;">
-                  <img src="../assets/co.png" @click="redirect('/connection')">
+              <button class="buttons" @click="redirect('/connection')" style="width: 100%;">
+                  <img src="../assets/co.png">
               </button>
           </li>
         </div>
@@ -35,11 +35,11 @@
             <div v-if="o == 'Student'">
                 <StudentPanel></StudentPanel>
             </div>
-             <div v-if="o == 'Jury'">
+              <div v-if="o == 'Jury'">
                 <JuryPanel></JuryPanel>
             </div>
+            </div>
         </div>
-    </div>
   </ul>
 </div>
 </template>
@@ -165,7 +165,7 @@ export default class SideBar extends Vue {
 }
 ul.sidenav {
 background: linear-gradient(180deg, rgba(17,46,88,1) 0%, rgba(198,198,198,1) 100%); position: fixed;
-  height: 100%;
+  height: 100vh;
   width: 15%;  
   margin-top: 0%;
   padding: 0;
@@ -182,7 +182,7 @@ background: linear-gradient(180deg, rgba(17,46,88,1) 0%, rgba(198,198,198,1) 100
 }
  
 ul.sidenav li a.active {
-  color: black;
+  color: white;
   line-height: 25px;
   font-size: 24px;
   font-weight: bold;
@@ -190,7 +190,7 @@ ul.sidenav li a.active {
 
 ul.sidenav li a {
   display: block;
-  color: black;
+  color: white;
   padding: 18px 16px;
   text-decoration: none;
   cursor: pointer;
@@ -210,7 +210,7 @@ ul.sidenav li a:hover:not(.active) {
 }
   .test {
   display: block;
-  color: black;
+  color: white;
   padding: 18px 16px;
   text-decoration: none;
   cursor: pointer;

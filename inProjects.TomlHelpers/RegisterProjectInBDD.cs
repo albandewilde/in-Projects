@@ -66,16 +66,16 @@ namespace inProjects.TomlHelpers
             CustomGroupTable CustomGroupTable
         )
         {
-            GroupQueries groupQueries = new GroupQueries(ctx, db);
-            TraitContextQueries traitContext = new TraitContextQueries(ctx, db);
-            TimedUserQueries timedUserQueries = new TimedUserQueries(ctx, db);
-            TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries(ctx, db);
-            UserQueries userQueries = new UserQueries(ctx, db);
+            GroupQueries groupQueries = new GroupQueries( ctx, db );
+            TraitContextQueries traitContext = new TraitContextQueries( ctx, db );
+            TimedUserQueries timedUserQueries = new TimedUserQueries( ctx, db );
+            TimedPeriodQueries timedPeriodQueries = new TimedPeriodQueries( ctx, db );
+            UserQueries userQueries = new UserQueries( ctx, db );
 
-            GroupData school = await groupQueries.GetIdSchoolByConnectUser(userId);
+            GroupData school = await groupQueries.GetIdSchoolByConnectUser( userId );
             // PeriodData timePeriod = await timedPeriodQueries.GetLastPeriodBySchool(school.ZoneId);
-            TimedUserData timedUser = await timedUserQueries.GetTimedUser(userId, school.ZoneId);
-            int traitContextId = await traitContext.GetTraitContextId(type);
+            TimedUserData timedUser = await timedUserQueries.GetTimedUser( userId, school.ZoneId );
+            int traitContextId = await traitContext.GetTraitContextId( type );
 
             string email = project.team.leader;
             int leaderId;
@@ -102,11 +102,24 @@ namespace inProjects.TomlHelpers
                 type
             );
 
-            if(project.git.url != "None")await projectUrlTable.CreateOrUpdateProjectUrl( ctx, ProjectCreate.ProjectStudentId, project.git.url, "Git" );
+            if( project.git.url != "None" ) await projectUrlTable.CreateOrUpdateProjectUrl( ctx, ProjectCreate.ProjectStudentId, project.git.url, "Git" );
 
-            string semester = "S0" + project.semester.semester.ToString();
-            int idSemester = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName(school.ZoneId, semester);
-            await CustomGroupTable.AddUserAsync(ctx, userId, idSemester, ProjectCreate.ProjectStudentId,true);
+            foreach( var item in project.semester.semester )
+            {
+                string semester = "S0" + item.ToString();
+                int idSemester = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( school.ZoneId, semester );
+                await CustomGroupTable.AddUserAsync( ctx, userId, idSemester, ProjectCreate.ProjectStudentId, true );
+
+            }
+
+            string[] sector = project.semester.sector.Split( " - " );
+            foreach( var item in sector )
+            {
+                int idSector = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( school.ZoneId, item );
+                await CustomGroupTable.AddUserAsync( ctx, userId, idSector, ProjectCreate.ProjectStudentId, true );
+
+            }
+
 
             return (userQueries, timedUserQueries, ProjectCreate, timedUser);
         }
@@ -159,10 +172,14 @@ namespace inProjects.TomlHelpers
                 project.background.image
             );
 
+            foreach( var item in project.semester.semester )
+            {
+                string semester = "S0" + item.ToString();
+                int idSemester = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( school.ZoneId, semester );
+                await CustomGroupTable.AddUserAsync( ctx, userId, idSemester, ProjectCreate.ProjectStudentId, true );
 
-            string semester = "S0" + project.semester.semester.ToString();
-            int idSemester = await groupQueries.GetSpecificIdGroupByZoneIdAndGroupName( school.ZoneId, semester );
-            await CustomGroupTable.AddUserAsync( ctx, userId, idSemester, ProjectCreate.ProjectStudentId, true );
+            }
+
 
             return (userQueries, timedUserQueries, ProjectCreate, timedUser);
         }

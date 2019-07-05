@@ -4,7 +4,7 @@ project_name = "mon super projet"
 
 [semester]
 # un entier positif représentant votre semestre.
-semester = 2
+semester = [2]
 # La chaine de caractere "SR" ou "IL" pour votre filière Systemes et Réseaux ou Ingénieurie Logiciel "None" si vous êtes en semestre 1 ou 2.
 sector = "SL"
 

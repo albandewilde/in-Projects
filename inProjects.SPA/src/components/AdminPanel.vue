@@ -1,12 +1,8 @@
 <template>
     <div>
         <div class="okok">
-            <li class="dropdown">
-                <a class="dropbtn">Gestion des périodes</a>
-                <div class="dropdown-content">
-                    <button @click="redirect('/createPeriod')">Créer une période</button>
-                    <button @click="redirect('/listPeriod')">Voir toutes les périodes</button>
-                </div>        
+            <li>
+                <a class="dropbtn" @click="redirect('/createPeriod')">Périodes</a>
             </li>
         </div>
         <div class="okok">
@@ -22,9 +18,9 @@
             <li class="dropdown">
                 <a class="dropbtn">Forum</a>
                 <div class="dropdown-content">
-                    <button @click="redirect('/plan')">Plan</button>
                     <button @click="redirect('/addJury')">Gestion forum</button>
-                    <button @click="redirect('/ForumResult')">Resultats Forum PI</button>
+                    <button @click="redirect('/plan')">Plan</button>
+                    <button @click="redirect('/ForumResult')">Résultats Forum PI</button>
                 </div>        
             </li>
         </div>
@@ -67,6 +63,7 @@ async created() {
   color: white;
   text-align: center;
   text-decoration: none;
+  font-size: 19px;
  }
 
 .dropdown {
@@ -80,6 +77,7 @@ async created() {
   background-color: #2d3e4f;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+  font-size: 19px;
 }
 
 .dropdown-content button {

@@ -2,7 +2,7 @@
 project_name = "In'Projects"
 
 [semester]
-semester = 5
+semester = [5]
 sector = "IL"
 
 [technologies]
@@ -23,3 +23,6 @@ members = ["acheng@intechinfo.fr", "chiche@intechinfo.fr", "delpierre@intechinfo
 
 [othersDocuments]
 urls = ["https://theuselessweb.site/salmonofcapistrano/", "https://theuselessweb.site/screaminggoatpiano/", "https://theuselessweb.site/infinitefrogs/"]
+
+[git]
+url = "https://git-scm.com/"

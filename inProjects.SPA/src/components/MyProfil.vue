@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <b class="MyProfil">Mon Profil:</b>
+    <div class="profil">
+        <b class="first-element MyProfil">Mon Profil:</b>
         <br><br><br><br>   
             <InformationsMyProfil></InformationsMyProfil>
         <br/>
@@ -68,9 +68,12 @@ export default class MyProfil extends Vue {
 <style>
 
 .MyProfil{
-    margin-top: 1%;
     color: #111; 
     float: left;
-    font-size:43px;    
+    font-size:43px;
+}
+.profil{
+        height: 100vh; 
+
 }
 </style>

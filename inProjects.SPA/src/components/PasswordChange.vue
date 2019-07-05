@@ -1,14 +1,14 @@
 <template>
     <div>
         <Error :error="error"/>
-	<a class="button" href="#popup2">Modifier votre mot de passe</a>
+	<a class="button" href="#popup2">Modifier le mot de passe</a>
         <div id="popup2" class="overlay light">
             <a class="cancel" href="#"></a>
             <div class="popup">
                 <a class="close" href="#">&times;</a>
                 <div class="content-popup">
                     <form ref="password">
-                    <h1>Modifier votre mot de passe</h1>
+                    <h1>Modifier le mot de passe</h1>
                     <fieldset>   
                         <label>Ancien mot de passe:</label>
                         <i v-show="errors.has('ancien mot de passe')" class="fa fa-warning" style="color:orange;"></i>
@@ -218,6 +218,7 @@ label.light {
   font-weight: 300;
   display: inline;
 }
+
 
 
 

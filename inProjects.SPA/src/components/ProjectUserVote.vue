@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="userVote">
+        <div>
         <el-select @change="change()" v-model="options" placeholder="Select">
             <el-option v-for="item in schoolOptions" :key="item.schoolId" :value="item.name">
             </el-option>
@@ -7,15 +8,15 @@
         <br/>
 
         <div v-if="forumOff == true && changeSchool==true">
-            <h2> Forum PI non Ouvert</h2>
+            <h2> Le Forum PI n'est pas ouvert !</h2>
             <countdown :schoolName="schoolName"></countdown>
         </div>
 
-        <div v-if="projectList.length >0">
+        <div v-if="projectList.length >0" style="background-color: white">
             <el-row>
                 <el-col :span="5" v-for="(o, index) in projectList.length" :key="o" :offset="index > 0 ? 1 : 1" >            
-                    <el-card v-bind:body-style="{ padding: '0px'}">
-                        <img :src="projectList[index].logo" class="image"  @click="redirect(projectList[index].projectStudentId)">
+                    <el-card v-bind:body-style="{ padding: '3px'}">
+                        <img :src="projectList[index].logo"  @click="redirect(projectList[index].projectStudentId)" style="height: 100px; width: 100px">
                         <div class="my-card-row">
                             <span>{{projectList[index].groupName}}</span><br>
                             <div class="block">
@@ -27,13 +28,13 @@
                 </el-col>
             </el-row>
         </div>
-        
+        </div>
     </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { GetAllProject, GetAllTypeProjectsOfSchool, noteProject } from "../api/projectApi"
+import { GetAllProject, GetAllTypeProjectsOfSchool, noteProjectUser } from "../api/projectApi"
 import { getSchools } from "../api/schoolApi"
 import {Project} from "../modules/classes/Project"
 import {School} from "../modules/classes/School"
@@ -73,7 +74,7 @@ export default class ProjectUserVote extends Vue {
             this.forumOff = true;
             let school = this.schoolOptions.find(x => x.name == this.options)
             if (school == undefined) {
-                school = new School(0, "Unknow")
+                school = new School(0, "Unknown")
             }
             this.schoolId = school.schoolId
             this.schoolName = school.name
@@ -103,7 +104,7 @@ export default class ProjectUserVote extends Vue {
    async note(newGrade: number, id: number) {
         try {
             const grade = newGrade * this.numberMax
-            await noteProject(id, grade, this.schoolId, TypeTimedUser.Anon)
+            await noteProjectUser(id, grade, this.schoolId, TypeTimedUser.Anon)
         } catch (e) {
             console.log(e)
         }
@@ -116,5 +117,8 @@ export default class ProjectUserVote extends Vue {
 </script>
 
 <style>
+.userVote{
+    height: 100vh;    
+}
 
 </style>

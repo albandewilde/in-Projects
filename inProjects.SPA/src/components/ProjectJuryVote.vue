@@ -1,16 +1,16 @@
 <template>
-    <div>
+    <div class="vote">
         <el-select @change="change()" v-model="options" placeholder="Select">
             <el-option v-for="item in schoolOptions" :key="item.schoolId" :value="item.name"></el-option>
         </el-select>
         <br/>
         <br/>
-        <div v-if="projectList.length >0">
+        <div v-if="projectList.length >0" style="background-color: white; height: 100vh">
             <el-row>
                 <el-col class="col-jury-grade" :span="5" v-for="(o, index) in projectList.length" :key="o" :offset="index > 0 ? 1 : 1" >  
                     <el-card class="card-jury-grade">
                      <span class="name-project-jury-grade">{{projectList[index].groupName}}</span><br>          
-                        <img :src="projectList[index].logo" class="image"  @click="redirect(projectList[index].projectStudentId)">
+                        <img :src="projectList[index].logo" class="image"  @click="redirect(projectList[index].projectStudentId)" style="height: 100px; width: 100px">
                         <div class="my-card-row">
                          <div v-if="!projectList[index].isBlocked">
                                 <el-select  @change="gradeChange(index,projectList[index].projectStudentId)" class="select-grade" v-model="projectList[index].grade" placeholder="Select">
@@ -148,5 +148,8 @@ export default class ProjectJuryVote extends Vue {
 
 .grade-max{
     font-size: 120%
+}
+.vote{
+    height: 100vh;
 }
 </style>

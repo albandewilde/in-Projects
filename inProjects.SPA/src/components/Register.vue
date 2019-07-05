@@ -1,42 +1,52 @@
 <template>
-    <el-form ref="user" :label-position="labelPosition" :model="user" label-width="100px">
+    <form ref="user" :label-position="labelPosition" :model="user" label-width="100px">
     <form v-on:submit.prevent.stop="Register">
         <center>
             <b>
-                <el-form-item label="Nom" style="width:60%;" prop="lastName">
-                    <el-input name="lastName" placeholder="Insérez votre nom" v-model="user.lastName" v-validate="'required|alpha'"></el-input>
+                <item label="Nom" style="width:60%;" prop="lastName">
+                    <input name="lastName" placeholder="Insérez votre nom" v-model="user.lastName" v-validate="'required|alpha'">
                     <i v-show="errors.has('lastName')" class="fa fa-warning" style="color:orange;"></i>
                     <span v-show="errors.has('lastName')" class="errorStyle">{{ errors.first('lastName') }}</span>
-                </el-form-item>
-                <el-form-item label="Prénom" style="width:60%" prop="firstName">
-                    <el-input name="firstName" placeholder="Insérez votre prénom" v-model="user.firstName" v-validate="'required|alpha'"></el-input>                    
+                </item>
+                <br>
+                <item label="Prénom" style="width:60%" prop="firstName">
+                    <br>
+                    <input name="firstName" placeholder="Insérez votre prénom" v-model="user.firstName" v-validate="'required|alpha'">                    
                     <i v-show="errors.has('firstName')" class="fa fa-warning" style="color:orange;"></i>
                     <span v-show="errors.has('firstName')" class="errorStyle">{{ errors.first('firstName') }}</span>
-                </el-form-item>
-                <el-form-item label="Email" style="width:60%" prop="email">
-                    <el-input name="email" placeholder="Insérez votre email" v-model="user.email" v-validate="'required|email'"></el-input>
+                </item>
+                <br>
+                <item label="Email" style="width:60%" prop="email">
+                    <br>
+                    <input name="email" placeholder="Insérez votre email" v-model="user.email" v-validate="'required|email'">
                     <i v-show="errors.has('email')" class="fa fa-warning" style="color:orange;"></i>
                     <span v-show="errors.has('email')" class="errorStyle">{{ errors.first('email') }}</span>
-                </el-form-item>
-                <el-form-item label="Mot de passe" style="width:60%" prop="password">
-                    <el-input name="password" ref="password" v-validate="'required|min:6'" placeholder="Insérez votre mot de passe" v-model="user.password" show-password></el-input>
+                </item>
+                <br>
+                <item label="Mot de passe" style="width:60%" prop="password">
+                    <br>
+                    <input name="password" ref="password" v-validate="'required|min:6'" placeholder="Insérez votre mot de passe" v-model="user.password" show-password>
                     <i v-show="errors.has('password')" class="fa fa-warning" style="color:orange;"></i>
                     <span v-show="errors.has('password')" class="errorStyle">{{ errors.first('password') }}</span>
-                </el-form-item>
-                <el-form-item label="Confirmer le mot de passe" style="width:60%" prop="verifiedPassword">
-                    <el-input name="verifiedPassword" v-validate="'required|min:6|confirmed:password'" placeholder="Insérez votre mot de passe" v-model="verifiedPassword" show-password></el-input>
+                </item>
+                <br>
+                <item label="Confirmer le mot de passe" style="width:60%" prop="verifiedPassword">
+                    <br>
+                    <input name="verifiedPassword" v-validate="'required|min:6|confirmed:password'" placeholder="Insérez votre mot de passe" v-model="verifiedPassword" show-password>
                     <i v-show="errors.has('verifiedPassword')" class="fa fa-warning" style="color:orange;"></i>
                     <span v-show="errors.has('verifiedPassword')" class="errorStyle">{{ errors.first('verifiedPassword') }}</span>
-                </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="Register()">Valider</el-button>
-                    <el-button type="info" @click="resetForm()">Réinitialiser</el-button>
-                </el-form-item>
+                </item>
+                <br>
+                <item>
+                    <br>
+                    <button type="button" class="button" @click="Register()">Valider</button>&nbsp;
+                    <button type="button" class="button" @click="resetForm()">Réinitialiser</button>
+                </item>
             </b>
         </center>
         <input type="submit" hidden/>
     </form>
-    </el-form>
+    </form>
 </template>
 
 <script lang="ts">
@@ -86,10 +96,23 @@ export default class Register extends Vue {
 </script>
 
 <style>
-input {
-    text-align: center
+input{
+      border: none;
+    font-size: 16px;
+    height: auto;
+    margin: 0;
+    outline: 0;
+    padding: 15px !important;
+    width: 100%;
+    -webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.03) inset;
+    margin-bottom: 30px;
+
 }
 
+item{
+    margin-bottom: 10%
+}
 .errorStyle {
     color: red
 }

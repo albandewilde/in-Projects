@@ -133,7 +133,7 @@ export default class InformationsMyProfil extends Vue {
 
 <style>
 .text-input-my-profil{
-    width: 20%;
+    width: 50%;
     padding: 0%;
 }
 

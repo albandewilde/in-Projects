@@ -84,13 +84,13 @@ namespace inProjects.TomlHelpers
             toml.logo.url = GetTomlFromGoogleDrive.GetUrlRessource(toml.logo.url);
             
 
-            if(toml.team.leader!= "None" && !await toml.team.isMailExisting( toml.team.leader, stObjMap ) ) return (false, "L'e-mail du chef de projet est invalide.");
-            foreach(string mail in toml.team.members ) { if( !await toml.team.isMailExisting( mail, stObjMap ) ) return (false, "L'un des e-mails des membres est invalide."); };
+            if(toml.team.leader!= "None" && !await toml.team.isMailExisting(toml.team.leader, stObjMap)) return (false, "L'e-mail du chef de projet est invalide.");
+            foreach(string mail in toml.team.members ) { if( !await toml.team.isMailExisting(mail, stObjMap)) return (false, "L'un des e-mails des membres est invalide."); };
             try    // register the project in the bdd
             {
                 await RegisterProjectInBDD.SaveProject(projectType, toml, userId, db, projectTable, groupTable, projectUrlTable);
             }
-            catch 
+            catch(Exception e) 
             {
                 return (false, "Impossible de sauvegarder le projet dans la BDD.");
             }
@@ -119,10 +119,8 @@ namespace inProjects.TomlHelpers
             {
                 object propertieValue = propertie.GetValue(this, null);
 
-                if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return (false, "The propertie \"" + propertie.Name.ToString() + "\" is missing");
-                if (propertieValue is IProjectField && !(propertieValue as IProjectField).isValid()) {
-                    return (false, "The propertie \"" + propertie.Name.ToString() + "\" isn't valid.");
-                }
+                if (propertieValue is null && !optionalProperties.Contains(propertie.Name)) return (false, "La propriété \"" + propertie.Name.ToString() + "\" est absente.");
+                if (propertieValue is IProjectField && !(propertieValue as IProjectField).isValid()) return (false, "La propriété \"" + propertie.Name.ToString() + "\" est invalide.");
             }
             return (true, "All good");
         }
@@ -154,12 +152,20 @@ namespace inProjects.TomlHelpers
 
     public class Semester: IProjectField
     {
-        public int semester {get; set;}
+        public int[] semester {get; set;}
         public string sector {get; set;}
 
         public bool isValid()
         {
-            return new int[]{1, 2, 3, 4, 5}.Contains(this.semester) && new string[]{"IL", "SR", "IL - SR", "None"}.Contains(this.sector);
+            int[] avariable_semester = new int[]{1, 2, 3, 4, 5};
+
+            if (semester == null || semester.Length == 0 || !new string[]{"IL", "SR", "IL - SR", "None"}.Contains(this.sector)) return false;
+
+            foreach (int elem in this.semester) {
+                if (!avariable_semester.Contains(elem)) return false;
+            }
+
+            return true;
         }
     }
 
@@ -245,7 +251,7 @@ namespace inProjects.TomlHelpers
 
     public class Git: IProjectField
     {
-        public string url { get; set; }
+        public string url {get; set;}
 
         public bool isValid()
         {
