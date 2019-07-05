@@ -101,7 +101,7 @@ export default class ForumResult extends Vue {
         data:{
             labels: await this.getprojectName(),
             datasets: [{
-                label:"note",
+                label:"Gagnant",
                 backgroundColor:["gold", "silver", "#ad713d"],
                 data: await this.getProjectAverage()
                 

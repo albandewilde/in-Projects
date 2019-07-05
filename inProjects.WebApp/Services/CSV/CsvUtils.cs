@@ -332,7 +332,7 @@ namespace inProjects.WebApp.Services.CSV
                     IEnumerable<ForumData> infoMail = await forumQueries.ForumInfoByJury( groupName );
                     int nbProject = infoMail.Count();
 
-                    //string subject = "Votre participation au Forum PI D'IN'TECH";
+                    string subject = "Votre participation au Forum PI D'IN'TECH";
                     string mailContent = @"
             <table align = 'center' border='0' cellpadding='0' cellspacing='0' height='100%' width='100%' id='bodyTable'>
   
@@ -481,7 +481,7 @@ IN'TECH Paris
     </body>
 </html>";
 
-                    //await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
+                    await _emailSender.SendMessage( juryInfo.Mail, subject, mailContent );
 
 
 

@@ -175,7 +175,7 @@ namespace inProjects.Data.Queries
                 " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +
                 " LEFT OUTER JOIN CK.tGroup g1 on g1.GroupId = ps.ProjectStudentId" +
                 " LEFT OUTER JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId" +
-                " WHERE g.ZoneId = @SchoolId and g.GroupName = @SemesterName and  ps.[Type] = @TypeProject and g.GroupName <> g1.GroupName", new { SemesterName = semester, SchoolId = schoolId, TypeProject = projectType } );
+                " WHERE g.ZoneId = @SchoolId and g.GroupName = @SemesterName and  ps.[Type] = @TypeProject and g.GroupName <> g1.GroupName AND g.GroupName like 'S0%'", new { SemesterName = semester, SchoolId = schoolId, TypeProject = projectType } );
                 
             foreach( var item in result )
             {
@@ -224,7 +224,7 @@ namespace inProjects.Data.Queries
             " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +
             " LEFT OUTER JOIN CK.tGroup g1 on g1.GroupId = ps.ProjectStudentId" +
             " LEFT OUTER JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId" +
-            " WHERE g.ZoneId = @SchoolId and g.GroupName = @SemesterName and g.GroupName <> g1.GroupName", new { SemesterName = semester, SchoolId = schoolId } );
+            " WHERE g.ZoneId = @SchoolId and g.GroupName = @SemesterName and g.GroupName <> g1.GroupName AND g.GroupName like 'S0%'", new { SemesterName = semester, SchoolId = schoolId } );
 
             foreach( var item in result )
             {
@@ -268,7 +268,7 @@ namespace inProjects.Data.Queries
                 " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +
                 " LEFT OUTER JOIN CK.tGroup g1 on g1.GroupId = ps.ProjectStudentId" +
                 " LEFT OUTER JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId" +
-                " WHERE g.ZoneId = @SchoolId and ps.[Type] = @TypeProject and g.GroupName <> g1.GroupName", new { SchoolId = schoolId, TypeProject = projectType } );
+                " WHERE g.ZoneId = @SchoolId and ps.[Type] = @TypeProject and g.GroupName <> g1.GroupName AND g.GroupName like 'S0%'", new { SchoolId = schoolId, TypeProject = projectType } );
 
             foreach( var item in result )
             {
@@ -314,7 +314,7 @@ namespace inProjects.Data.Queries
                 " LEFT OUTER JOIN CK.tGroup g on g.GroupId = ap.GroupId" +
                 " LEFT OUTER JOIN CK.tGroup g1 on g1.GroupId = ps.ProjectStudentId" +
                 " LEFT OUTER JOIN IPR.tForumInfos fi on fi.ProjectId = ps.ProjectStudentId" +
-                " WHERE g.ZoneId = @SchoolId  and g.GroupName <> g1.GroupName", new { SchoolId = schoolId } );
+                " WHERE g.ZoneId = @SchoolId  and g.GroupName <> g1.GroupName AND g.GroupName like 'S0%'", new { SchoolId = schoolId } );
 
             foreach( var item in result )
             {

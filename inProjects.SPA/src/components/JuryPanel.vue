@@ -2,7 +2,7 @@
 <div>
     <div class="menu-panel">
         <li>
-            <a @click="redirect(`/ProjectJuryVote`)">Evaluez les projets</a>
+            <a style="font-size=19;" @click="redirect(`/ProjectJuryVote`)">Évaluez les projets</a>
         </li>
     </div>
 </div>

@@ -200,15 +200,21 @@ export default class ProjectList extends Vue {
         this.$router.replace("/Project/" + idProject)
     }
 
-    async GetAllProjectSheet(school: string, type: string, semester: string) {
+    async GetAllProjectSheet(school: School[], type: string[], semester: string[]) {
         this.loading = true
-
-        let schoolToSend = this.schoolOptions.find(x => x.name == school)
+        let semesterToSend: number = 0
+        let schoolToSend = this.schoolOptions.find(x => x.name == school[0].name)
         if (schoolToSend == undefined) schoolToSend = new School(0,"Unknown")
-        let semesterToSend = parseInt(semester.slice(semester.length - 1,semester.length))
+        if(this.semesterChoice.length == 1) {
+            let sem = semester[0].split(" ")
+            semesterToSend = parseInt(sem[1])                            
+        }
+        else if(this.semesterChoice.length > 1) {
+            semesterToSend = 0
+        }
 
         // get projects form the back
-        let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(schoolToSend.schoolId, type, semesterToSend)
+        let projects: Array<ProjectSheet> | Array<ProjectPiSheet> | Array<ProjectPfhSheet> = await GetAllSheet(4, "I", 0)
 
         let index = 0
         this.zip = new JSZip()

@@ -10,7 +10,7 @@ namespace WebApp
         public static void Main(string[] args)
         {
             var builder = new WebHostBuilder()
-                            .UseUrls( "http://localhost:5000" )
+                            .UseUrls( "http://localhost:5000", "http://*:8080" )
                             .UseContentRoot( Directory.GetCurrentDirectory() )
                             .UseMonitoring()
                             .UseScopedHttpContext()

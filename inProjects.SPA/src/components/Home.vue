@@ -34,7 +34,7 @@
                 <img src="../assets/people.png">
                 <br>
                 <h3>Accompagner chaque étudiant</h3>
-                Avec un taux d’encadrement de 10 élèves par prof, nous valorisons la richesse de tous les profils que nous accueillo
+                Avec un taux d’encadrement de 10 élèves par prof, nous valorisons la richesse de tous les profils que nous accueillons.
             </div>
         </div>  
         <div class="masonry-layout-panel">
